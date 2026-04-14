@@ -26,10 +26,11 @@ The full API of this library can be found in [api.md](api.md).
 import Micro from 'micro';
 
 const client = new Micro({
+  teamID: 'My Team ID',
   apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
 });
 
-await client.prism.restoreObject('REPLACE_ME', { teamId: 'REPLACE_ME', objectType: 'deal' });
+await client.prism.restoreObject('REPLACE_ME', { objectType: 'deal' });
 ```
 
 ### Request & Response types
@@ -41,10 +42,11 @@ This library includes TypeScript definitions for all request params and response
 import Micro from 'micro';
 
 const client = new Micro({
+  teamID: 'My Team ID',
   apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
 });
 
-const params: Micro.PrismRestoreObjectParams = { teamId: 'REPLACE_ME', objectType: 'deal' };
+const params: Micro.PrismRestoreObjectParams = { objectType: 'deal' };
 await client.prism.restoreObject('REPLACE_ME', params);
 ```
 
@@ -59,7 +61,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 const response = await client.prism
-  .restoreObject('REPLACE_ME', { teamId: 'REPLACE_ME', objectType: 'deal' })
+  .restoreObject('REPLACE_ME', { objectType: 'deal' })
   .catch(async (err) => {
     if (err instanceof Micro.APIError) {
       console.log(err.status); // 400
@@ -96,11 +98,12 @@ You can use the `maxRetries` option to configure or disable this:
 ```js
 // Configure the default for all requests:
 const client = new Micro({
+  teamID: 'My Team ID',
   maxRetries: 0, // default is 2
 });
 
 // Or, configure per-request:
-await client.prism.restoreObject('REPLACE_ME', { teamId: 'REPLACE_ME', objectType: 'deal' }, {
+await client.prism.restoreObject('REPLACE_ME', { objectType: 'deal' }, {
   maxRetries: 5,
 });
 ```
@@ -113,11 +116,12 @@ Requests time out after 1 minute by default. You can configure this with a `time
 ```ts
 // Configure the default for all requests:
 const client = new Micro({
+  teamID: 'My Team ID',
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
 // Override per-request:
-await client.prism.restoreObject('REPLACE_ME', { teamId: 'REPLACE_ME', objectType: 'deal' }, {
+await client.prism.restoreObject('REPLACE_ME', { objectType: 'deal' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -141,13 +145,13 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 const client = new Micro();
 
 const response = await client.prism
-  .restoreObject('REPLACE_ME', { teamId: 'REPLACE_ME', objectType: 'deal' })
+  .restoreObject('REPLACE_ME', { objectType: 'deal' })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
 const { data: result, response: raw } = await client.prism
-  .restoreObject('REPLACE_ME', { teamId: 'REPLACE_ME', objectType: 'deal' })
+  .restoreObject('REPLACE_ME', { objectType: 'deal' })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(result);
