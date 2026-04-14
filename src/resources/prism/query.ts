@@ -22,7 +22,7 @@ export class Query extends APIResource {
     params: QueryExecuteQueryParams,
     options?: RequestOptions,
   ): APIPromise<QueryExecuteQueryResponse> {
-    const { teamId, ...body } = params;
+    const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v1/prism/query/${teamId}/${objectType}`, { body, ...options });
   }
 
@@ -42,7 +42,7 @@ export class Query extends APIResource {
     params: QueryExecuteQueryV2Params,
     options?: RequestOptions,
   ): APIPromise<QueryExecuteQueryV2Response> {
-    const { teamId, ...body } = params;
+    const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v2/prism/query/${teamId}/${objectType}`, { body, ...options });
   }
 }
@@ -70,7 +70,7 @@ export interface QueryExecuteQueryParams {
   /**
    * Path param
    */
-  teamId: string;
+  teamId?: string;
 
   /**
    * Body param: Dynamic query configuration: at least one _\_view_select_ field is
@@ -135,7 +135,7 @@ export interface QueryExecuteQueryV2Params {
   /**
    * Path param
    */
-  teamId: string;
+  teamId?: string;
 
   /**
    * Body param

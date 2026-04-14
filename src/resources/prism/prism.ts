@@ -28,7 +28,7 @@ export class Prism extends APIResource {
     params: PrismCreateObjectParams,
     options?: RequestOptions,
   ): APIPromise<void> {
-    const { teamId, ...body } = params;
+    const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v1/prism/${teamId}/${objectType}`, {
       body,
       ...options,
@@ -44,7 +44,7 @@ export class Prism extends APIResource {
     params: PrismDeleteObjectParams,
     options?: RequestOptions,
   ): APIPromise<void> {
-    const { teamId, objectType } = params;
+    const { teamId = this._client.teamID, objectType } = params;
     return this._client.delete(path`/v1/prism/${teamId}/${objectType}/${objectID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
@@ -59,7 +59,7 @@ export class Prism extends APIResource {
     params: PrismDuplicateObjectParams,
     options?: RequestOptions,
   ): APIPromise<PrismDuplicateObjectResponse> {
-    const { teamId, objectType } = params;
+    const { teamId = this._client.teamID, objectType } = params;
     return this._client.post(path`/v1/prism/${teamId}/${objectType}/${objectID}/duplicate`, options);
   }
 
@@ -73,7 +73,7 @@ export class Prism extends APIResource {
     params: PrismImportObjectsParams,
     options?: RequestOptions,
   ): APIPromise<PrismImportObjectsResponse> {
-    const { teamId, ...body } = params;
+    const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v1/prism/${teamId}/${objectType}/import`, { body, ...options });
   }
 
@@ -81,7 +81,7 @@ export class Prism extends APIResource {
    * Patch object
    */
   patchObject(objectID: string, params: PrismPatchObjectParams, options?: RequestOptions): APIPromise<void> {
-    const { teamId, objectType, ...body } = params;
+    const { teamId = this._client.teamID, objectType, ...body } = params;
     return this._client.patch(path`/v1/prism/${teamId}/${objectType}/${objectID}`, {
       body,
       ...options,
@@ -97,7 +97,7 @@ export class Prism extends APIResource {
     params: PrismRestoreObjectParams,
     options?: RequestOptions,
   ): APIPromise<void> {
-    const { teamId, objectType } = params;
+    const { teamId = this._client.teamID, objectType } = params;
     return this._client.post(path`/v1/prism/${teamId}/${objectType}/${objectID}/restore`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
@@ -155,7 +155,7 @@ export interface PrismCreateObjectParams {
   /**
    * Path param
    */
-  teamId: string;
+  teamId?: string;
 
   /**
    * Body param
@@ -179,13 +179,13 @@ export interface PrismCreateObjectParams {
 }
 
 export interface PrismDeleteObjectParams {
-  teamId: string;
+  teamId?: string;
 
   objectType: ObjectType;
 }
 
 export interface PrismDuplicateObjectParams {
-  teamId: string;
+  teamId?: string;
 
   objectType: ObjectType;
 }
@@ -194,7 +194,7 @@ export interface PrismImportObjectsParams {
   /**
    * Path param
    */
-  teamId: string;
+  teamId?: string;
 
   /**
    * Body param: Array of objects to import with their property values
@@ -235,7 +235,7 @@ export interface PrismPatchObjectParams {
   /**
    * Path param
    */
-  teamId: string;
+  teamId?: string;
 
   /**
    * Path param
@@ -264,7 +264,7 @@ export interface PrismPatchObjectParams {
 }
 
 export interface PrismRestoreObjectParams {
-  teamId: string;
+  teamId?: string;
 
   objectType: ObjectType;
 }

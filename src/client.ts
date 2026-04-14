@@ -49,6 +49,8 @@ export interface ClientOptions {
    */
   apiKey?: string | undefined;
 
+  teamID: string;
+
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
@@ -123,6 +125,7 @@ export interface ClientOptions {
  */
 export class Micro {
   apiKey: string;
+  teamID: string;
 
   baseURL: string;
   maxRetries: number;
@@ -140,6 +143,7 @@ export class Micro {
    * API Client for interfacing with the Micro API.
    *
    * @param {string | undefined} [opts.apiKey=process.env['MICRO_API_KEY'] ?? undefined]
+   * @param {string} opts.teamID
    * @param {string} [opts.baseURL=process.env['MICRO_BASE_URL'] ?? https://api.example.com] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
@@ -151,16 +155,23 @@ export class Micro {
   constructor({
     baseURL = readEnv('MICRO_BASE_URL'),
     apiKey = readEnv('MICRO_API_KEY'),
+    teamID,
     ...opts
-  }: ClientOptions = {}) {
+  }: ClientOptions) {
     if (apiKey === undefined) {
       throw new Errors.MicroError(
         "The MICRO_API_KEY environment variable is missing or empty; either provide it, or instantiate the Micro client with an apiKey option, like new Micro({ apiKey: 'My API Key' }).",
       );
     }
+    if (teamID === undefined) {
+      throw new Errors.MicroError(
+        "Missing required client option teamID; you need to instantiate the Micro client with an teamID option, like new Micro({ teamID: 'My Team ID' }).",
+      );
+    }
 
     const options: ClientOptions = {
       apiKey,
+      teamID,
       ...opts,
       baseURL: baseURL || `https://api.example.com`,
     };
@@ -183,6 +194,7 @@ export class Micro {
     this._options = options;
 
     this.apiKey = apiKey;
+    this.teamID = teamID;
   }
 
   /**
@@ -199,6 +211,7 @@ export class Micro {
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
       apiKey: this.apiKey,
+      teamID: this.teamID,
       ...options,
     });
     return client;
