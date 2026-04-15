@@ -14,10 +14,4 @@ export {
   type PrismPatchObjectParams,
   type PrismRestoreObjectParams,
 } from './prism';
-export {
-  Query,
-  type QueryExecuteQueryResponse,
-  type QueryExecuteQueryV2Response,
-  type QueryExecuteQueryParams,
-  type QueryExecuteQueryV2Params,
-} from './query';
+export { Query, type QueryExecuteResponse, type QueryExecuteParams } from './query';

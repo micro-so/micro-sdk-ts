@@ -144,7 +144,7 @@ export class Micro {
    *
    * @param {string | undefined} [opts.apiKey=process.env['MICRO_API_KEY'] ?? undefined]
    * @param {string} opts.teamID
-   * @param {string} [opts.baseURL=process.env['MICRO_BASE_URL'] ?? https://api.example.com] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['MICRO_BASE_URL'] ?? https://developers.micro.so] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -173,7 +173,7 @@ export class Micro {
       apiKey,
       teamID,
       ...opts,
-      baseURL: baseURL || `https://api.example.com`,
+      baseURL: baseURL || `https://developers.micro.so`,
     };
 
     this.baseURL = options.baseURL!;
@@ -221,7 +221,7 @@ export class Micro {
    * Check whether the base URL is set to its default.
    */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== 'https://api.example.com';
+    return this.baseURL !== 'https://developers.micro.so';
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -233,7 +233,7 @@ export class Micro {
   }
 
   protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
+    return buildHeaders([{ 'x-api-key': this.apiKey }]);
   }
 
   /**

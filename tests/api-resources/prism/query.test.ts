@@ -10,8 +10,8 @@ const client = new Micro({
 
 describe('resource query', () => {
   // Mock server tests are disabled
-  test.skip('executeQuery: only required params', async () => {
-    const responsePromise = client.prism.query.executeQuery('deal', { query: {} });
+  test.skip('execute: only required params', async () => {
+    const responsePromise = client.prism.query.execute('deal', { query: { select: ['string'] } });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,39 +22,8 @@ describe('resource query', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('executeQuery: required and optional params', async () => {
-    const response = await client.prism.query.executeQuery('deal', {
-      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      query: {
-        combinator: 'AND',
-        crm_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        team_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      },
-      id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      all: true,
-      boxes: ['string'],
-      deleted: true,
-      limit: 0,
-      page: 0,
-      sources: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
-    });
-  });
-
-  // Mock server tests are disabled
-  test.skip('executeQueryV2: only required params', async () => {
-    const responsePromise = client.prism.query.executeQueryV2('deal', { query: { select: ['string'] } });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('executeQueryV2: required and optional params', async () => {
-    const response = await client.prism.query.executeQueryV2('deal', {
+  test.skip('execute: required and optional params', async () => {
+    const response = await client.prism.query.execute('deal', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       query: {
         select: ['string'],

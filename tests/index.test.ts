@@ -354,13 +354,13 @@ describe('instantiate client', () => {
     test('empty env variable', () => {
       process.env['MICRO_BASE_URL'] = ''; // empty
       const client = new Micro({ apiKey: 'My API Key', teamID: 'My Team ID' });
-      expect(client.baseURL).toEqual('https://api.example.com');
+      expect(client.baseURL).toEqual('https://developers.micro.so');
     });
 
     test('blank env variable', () => {
       process.env['MICRO_BASE_URL'] = '  '; // blank
       const client = new Micro({ apiKey: 'My API Key', teamID: 'My Team ID' });
-      expect(client.baseURL).toEqual('https://api.example.com');
+      expect(client.baseURL).toEqual('https://developers.micro.so');
     });
 
     test('in request options', () => {
