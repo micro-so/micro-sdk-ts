@@ -4,13 +4,7 @@ import { APIResource } from '../../core/resource';
 import * as GrantAPI from './grant';
 import { Grant, GrantRetrieveGrantParams, GrantUpdateGrantParams } from './grant';
 import * as QueryAPI from './query';
-import {
-  Query,
-  QueryExecuteQueryParams,
-  QueryExecuteQueryResponse,
-  QueryExecuteQueryV2Params,
-  QueryExecuteQueryV2Response,
-} from './query';
+import { Query, QueryExecuteParams, QueryExecuteResponse } from './query';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -29,7 +23,7 @@ export class Prism extends APIResource {
     options?: RequestOptions,
   ): APIPromise<void> {
     const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v1/prism/${teamId}/${objectType}`, {
+    return this._client.post(path`/v2/prism/${teamId}/${objectType}`, {
       body,
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
@@ -45,7 +39,7 @@ export class Prism extends APIResource {
     options?: RequestOptions,
   ): APIPromise<void> {
     const { teamId = this._client.teamID, objectType } = params;
-    return this._client.delete(path`/v1/prism/${teamId}/${objectType}/${objectID}`, {
+    return this._client.delete(path`/v2/prism/${teamId}/${objectType}/${objectID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
@@ -60,13 +54,13 @@ export class Prism extends APIResource {
     options?: RequestOptions,
   ): APIPromise<PrismDuplicateObjectResponse> {
     const { teamId = this._client.teamID, objectType } = params;
-    return this._client.post(path`/v1/prism/${teamId}/${objectType}/${objectID}/duplicate`, options);
+    return this._client.post(path`/v2/prism/${teamId}/${objectType}/${objectID}/duplicate`, options);
   }
 
   /**
-   * Import multiple objects in batch. Automatically routes based on size: <100
-   * records sync (immediate response), >=100 records async (S3/Lambda with WebSocket
-   * progress)
+   * Import multiple objects in batch. Properties are keyed by slug. Automatically
+   * routes based on size: <100 records sync (immediate response), >=100 records
+   * async (S3/Lambda with WebSocket progress)
    */
   importObjects(
     objectType: 'identity' | 'organization' | 'contact' | 'action' | 'document' | 'deal',
@@ -74,7 +68,7 @@ export class Prism extends APIResource {
     options?: RequestOptions,
   ): APIPromise<PrismImportObjectsResponse> {
     const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v1/prism/${teamId}/${objectType}/import`, { body, ...options });
+    return this._client.post(path`/v2/prism/${teamId}/${objectType}/import`, { body, ...options });
   }
 
   /**
@@ -82,7 +76,7 @@ export class Prism extends APIResource {
    */
   patchObject(objectID: string, params: PrismPatchObjectParams, options?: RequestOptions): APIPromise<void> {
     const { teamId = this._client.teamID, objectType, ...body } = params;
-    return this._client.patch(path`/v1/prism/${teamId}/${objectType}/${objectID}`, {
+    return this._client.patch(path`/v2/prism/${teamId}/${objectType}/${objectID}`, {
       body,
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
@@ -98,21 +92,32 @@ export class Prism extends APIResource {
     options?: RequestOptions,
   ): APIPromise<void> {
     const { teamId = this._client.teamID, objectType } = params;
-    return this._client.post(path`/v1/prism/${teamId}/${objectType}/${objectID}/restore`, {
+    return this._client.post(path`/v2/prism/${teamId}/${objectType}/${objectID}/restore`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
   }
 }
 
-export type ObjectType = 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action';
+export type ObjectType =
+  | 'deal'
+  | 'identity'
+  | 'ai_chat_thread'
+  | 'ai_chat_message'
+  | 'document'
+  | 'action'
+  | 'event';
 
 export interface PrismObjectProperties {
   id?: string;
 
   crm?: unknown;
 
-  default?: unknown;
+  /**
+   * Properties keyed by property slug. Values can be strings, numbers, booleans,
+   * arrays, or null.
+   */
+  default?: { [key: string]: unknown };
 
   extended?: unknown;
 }
@@ -168,9 +173,10 @@ export interface PrismCreateObjectParams {
   crm?: unknown;
 
   /**
-   * Body param
+   * Body param: Properties keyed by property slug. Values can be strings, numbers,
+   * booleans, arrays, or null.
    */
-  default?: unknown;
+  default?: { [key: string]: unknown };
 
   /**
    * Body param
@@ -197,7 +203,7 @@ export interface PrismImportObjectsParams {
   teamId?: string;
 
   /**
-   * Body param: Array of objects to import with their property values
+   * Body param: Array of objects to import with property values keyed by slug
    */
   objects: Array<PrismObjectProperties>;
 
@@ -220,14 +226,9 @@ export namespace PrismImportObjectsParams {
     crm_id?: string;
 
     /**
-     * Property definition ID to deduplicate on
+     * Property slug to deduplicate on
      */
     dedupe_by?: string;
-
-    /**
-     * Type of the deduplication property
-     */
-    dedupe_type?: 'str' | 'multi_str' | 'multiref_contact';
   }
 }
 
@@ -253,9 +254,10 @@ export interface PrismPatchObjectParams {
   crm?: unknown;
 
   /**
-   * Body param
+   * Body param: Properties keyed by property slug. Values can be strings, numbers,
+   * booleans, arrays, or null.
    */
-  default?: unknown;
+  default?: { [key: string]: unknown };
 
   /**
    * Body param
@@ -294,9 +296,7 @@ export declare namespace Prism {
 
   export {
     Query as Query,
-    type QueryExecuteQueryResponse as QueryExecuteQueryResponse,
-    type QueryExecuteQueryV2Response as QueryExecuteQueryV2Response,
-    type QueryExecuteQueryParams as QueryExecuteQueryParams,
-    type QueryExecuteQueryV2Params as QueryExecuteQueryV2Params,
+    type QueryExecuteResponse as QueryExecuteResponse,
+    type QueryExecuteParams as QueryExecuteParams,
   };
 }

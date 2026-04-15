@@ -9,28 +9,26 @@ Types:
 
 Methods:
 
-- <code title="post /v1/prism/{teamId}/{objectType}">client.prism.<a href="./src/resources/prism/prism.ts">createObject</a>(objectType, { ...params }) -> void</code>
-- <code title="delete /v1/prism/{teamId}/{objectType}/{objectId}">client.prism.<a href="./src/resources/prism/prism.ts">deleteObject</a>(objectID, { ...params }) -> void</code>
-- <code title="post /v1/prism/{teamId}/{objectType}/{objectId}/duplicate">client.prism.<a href="./src/resources/prism/prism.ts">duplicateObject</a>(objectID, { ...params }) -> PrismDuplicateObjectResponse</code>
-- <code title="post /v1/prism/{teamId}/{objectType}/import">client.prism.<a href="./src/resources/prism/prism.ts">importObjects</a>(objectType, { ...params }) -> PrismImportObjectsResponse</code>
-- <code title="patch /v1/prism/{teamId}/{objectType}/{objectId}">client.prism.<a href="./src/resources/prism/prism.ts">patchObject</a>(objectID, { ...params }) -> void</code>
-- <code title="post /v1/prism/{teamId}/{objectType}/{objectId}/restore">client.prism.<a href="./src/resources/prism/prism.ts">restoreObject</a>(objectID, { ...params }) -> void</code>
+- <code title="post /v2/prism/{teamId}/{objectType}">client.prism.<a href="./src/resources/prism/prism.ts">createObject</a>(objectType, { ...params }) -> void</code>
+- <code title="delete /v2/prism/{teamId}/{objectType}/{objectId}">client.prism.<a href="./src/resources/prism/prism.ts">deleteObject</a>(objectID, { ...params }) -> void</code>
+- <code title="post /v2/prism/{teamId}/{objectType}/{objectId}/duplicate">client.prism.<a href="./src/resources/prism/prism.ts">duplicateObject</a>(objectID, { ...params }) -> PrismDuplicateObjectResponse</code>
+- <code title="post /v2/prism/{teamId}/{objectType}/import">client.prism.<a href="./src/resources/prism/prism.ts">importObjects</a>(objectType, { ...params }) -> PrismImportObjectsResponse</code>
+- <code title="patch /v2/prism/{teamId}/{objectType}/{objectId}">client.prism.<a href="./src/resources/prism/prism.ts">patchObject</a>(objectID, { ...params }) -> void</code>
+- <code title="post /v2/prism/{teamId}/{objectType}/{objectId}/restore">client.prism.<a href="./src/resources/prism/prism.ts">restoreObject</a>(objectID, { ...params }) -> void</code>
 
 ## Grant
 
 Methods:
 
-- <code title="get /v1/prism/grant/{teamId}/{objectType}/{objectId}">client.prism.grant.<a href="./src/resources/prism/grant.ts">retrieveGrant</a>(objectID, { ...params }) -> void</code>
-- <code title="put /v1/prism/grant/{teamId}/{objectType}/{objectId}">client.prism.grant.<a href="./src/resources/prism/grant.ts">updateGrant</a>(objectID, { ...params }) -> void</code>
+- <code title="get /v2/prism/grant/{teamId}/{objectType}/{objectId}">client.prism.grant.<a href="./src/resources/prism/grant.ts">retrieveGrant</a>(objectID, { ...params }) -> void</code>
+- <code title="put /v2/prism/grant/{teamId}/{objectType}/{objectId}">client.prism.grant.<a href="./src/resources/prism/grant.ts">updateGrant</a>(objectID, { ...params }) -> void</code>
 
 ## Query
 
 Types:
 
-- <code><a href="./src/resources/prism/query.ts">QueryExecuteQueryResponse</a></code>
-- <code><a href="./src/resources/prism/query.ts">QueryExecuteQueryV2Response</a></code>
+- <code><a href="./src/resources/prism/query.ts">QueryExecuteResponse</a></code>
 
 Methods:
 
-- <code title="post /v1/prism/query/{teamId}/{objectType}">client.prism.query.<a href="./src/resources/prism/query.ts">executeQuery</a>(objectType, { ...params }) -> QueryExecuteQueryResponse</code>
-- <code title="post /v2/prism/query/{teamId}/{objectType}">client.prism.query.<a href="./src/resources/prism/query.ts">executeQueryV2</a>(objectType, { ...params }) -> QueryExecuteQueryV2Response</code>
+- <code title="post /v2/prism/query/{teamId}/{objectType}">client.prism.query.<a href="./src/resources/prism/query.ts">execute</a>(objectType, { ...params }) -> QueryExecuteResponse</code>

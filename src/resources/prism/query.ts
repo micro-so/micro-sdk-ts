@@ -7,29 +7,9 @@ import { path } from '../../internal/utils/path';
 
 export class Query extends APIResource {
   /**
-   * Query
-   */
-  executeQuery(
-    objectType:
-      | 'deal'
-      | 'identity'
-      | 'ai_chat_thread'
-      | 'ai_chat_message'
-      | 'document'
-      | 'organization'
-      | 'contact'
-      | 'action',
-    params: QueryExecuteQueryParams,
-    options?: RequestOptions,
-  ): APIPromise<QueryExecuteQueryResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v1/prism/query/${teamId}/${objectType}`, { body, ...options });
-  }
-
-  /**
    * Query v2
    */
-  executeQueryV2(
+  execute(
     objectType:
       | 'deal'
       | 'identity'
@@ -38,19 +18,17 @@ export class Query extends APIResource {
       | 'document'
       | 'organization'
       | 'contact'
-      | 'action',
-    params: QueryExecuteQueryV2Params,
+      | 'action'
+      | 'event',
+    params: QueryExecuteParams,
     options?: RequestOptions,
-  ): APIPromise<QueryExecuteQueryV2Response> {
+  ): APIPromise<QueryExecuteResponse> {
     const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v2/prism/query/${teamId}/${objectType}`, { body, ...options });
   }
 }
 
-export interface QueryExecuteQueryResponse {
-  /**
-   * List of message records
-   */
+export interface QueryExecuteResponse {
   data?: Array<unknown>;
 
   next_cursor?: string | null;
@@ -58,80 +36,7 @@ export interface QueryExecuteQueryResponse {
   total?: number;
 }
 
-export interface QueryExecuteQueryV2Response {
-  data?: Array<unknown>;
-
-  next_cursor?: string | null;
-
-  total?: number;
-}
-
-export interface QueryExecuteQueryParams {
-  /**
-   * Path param
-   */
-  teamId?: string;
-
-  /**
-   * Body param: Dynamic query configuration: at least one _\_view_select_ field is
-   * required; filters and sorts are optional
-   */
-  query: QueryExecuteQueryParams.Query;
-
-  /**
-   * Body param
-   */
-  id?: string | Array<string>;
-
-  /**
-   * Body param
-   */
-  all?: boolean;
-
-  /**
-   * Body param
-   */
-  boxes?: Array<string>;
-
-  /**
-   * Body param
-   */
-  deleted?: boolean;
-
-  /**
-   * Body param
-   */
-  limit?: number;
-
-  /**
-   * Body param
-   */
-  page?: number;
-
-  /**
-   * Body param
-   */
-  sources?: Array<string>;
-}
-
-export namespace QueryExecuteQueryParams {
-  /**
-   * Dynamic query configuration: at least one _\_view_select_ field is required;
-   * filters and sorts are optional
-   */
-  export interface Query {
-    /**
-     * Logical operator for combining filters
-     */
-    combinator?: 'AND' | 'OR';
-
-    crm_id?: string;
-
-    team_id?: string;
-  }
-}
-
-export interface QueryExecuteQueryV2Params {
+export interface QueryExecuteParams {
   /**
    * Path param
    */
@@ -140,7 +45,7 @@ export interface QueryExecuteQueryV2Params {
   /**
    * Body param
    */
-  query: QueryExecuteQueryV2Params.Query;
+  query: QueryExecuteParams.Query;
 
   /**
    * Body param
@@ -163,7 +68,7 @@ export interface QueryExecuteQueryV2Params {
   sources?: Array<string>;
 }
 
-export namespace QueryExecuteQueryV2Params {
+export namespace QueryExecuteParams {
   export interface Query {
     /**
      * Property slugs to select. Use dot notation for relationships (e.g.
@@ -179,7 +84,8 @@ export namespace QueryExecuteQueryV2Params {
     crm_id?: string;
 
     /**
-     * Filters as [{ slug: { operator: value } }]
+     * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
+     * values must be option slugs
      */
     filter?: Array<{ [key: string]: { [key: string]: string | boolean | Array<string> } }>;
 
@@ -195,10 +101,5 @@ export namespace QueryExecuteQueryV2Params {
 }
 
 export declare namespace Query {
-  export {
-    type QueryExecuteQueryResponse as QueryExecuteQueryResponse,
-    type QueryExecuteQueryV2Response as QueryExecuteQueryV2Response,
-    type QueryExecuteQueryParams as QueryExecuteQueryParams,
-    type QueryExecuteQueryV2Params as QueryExecuteQueryV2Params,
-  };
+  export { type QueryExecuteResponse as QueryExecuteResponse, type QueryExecuteParams as QueryExecuteParams };
 }

@@ -17,7 +17,7 @@ export class Grant extends APIResource {
     options?: RequestOptions,
   ): APIPromise<void> {
     const { teamId = this._client.teamID, objectType } = params;
-    return this._client.get(path`/v1/prism/grant/${teamId}/${objectType}/${objectID}`, {
+    return this._client.get(path`/v2/prism/grant/${teamId}/${objectType}/${objectID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
@@ -28,7 +28,7 @@ export class Grant extends APIResource {
    */
   updateGrant(objectID: string, params: GrantUpdateGrantParams, options?: RequestOptions): APIPromise<void> {
     const { teamId = this._client.teamID, objectType, ...body } = params;
-    return this._client.put(path`/v1/prism/grant/${teamId}/${objectType}/${objectID}`, {
+    return this._client.put(path`/v2/prism/grant/${teamId}/${objectType}/${objectID}`, {
       body,
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
