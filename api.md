@@ -32,3 +32,9 @@ Types:
 Methods:
 
 - <code title="post /v2/prism/query/{teamId}/{objectType}">client.prism.query.<a href="./src/resources/prism/query.ts">execute</a>(objectType, { ...params }) -> QueryExecuteResponse</code>
+
+## Metadata
+
+Methods:
+
+- <code title="get /v2/prism/metadata/properties/{teamId}/{objectType}">client.prism.metadata.<a href="./src/resources/prism/metadata.ts">properties</a>(objectType, { ...params }) -> void</code>

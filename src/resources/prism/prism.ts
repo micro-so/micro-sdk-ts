@@ -3,6 +3,8 @@
 import { APIResource } from '../../core/resource';
 import * as GrantAPI from './grant';
 import { Grant, GrantRetrieveGrantParams, GrantUpdateGrantParams } from './grant';
+import * as MetadataAPI from './metadata';
+import { Metadata, MetadataPropertiesParams } from './metadata';
 import * as QueryAPI from './query';
 import { Query, QueryExecuteParams, QueryExecuteResponse } from './query';
 import { APIPromise } from '../../core/api-promise';
@@ -13,6 +15,7 @@ import { path } from '../../internal/utils/path';
 export class Prism extends APIResource {
   grant: GrantAPI.Grant = new GrantAPI.Grant(this._client);
   query: QueryAPI.Query = new QueryAPI.Query(this._client);
+  metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
 
   /**
    * Create object
@@ -273,6 +276,7 @@ export interface PrismRestoreObjectParams {
 
 Prism.Grant = Grant;
 Prism.Query = Query;
+Prism.Metadata = Metadata;
 
 export declare namespace Prism {
   export {
@@ -299,4 +303,6 @@ export declare namespace Prism {
     type QueryExecuteResponse as QueryExecuteResponse,
     type QueryExecuteParams as QueryExecuteParams,
   };
+
+  export { Metadata as Metadata, type MetadataPropertiesParams as MetadataPropertiesParams };
 }
