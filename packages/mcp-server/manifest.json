@@ -1,0 +1,48 @@
+{
+  "dxt_version": "0.2",
+  "name": "micro-mcp",
+  "version": "0.0.1",
+  "description": "The official MCP Server for the Micro API",
+  "author": {
+    "name": "Micro"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stainless-sdks/micro-typescript.git"
+  },
+  "homepage": "https://github.com/stainless-sdks/micro-typescript/tree/main/packages/mcp-server#readme",
+  "server": {
+    "type": "node",
+    "entry_point": "index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/index.js"],
+      "env": {
+        "MICRO_API_KEY": "${user_config.MICRO_API_KEY}",
+        "MICRO_TEAM_ID": "${user_config.MICRO_TEAM_ID}"
+      }
+    }
+  },
+  "user_config": {
+    "MICRO_API_KEY": {
+      "title": "api_key",
+      "description": "",
+      "required": true,
+      "type": "string"
+    },
+    "MICRO_TEAM_ID": {
+      "title": "team_id",
+      "description": "",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "tools": [],
+  "tools_generated": true,
+  "compatibility": {
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+  "keywords": ["api"]
+}
