@@ -5,9 +5,7 @@ import { ClientOptions } from 'micro';
 import { McpOptions } from './options';
 
 export const parseClientAuthHeaders = (req: IncomingMessage, required?: boolean): Partial<ClientOptions> => {
-  const apiKey =
-    Array.isArray(req.headers['x-api-key']) ? req.headers['x-api-key'][0] : req.headers['x-api-key'];
-  return { apiKey };
+  return {};
 };
 
 export const getStainlessApiKey = (req: IncomingMessage, mcpOptions: McpOptions): string | undefined => {

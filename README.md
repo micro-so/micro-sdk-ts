@@ -34,12 +34,11 @@ The full API of this library can be found in [api.md](api.md).
 ```js
 import Micro from 'micro';
 
-const client = new Micro({
-  teamID: 'My Team ID',
-  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
-});
+const client = new Micro();
 
-await client.prism.restoreObject('REPLACE_ME', { objectType: 'deal' });
+const contacts = await client.contacts.list({ query: { select: ['full_name', 'email'] } });
+
+console.log(contacts.data);
 ```
 
 ### Request & Response types
@@ -50,13 +49,10 @@ This library includes TypeScript definitions for all request params and response
 ```ts
 import Micro from 'micro';
 
-const client = new Micro({
-  teamID: 'My Team ID',
-  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
-});
+const client = new Micro();
 
-const params: Micro.PrismRestoreObjectParams = { objectType: 'deal' };
-await client.prism.restoreObject('REPLACE_ME', params);
+const params: Micro.ContactListParams = { query: { select: ['full_name', 'email'] } };
+const contacts: Micro.ContactListResponse = await client.contacts.list(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -69,8 +65,8 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const response = await client.prism
-  .restoreObject('REPLACE_ME', { objectType: 'deal' })
+const contacts = await client.contacts
+  .list({ query: { select: ['full_name', 'email'] } })
   .catch(async (err) => {
     if (err instanceof Micro.APIError) {
       console.log(err.status); // 400
@@ -107,12 +103,13 @@ You can use the `maxRetries` option to configure or disable this:
 ```js
 // Configure the default for all requests:
 const client = new Micro({
+  apiKey: 'My API Key',
   teamID: 'My Team ID',
   maxRetries: 0, // default is 2
 });
 
 // Or, configure per-request:
-await client.prism.restoreObject('REPLACE_ME', { objectType: 'deal' }, {
+await client.contacts.list({ query: { select: ['full_name', 'email'] } }, {
   maxRetries: 5,
 });
 ```
@@ -125,12 +122,13 @@ Requests time out after 1 minute by default. You can configure this with a `time
 ```ts
 // Configure the default for all requests:
 const client = new Micro({
+  apiKey: 'My API Key',
   teamID: 'My Team ID',
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
 // Override per-request:
-await client.prism.restoreObject('REPLACE_ME', { objectType: 'deal' }, {
+await client.contacts.list({ query: { select: ['full_name', 'email'] } }, {
   timeout: 5 * 1000,
 });
 ```
@@ -153,17 +151,17 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Micro();
 
-const response = await client.prism
-  .restoreObject('REPLACE_ME', { objectType: 'deal' })
+const response = await client.contacts
+  .list({ query: { select: ['full_name', 'email'] } })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: result, response: raw } = await client.prism
-  .restoreObject('REPLACE_ME', { objectType: 'deal' })
+const { data: contacts, response: raw } = await client.contacts
+  .list({ query: { select: ['full_name', 'email'] } })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(result);
+console.log(contacts.data);
 ```
 
 ### Logging
@@ -243,7 +241,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.prism.restoreObject({
+client.contacts.list({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',

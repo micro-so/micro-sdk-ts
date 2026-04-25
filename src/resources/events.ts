@@ -1,33 +1,31 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../core/resource';
-import { APIPromise } from '../../core/api-promise';
-import { RequestOptions } from '../../internal/request-options';
-import { path } from '../../internal/utils/path';
+import { APIResource } from '../core/resource';
+import { APIPromise } from '../core/api-promise';
+import { RequestOptions } from '../internal/request-options';
+import { path } from '../internal/utils/path';
 
-export class Query extends APIResource {
+export class Events extends APIResource {
   /**
-   * Query v2
+   * List Events
    */
-  execute(
-    objectType:
-      | 'deal'
-      | 'identity'
-      | 'ai_chat_thread'
-      | 'ai_chat_message'
-      | 'document'
-      | 'organization'
-      | 'contact'
-      | 'action',
-    params: QueryExecuteParams,
-    options?: RequestOptions,
-  ): APIPromise<QueryExecuteResponse> {
+  list(params: EventListParams, options?: RequestOptions): APIPromise<EventListResponse> {
     const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v2/prism/query/${teamId}/${objectType}`, { body, ...options });
+    return this._client.post(path`/v2/prism/query/${teamId}/event`, { body, ...options });
   }
 }
 
-export interface QueryExecuteResponse {
+export interface Event {
+  id?: string;
+
+  crm?: unknown;
+
+  default?: unknown;
+
+  extended?: unknown;
+}
+
+export interface EventListResponse {
   data?: Array<unknown>;
 
   next_cursor?: string | null;
@@ -35,7 +33,7 @@ export interface QueryExecuteResponse {
   total?: number;
 }
 
-export interface QueryExecuteParams {
+export interface EventListParams {
   /**
    * Path param
    */
@@ -44,7 +42,7 @@ export interface QueryExecuteParams {
   /**
    * Body param
    */
-  query: QueryExecuteParams.Query;
+  query: EventListParams.Query;
 
   /**
    * Body param
@@ -67,7 +65,7 @@ export interface QueryExecuteParams {
   sources?: Array<string>;
 }
 
-export namespace QueryExecuteParams {
+export namespace EventListParams {
   export interface Query {
     /**
      * Property slugs to select. Use dot notation for relationships (e.g.
@@ -98,6 +96,10 @@ export namespace QueryExecuteParams {
   }
 }
 
-export declare namespace Query {
-  export { type QueryExecuteResponse as QueryExecuteResponse, type QueryExecuteParams as QueryExecuteParams };
+export declare namespace Events {
+  export {
+    type Event as Event,
+    type EventListResponse as EventListResponse,
+    type EventListParams as EventListParams,
+  };
 }
