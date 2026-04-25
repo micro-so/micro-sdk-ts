@@ -7,6 +7,9 @@ import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Identities link multiple contacts together as the same real-world person, deduplicating people who appear in different contexts.
+ */
 export class Identities extends APIResource {
   /**
    * Create Identity

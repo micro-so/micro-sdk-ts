@@ -6,6 +6,9 @@ import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Actions are tasks and to-dos that can be assigned to contacts, organizations, or deals, with a status, due date, and priority.
+ */
 export class Actions extends APIResource {
   /**
    * Create Action

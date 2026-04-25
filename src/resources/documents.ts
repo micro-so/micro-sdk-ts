@@ -6,6 +6,9 @@ import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Documents are rich-text notes attached to contacts, organizations, or deals, used for meeting notes, research, or context.
+ */
 export class Documents extends APIResource {
   /**
    * Create Document
