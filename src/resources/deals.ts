@@ -68,7 +68,11 @@ export interface Deal {
 
   crm?: unknown;
 
-  default?: unknown;
+  /**
+   * Properties keyed by property slug. Values can be strings, numbers, booleans,
+   * arrays, or null.
+   */
+  default?: { [key: string]: unknown };
 
   extended?: unknown;
 }
@@ -132,9 +136,10 @@ export interface DealCreateParams {
   crm?: unknown;
 
   /**
-   * Body param
+   * Body param: Properties keyed by property slug. Values can be strings, numbers,
+   * booleans, arrays, or null.
    */
-  default?: unknown;
+  default?: { [key: string]: unknown };
 
   /**
    * Body param
@@ -159,9 +164,10 @@ export interface DealUpdateParams {
   crm?: unknown;
 
   /**
-   * Body param
+   * Body param: Properties keyed by property slug. Values can be strings, numbers,
+   * booleans, arrays, or null.
    */
-  default?: unknown;
+  default?: { [key: string]: unknown };
 
   /**
    * Body param
@@ -217,7 +223,8 @@ export namespace DealListParams {
     crm_id?: string;
 
     /**
-     * Filters as [{ slug: { operator: value } }]
+     * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
+     * values must be option slugs
      */
     filter?: Array<{ [key: string]: { [key: string]: string | boolean | Array<string> } }>;
 
@@ -243,7 +250,7 @@ export interface DealImportParams {
   teamId?: string;
 
   /**
-   * Body param: Array of objects to import with their property values
+   * Body param: Array of objects to import with property values keyed by slug
    */
   objects: Array<PrismAPI.PrismObjectProperties>;
 
@@ -266,14 +273,9 @@ export namespace DealImportParams {
     crm_id?: string;
 
     /**
-     * Property definition ID to deduplicate on
+     * Property slug to deduplicate on
      */
     dedupe_by?: string;
-
-    /**
-     * Type of the deduplication property
-     */
-    dedupe_type?: 'str' | 'multi_str' | 'multiref_contact';
   }
 }
 

@@ -86,7 +86,19 @@ import {
   OrganizationUpdateParams,
   Organizations,
 } from './resources/organizations';
-import { ObjectType, Prism, PrismObjectProperties } from './resources/prism/prism';
+import {
+  ObjectType,
+  Prism,
+  PrismCreateObjectParams,
+  PrismDeleteObjectParams,
+  PrismDuplicateObjectParams,
+  PrismDuplicateObjectResponse,
+  PrismImportObjectsParams,
+  PrismImportObjectsResponse,
+  PrismObjectProperties,
+  PrismPatchObjectParams,
+  PrismRestoreObjectParams,
+} from './resources/prism/prism';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -287,6 +299,10 @@ export class Micro {
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
     return;
+  }
+
+  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    return buildHeaders([{ 'x-api-key': this.apiKey }]);
   }
 
   /**
@@ -715,6 +731,7 @@ export class Micro {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
+      await this.authHeaders(options),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -821,6 +838,14 @@ export declare namespace Micro {
     Prism as Prism,
     type ObjectType as ObjectType,
     type PrismObjectProperties as PrismObjectProperties,
+    type PrismDuplicateObjectResponse as PrismDuplicateObjectResponse,
+    type PrismImportObjectsResponse as PrismImportObjectsResponse,
+    type PrismCreateObjectParams as PrismCreateObjectParams,
+    type PrismDeleteObjectParams as PrismDeleteObjectParams,
+    type PrismDuplicateObjectParams as PrismDuplicateObjectParams,
+    type PrismImportObjectsParams as PrismImportObjectsParams,
+    type PrismPatchObjectParams as PrismPatchObjectParams,
+    type PrismRestoreObjectParams as PrismRestoreObjectParams,
   };
 
   export {

@@ -34,7 +34,10 @@ The full API of this library can be found in [api.md](api.md).
 ```js
 import Micro from 'micro';
 
-const client = new Micro();
+const client = new Micro({
+  teamID: 'My Team ID',
+  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
+});
 
 const contacts = await client.contacts.list({ query: { select: ['full_name', 'email'] } });
 
@@ -49,7 +52,10 @@ This library includes TypeScript definitions for all request params and response
 ```ts
 import Micro from 'micro';
 
-const client = new Micro();
+const client = new Micro({
+  teamID: 'My Team ID',
+  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
+});
 
 const params: Micro.ContactListParams = { query: { select: ['full_name', 'email'] } };
 const contacts: Micro.ContactListResponse = await client.contacts.list(params);
@@ -103,7 +109,6 @@ You can use the `maxRetries` option to configure or disable this:
 ```js
 // Configure the default for all requests:
 const client = new Micro({
-  apiKey: 'My API Key',
   teamID: 'My Team ID',
   maxRetries: 0, // default is 2
 });
@@ -122,7 +127,6 @@ Requests time out after 1 minute by default. You can configure this with a `time
 ```ts
 // Configure the default for all requests:
 const client = new Micro({
-  apiKey: 'My API Key',
   teamID: 'My Team ID',
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });

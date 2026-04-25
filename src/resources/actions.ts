@@ -59,7 +59,11 @@ export interface Action {
 
   crm?: unknown;
 
-  default?: unknown;
+  /**
+   * Properties keyed by property slug. Values can be strings, numbers, booleans,
+   * arrays, or null.
+   */
+  default?: { [key: string]: unknown };
 
   extended?: unknown;
 }
@@ -93,9 +97,10 @@ export interface ActionCreateParams {
   crm?: unknown;
 
   /**
-   * Body param
+   * Body param: Properties keyed by property slug. Values can be strings, numbers,
+   * booleans, arrays, or null.
    */
-  default?: unknown;
+  default?: { [key: string]: unknown };
 
   /**
    * Body param
@@ -120,9 +125,10 @@ export interface ActionUpdateParams {
   crm?: unknown;
 
   /**
-   * Body param
+   * Body param: Properties keyed by property slug. Values can be strings, numbers,
+   * booleans, arrays, or null.
    */
-  default?: unknown;
+  default?: { [key: string]: unknown };
 
   /**
    * Body param
@@ -178,7 +184,8 @@ export namespace ActionListParams {
     crm_id?: string;
 
     /**
-     * Filters as [{ slug: { operator: value } }]
+     * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
+     * values must be option slugs
      */
     filter?: Array<{ [key: string]: { [key: string]: string | boolean | Array<string> } }>;
 
