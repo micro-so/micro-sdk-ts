@@ -1042,8 +1042,8 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     name: 'list',
     endpoint: '/v2/prism/query/{teamId}/identity',
     httpMethod: 'post',
-    summary: 'List Identitys',
-    description: 'List Identitys',
+    summary: 'List Identities',
+    description: 'List Identities',
     stainlessPath: '(resource) identities > (method) list',
     qualified: 'client.identities.list',
     params: [
@@ -1056,7 +1056,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: '{ data?: object[]; next_cursor?: string; total?: number; }',
     markdown:
-      "## list\n\n`client.identities.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/identity`\n\nList Identitys\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst identities = await client.identities.list({ query: { select: ['string'] } });\n\nconsole.log(identities);\n```",
+      "## list\n\n`client.identities.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/identity`\n\nList Identities\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst identities = await client.identities.list({ query: { select: ['string'] } });\n\nconsole.log(identities);\n```",
     perLanguage: {
       cli: {
         method: 'identities list',
@@ -1088,8 +1088,8 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     name: 'import',
     endpoint: '/v2/prism/{teamId}/identity/import',
     httpMethod: 'post',
-    summary: 'Import Identitys',
-    description: 'Import Identitys',
+    summary: 'Import Identities',
+    description: 'Import Identities',
     stainlessPath: '(resource) identities > (method) import',
     qualified: 'client.identities.import',
     params: [
@@ -1100,7 +1100,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     response:
       "{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }",
     markdown:
-      "## import\n\n`client.identities.import(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/identity/import`\n\nImport Identitys\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.identities.import({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## import\n\n`client.identities.import(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/identity/import`\n\nImport Identities\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.identities.import({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       cli: {
         method: 'identities import',
