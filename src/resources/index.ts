@@ -69,4 +69,16 @@ export {
   type OrganizationDeleteParams,
   type OrganizationImportParams,
 } from './organizations';
-export { Prism, type ObjectType, type PrismObjectProperties } from './prism/prism';
+export {
+  Prism,
+  type ObjectType,
+  type PrismObjectProperties,
+  type PrismDuplicateObjectResponse,
+  type PrismImportObjectsResponse,
+  type PrismCreateObjectParams,
+  type PrismDeleteObjectParams,
+  type PrismDuplicateObjectParams,
+  type PrismImportObjectsParams,
+  type PrismPatchObjectParams,
+  type PrismRestoreObjectParams,
+} from './prism/prism';

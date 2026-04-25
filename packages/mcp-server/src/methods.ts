@@ -11,10 +11,64 @@ export type SdkMethod = {
 
 export const sdkMethods: SdkMethod[] = [
   {
+    clientCallName: 'client.prism.createObject',
+    fullyQualifiedName: 'prism.createObject',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/{objectType}',
+  },
+  {
+    clientCallName: 'client.prism.deleteObject',
+    fullyQualifiedName: 'prism.deleteObject',
+    httpMethod: 'delete',
+    httpPath: '/v2/prism/{teamId}/{objectType}/{objectId}',
+  },
+  {
+    clientCallName: 'client.prism.duplicateObject',
+    fullyQualifiedName: 'prism.duplicateObject',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/{objectType}/{objectId}/duplicate',
+  },
+  {
+    clientCallName: 'client.prism.importObjects',
+    fullyQualifiedName: 'prism.importObjects',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/{objectType}/import',
+  },
+  {
+    clientCallName: 'client.prism.patchObject',
+    fullyQualifiedName: 'prism.patchObject',
+    httpMethod: 'patch',
+    httpPath: '/v2/prism/{teamId}/{objectType}/{objectId}',
+  },
+  {
+    clientCallName: 'client.prism.restoreObject',
+    fullyQualifiedName: 'prism.restoreObject',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/{objectType}/{objectId}/restore',
+  },
+  {
+    clientCallName: 'client.prism.grant.retrieveGrant',
+    fullyQualifiedName: 'prism.grant.retrieveGrant',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/grant/{teamId}/{objectType}/{objectId}',
+  },
+  {
+    clientCallName: 'client.prism.grant.updateGrant',
+    fullyQualifiedName: 'prism.grant.updateGrant',
+    httpMethod: 'put',
+    httpPath: '/v2/prism/grant/{teamId}/{objectType}/{objectId}',
+  },
+  {
     clientCallName: 'client.prism.query.execute',
     fullyQualifiedName: 'prism.query.execute',
     httpMethod: 'post',
     httpPath: '/v2/prism/query/{teamId}/{objectType}',
+  },
+  {
+    clientCallName: 'client.prism.metadata.properties',
+    fullyQualifiedName: 'prism.metadata.properties',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/metadata/properties/{teamId}/{objectType}',
   },
   {
     clientCallName: 'client.contacts.create',

@@ -51,6 +51,357 @@ type SearchResult = {
 
 const EMBEDDED_METHODS: MethodEntry[] = [
   {
+    name: 'restore_object',
+    endpoint: '/v2/prism/{teamId}/{objectType}/{objectId}/restore',
+    httpMethod: 'post',
+    summary: 'Restore object',
+    description: 'Restore object',
+    stainlessPath: '(resource) prism > (method) restore_object',
+    qualified: 'client.prism.restoreObject',
+    params: [
+      'teamId: string;',
+      "objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event';",
+      'objectId: string;',
+    ],
+    markdown:
+      "## restore_object\n\n`client.prism.restoreObject(teamId: string, objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event', objectId: string): void`\n\n**post** `/v2/prism/{teamId}/{objectType}/{objectId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event'`\n\n- `objectId: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.prism.restoreObject('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'deal' })\n```",
+    perLanguage: {
+      cli: {
+        method: 'prism restore_object',
+        example:
+          "micro prism restore-object \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --object-type deal \\\n  --object-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      go: {
+        method: 'client.Prism.RestoreObject',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.RestoreObject(\n\t\tcontext.TODO(),\n\t\tmicro.ObjectTypeDeal,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismRestoreObjectParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/$OBJECT_ID/restore \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+      python: {
+        method: 'prism.restore_object',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.restore_object(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="deal",\n)',
+      },
+      typescript: {
+        method: 'client.prism.restoreObject',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.restoreObject('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'deal' });",
+      },
+    },
+  },
+  {
+    name: 'duplicate_object',
+    endpoint: '/v2/prism/{teamId}/{objectType}/{objectId}/duplicate',
+    httpMethod: 'post',
+    summary: 'Duplicate object',
+    description: 'Duplicate object',
+    stainlessPath: '(resource) prism > (method) duplicate_object',
+    qualified: 'client.prism.duplicateObject',
+    params: [
+      'teamId: string;',
+      "objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event';",
+      'objectId: string;',
+    ],
+    response: '{ id?: string; }',
+    markdown:
+      "## duplicate_object\n\n`client.prism.duplicateObject(teamId: string, objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event', objectId: string): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/{objectType}/{objectId}/duplicate`\n\nDuplicate object\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event'`\n\n- `objectId: string`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.duplicateObject('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'deal' });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      cli: {
+        method: 'prism duplicate_object',
+        example:
+          "micro prism duplicate-object \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --object-type deal \\\n  --object-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      go: {
+        method: 'client.Prism.DuplicateObject',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.DuplicateObject(\n\t\tcontext.TODO(),\n\t\tmicro.ObjectTypeDeal,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismDuplicateObjectParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/$OBJECT_ID/duplicate \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+      python: {
+        method: 'prism.duplicate_object',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.duplicate_object(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="deal",\n)\nprint(response.id)',
+      },
+      typescript: {
+        method: 'client.prism.duplicateObject',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.duplicateObject('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'deal',\n});\n\nconsole.log(response.id);",
+      },
+    },
+  },
+  {
+    name: 'create_object',
+    endpoint: '/v2/prism/{teamId}/{objectType}',
+    httpMethod: 'post',
+    summary: 'Create object',
+    description: 'Create object',
+    stainlessPath: '(resource) prism > (method) create_object',
+    qualified: 'client.prism.createObject',
+    params: [
+      'teamId: string;',
+      "objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event';",
+      'id?: string;',
+      'crm?: object;',
+      'default?: object;',
+      'extended?: object;',
+    ],
+    markdown:
+      "## create_object\n\n`client.prism.createObject(teamId: string, objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event', id?: string, crm?: object, default?: object, extended?: object): void`\n\n**post** `/v2/prism/{teamId}/{objectType}`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event'`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.prism.createObject('deal')\n```",
+    perLanguage: {
+      cli: {
+        method: 'prism create_object',
+        example:
+          "micro prism create-object \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --object-type deal",
+      },
+      go: {
+        method: 'client.Prism.NewObject',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.NewObject(\n\t\tcontext.TODO(),\n\t\tmicro.ObjectTypeDeal,\n\t\tmicro.PrismNewObjectParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
+      },
+      python: {
+        method: 'prism.create_object',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.create_object(\n    object_type="deal",\n)',
+      },
+      typescript: {
+        method: 'client.prism.createObject',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.createObject('deal');",
+      },
+    },
+  },
+  {
+    name: 'delete_object',
+    endpoint: '/v2/prism/{teamId}/{objectType}/{objectId}',
+    httpMethod: 'delete',
+    summary: 'Delete object',
+    description: 'Delete object',
+    stainlessPath: '(resource) prism > (method) delete_object',
+    qualified: 'client.prism.deleteObject',
+    params: [
+      'teamId: string;',
+      "objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event';",
+      'objectId: string;',
+    ],
+    markdown:
+      "## delete_object\n\n`client.prism.deleteObject(teamId: string, objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event', objectId: string): void`\n\n**delete** `/v2/prism/{teamId}/{objectType}/{objectId}`\n\nDelete object\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event'`\n\n- `objectId: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.prism.deleteObject('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'deal' })\n```",
+    perLanguage: {
+      cli: {
+        method: 'prism delete_object',
+        example:
+          "micro prism delete-object \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --object-type deal \\\n  --object-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      go: {
+        method: 'client.Prism.DeleteObject',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.DeleteObject(\n\t\tcontext.TODO(),\n\t\tmicro.ObjectTypeDeal,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismDeleteObjectParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/$OBJECT_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+      python: {
+        method: 'prism.delete_object',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.delete_object(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="deal",\n)',
+      },
+      typescript: {
+        method: 'client.prism.deleteObject',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.deleteObject('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'deal' });",
+      },
+    },
+  },
+  {
+    name: 'patch_object',
+    endpoint: '/v2/prism/{teamId}/{objectType}/{objectId}',
+    httpMethod: 'patch',
+    summary: 'Patch object',
+    description: 'Patch object',
+    stainlessPath: '(resource) prism > (method) patch_object',
+    qualified: 'client.prism.patchObject',
+    params: [
+      'teamId: string;',
+      "objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event';",
+      'objectId: string;',
+      'id?: string;',
+      'crm?: object;',
+      'default?: object;',
+      'extended?: object;',
+    ],
+    markdown:
+      "## patch_object\n\n`client.prism.patchObject(teamId: string, objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event', objectId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/{objectType}/{objectId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event'`\n\n- `objectId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.prism.patchObject('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'deal' })\n```",
+    perLanguage: {
+      cli: {
+        method: 'prism patch_object',
+        example:
+          "micro prism patch-object \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --object-type deal \\\n  --object-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      go: {
+        method: 'client.Prism.PatchObject',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.PatchObject(\n\t\tcontext.TODO(),\n\t\tmicro.ObjectTypeDeal,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismPatchObjectParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/$OBJECT_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
+      },
+      python: {
+        method: 'prism.patch_object',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.patch_object(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="deal",\n)',
+      },
+      typescript: {
+        method: 'client.prism.patchObject',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.patchObject('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'deal' });",
+      },
+    },
+  },
+  {
+    name: 'import_objects',
+    endpoint: '/v2/prism/{teamId}/{objectType}/import',
+    httpMethod: 'post',
+    summary: 'Import objects',
+    description:
+      'Import multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: <100 records sync (immediate response), >=100 records async (S3/Lambda with WebSocket progress)',
+    stainlessPath: '(resource) prism > (method) import_objects',
+    qualified: 'client.prism.importObjects',
+    params: [
+      'teamId: string;',
+      "objectType: 'identity' | 'organization' | 'contact' | 'action' | 'document' | 'deal';",
+      'objects: { id?: string; crm?: object; default?: object; extended?: object; }[];',
+      'options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; };',
+    ],
+    response:
+      "{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }",
+    markdown:
+      "## import_objects\n\n`client.prism.importObjects(teamId: string, objectType: 'identity' | 'organization' | 'contact' | 'action' | 'document' | 'deal', objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/{objectType}/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: <100 records sync (immediate response), >=100 records async (S3/Lambda with WebSocket progress)\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'identity' | 'organization' | 'contact' | 'action' | 'document' | 'deal'`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.importObjects('identity', { objects: [{}] });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      cli: {
+        method: 'prism import_objects',
+        example:
+          "micro prism import-objects \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --object-type identity \\\n  --object '{}'",
+      },
+      go: {
+        method: 'client.Prism.ImportObjects',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.ImportObjects(\n\t\tcontext.TODO(),\n\t\tmicro.PrismImportObjectsParamsObjectTypeIdentity,\n\t\tmicro.PrismImportObjectsParams{\n\t\t\tObjects: micro.F([]micro.PrismObjectPropertiesParam{{}}),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Results)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/import \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "objects": [\n            {}\n          ]\n        }\'',
+      },
+      python: {
+        method: 'prism.import_objects',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.import_objects(\n    object_type="identity",\n    objects=[{}],\n)\nprint(response.results)',
+      },
+      typescript: {
+        method: 'client.prism.importObjects',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.importObjects('identity', { objects: [{}] });\n\nconsole.log(response.results);",
+      },
+    },
+  },
+  {
+    name: 'retrieve_grant',
+    endpoint: '/v2/prism/grant/{teamId}/{objectType}/{objectId}',
+    httpMethod: 'get',
+    summary: 'Get grant',
+    description: 'Get grant',
+    stainlessPath: '(resource) prism.grant > (method) retrieve_grant',
+    qualified: 'client.prism.grant.retrieveGrant',
+    params: [
+      'teamId: string;',
+      "objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event';",
+      'objectId: string;',
+    ],
+    markdown:
+      "## retrieve_grant\n\n`client.prism.grant.retrieveGrant(teamId: string, objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event', objectId: string): void`\n\n**get** `/v2/prism/grant/{teamId}/{objectType}/{objectId}`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event'`\n\n- `objectId: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.prism.grant.retrieveGrant('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'deal' })\n```",
+    perLanguage: {
+      cli: {
+        method: 'grant retrieve_grant',
+        example:
+          "micro prism:grant retrieve-grant \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --object-type deal \\\n  --object-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      go: {
+        method: 'client.Prism.Grant.GetGrant',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.Grant.GetGrant(\n\t\tcontext.TODO(),\n\t\tmicro.ObjectTypeDeal,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismGrantGetGrantParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/grant/$TEAM_ID/$OBJECT_TYPE/$OBJECT_ID \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+      python: {
+        method: 'prism.grant.retrieve_grant',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.grant.retrieve_grant(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="deal",\n)',
+      },
+      typescript: {
+        method: 'client.prism.grant.retrieveGrant',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.grant.retrieveGrant('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'deal',\n});",
+      },
+    },
+  },
+  {
+    name: 'update_grant',
+    endpoint: '/v2/prism/grant/{teamId}/{objectType}/{objectId}',
+    httpMethod: 'put',
+    summary: 'Update grant',
+    description: 'Update grant',
+    stainlessPath: '(resource) prism.grant > (method) update_grant',
+    qualified: 'client.prism.grant.updateGrant',
+    params: [
+      'teamId: string;',
+      "objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event';",
+      'objectId: string;',
+      'team_group_id?: object[];',
+      'team_id?: object;',
+      'user_id?: object[];',
+    ],
+    markdown:
+      "## update_grant\n\n`client.prism.grant.updateGrant(teamId: string, objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event', objectId: string, team_group_id?: object[], team_id?: object, user_id?: object[]): void`\n\n**put** `/v2/prism/grant/{teamId}/{objectType}/{objectId}`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event'`\n\n- `objectId: string`\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.prism.grant.updateGrant('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'deal' })\n```",
+    perLanguage: {
+      cli: {
+        method: 'grant update_grant',
+        example:
+          "micro prism:grant update-grant \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --object-type deal \\\n  --object-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      go: {
+        method: 'client.Prism.Grant.UpdateGrant',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.Grant.UpdateGrant(\n\t\tcontext.TODO(),\n\t\tmicro.ObjectTypeDeal,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismGrantUpdateGrantParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          "curl https://developers.micro.so/v2/prism/grant/$TEAM_ID/$OBJECT_TYPE/$OBJECT_ID \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
+      },
+      python: {
+        method: 'prism.grant.update_grant',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.grant.update_grant(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="deal",\n)',
+      },
+      typescript: {
+        method: 'client.prism.grant.updateGrant',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.grant.updateGrant('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'deal',\n});",
+      },
+    },
+  },
+  {
     name: 'execute',
     endpoint: '/v2/prism/query/{teamId}/{objectType}',
     httpMethod: 'post',
@@ -69,7 +420,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: '{ data?: object[]; next_cursor?: string; total?: number; }',
     markdown:
-      "## execute\n\n`client.prism.query.execute(teamId: string, objectType: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/{objectType}`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.query.execute('deal', { query: { select: ['string'] } });\n\nconsole.log(response);\n```",
+      "## execute\n\n`client.prism.query.execute(teamId: string, objectType: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/{objectType}`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.query.execute('deal', { query: { select: ['string'] } });\n\nconsole.log(response);\n```",
     perLanguage: {
       cli: {
         method: 'query execute',
@@ -83,17 +434,61 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/$OBJECT_TYPE \\\n    -H \'Content-Type: application/json\' \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
+          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/$OBJECT_TYPE \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
       },
       python: {
         method: 'prism.query.execute',
         example:
-          'from micro import Micro\n\nclient = Micro()\nresponse = client.prism.query.execute(\n    object_type="deal",\n    query={\n        "select": ["string"]\n    },\n)\nprint(response.data)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.query.execute(\n    object_type="deal",\n    query={\n        "select": ["string"]\n    },\n)\nprint(response.data)',
       },
       typescript: {
         method: 'client.prism.query.execute',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.query.execute('deal', { query: { select: ['string'] } });\n\nconsole.log(response.data);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.query.execute('deal', { query: { select: ['string'] } });\n\nconsole.log(response.data);",
+      },
+    },
+  },
+  {
+    name: 'properties',
+    endpoint: '/v2/prism/metadata/properties/{teamId}/{objectType}',
+    httpMethod: 'get',
+    summary: 'Get metadata properties by object type',
+    description: 'Get metadata properties by object type',
+    stainlessPath: '(resource) prism.metadata > (method) properties',
+    qualified: 'client.prism.metadata.properties',
+    params: [
+      'teamId: string;',
+      "objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event';",
+      'autofill?: boolean;',
+      'crmId?: string;',
+      'term?: string;',
+    ],
+    markdown:
+      "## properties\n\n`client.prism.metadata.properties(teamId: string, objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event', autofill?: boolean, crmId?: string, term?: string): void`\n\n**get** `/v2/prism/metadata/properties/{teamId}/{objectType}`\n\nGet metadata properties by object type\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event'`\n\n- `autofill?: boolean`\n\n- `crmId?: string`\n\n- `term?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.prism.metadata.properties('deal')\n```",
+    perLanguage: {
+      cli: {
+        method: 'metadata properties',
+        example:
+          "micro prism:metadata properties \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --object-type deal",
+      },
+      go: {
+        method: 'client.Prism.Metadata.Properties',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.Metadata.Properties(\n\t\tcontext.TODO(),\n\t\tmicro.ObjectTypeDeal,\n\t\tmicro.PrismMetadataPropertiesParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/metadata/properties/$TEAM_ID/$OBJECT_TYPE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+      python: {
+        method: 'prism.metadata.properties',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.metadata.properties(\n    object_type="deal",\n)',
+      },
+      typescript: {
+        method: 'client.prism.metadata.properties',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.metadata.properties('deal');",
       },
     },
   },
@@ -108,7 +503,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
     response: '{ id?: string; }',
     markdown:
-      "## create\n\n`client.contacts.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/contact`\n\nCreate Contact\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst contact = await client.contacts.create();\n\nconsole.log(contact);\n```",
+      "## create\n\n`client.contacts.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/contact`\n\nCreate Contact\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst contact = await client.contacts.create();\n\nconsole.log(contact);\n```",
     perLanguage: {
       cli: {
         method: 'contacts create',
@@ -121,17 +516,18 @@ const EMBEDDED_METHODS: MethodEntry[] = [
           'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tcontact, err := client.Contacts.New(context.TODO(), micro.ContactNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", contact.ID)\n}\n',
       },
       http: {
-        example: 'curl https://developers.micro.so/v2/prism/$TEAM_ID/contact \\\n    -X POST',
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/contact \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'contacts.create',
         example:
-          'from micro import Micro\n\nclient = Micro()\ncontact = client.contacts.create()\nprint(contact.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ncontact = client.contacts.create()\nprint(contact.id)',
       },
       typescript: {
         method: 'client.contacts.create',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst contact = await client.contacts.create();\n\nconsole.log(contact.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst contact = await client.contacts.create();\n\nconsole.log(contact.id);",
       },
     },
   },
@@ -152,7 +548,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'extended?: object;',
     ],
     markdown:
-      "## update\n\n`client.contacts.update(teamId: string, contactId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/contact/{contactId}`\n\nUpdate Contact\n\n### Parameters\n\n- `teamId: string`\n\n- `contactId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.contacts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
+      "## update\n\n`client.contacts.update(teamId: string, contactId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/contact/{contactId}`\n\nUpdate Contact\n\n### Parameters\n\n- `teamId: string`\n\n- `contactId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.contacts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
     perLanguage: {
       cli: {
         method: 'contacts update',
@@ -166,17 +562,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/$CONTACT_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -d '{}'",
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/$CONTACT_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
       },
       python: {
         method: 'contacts.update',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.contacts.update(\n    contact_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.contacts.update(\n    contact_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.contacts.update',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.contacts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.contacts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -203,17 +599,18 @@ const EMBEDDED_METHODS: MethodEntry[] = [
           'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Contacts.Delete(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ContactDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       http: {
-        example: 'curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/$CONTACT_ID \\\n    -X DELETE',
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/$CONTACT_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'contacts.delete',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.contacts.delete(\n    contact_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.contacts.delete(\n    contact_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.contacts.delete',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.contacts.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.contacts.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -235,7 +632,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: '{ data?: object[]; next_cursor?: string; total?: number; }',
     markdown:
-      "## list\n\n`client.contacts.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/contact`\n\nList Contacts\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst contacts = await client.contacts.list({ query: { select: ['string'] } });\n\nconsole.log(contacts);\n```",
+      "## list\n\n`client.contacts.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/contact`\n\nList Contacts\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst contacts = await client.contacts.list({ query: { select: ['string'] } });\n\nconsole.log(contacts);\n```",
     perLanguage: {
       cli: {
         method: 'contacts list',
@@ -249,17 +646,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/contact \\\n    -H \'Content-Type: application/json\' \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
+          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/contact \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
       },
       python: {
         method: 'contacts.list',
         example:
-          'from micro import Micro\n\nclient = Micro()\ncontacts = client.contacts.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(contacts.data)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ncontacts = client.contacts.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(contacts.data)',
       },
       typescript: {
         method: 'client.contacts.list',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst contacts = await client.contacts.list({ query: { select: ['string'] } });\n\nconsole.log(contacts.data);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst contacts = await client.contacts.list({ query: { select: ['string'] } });\n\nconsole.log(contacts.data);",
       },
     },
   },
@@ -274,12 +671,12 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'objects: { id?: string; crm?: object; default?: object; extended?: object; }[];',
-      "options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; };",
+      'options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; };',
     ],
     response:
       "{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }",
     markdown:
-      "## import\n\n`client.contacts.import(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/contact/import`\n\nImport Contacts\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with their property values\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property definition ID to deduplicate on\n  - `dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'`\n    Type of the deduplication property\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.contacts.import({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## import\n\n`client.contacts.import(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/contact/import`\n\nImport Contacts\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.contacts.import({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       cli: {
         method: 'contacts import',
@@ -293,17 +690,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/import \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"objects\": [\n            {}\n          ]\n        }'",
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/import \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "objects": [\n            {}\n          ]\n        }\'',
       },
       python: {
         method: 'contacts.import_',
         example:
-          'from micro import Micro\n\nclient = Micro()\nresponse = client.contacts.import_(\n    objects=[{}],\n)\nprint(response.results)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.contacts.import_(\n    objects=[{}],\n)\nprint(response.results)',
       },
       typescript: {
         method: 'client.contacts.import',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.contacts.import({ objects: [{}] });\n\nconsole.log(response.results);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.contacts.import({ objects: [{}] });\n\nconsole.log(response.results);",
       },
     },
   },
@@ -318,7 +715,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
     response: '{ id?: string; }',
     markdown:
-      "## create\n\n`client.organizations.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/organization`\n\nCreate Organization\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst organization = await client.organizations.create();\n\nconsole.log(organization);\n```",
+      "## create\n\n`client.organizations.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/organization`\n\nCreate Organization\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst organization = await client.organizations.create();\n\nconsole.log(organization);\n```",
     perLanguage: {
       cli: {
         method: 'organizations create',
@@ -331,17 +728,18 @@ const EMBEDDED_METHODS: MethodEntry[] = [
           'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\torganization, err := client.Organizations.New(context.TODO(), micro.OrganizationNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", organization.ID)\n}\n',
       },
       http: {
-        example: 'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization \\\n    -X POST',
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'organizations.create',
         example:
-          'from micro import Micro\n\nclient = Micro()\norganization = client.organizations.create()\nprint(organization.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\norganization = client.organizations.create()\nprint(organization.id)',
       },
       typescript: {
         method: 'client.organizations.create',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst organization = await client.organizations.create();\n\nconsole.log(organization.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst organization = await client.organizations.create();\n\nconsole.log(organization.id);",
       },
     },
   },
@@ -362,7 +760,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'extended?: object;',
     ],
     markdown:
-      "## update\n\n`client.organizations.update(teamId: string, organizationId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/organization/{organizationId}`\n\nUpdate Organization\n\n### Parameters\n\n- `teamId: string`\n\n- `organizationId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.organizations.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
+      "## update\n\n`client.organizations.update(teamId: string, organizationId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/organization/{organizationId}`\n\nUpdate Organization\n\n### Parameters\n\n- `teamId: string`\n\n- `organizationId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.organizations.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
     perLanguage: {
       cli: {
         method: 'organizations update',
@@ -376,17 +774,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/$ORGANIZATION_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -d '{}'",
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/$ORGANIZATION_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
       },
       python: {
         method: 'organizations.update',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.organizations.update(\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.organizations.update(\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.organizations.update',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.organizations.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.organizations.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -414,17 +812,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/$ORGANIZATION_ID \\\n    -X DELETE',
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/$ORGANIZATION_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'organizations.delete',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.organizations.delete(\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.organizations.delete(\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.organizations.delete',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.organizations.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.organizations.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -446,7 +844,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: '{ data?: object[]; next_cursor?: string; total?: number; }',
     markdown:
-      "## list\n\n`client.organizations.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/organization`\n\nList Organizations\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst organizations = await client.organizations.list({ query: { select: ['string'] } });\n\nconsole.log(organizations);\n```",
+      "## list\n\n`client.organizations.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/organization`\n\nList Organizations\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst organizations = await client.organizations.list({ query: { select: ['string'] } });\n\nconsole.log(organizations);\n```",
     perLanguage: {
       cli: {
         method: 'organizations list',
@@ -460,17 +858,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/organization \\\n    -H \'Content-Type: application/json\' \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
+          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/organization \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
       },
       python: {
         method: 'organizations.list',
         example:
-          'from micro import Micro\n\nclient = Micro()\norganizations = client.organizations.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(organizations.data)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\norganizations = client.organizations.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(organizations.data)',
       },
       typescript: {
         method: 'client.organizations.list',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst organizations = await client.organizations.list({ query: { select: ['string'] } });\n\nconsole.log(organizations.data);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst organizations = await client.organizations.list({ query: { select: ['string'] } });\n\nconsole.log(organizations.data);",
       },
     },
   },
@@ -485,12 +883,12 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'objects: { id?: string; crm?: object; default?: object; extended?: object; }[];',
-      "options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; };",
+      'options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; };',
     ],
     response:
       "{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }",
     markdown:
-      "## import\n\n`client.organizations.import(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/organization/import`\n\nImport Organizations\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with their property values\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property definition ID to deduplicate on\n  - `dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'`\n    Type of the deduplication property\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.organizations.import({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## import\n\n`client.organizations.import(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/organization/import`\n\nImport Organizations\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.organizations.import({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       cli: {
         method: 'organizations import',
@@ -504,17 +902,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/import \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"objects\": [\n            {}\n          ]\n        }'",
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/import \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "objects": [\n            {}\n          ]\n        }\'',
       },
       python: {
         method: 'organizations.import_',
         example:
-          'from micro import Micro\n\nclient = Micro()\nresponse = client.organizations.import_(\n    objects=[{}],\n)\nprint(response.results)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.organizations.import_(\n    objects=[{}],\n)\nprint(response.results)',
       },
       typescript: {
         method: 'client.organizations.import',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.organizations.import({ objects: [{}] });\n\nconsole.log(response.results);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.organizations.import({ objects: [{}] });\n\nconsole.log(response.results);",
       },
     },
   },
@@ -529,7 +927,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
     response: '{ id?: string; }',
     markdown:
-      "## create\n\n`client.identities.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/identity`\n\nCreate Identity\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst identity = await client.identities.create();\n\nconsole.log(identity);\n```",
+      "## create\n\n`client.identities.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/identity`\n\nCreate Identity\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst identity = await client.identities.create();\n\nconsole.log(identity);\n```",
     perLanguage: {
       cli: {
         method: 'identities create',
@@ -542,17 +940,18 @@ const EMBEDDED_METHODS: MethodEntry[] = [
           'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tidentity, err := client.Identities.New(context.TODO(), micro.IdentityNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", identity.ID)\n}\n',
       },
       http: {
-        example: 'curl https://developers.micro.so/v2/prism/$TEAM_ID/identity \\\n    -X POST',
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/identity \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'identities.create',
         example:
-          'from micro import Micro\n\nclient = Micro()\nidentity = client.identities.create()\nprint(identity.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nidentity = client.identities.create()\nprint(identity.id)',
       },
       typescript: {
         method: 'client.identities.create',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst identity = await client.identities.create();\n\nconsole.log(identity.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst identity = await client.identities.create();\n\nconsole.log(identity.id);",
       },
     },
   },
@@ -573,7 +972,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'extended?: object;',
     ],
     markdown:
-      "## update\n\n`client.identities.update(teamId: string, identityId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/identity/{identityId}`\n\nUpdate Identity\n\n### Parameters\n\n- `teamId: string`\n\n- `identityId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.identities.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
+      "## update\n\n`client.identities.update(teamId: string, identityId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/identity/{identityId}`\n\nUpdate Identity\n\n### Parameters\n\n- `teamId: string`\n\n- `identityId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.identities.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
     perLanguage: {
       cli: {
         method: 'identities update',
@@ -587,17 +986,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://developers.micro.so/v2/prism/$TEAM_ID/identity/$IDENTITY_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -d '{}'",
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/identity/$IDENTITY_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
       },
       python: {
         method: 'identities.update',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.identities.update(\n    identity_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.identities.update(\n    identity_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.identities.update',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.identities.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.identities.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -624,17 +1023,18 @@ const EMBEDDED_METHODS: MethodEntry[] = [
           'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Identities.Delete(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.IdentityDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       http: {
-        example: 'curl https://developers.micro.so/v2/prism/$TEAM_ID/identity/$IDENTITY_ID \\\n    -X DELETE',
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/identity/$IDENTITY_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'identities.delete',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.identities.delete(\n    identity_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.identities.delete(\n    identity_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.identities.delete',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.identities.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.identities.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -656,7 +1056,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: '{ data?: object[]; next_cursor?: string; total?: number; }',
     markdown:
-      "## list\n\n`client.identities.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/identity`\n\nList Identitys\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst identities = await client.identities.list({ query: { select: ['string'] } });\n\nconsole.log(identities);\n```",
+      "## list\n\n`client.identities.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/identity`\n\nList Identitys\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst identities = await client.identities.list({ query: { select: ['string'] } });\n\nconsole.log(identities);\n```",
     perLanguage: {
       cli: {
         method: 'identities list',
@@ -670,17 +1070,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/identity \\\n    -H \'Content-Type: application/json\' \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
+          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/identity \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
       },
       python: {
         method: 'identities.list',
         example:
-          'from micro import Micro\n\nclient = Micro()\nidentities = client.identities.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(identities.data)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nidentities = client.identities.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(identities.data)',
       },
       typescript: {
         method: 'client.identities.list',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst identities = await client.identities.list({ query: { select: ['string'] } });\n\nconsole.log(identities.data);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst identities = await client.identities.list({ query: { select: ['string'] } });\n\nconsole.log(identities.data);",
       },
     },
   },
@@ -695,12 +1095,12 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'objects: { id?: string; crm?: object; default?: object; extended?: object; }[];',
-      "options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; };",
+      'options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; };',
     ],
     response:
       "{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }",
     markdown:
-      "## import\n\n`client.identities.import(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/identity/import`\n\nImport Identitys\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with their property values\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property definition ID to deduplicate on\n  - `dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'`\n    Type of the deduplication property\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.identities.import({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## import\n\n`client.identities.import(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/identity/import`\n\nImport Identitys\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.identities.import({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       cli: {
         method: 'identities import',
@@ -714,17 +1114,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://developers.micro.so/v2/prism/$TEAM_ID/identity/import \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"objects\": [\n            {}\n          ]\n        }'",
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/identity/import \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "objects": [\n            {}\n          ]\n        }\'',
       },
       python: {
         method: 'identities.import_',
         example:
-          'from micro import Micro\n\nclient = Micro()\nresponse = client.identities.import_(\n    objects=[{}],\n)\nprint(response.results)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.identities.import_(\n    objects=[{}],\n)\nprint(response.results)',
       },
       typescript: {
         method: 'client.identities.import',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.identities.import({ objects: [{}] });\n\nconsole.log(response.results);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.identities.import({ objects: [{}] });\n\nconsole.log(response.results);",
       },
     },
   },
@@ -739,7 +1139,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
     response: '{ id?: string; }',
     markdown:
-      "## create\n\n`client.deals.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/deal`\n\nCreate Deal\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst deal = await client.deals.create();\n\nconsole.log(deal);\n```",
+      "## create\n\n`client.deals.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/deal`\n\nCreate Deal\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst deal = await client.deals.create();\n\nconsole.log(deal);\n```",
     perLanguage: {
       cli: {
         method: 'deals create',
@@ -752,16 +1152,18 @@ const EMBEDDED_METHODS: MethodEntry[] = [
           'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tdeal, err := client.Deals.New(context.TODO(), micro.DealNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", deal.ID)\n}\n',
       },
       http: {
-        example: 'curl https://developers.micro.so/v2/prism/$TEAM_ID/deal \\\n    -X POST',
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/deal \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'deals.create',
-        example: 'from micro import Micro\n\nclient = Micro()\ndeal = client.deals.create()\nprint(deal.id)',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ndeal = client.deals.create()\nprint(deal.id)',
       },
       typescript: {
         method: 'client.deals.create',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst deal = await client.deals.create();\n\nconsole.log(deal.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst deal = await client.deals.create();\n\nconsole.log(deal.id);",
       },
     },
   },
@@ -782,7 +1184,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'extended?: object;',
     ],
     markdown:
-      "## update\n\n`client.deals.update(teamId: string, dealId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/deal/{dealId}`\n\nUpdate Deal\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.deals.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
+      "## update\n\n`client.deals.update(teamId: string, dealId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/deal/{dealId}`\n\nUpdate Deal\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.deals.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
     perLanguage: {
       cli: {
         method: 'deals update',
@@ -796,17 +1198,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://developers.micro.so/v2/prism/$TEAM_ID/deal/$DEAL_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -d '{}'",
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/deal/$DEAL_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
       },
       python: {
         method: 'deals.update',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.deals.update(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.deals.update(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.deals.update',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.deals.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.deals.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -833,17 +1235,18 @@ const EMBEDDED_METHODS: MethodEntry[] = [
           'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Deals.Delete(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.DealDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       http: {
-        example: 'curl https://developers.micro.so/v2/prism/$TEAM_ID/deal/$DEAL_ID \\\n    -X DELETE',
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/deal/$DEAL_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'deals.delete',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.deals.delete(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.deals.delete(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.deals.delete',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.deals.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.deals.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -865,7 +1268,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: '{ data?: object[]; next_cursor?: string; total?: number; }',
     markdown:
-      "## list\n\n`client.deals.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/deal`\n\nList Deals\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst deals = await client.deals.list({ query: { select: ['string'] } });\n\nconsole.log(deals);\n```",
+      "## list\n\n`client.deals.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/deal`\n\nList Deals\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst deals = await client.deals.list({ query: { select: ['string'] } });\n\nconsole.log(deals);\n```",
     perLanguage: {
       cli: {
         method: 'deals list',
@@ -879,17 +1282,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/deal \\\n    -H \'Content-Type: application/json\' \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
+          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/deal \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
       },
       python: {
         method: 'deals.list',
         example:
-          'from micro import Micro\n\nclient = Micro()\ndeals = client.deals.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(deals.data)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ndeals = client.deals.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(deals.data)',
       },
       typescript: {
         method: 'client.deals.list',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst deals = await client.deals.list({ query: { select: ['string'] } });\n\nconsole.log(deals.data);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst deals = await client.deals.list({ query: { select: ['string'] } });\n\nconsole.log(deals.data);",
       },
     },
   },
@@ -904,12 +1307,12 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'objects: { id?: string; crm?: object; default?: object; extended?: object; }[];',
-      "options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; };",
+      'options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; };',
     ],
     response:
       "{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }",
     markdown:
-      "## import\n\n`client.deals.import(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/deal/import`\n\nImport Deals\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with their property values\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property definition ID to deduplicate on\n  - `dedupe_type?: 'str' | 'multi_str' | 'multiref_contact'`\n    Type of the deduplication property\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.deals.import({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## import\n\n`client.deals.import(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/deal/import`\n\nImport Deals\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.deals.import({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       cli: {
         method: 'deals import',
@@ -923,17 +1326,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://developers.micro.so/v2/prism/$TEAM_ID/deal/import \\\n    -H 'Content-Type: application/json' \\\n    -d '{\n          \"objects\": [\n            {}\n          ]\n        }'",
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/deal/import \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "objects": [\n            {}\n          ]\n        }\'',
       },
       python: {
         method: 'deals.import_',
         example:
-          'from micro import Micro\n\nclient = Micro()\nresponse = client.deals.import_(\n    objects=[{}],\n)\nprint(response.results)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.deals.import_(\n    objects=[{}],\n)\nprint(response.results)',
       },
       typescript: {
         method: 'client.deals.import',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.deals.import({ objects: [{}] });\n\nconsole.log(response.results);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.deals.import({ objects: [{}] });\n\nconsole.log(response.results);",
       },
     },
   },
@@ -948,7 +1351,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
     response: '{ id?: string; }',
     markdown:
-      "## create\n\n`client.actions.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/action`\n\nCreate Action\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst action = await client.actions.create();\n\nconsole.log(action);\n```",
+      "## create\n\n`client.actions.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/action`\n\nCreate Action\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst action = await client.actions.create();\n\nconsole.log(action);\n```",
     perLanguage: {
       cli: {
         method: 'actions create',
@@ -961,17 +1364,18 @@ const EMBEDDED_METHODS: MethodEntry[] = [
           'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\taction, err := client.Actions.New(context.TODO(), micro.ActionNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", action.ID)\n}\n',
       },
       http: {
-        example: 'curl https://developers.micro.so/v2/prism/$TEAM_ID/action \\\n    -X POST',
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/action \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'actions.create',
         example:
-          'from micro import Micro\n\nclient = Micro()\naction = client.actions.create()\nprint(action.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\naction = client.actions.create()\nprint(action.id)',
       },
       typescript: {
         method: 'client.actions.create',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst action = await client.actions.create();\n\nconsole.log(action.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst action = await client.actions.create();\n\nconsole.log(action.id);",
       },
     },
   },
@@ -992,7 +1396,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'extended?: object;',
     ],
     markdown:
-      "## update\n\n`client.actions.update(teamId: string, actionId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/action/{actionId}`\n\nUpdate Action\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.actions.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
+      "## update\n\n`client.actions.update(teamId: string, actionId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/action/{actionId}`\n\nUpdate Action\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.actions.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
     perLanguage: {
       cli: {
         method: 'actions update',
@@ -1006,17 +1410,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://developers.micro.so/v2/prism/$TEAM_ID/action/$ACTION_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -d '{}'",
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/action/$ACTION_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
       },
       python: {
         method: 'actions.update',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.actions.update(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.actions.update(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.actions.update',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.actions.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.actions.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -1043,17 +1447,18 @@ const EMBEDDED_METHODS: MethodEntry[] = [
           'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Actions.Delete(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ActionDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       http: {
-        example: 'curl https://developers.micro.so/v2/prism/$TEAM_ID/action/$ACTION_ID \\\n    -X DELETE',
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/action/$ACTION_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'actions.delete',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.actions.delete(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.actions.delete(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.actions.delete',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.actions.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.actions.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -1075,7 +1480,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: '{ data?: object[]; next_cursor?: string; total?: number; }',
     markdown:
-      "## list\n\n`client.actions.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/action`\n\nList Actions\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst actions = await client.actions.list({ query: { select: ['string'] } });\n\nconsole.log(actions);\n```",
+      "## list\n\n`client.actions.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/action`\n\nList Actions\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst actions = await client.actions.list({ query: { select: ['string'] } });\n\nconsole.log(actions);\n```",
     perLanguage: {
       cli: {
         method: 'actions list',
@@ -1089,17 +1494,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/action \\\n    -H \'Content-Type: application/json\' \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
+          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/action \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
       },
       python: {
         method: 'actions.list',
         example:
-          'from micro import Micro\n\nclient = Micro()\nactions = client.actions.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(actions.data)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nactions = client.actions.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(actions.data)',
       },
       typescript: {
         method: 'client.actions.list',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst actions = await client.actions.list({ query: { select: ['string'] } });\n\nconsole.log(actions.data);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst actions = await client.actions.list({ query: { select: ['string'] } });\n\nconsole.log(actions.data);",
       },
     },
   },
@@ -1121,7 +1526,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: '{ data?: object[]; next_cursor?: string; total?: number; }',
     markdown:
-      "## list\n\n`client.events.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/event`\n\nList Events\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst events = await client.events.list({ query: { select: ['string'] } });\n\nconsole.log(events);\n```",
+      "## list\n\n`client.events.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/event`\n\nList Events\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst events = await client.events.list({ query: { select: ['string'] } });\n\nconsole.log(events);\n```",
     perLanguage: {
       cli: {
         method: 'events list',
@@ -1135,17 +1540,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/event \\\n    -H \'Content-Type: application/json\' \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
+          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/event \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
       },
       python: {
         method: 'events.list',
         example:
-          'from micro import Micro\n\nclient = Micro()\nevents = client.events.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(events.data)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nevents = client.events.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(events.data)',
       },
       typescript: {
         method: 'client.events.list',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst events = await client.events.list({ query: { select: ['string'] } });\n\nconsole.log(events.data);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst events = await client.events.list({ query: { select: ['string'] } });\n\nconsole.log(events.data);",
       },
     },
   },
@@ -1160,7 +1565,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
     response: '{ id?: string; }',
     markdown:
-      "## create\n\n`client.documents.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/document`\n\nCreate Document\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst document = await client.documents.create();\n\nconsole.log(document);\n```",
+      "## create\n\n`client.documents.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/document`\n\nCreate Document\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst document = await client.documents.create();\n\nconsole.log(document);\n```",
     perLanguage: {
       cli: {
         method: 'documents create',
@@ -1173,17 +1578,18 @@ const EMBEDDED_METHODS: MethodEntry[] = [
           'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tdocument, err := client.Documents.New(context.TODO(), micro.DocumentNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", document.ID)\n}\n',
       },
       http: {
-        example: 'curl https://developers.micro.so/v2/prism/$TEAM_ID/document \\\n    -X POST',
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/document \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'documents.create',
         example:
-          'from micro import Micro\n\nclient = Micro()\ndocument = client.documents.create()\nprint(document.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ndocument = client.documents.create()\nprint(document.id)',
       },
       typescript: {
         method: 'client.documents.create',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst document = await client.documents.create();\n\nconsole.log(document.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst document = await client.documents.create();\n\nconsole.log(document.id);",
       },
     },
   },
@@ -1204,7 +1610,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'extended?: object;',
     ],
     markdown:
-      "## update\n\n`client.documents.update(teamId: string, documentId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/document/{documentId}`\n\nUpdate Document\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.documents.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
+      "## update\n\n`client.documents.update(teamId: string, documentId: string, id?: string, crm?: object, default?: object, extended?: object): void`\n\n**patch** `/v2/prism/{teamId}/document/{documentId}`\n\nUpdate Document\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.documents.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
     perLanguage: {
       cli: {
         method: 'documents update',
@@ -1218,17 +1624,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          "curl https://developers.micro.so/v2/prism/$TEAM_ID/document/$DOCUMENT_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -d '{}'",
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/document/$DOCUMENT_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
       },
       python: {
         method: 'documents.update',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.documents.update(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.documents.update(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.documents.update',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.documents.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.documents.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -1255,17 +1661,18 @@ const EMBEDDED_METHODS: MethodEntry[] = [
           'package main\n\nimport (\n\t"context"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Documents.Delete(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.DocumentDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       http: {
-        example: 'curl https://developers.micro.so/v2/prism/$TEAM_ID/document/$DOCUMENT_ID \\\n    -X DELETE',
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/document/$DOCUMENT_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
       python: {
         method: 'documents.delete',
         example:
-          'from micro import Micro\n\nclient = Micro()\nclient.documents.delete(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.documents.delete(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       typescript: {
         method: 'client.documents.delete',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nawait client.documents.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.documents.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
       },
     },
   },
@@ -1287,7 +1694,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: '{ data?: object[]; next_cursor?: string; total?: number; }',
     markdown:
-      "## list\n\n`client.documents.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/document`\n\nList Documents\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst documents = await client.documents.list({ query: { select: ['string'] } });\n\nconsole.log(documents);\n```",
+      "## list\n\n`client.documents.list(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/document`\n\nList Documents\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; next_cursor?: string; total?: number; }`\n\n  - `data?: object[]`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst documents = await client.documents.list({ query: { select: ['string'] } });\n\nconsole.log(documents);\n```",
     perLanguage: {
       cli: {
         method: 'documents list',
@@ -1301,17 +1708,17 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/document \\\n    -H \'Content-Type: application/json\' \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
+          'curl https://developers.micro.so/v2/prism/query/$TEAM_ID/document \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
       },
       python: {
         method: 'documents.list',
         example:
-          'from micro import Micro\n\nclient = Micro()\ndocuments = client.documents.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(documents.data)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ndocuments = client.documents.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(documents.data)',
       },
       typescript: {
         method: 'client.documents.list',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro();\n\nconst documents = await client.documents.list({ query: { select: ['string'] } });\n\nconsole.log(documents.data);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst documents = await client.documents.list({ query: { select: ['string'] } });\n\nconsole.log(documents.data);",
       },
     },
   },
@@ -1331,12 +1738,12 @@ const EMBEDDED_READMES: { language: string; content: string }[] = [
   {
     language: 'python',
     content:
-      '# Micro Python API library\n\n<!-- prettier-ignore -->\n[![PyPI version](https://img.shields.io/pypi/v/micro.svg?label=pypi%20(stable))](https://pypi.org/project/micro/)\n\nThe Micro Python library provides convenient access to the Micro REST API from any Python 3.9+\napplication. The library includes type definitions for all request params and response fields,\nand offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).\n\n\n\nIt is generated with [Stainless](https://www.stainless.com/).\n\n## MCP Server\n\nUse the Micro MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.\n\n[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=micro-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1pY3JvLW1jcCJdLCJlbnYiOnsiTUlDUk9fQVBJX0tFWSI6Ik15IEFQSSBLZXkiLCJNSUNST19URUFNX0lEIjoiTXkgVGVhbSBJRCJ9fQ)\n[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22micro-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22micro-mcp%22%5D%2C%22env%22%3A%7B%22MICRO_API_KEY%22%3A%22My%20API%20Key%22%2C%22MICRO_TEAM_ID%22%3A%22My%20Team%20ID%22%7D%7D)\n\n> Note: You may need to set environment variables in your MCP client.\n\n## Documentation\n\n The full API of this library can be found in [api.md](api.md).\n\n## Installation\n\n```sh\n# install from this staging repo\npip install git+ssh://git@github.com/stainless-sdks/micro-python.git\n```\n> [!NOTE]\n> Once this package is [published to PyPI](https://www.stainless.com/docs/guides/publish), this will become: `pip install micro`\n\n## Usage\n\nThe full API of this library can be found in [api.md](api.md).\n\n```python\nfrom micro import Micro\n\nclient = Micro(\n    api_key="My API Key",\n    team_id="My Team ID",\n)\n\ncontacts = client.contacts.list(\n    query={\n        "select": ["full_name", "email"]\n    },\n)\nprint(contacts.data)\n```\n\n\n\n## Async usage\n\nSimply import `AsyncMicro` instead of `Micro` and use `await` with each API call:\n\n```python\nimport asyncio\nfrom micro import AsyncMicro\n\nclient = AsyncMicro(\n    api_key="My API Key",\n    team_id="My Team ID",\n)\n\nasync def main() -> None:\n  contacts = await client.contacts.list(\n      query={\n          "select": ["full_name", "email"]\n      },\n  )\n  print(contacts.data)\n\nasyncio.run(main())\n```\n\nFunctionality between the synchronous and asynchronous clients is otherwise identical.\n\n### With aiohttp\n\nBy default, the async client uses `httpx` for HTTP requests. However, for improved concurrency performance you may also use `aiohttp` as the HTTP backend.\n\nYou can enable this by installing `aiohttp`:\n\n```sh\n# install from this staging repo\npip install \'micro[aiohttp] @ git+ssh://git@github.com/stainless-sdks/micro-python.git\'\n```\n\nThen you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:\n\n```python\nimport asyncio\nfrom micro import DefaultAioHttpClient\nfrom micro import AsyncMicro\n\nasync def main() -> None:\n  async with AsyncMicro(\n    api_key="My API Key",\n    team_id="My Team ID",\n    http_client=DefaultAioHttpClient(),\n) as client:\n    contacts = await client.contacts.list(\n        query={\n            "select": ["full_name", "email"]\n        },\n    )\n    print(contacts.data)\n\nasyncio.run(main())\n```\n\n\n\n## Using types\n\nNested request parameters are [TypedDicts](https://docs.python.org/3/library/typing.html#typing.TypedDict). Responses are [Pydantic models](https://docs.pydantic.dev) which also provide helper methods for things like:\n\n- Serializing back into JSON, `model.to_json()`\n- Converting to a dictionary, `model.to_dict()`\n\nTyped requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.\n\n\n\n## Nested params\n\nNested parameters are dictionaries, typed using `TypedDict`, for example:\n\n```python\nfrom micro import Micro\n\nclient = Micro(\n    api_key="My API Key",\n    team_id="My Team ID",\n)\n\ncontacts = client.contacts.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(contacts.query)\n```\n\n\n\n## Handling errors\n\nWhen the library is unable to connect to the API (for example, due to network connection problems or a timeout), a subclass of `micro.APIConnectionError` is raised.\n\nWhen the API returns a non-success status code (that is, 4xx or 5xx\nresponse), a subclass of `micro.APIStatusError` is raised, containing `status_code` and `response` properties.\n\nAll errors inherit from `micro.APIError`.\n\n```python\nimport micro\nfrom micro import Micro\n\nclient = Micro(\n    api_key="My API Key",\n    team_id="My Team ID",\n)\n\ntry:\n    client.contacts.list(\n        query={\n            "select": ["full_name", "email"]\n        },\n    )\nexcept micro.APIConnectionError as e:\n    print("The server could not be reached")\n    print(e.__cause__) # an underlying Exception, likely raised within httpx.\nexcept micro.RateLimitError as e:\n    print("A 429 status code was received; we should back off a bit.")\nexcept micro.APIStatusError as e:\n    print("Another non-200-range status code was received")\n    print(e.status_code)\n    print(e.response)\n```\n\nError codes are as follows:\n\n| Status Code | Error Type                 |\n| ----------- | -------------------------- |\n| 400         | `BadRequestError`          |\n| 401         | `AuthenticationError`      |\n| 403         | `PermissionDeniedError`    |\n| 404         | `NotFoundError`            |\n| 422         | `UnprocessableEntityError` |\n| 429         | `RateLimitError`           |\n| >=500       | `InternalServerError`      |\n| N/A         | `APIConnectionError`       |\n\n### Retries\n\nCertain errors are automatically retried 2 times by default, with a short exponential backoff.\nConnection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,\n429 Rate Limit, and >=500 Internal errors are all retried by default.\n\nYou can use the `max_retries` option to configure or disable retry settings:\n\n```python\nfrom micro import Micro\n\n# Configure the default for all requests:\nclient = Micro(\n    api_key="My API Key",\n    team_id="My Team ID",\n    # default is 2\n    max_retries=0,\n)\n\n# Or, configure per-request:\nclient.with_options(max_retries = 5).contacts.list(\n    query={\n        "select": ["full_name", "email"]\n    },\n)\n```\n\n### Timeouts\n\nBy default requests time out after 1 minute. You can configure this with a `timeout` option,\nwhich accepts a float or an [`httpx.Timeout`](https://www.python-httpx.org/advanced/timeouts/#fine-tuning-the-configuration) object:\n\n```python\nfrom micro import Micro\n\n# Configure the default for all requests:\nclient = Micro(\n    api_key="My API Key",\n    team_id="My Team ID",\n    # 20 seconds (default is 1 minute)\n    timeout=20.0,\n)\n\n# More granular control:\nclient = Micro(\n    api_key="My API Key",\n    team_id="My Team ID",\n    timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),\n)\n\n# Override per-request:\nclient.with_options(timeout = 5.0).contacts.list(\n    query={\n        "select": ["full_name", "email"]\n    },\n)\n```\n\nOn timeout, an `APITimeoutError` is thrown.\n\nNote that requests that time out are [retried twice by default](#retries).\n\n\n\n## Advanced\n\n### Logging\n\nWe use the standard library [`logging`](https://docs.python.org/3/library/logging.html) module.\n\nYou can enable logging by setting the environment variable `MICRO_LOG` to `info`.\n\n```shell\n$ export MICRO_LOG=info\n```\n\nOr to `debug` for more verbose logging.\n\n### How to tell whether `None` means `null` or missing\n\nIn an API response, a field may be explicitly `null`, or missing entirely; in either case, its value is `None` in this library. You can differentiate the two cases with `.model_fields_set`:\n\n```py\nif response.my_field is None:\n  if \'my_field\' not in response.model_fields_set:\n    print(\'Got json like {}, without a "my_field" key present at all.\')\n  else:\n    print(\'Got json like {"my_field": null}.\')\n```\n\n### Accessing raw response data (e.g. headers)\n\nThe "raw" Response object can be accessed by prefixing `.with_raw_response.` to any HTTP method call, e.g.,\n\n```py\nfrom micro import Micro\n\nclient = Micro(\n    api_key="My API Key",\n    team_id="My Team ID",\n)\nresponse = client.contacts.with_raw_response.list(\n    query={\n        "select": ["full_name", "email"]\n    },\n)\nprint(response.headers.get(\'X-My-Header\'))\n\ncontact = response.parse()  # get the object that `contacts.list()` would have returned\nprint(contact.data)\n```\n\nThese methods return an [`APIResponse`](https://github.com/stainless-sdks/micro-python/tree/main/src/micro/_response.py) object.\n\nThe async client returns an [`AsyncAPIResponse`](https://github.com/stainless-sdks/micro-python/tree/main/src/micro/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.\n\n#### `.with_streaming_response`\n\nThe above interface eagerly reads the full response body when you make the request, which may not always be what you want.\n\nTo stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.\n\n```python\nwith client.contacts.with_streaming_response.list(\n    query={\n        "select": ["full_name", "email"]\n    },\n) as response :\n    print(response.headers.get(\'X-My-Header\'))\n\n    for line in response.iter_lines():\n      print(line)\n```\n\nThe context manager is required so that the response will reliably be closed.\n\n### Making custom/undocumented requests\n\nThis library is typed for convenient access to the documented API.\n\nIf you need to access undocumented endpoints, params, or response properties, the library can still be used.\n\n#### Undocumented endpoints\n\nTo make requests to undocumented endpoints, you can make requests using `client.get`, `client.post`, and other\nhttp verbs. Options on the client will be respected (such as retries) when making this request.\n\n```py\nimport httpx\n\nresponse = client.post(\n    "/foo",\n    cast_to=httpx.Response,\n    body={"my_param": True},\n)\n\nprint(response.headers.get("x-foo"))\n```\n\n#### Undocumented request params\n\nIf you want to explicitly send an extra param, you can do so with the `extra_query`, `extra_body`, and `extra_headers` request\noptions.\n\n#### Undocumented response properties\n\nTo access undocumented response properties, you can access the extra fields like `response.unknown_prop`. You\ncan also get all the extra fields on the Pydantic model as a dict with\n[`response.model_extra`](https://docs.pydantic.dev/latest/api/base_model/#pydantic.BaseModel.model_extra).\n\n### Configuring the HTTP client\n\nYou can directly override the [httpx client](https://www.python-httpx.org/api/#client) to customize it for your use case, including:\n\n- Support for [proxies](https://www.python-httpx.org/advanced/proxies/)\n- Custom [transports](https://www.python-httpx.org/advanced/transports/)\n- Additional [advanced](https://www.python-httpx.org/advanced/clients/) functionality\n\n```python\nimport httpx\nfrom micro import Micro, DefaultHttpxClient\n\nclient = Micro(\n    api_key="My API Key",\n    team_id="My Team ID",\n    # Or use the `MICRO_BASE_URL` env var\n    base_url="http://my.test.server.example.com:8083",\n    http_client=DefaultHttpxClient(proxy="http://my.test.proxy.example.com", transport=httpx.HTTPTransport(local_address="0.0.0.0")),\n)\n```\n\nYou can also customize the client on a per-request basis by using `with_options()`:\n\n```python\nclient.with_options(http_client=DefaultHttpxClient(...))\n```\n\n### Managing HTTP resources\n\nBy default the library closes underlying HTTP connections whenever the client is [garbage collected](https://docs.python.org/3/reference/datamodel.html#object.__del__). You can manually close the client using the `.close()` method if desired, or with a context manager that closes when exiting.\n\n```py\nfrom micro import Micro\n\nwith Micro(\n    api_key="My API Key",\n    team_id="My Team ID",\n) as client:\n  # make requests here\n  ...\n\n# HTTP client is now closed\n```\n\n## Versioning\n\nThis package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:\n\n1. Changes that only affect static types, without breaking runtime behavior.\n2. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_\n3. Changes that we do not expect to impact the vast majority of users in practice.\n\nWe take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.\n\nWe are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/micro-python/issues) with questions, bugs, or suggestions.\n\n### Determining the installed version\n\nIf you\'ve upgraded to the latest version but aren\'t seeing any new features you were expecting then your python environment is likely still using an older version.\n\nYou can determine the version that is being used at runtime with:\n\n```py\nimport micro\nprint(micro.__version__)\n```\n\n## Requirements\n\nPython 3.9 or higher.\n\n## Contributing\n\nSee [the contributing documentation](./CONTRIBUTING.md).\n',
+      '# Micro Python API library\n\n<!-- prettier-ignore -->\n[![PyPI version](https://img.shields.io/pypi/v/micro.svg?label=pypi%20(stable))](https://pypi.org/project/micro/)\n\nThe Micro Python library provides convenient access to the Micro REST API from any Python 3.9+\napplication. The library includes type definitions for all request params and response fields,\nand offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).\n\n\n\nIt is generated with [Stainless](https://www.stainless.com/).\n\n## MCP Server\n\nUse the Micro MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.\n\n[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=micro-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1pY3JvLW1jcCJdLCJlbnYiOnsiTUlDUk9fQVBJX0tFWSI6Ik15IEFQSSBLZXkiLCJNSUNST19URUFNX0lEIjoiTXkgVGVhbSBJRCJ9fQ)\n[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22micro-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22micro-mcp%22%5D%2C%22env%22%3A%7B%22MICRO_API_KEY%22%3A%22My%20API%20Key%22%2C%22MICRO_TEAM_ID%22%3A%22My%20Team%20ID%22%7D%7D)\n\n> Note: You may need to set environment variables in your MCP client.\n\n## Documentation\n\n The full API of this library can be found in [api.md](api.md).\n\n## Installation\n\n```sh\n# install from this staging repo\npip install git+ssh://git@github.com/stainless-sdks/micro-python.git\n```\n> [!NOTE]\n> Once this package is [published to PyPI](https://www.stainless.com/docs/guides/publish), this will become: `pip install micro`\n\n## Usage\n\nThe full API of this library can be found in [api.md](api.md).\n\n```python\nimport os\nfrom micro import Micro\n\nclient = Micro(\n    team_id="My Team ID",\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\n\ncontacts = client.contacts.list(\n    query={\n        "select": ["full_name", "email"]\n    },\n)\nprint(contacts.data)\n```\n\nWhile you can provide an `api_key` keyword argument,\nwe recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)\nto add `MICRO_API_KEY="My API Key"` to your `.env` file\nso that your API Key is not stored in source control.\n\n## Async usage\n\nSimply import `AsyncMicro` instead of `Micro` and use `await` with each API call:\n\n```python\nimport os\nimport asyncio\nfrom micro import AsyncMicro\n\nclient = AsyncMicro(\n    team_id="My Team ID",\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\n\nasync def main() -> None:\n  contacts = await client.contacts.list(\n      query={\n          "select": ["full_name", "email"]\n      },\n  )\n  print(contacts.data)\n\nasyncio.run(main())\n```\n\nFunctionality between the synchronous and asynchronous clients is otherwise identical.\n\n### With aiohttp\n\nBy default, the async client uses `httpx` for HTTP requests. However, for improved concurrency performance you may also use `aiohttp` as the HTTP backend.\n\nYou can enable this by installing `aiohttp`:\n\n```sh\n# install from this staging repo\npip install \'micro[aiohttp] @ git+ssh://git@github.com/stainless-sdks/micro-python.git\'\n```\n\nThen you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:\n\n```python\nimport os\nimport asyncio\nfrom micro import DefaultAioHttpClient\nfrom micro import AsyncMicro\n\nasync def main() -> None:\n  async with AsyncMicro(\n    team_id="My Team ID",\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n    http_client=DefaultAioHttpClient(),\n) as client:\n    contacts = await client.contacts.list(\n        query={\n            "select": ["full_name", "email"]\n        },\n    )\n    print(contacts.data)\n\nasyncio.run(main())\n```\n\n\n\n## Using types\n\nNested request parameters are [TypedDicts](https://docs.python.org/3/library/typing.html#typing.TypedDict). Responses are [Pydantic models](https://docs.pydantic.dev) which also provide helper methods for things like:\n\n- Serializing back into JSON, `model.to_json()`\n- Converting to a dictionary, `model.to_dict()`\n\nTyped requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.\n\n\n\n## Nested params\n\nNested parameters are dictionaries, typed using `TypedDict`, for example:\n\n```python\nfrom micro import Micro\n\nclient = Micro(\n    team_id="My Team ID",\n)\n\ncontacts = client.contacts.list(\n    query={\n        "select": ["string"]\n    },\n)\nprint(contacts.query)\n```\n\n\n\n## Handling errors\n\nWhen the library is unable to connect to the API (for example, due to network connection problems or a timeout), a subclass of `micro.APIConnectionError` is raised.\n\nWhen the API returns a non-success status code (that is, 4xx or 5xx\nresponse), a subclass of `micro.APIStatusError` is raised, containing `status_code` and `response` properties.\n\nAll errors inherit from `micro.APIError`.\n\n```python\nimport micro\nfrom micro import Micro\n\nclient = Micro(\n    team_id="My Team ID",\n)\n\ntry:\n    client.contacts.list(\n        query={\n            "select": ["full_name", "email"]\n        },\n    )\nexcept micro.APIConnectionError as e:\n    print("The server could not be reached")\n    print(e.__cause__) # an underlying Exception, likely raised within httpx.\nexcept micro.RateLimitError as e:\n    print("A 429 status code was received; we should back off a bit.")\nexcept micro.APIStatusError as e:\n    print("Another non-200-range status code was received")\n    print(e.status_code)\n    print(e.response)\n```\n\nError codes are as follows:\n\n| Status Code | Error Type                 |\n| ----------- | -------------------------- |\n| 400         | `BadRequestError`          |\n| 401         | `AuthenticationError`      |\n| 403         | `PermissionDeniedError`    |\n| 404         | `NotFoundError`            |\n| 422         | `UnprocessableEntityError` |\n| 429         | `RateLimitError`           |\n| >=500       | `InternalServerError`      |\n| N/A         | `APIConnectionError`       |\n\n### Retries\n\nCertain errors are automatically retried 2 times by default, with a short exponential backoff.\nConnection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,\n429 Rate Limit, and >=500 Internal errors are all retried by default.\n\nYou can use the `max_retries` option to configure or disable retry settings:\n\n```python\nfrom micro import Micro\n\n# Configure the default for all requests:\nclient = Micro(\n    team_id="My Team ID",\n    # default is 2\n    max_retries=0,\n)\n\n# Or, configure per-request:\nclient.with_options(max_retries = 5).contacts.list(\n    query={\n        "select": ["full_name", "email"]\n    },\n)\n```\n\n### Timeouts\n\nBy default requests time out after 1 minute. You can configure this with a `timeout` option,\nwhich accepts a float or an [`httpx.Timeout`](https://www.python-httpx.org/advanced/timeouts/#fine-tuning-the-configuration) object:\n\n```python\nfrom micro import Micro\n\n# Configure the default for all requests:\nclient = Micro(\n    team_id="My Team ID",\n    # 20 seconds (default is 1 minute)\n    timeout=20.0,\n)\n\n# More granular control:\nclient = Micro(\n    team_id="My Team ID",\n    timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),\n)\n\n# Override per-request:\nclient.with_options(timeout = 5.0).contacts.list(\n    query={\n        "select": ["full_name", "email"]\n    },\n)\n```\n\nOn timeout, an `APITimeoutError` is thrown.\n\nNote that requests that time out are [retried twice by default](#retries).\n\n\n\n## Advanced\n\n### Logging\n\nWe use the standard library [`logging`](https://docs.python.org/3/library/logging.html) module.\n\nYou can enable logging by setting the environment variable `MICRO_LOG` to `info`.\n\n```shell\n$ export MICRO_LOG=info\n```\n\nOr to `debug` for more verbose logging.\n\n### How to tell whether `None` means `null` or missing\n\nIn an API response, a field may be explicitly `null`, or missing entirely; in either case, its value is `None` in this library. You can differentiate the two cases with `.model_fields_set`:\n\n```py\nif response.my_field is None:\n  if \'my_field\' not in response.model_fields_set:\n    print(\'Got json like {}, without a "my_field" key present at all.\')\n  else:\n    print(\'Got json like {"my_field": null}.\')\n```\n\n### Accessing raw response data (e.g. headers)\n\nThe "raw" Response object can be accessed by prefixing `.with_raw_response.` to any HTTP method call, e.g.,\n\n```py\nfrom micro import Micro\n\nclient = Micro(\n    team_id="My Team ID",\n)\nresponse = client.contacts.with_raw_response.list(\n    query={\n        "select": ["full_name", "email"]\n    },\n)\nprint(response.headers.get(\'X-My-Header\'))\n\ncontact = response.parse()  # get the object that `contacts.list()` would have returned\nprint(contact.data)\n```\n\nThese methods return an [`APIResponse`](https://github.com/stainless-sdks/micro-python/tree/main/src/micro/_response.py) object.\n\nThe async client returns an [`AsyncAPIResponse`](https://github.com/stainless-sdks/micro-python/tree/main/src/micro/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.\n\n#### `.with_streaming_response`\n\nThe above interface eagerly reads the full response body when you make the request, which may not always be what you want.\n\nTo stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.\n\n```python\nwith client.contacts.with_streaming_response.list(\n    query={\n        "select": ["full_name", "email"]\n    },\n) as response :\n    print(response.headers.get(\'X-My-Header\'))\n\n    for line in response.iter_lines():\n      print(line)\n```\n\nThe context manager is required so that the response will reliably be closed.\n\n### Making custom/undocumented requests\n\nThis library is typed for convenient access to the documented API.\n\nIf you need to access undocumented endpoints, params, or response properties, the library can still be used.\n\n#### Undocumented endpoints\n\nTo make requests to undocumented endpoints, you can make requests using `client.get`, `client.post`, and other\nhttp verbs. Options on the client will be respected (such as retries) when making this request.\n\n```py\nimport httpx\n\nresponse = client.post(\n    "/foo",\n    cast_to=httpx.Response,\n    body={"my_param": True},\n)\n\nprint(response.headers.get("x-foo"))\n```\n\n#### Undocumented request params\n\nIf you want to explicitly send an extra param, you can do so with the `extra_query`, `extra_body`, and `extra_headers` request\noptions.\n\n#### Undocumented response properties\n\nTo access undocumented response properties, you can access the extra fields like `response.unknown_prop`. You\ncan also get all the extra fields on the Pydantic model as a dict with\n[`response.model_extra`](https://docs.pydantic.dev/latest/api/base_model/#pydantic.BaseModel.model_extra).\n\n### Configuring the HTTP client\n\nYou can directly override the [httpx client](https://www.python-httpx.org/api/#client) to customize it for your use case, including:\n\n- Support for [proxies](https://www.python-httpx.org/advanced/proxies/)\n- Custom [transports](https://www.python-httpx.org/advanced/transports/)\n- Additional [advanced](https://www.python-httpx.org/advanced/clients/) functionality\n\n```python\nimport httpx\nfrom micro import Micro, DefaultHttpxClient\n\nclient = Micro(\n    team_id="My Team ID",\n    # Or use the `MICRO_BASE_URL` env var\n    base_url="http://my.test.server.example.com:8083",\n    http_client=DefaultHttpxClient(proxy="http://my.test.proxy.example.com", transport=httpx.HTTPTransport(local_address="0.0.0.0")),\n)\n```\n\nYou can also customize the client on a per-request basis by using `with_options()`:\n\n```python\nclient.with_options(http_client=DefaultHttpxClient(...))\n```\n\n### Managing HTTP resources\n\nBy default the library closes underlying HTTP connections whenever the client is [garbage collected](https://docs.python.org/3/reference/datamodel.html#object.__del__). You can manually close the client using the `.close()` method if desired, or with a context manager that closes when exiting.\n\n```py\nfrom micro import Micro\n\nwith Micro(\n    team_id="My Team ID",\n) as client:\n  # make requests here\n  ...\n\n# HTTP client is now closed\n```\n\n## Versioning\n\nThis package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:\n\n1. Changes that only affect static types, without breaking runtime behavior.\n2. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_\n3. Changes that we do not expect to impact the vast majority of users in practice.\n\nWe take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.\n\nWe are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/micro-python/issues) with questions, bugs, or suggestions.\n\n### Determining the installed version\n\nIf you\'ve upgraded to the latest version but aren\'t seeing any new features you were expecting then your python environment is likely still using an older version.\n\nYou can determine the version that is being used at runtime with:\n\n```py\nimport micro\nprint(micro.__version__)\n```\n\n## Requirements\n\nPython 3.9 or higher.\n\n## Contributing\n\nSee [the contributing documentation](./CONTRIBUTING.md).\n',
   },
   {
     language: 'typescript',
     content:
-      "# Micro TypeScript API Library\n\n[![NPM version](https://img.shields.io/npm/v/micro.svg?label=npm%20(stable))](https://npmjs.org/package/micro) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/micro)\n\nThis library provides convenient access to the Micro REST API from server-side TypeScript or JavaScript.\n\n\n\nThe full API of this library can be found in [api.md](api.md).\n\nIt is generated with [Stainless](https://www.stainless.com/).\n\n## MCP Server\n\nUse the Micro MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.\n\n[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=micro-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1pY3JvLW1jcCJdLCJlbnYiOnsiTUlDUk9fQVBJX0tFWSI6Ik15IEFQSSBLZXkiLCJNSUNST19URUFNX0lEIjoiTXkgVGVhbSBJRCJ9fQ)\n[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22micro-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22micro-mcp%22%5D%2C%22env%22%3A%7B%22MICRO_API_KEY%22%3A%22My%20API%20Key%22%2C%22MICRO_TEAM_ID%22%3A%22My%20Team%20ID%22%7D%7D)\n\n> Note: You may need to set environment variables in your MCP client.\n\n## Installation\n\n```sh\nnpm install git+ssh://git@github.com:stainless-sdks/micro-typescript.git\n```\n> [!NOTE]\n> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install micro`\n\n\n\n## Usage\n\nThe full API of this library can be found in [api.md](api.md).\n\n<!-- prettier-ignore -->\n```js\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst contacts = await client.contacts.list({ query: { select: ['full_name', 'email'] } });\n\nconsole.log(contacts.data);\n```\n\n\n\n### Request & Response types\n\nThis library includes TypeScript definitions for all request params and response fields. You may import and use them like so:\n\n<!-- prettier-ignore -->\n```ts\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst params: Micro.ContactListParams = { query: { select: ['full_name', 'email'] } };\nconst contacts: Micro.ContactListResponse = await client.contacts.list(params);\n```\n\nDocumentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.\n\n\n\n\n\n## Handling errors\n\nWhen the library is unable to connect to the API,\nor if the API returns a non-success status code (i.e., 4xx or 5xx response),\na subclass of `APIError` will be thrown:\n\n<!-- prettier-ignore -->\n```ts\nconst contacts = await client.contacts\n  .list({ query: { select: ['full_name', 'email'] } })\n  .catch(async (err) => {\n    if (err instanceof Micro.APIError) {\n      console.log(err.status); // 400\n      console.log(err.name); // BadRequestError\n      console.log(err.headers); // {server: 'nginx', ...}\n    } else {\n      throw err;\n    }\n  });\n```\n\nError codes are as follows:\n\n| Status Code | Error Type                 |\n| ----------- | -------------------------- |\n| 400         | `BadRequestError`          |\n| 401         | `AuthenticationError`      |\n| 403         | `PermissionDeniedError`    |\n| 404         | `NotFoundError`            |\n| 422         | `UnprocessableEntityError` |\n| 429         | `RateLimitError`           |\n| >=500       | `InternalServerError`      |\n| N/A         | `APIConnectionError`       |\n\n### Retries\n\nCertain errors will be automatically retried 2 times by default, with a short exponential backoff.\nConnection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,\n429 Rate Limit, and >=500 Internal errors will all be retried by default.\n\nYou can use the `maxRetries` option to configure or disable this:\n\n<!-- prettier-ignore -->\n```js\n// Configure the default for all requests:\nconst client = new Micro({\n  apiKey: 'My API Key',\n  teamID: 'My Team ID',\n  maxRetries: 0, // default is 2\n});\n\n// Or, configure per-request:\nawait client.contacts.list({ query: { select: ['full_name', 'email'] } }, {\n  maxRetries: 5,\n});\n```\n\n### Timeouts\n\nRequests time out after 1 minute by default. You can configure this with a `timeout` option:\n\n<!-- prettier-ignore -->\n```ts\n// Configure the default for all requests:\nconst client = new Micro({\n  apiKey: 'My API Key',\n  teamID: 'My Team ID',\n  timeout: 20 * 1000, // 20 seconds (default is 1 minute)\n});\n\n// Override per-request:\nawait client.contacts.list({ query: { select: ['full_name', 'email'] } }, {\n  timeout: 5 * 1000,\n});\n```\n\nOn timeout, an `APIConnectionTimeoutError` is thrown.\n\nNote that requests which time out will be [retried twice by default](#retries).\n\n\n\n\n\n## Advanced Usage\n\n### Accessing raw Response data (e.g., headers)\n\nThe \"raw\" `Response` returned by `fetch()` can be accessed through the `.asResponse()` method on the `APIPromise` type that all methods return.\nThis method returns as soon as the headers for a successful response are received and does not consume the response body, so you are free to write custom parsing or streaming logic.\n\nYou can also use the `.withResponse()` method to get the raw `Response` along with the parsed data.\nUnlike `.asResponse()` this method consumes the body, returning once it is parsed.\n\n<!-- prettier-ignore -->\n```ts\nconst client = new Micro();\n\nconst response = await client.contacts\n  .list({ query: { select: ['full_name', 'email'] } })\n  .asResponse();\nconsole.log(response.headers.get('X-My-Header'));\nconsole.log(response.statusText); // access the underlying Response object\n\nconst { data: contacts, response: raw } = await client.contacts\n  .list({ query: { select: ['full_name', 'email'] } })\n  .withResponse();\nconsole.log(raw.headers.get('X-My-Header'));\nconsole.log(contacts.data);\n```\n\n### Logging\n\n> [!IMPORTANT]\n> All log messages are intended for debugging only. The format and content of log messages\n> may change between releases.\n\n#### Log levels\n\nThe log level can be configured in two ways:\n\n1. Via the `MICRO_LOG` environment variable\n2. Using the `logLevel` client option (overrides the environment variable if set)\n\n```ts\nimport Micro from 'micro';\n\nconst client = new Micro({\n  logLevel: 'debug', // Show all log messages\n});\n```\n\nAvailable log levels, from most to least verbose:\n\n- `'debug'` - Show debug messages, info, warnings, and errors\n- `'info'` - Show info messages, warnings, and errors\n- `'warn'` - Show warnings and errors (default)\n- `'error'` - Show only errors\n- `'off'` - Disable all logging\n\nAt the `'debug'` level, all HTTP requests and responses are logged, including headers and bodies.\nSome authentication-related headers are redacted, but sensitive data in request and response bodies\nmay still be visible.\n\n#### Custom logger\n\nBy default, this library logs to `globalThis.console`. You can also provide a custom logger.\nMost logging libraries are supported, including [pino](https://www.npmjs.com/package/pino), [winston](https://www.npmjs.com/package/winston), [bunyan](https://www.npmjs.com/package/bunyan), [consola](https://www.npmjs.com/package/consola), [signale](https://www.npmjs.com/package/signale), and [@std/log](https://jsr.io/@std/log). If your logger doesn't work, please open an issue.\n\nWhen providing a custom logger, the `logLevel` option still controls which messages are emitted, messages\nbelow the configured level will not be sent to your logger.\n\n```ts\nimport Micro from 'micro';\nimport pino from 'pino';\n\nconst logger = pino();\n\nconst client = new Micro({\n  logger: logger.child({ name: 'Micro' }),\n  logLevel: 'debug', // Send all messages to pino, allowing it to filter\n});\n```\n\n### Making custom/undocumented requests\n\nThis library is typed for convenient access to the documented API. If you need to access undocumented\nendpoints, params, or response properties, the library can still be used.\n\n#### Undocumented endpoints\n\nTo make requests to undocumented endpoints, you can use `client.get`, `client.post`, and other HTTP verbs.\nOptions on the client, such as retries, will be respected when making these requests.\n\n```ts\nawait client.post('/some/path', {\n  body: { some_prop: 'foo' },\n  query: { some_query_arg: 'bar' },\n});\n```\n\n#### Undocumented request params\n\nTo make requests using undocumented parameters, you may use `// @ts-expect-error` on the undocumented\nparameter. This library doesn't validate at runtime that the request matches the type, so any extra values you\nsend will be sent as-is.\n\n```ts\nclient.contacts.list({\n  // ...\n  // @ts-expect-error baz is not yet public\n  baz: 'undocumented option',\n});\n```\n\nFor requests with the `GET` verb, any extra params will be in the query, all other requests will send the\nextra param in the body.\n\nIf you want to explicitly send an extra argument, you can do so with the `query`, `body`, and `headers` request\noptions.\n\n#### Undocumented response properties\n\nTo access undocumented response properties, you may access the response object with `// @ts-expect-error` on\nthe response object, or cast the response object to the requisite type. Like the request params, we do not\nvalidate or strip extra properties from the response from the API.\n\n### Customizing the fetch client\n\nBy default, this library expects a global `fetch` function is defined.\n\nIf you want to use a different `fetch` function, you can either polyfill the global:\n\n```ts\nimport fetch from 'my-fetch';\n\nglobalThis.fetch = fetch;\n```\n\nOr pass it to the client:\n\n```ts\nimport Micro from 'micro';\nimport fetch from 'my-fetch';\n\nconst client = new Micro({ fetch });\n```\n\n### Fetch options\n\nIf you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)\n\n```ts\nimport Micro from 'micro';\n\nconst client = new Micro({\n  fetchOptions: {\n    // `RequestInit` options\n  },\n});\n```\n\n#### Configuring proxies\n\nTo modify proxy behavior, you can provide custom `fetchOptions` that add runtime-specific proxy\noptions to requests:\n\n<img src=\"https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg\" align=\"top\" width=\"18\" height=\"21\"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>\n\n```ts\nimport Micro from 'micro';\nimport * as undici from 'undici';\n\nconst proxyAgent = new undici.ProxyAgent('http://localhost:8888');\nconst client = new Micro({\n  fetchOptions: {\n    dispatcher: proxyAgent,\n  },\n});\n```\n\n<img src=\"https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg\" align=\"top\" width=\"18\" height=\"21\"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>\n\n```ts\nimport Micro from 'micro';\n\nconst client = new Micro({\n  fetchOptions: {\n    proxy: 'http://localhost:8888',\n  },\n});\n```\n\n<img src=\"https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg\" align=\"top\" width=\"18\" height=\"21\"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>\n\n```ts\nimport Micro from 'npm:micro';\n\nconst httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });\nconst client = new Micro({\n  fetchOptions: {\n    client: httpClient,\n  },\n});\n```\n\n## Frequently Asked Questions\n\n## Semantic versioning\n\nThis package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:\n\n1. Changes that only affect static types, without breaking runtime behavior.\n2. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_\n3. Changes that we do not expect to impact the vast majority of users in practice.\n\nWe take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.\n\nWe are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/micro-typescript/issues) with questions, bugs, or suggestions.\n\n## Requirements\n\nTypeScript >= 4.9 is supported.\n\nThe following runtimes are supported:\n\n- Web browsers (Up-to-date Chrome, Firefox, Safari, Edge, and more)\n- Node.js 20 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.\n- Deno v1.28.0 or higher.\n- Bun 1.0 or later.\n- Cloudflare Workers.\n- Vercel Edge Runtime.\n- Jest 28 or greater with the `\"node\"` environment (`\"jsdom\"` is not supported at this time).\n- Nitro v2.6 or greater.\n\nNote that React Native is not supported at this time.\n\nIf you are interested in other runtime environments, please open or upvote an issue on GitHub.\n\n## Contributing\n\nSee [the contributing documentation](./CONTRIBUTING.md).\n",
+      "# Micro TypeScript API Library\n\n[![NPM version](https://img.shields.io/npm/v/micro.svg?label=npm%20(stable))](https://npmjs.org/package/micro) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/micro)\n\nThis library provides convenient access to the Micro REST API from server-side TypeScript or JavaScript.\n\n\n\nThe full API of this library can be found in [api.md](api.md).\n\nIt is generated with [Stainless](https://www.stainless.com/).\n\n## MCP Server\n\nUse the Micro MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.\n\n[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=micro-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1pY3JvLW1jcCJdLCJlbnYiOnsiTUlDUk9fQVBJX0tFWSI6Ik15IEFQSSBLZXkiLCJNSUNST19URUFNX0lEIjoiTXkgVGVhbSBJRCJ9fQ)\n[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22micro-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22micro-mcp%22%5D%2C%22env%22%3A%7B%22MICRO_API_KEY%22%3A%22My%20API%20Key%22%2C%22MICRO_TEAM_ID%22%3A%22My%20Team%20ID%22%7D%7D)\n\n> Note: You may need to set environment variables in your MCP client.\n\n## Installation\n\n```sh\nnpm install git+ssh://git@github.com:stainless-sdks/micro-typescript.git\n```\n> [!NOTE]\n> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install micro`\n\n\n\n## Usage\n\nThe full API of this library can be found in [api.md](api.md).\n\n<!-- prettier-ignore -->\n```js\nimport Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst contacts = await client.contacts.list({ query: { select: ['full_name', 'email'] } });\n\nconsole.log(contacts.data);\n```\n\n\n\n### Request & Response types\n\nThis library includes TypeScript definitions for all request params and response fields. You may import and use them like so:\n\n<!-- prettier-ignore -->\n```ts\nimport Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst params: Micro.ContactListParams = { query: { select: ['full_name', 'email'] } };\nconst contacts: Micro.ContactListResponse = await client.contacts.list(params);\n```\n\nDocumentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.\n\n\n\n\n\n## Handling errors\n\nWhen the library is unable to connect to the API,\nor if the API returns a non-success status code (i.e., 4xx or 5xx response),\na subclass of `APIError` will be thrown:\n\n<!-- prettier-ignore -->\n```ts\nconst contacts = await client.contacts\n  .list({ query: { select: ['full_name', 'email'] } })\n  .catch(async (err) => {\n    if (err instanceof Micro.APIError) {\n      console.log(err.status); // 400\n      console.log(err.name); // BadRequestError\n      console.log(err.headers); // {server: 'nginx', ...}\n    } else {\n      throw err;\n    }\n  });\n```\n\nError codes are as follows:\n\n| Status Code | Error Type                 |\n| ----------- | -------------------------- |\n| 400         | `BadRequestError`          |\n| 401         | `AuthenticationError`      |\n| 403         | `PermissionDeniedError`    |\n| 404         | `NotFoundError`            |\n| 422         | `UnprocessableEntityError` |\n| 429         | `RateLimitError`           |\n| >=500       | `InternalServerError`      |\n| N/A         | `APIConnectionError`       |\n\n### Retries\n\nCertain errors will be automatically retried 2 times by default, with a short exponential backoff.\nConnection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,\n429 Rate Limit, and >=500 Internal errors will all be retried by default.\n\nYou can use the `maxRetries` option to configure or disable this:\n\n<!-- prettier-ignore -->\n```js\n// Configure the default for all requests:\nconst client = new Micro({\n  teamID: 'My Team ID',\n  maxRetries: 0, // default is 2\n});\n\n// Or, configure per-request:\nawait client.contacts.list({ query: { select: ['full_name', 'email'] } }, {\n  maxRetries: 5,\n});\n```\n\n### Timeouts\n\nRequests time out after 1 minute by default. You can configure this with a `timeout` option:\n\n<!-- prettier-ignore -->\n```ts\n// Configure the default for all requests:\nconst client = new Micro({\n  teamID: 'My Team ID',\n  timeout: 20 * 1000, // 20 seconds (default is 1 minute)\n});\n\n// Override per-request:\nawait client.contacts.list({ query: { select: ['full_name', 'email'] } }, {\n  timeout: 5 * 1000,\n});\n```\n\nOn timeout, an `APIConnectionTimeoutError` is thrown.\n\nNote that requests which time out will be [retried twice by default](#retries).\n\n\n\n\n\n## Advanced Usage\n\n### Accessing raw Response data (e.g., headers)\n\nThe \"raw\" `Response` returned by `fetch()` can be accessed through the `.asResponse()` method on the `APIPromise` type that all methods return.\nThis method returns as soon as the headers for a successful response are received and does not consume the response body, so you are free to write custom parsing or streaming logic.\n\nYou can also use the `.withResponse()` method to get the raw `Response` along with the parsed data.\nUnlike `.asResponse()` this method consumes the body, returning once it is parsed.\n\n<!-- prettier-ignore -->\n```ts\nconst client = new Micro();\n\nconst response = await client.contacts\n  .list({ query: { select: ['full_name', 'email'] } })\n  .asResponse();\nconsole.log(response.headers.get('X-My-Header'));\nconsole.log(response.statusText); // access the underlying Response object\n\nconst { data: contacts, response: raw } = await client.contacts\n  .list({ query: { select: ['full_name', 'email'] } })\n  .withResponse();\nconsole.log(raw.headers.get('X-My-Header'));\nconsole.log(contacts.data);\n```\n\n### Logging\n\n> [!IMPORTANT]\n> All log messages are intended for debugging only. The format and content of log messages\n> may change between releases.\n\n#### Log levels\n\nThe log level can be configured in two ways:\n\n1. Via the `MICRO_LOG` environment variable\n2. Using the `logLevel` client option (overrides the environment variable if set)\n\n```ts\nimport Micro from 'micro';\n\nconst client = new Micro({\n  logLevel: 'debug', // Show all log messages\n});\n```\n\nAvailable log levels, from most to least verbose:\n\n- `'debug'` - Show debug messages, info, warnings, and errors\n- `'info'` - Show info messages, warnings, and errors\n- `'warn'` - Show warnings and errors (default)\n- `'error'` - Show only errors\n- `'off'` - Disable all logging\n\nAt the `'debug'` level, all HTTP requests and responses are logged, including headers and bodies.\nSome authentication-related headers are redacted, but sensitive data in request and response bodies\nmay still be visible.\n\n#### Custom logger\n\nBy default, this library logs to `globalThis.console`. You can also provide a custom logger.\nMost logging libraries are supported, including [pino](https://www.npmjs.com/package/pino), [winston](https://www.npmjs.com/package/winston), [bunyan](https://www.npmjs.com/package/bunyan), [consola](https://www.npmjs.com/package/consola), [signale](https://www.npmjs.com/package/signale), and [@std/log](https://jsr.io/@std/log). If your logger doesn't work, please open an issue.\n\nWhen providing a custom logger, the `logLevel` option still controls which messages are emitted, messages\nbelow the configured level will not be sent to your logger.\n\n```ts\nimport Micro from 'micro';\nimport pino from 'pino';\n\nconst logger = pino();\n\nconst client = new Micro({\n  logger: logger.child({ name: 'Micro' }),\n  logLevel: 'debug', // Send all messages to pino, allowing it to filter\n});\n```\n\n### Making custom/undocumented requests\n\nThis library is typed for convenient access to the documented API. If you need to access undocumented\nendpoints, params, or response properties, the library can still be used.\n\n#### Undocumented endpoints\n\nTo make requests to undocumented endpoints, you can use `client.get`, `client.post`, and other HTTP verbs.\nOptions on the client, such as retries, will be respected when making these requests.\n\n```ts\nawait client.post('/some/path', {\n  body: { some_prop: 'foo' },\n  query: { some_query_arg: 'bar' },\n});\n```\n\n#### Undocumented request params\n\nTo make requests using undocumented parameters, you may use `// @ts-expect-error` on the undocumented\nparameter. This library doesn't validate at runtime that the request matches the type, so any extra values you\nsend will be sent as-is.\n\n```ts\nclient.contacts.list({\n  // ...\n  // @ts-expect-error baz is not yet public\n  baz: 'undocumented option',\n});\n```\n\nFor requests with the `GET` verb, any extra params will be in the query, all other requests will send the\nextra param in the body.\n\nIf you want to explicitly send an extra argument, you can do so with the `query`, `body`, and `headers` request\noptions.\n\n#### Undocumented response properties\n\nTo access undocumented response properties, you may access the response object with `// @ts-expect-error` on\nthe response object, or cast the response object to the requisite type. Like the request params, we do not\nvalidate or strip extra properties from the response from the API.\n\n### Customizing the fetch client\n\nBy default, this library expects a global `fetch` function is defined.\n\nIf you want to use a different `fetch` function, you can either polyfill the global:\n\n```ts\nimport fetch from 'my-fetch';\n\nglobalThis.fetch = fetch;\n```\n\nOr pass it to the client:\n\n```ts\nimport Micro from 'micro';\nimport fetch from 'my-fetch';\n\nconst client = new Micro({ fetch });\n```\n\n### Fetch options\n\nIf you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)\n\n```ts\nimport Micro from 'micro';\n\nconst client = new Micro({\n  fetchOptions: {\n    // `RequestInit` options\n  },\n});\n```\n\n#### Configuring proxies\n\nTo modify proxy behavior, you can provide custom `fetchOptions` that add runtime-specific proxy\noptions to requests:\n\n<img src=\"https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg\" align=\"top\" width=\"18\" height=\"21\"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>\n\n```ts\nimport Micro from 'micro';\nimport * as undici from 'undici';\n\nconst proxyAgent = new undici.ProxyAgent('http://localhost:8888');\nconst client = new Micro({\n  fetchOptions: {\n    dispatcher: proxyAgent,\n  },\n});\n```\n\n<img src=\"https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg\" align=\"top\" width=\"18\" height=\"21\"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>\n\n```ts\nimport Micro from 'micro';\n\nconst client = new Micro({\n  fetchOptions: {\n    proxy: 'http://localhost:8888',\n  },\n});\n```\n\n<img src=\"https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg\" align=\"top\" width=\"18\" height=\"21\"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>\n\n```ts\nimport Micro from 'npm:micro';\n\nconst httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });\nconst client = new Micro({\n  fetchOptions: {\n    client: httpClient,\n  },\n});\n```\n\n## Frequently Asked Questions\n\n## Semantic versioning\n\nThis package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:\n\n1. Changes that only affect static types, without breaking runtime behavior.\n2. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_\n3. Changes that we do not expect to impact the vast majority of users in practice.\n\nWe take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.\n\nWe are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/micro-typescript/issues) with questions, bugs, or suggestions.\n\n## Requirements\n\nTypeScript >= 4.9 is supported.\n\nThe following runtimes are supported:\n\n- Web browsers (Up-to-date Chrome, Firefox, Safari, Edge, and more)\n- Node.js 20 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.\n- Deno v1.28.0 or higher.\n- Bun 1.0 or later.\n- Cloudflare Workers.\n- Vercel Edge Runtime.\n- Jest 28 or greater with the `\"node\"` environment (`\"jsdom\"` is not supported at this time).\n- Nitro v2.6 or greater.\n\nNote that React Native is not supported at this time.\n\nIf you are interested in other runtime environments, please open or upvote an issue on GitHub.\n\n## Contributing\n\nSee [the contributing documentation](./CONTRIBUTING.md).\n",
   },
 ];
 

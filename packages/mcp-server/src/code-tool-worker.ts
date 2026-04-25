@@ -108,7 +108,16 @@ function getTSDiagnostics(code: string): string[] {
 
 const fuse = new Fuse(
   [
+    'client.prism.createObject',
+    'client.prism.deleteObject',
+    'client.prism.duplicateObject',
+    'client.prism.importObjects',
+    'client.prism.patchObject',
+    'client.prism.restoreObject',
+    'client.prism.grant.retrieveGrant',
+    'client.prism.grant.updateGrant',
     'client.prism.query.execute',
+    'client.prism.metadata.properties',
     'client.contacts.create',
     'client.contacts.delete',
     'client.contacts.import',

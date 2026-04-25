@@ -18,7 +18,8 @@ export class Query extends APIResource {
       | 'document'
       | 'organization'
       | 'contact'
-      | 'action',
+      | 'action'
+      | 'event',
     params: QueryExecuteParams,
     options?: RequestOptions,
   ): APIPromise<QueryExecuteResponse> {
@@ -83,7 +84,8 @@ export namespace QueryExecuteParams {
     crm_id?: string;
 
     /**
-     * Filters as [{ slug: { operator: value } }]
+     * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
+     * values must be option slugs
      */
     filter?: Array<{ [key: string]: { [key: string]: string | boolean | Array<string> } }>;
 
