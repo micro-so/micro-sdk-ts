@@ -32,7 +32,7 @@ export class Identities extends APIResource {
   }
 
   /**
-   * List Identitys
+   * List Identities
    */
   list(params: IdentityListParams, options?: RequestOptions): APIPromise<IdentityListResponse> {
     const { teamId = this._client.teamID, ...body } = params;
@@ -55,7 +55,7 @@ export class Identities extends APIResource {
   }
 
   /**
-   * Import Identitys
+   * Import Identities
    */
   import(params: IdentityImportParams, options?: RequestOptions): APIPromise<IdentityImportResponse> {
     const { teamId = this._client.teamID, ...body } = params;
