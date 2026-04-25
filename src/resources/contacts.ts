@@ -7,6 +7,9 @@ import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Contacts represent individual people in Micro. Each contact can have a name, email, phone, title, and custom properties, and can be linked to an organization.
+ */
 export class Contacts extends APIResource {
   /**
    * Create Contact

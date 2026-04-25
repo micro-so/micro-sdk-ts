@@ -812,13 +812,37 @@ export class Micro {
 
   static toFile = Uploads.toFile;
 
+  /**
+   * The Prism query engine provides generic read/write access to any object type using a single unified API surface.
+   */
   prism: API.Prism = new API.Prism(this);
+  /**
+   * Contacts represent individual people in Micro. Each contact can have a name, email, phone, title, and custom properties, and can be linked to an organization.
+   */
   contacts: API.Contacts = new API.Contacts(this);
+  /**
+   * Organizations represent companies or teams in Micro. Contacts and deals can be associated with an organization.
+   */
   organizations: API.Organizations = new API.Organizations(this);
+  /**
+   * Identities link multiple contacts together as the same real-world person, deduplicating people who appear in different contexts.
+   */
   identities: API.Identities = new API.Identities(this);
+  /**
+   * Deals track opportunities moving through a pipeline — fundraising rounds, sales opportunities, hiring candidates, or any custom workflow.
+   */
   deals: API.Deals = new API.Deals(this);
+  /**
+   * Actions are tasks and to-dos that can be assigned to contacts, organizations, or deals, with a status, due date, and priority.
+   */
   actions: API.Actions = new API.Actions(this);
+  /**
+   * Events are calendar items — meetings, calls, and appointments — automatically captured from your connected calendar accounts.
+   */
   events: API.Events = new API.Events(this);
+  /**
+   * Documents are rich-text notes attached to contacts, organizations, or deals, used for meeting notes, research, or context.
+   */
   documents: API.Documents = new API.Documents(this);
 }
 

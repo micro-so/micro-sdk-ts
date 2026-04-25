@@ -7,6 +7,9 @@ import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Organizations represent companies or teams in Micro. Contacts and deals can be associated with an organization.
+ */
 export class Organizations extends APIResource {
   /**
    * Create Organization

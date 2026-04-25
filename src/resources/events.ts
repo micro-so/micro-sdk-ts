@@ -5,6 +5,9 @@ import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Events are calendar items — meetings, calls, and appointments — automatically captured from your connected calendar accounts.
+ */
 export class Events extends APIResource {
   /**
    * List Events

@@ -12,6 +12,9 @@ import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * The Prism query engine provides generic read/write access to any object type using a single unified API surface.
+ */
 export class Prism extends APIResource {
   grant: GrantAPI.Grant = new GrantAPI.Grant(this._client);
   query: QueryAPI.Query = new QueryAPI.Query(this._client);

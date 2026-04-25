@@ -7,6 +7,9 @@ import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Deals track opportunities moving through a pipeline — fundraising rounds, sales opportunities, hiring candidates, or any custom workflow.
+ */
 export class Deals extends APIResource {
   /**
    * Create Deal

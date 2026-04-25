@@ -5,6 +5,9 @@ import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * The Prism query engine provides generic read/write access to any object type using a single unified API surface.
+ */
 export class Query extends APIResource {
   /**
    * Query v2
