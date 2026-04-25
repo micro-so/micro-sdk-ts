@@ -72,21 +72,13 @@ and repeatably.
 
 Launching the client with `--transport=http` launches the server as a remote server using Streamable HTTP transport. The `--port` setting can choose the port it will run on, and the `--socket` setting allows it to run on a Unix socket.
 
-Authorization can be provided via the following headers:
-| Header | Equivalent client option | Security scheme |
-| ----------- | ------------------------ | --------------- |
-| `x-api-key` | `apiKey` | apiKey |
-
 A configuration JSON for this server might look like this, assuming the server is hosted at `http://localhost:3000`:
 
 ```json
 {
   "mcpServers": {
     "micro_api": {
-      "url": "http://localhost:3000",
-      "headers": {
-        "x-api-key": "My API Key"
-      }
+      "url": "http://localhost:3000"
     }
   }
 }

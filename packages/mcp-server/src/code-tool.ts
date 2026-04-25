@@ -25,7 +25,9 @@ For example:
 
 \`\`\`
 async function run(client) {
-  await client.prism.restoreObject('REPLACE_ME', { objectType: 'deal' })
+  const contacts = await client.contacts.list({ query: { select: ['full_name', 'email'] } });
+
+  console.log(contacts.data);
 }
 \`\`\`
 
