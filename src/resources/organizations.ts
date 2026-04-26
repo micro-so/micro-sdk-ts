@@ -14,58 +14,40 @@ export class Organizations extends APIResource {
   /**
    * Create Organization
    */
-  create(
-    params: OrganizationCreateParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<OrganizationCreateResponse> {
-    const { teamId = this._client.teamID, ...body } = params ?? {};
+  create(params: OrganizationCreateParams | null | undefined = {}, options?: RequestOptions): APIPromise<OrganizationCreateResponse> {
+    const { teamId = this._client.teamID, ...body } = params ?? {}
     return this._client.post(path`/v2/prism/${teamId}/organization`, { body, ...options });
   }
 
   /**
    * Update Organization
    */
-  update(
-    organizationID: string,
-    params: OrganizationUpdateParams,
-    options?: RequestOptions,
-  ): APIPromise<void> {
-    const { teamId = this._client.teamID, ...body } = params;
-    return this._client.patch(path`/v2/prism/${teamId}/organization/${organizationID}`, {
-      body,
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+  update(organizationID: string, params: OrganizationUpdateParams, options?: RequestOptions): APIPromise<void> {
+    const { teamId = this._client.teamID, ...body } = params
+    return this._client.patch(path`/v2/prism/${teamId}/organization/${organizationID}`, { body, ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
   }
 
   /**
    * List Organizations
    */
   list(params: OrganizationListParams, options?: RequestOptions): APIPromise<OrganizationListResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
+    const { teamId = this._client.teamID, ...body } = params
     return this._client.post(path`/v2/prism/query/${teamId}/organization`, { body, ...options });
   }
 
   /**
    * Delete Organization
    */
-  delete(
-    organizationID: string,
-    params: OrganizationDeleteParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<void> {
-    const { teamId = this._client.teamID } = params ?? {};
-    return this._client.delete(path`/v2/prism/${teamId}/organization/${organizationID}`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+  delete(organizationID: string, params: OrganizationDeleteParams | null | undefined = {}, options?: RequestOptions): APIPromise<void> {
+    const { teamId = this._client.teamID } = params ?? {}
+    return this._client.delete(path`/v2/prism/${teamId}/organization/${organizationID}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
   }
 
   /**
    * Import Organizations
    */
   import(params: OrganizationImportParams, options?: RequestOptions): APIPromise<OrganizationImportResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
+    const { teamId = this._client.teamID, ...body } = params
     return this._client.post(path`/v2/prism/${teamId}/organization/import`, { body, ...options });
   }
 }
@@ -296,6 +278,6 @@ export declare namespace Organizations {
     type OrganizationUpdateParams as OrganizationUpdateParams,
     type OrganizationListParams as OrganizationListParams,
     type OrganizationDeleteParams as OrganizationDeleteParams,
-    type OrganizationImportParams as OrganizationImportParams,
+    type OrganizationImportParams as OrganizationImportParams
   };
 }

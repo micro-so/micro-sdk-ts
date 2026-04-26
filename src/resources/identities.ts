@@ -14,11 +14,8 @@ export class Identities extends APIResource {
   /**
    * Create Identity
    */
-  create(
-    params: IdentityCreateParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<IdentityCreateResponse> {
-    const { teamId = this._client.teamID, ...body } = params ?? {};
+  create(params: IdentityCreateParams | null | undefined = {}, options?: RequestOptions): APIPromise<IdentityCreateResponse> {
+    const { teamId = this._client.teamID, ...body } = params ?? {}
     return this._client.post(path`/v2/prism/${teamId}/identity`, { body, ...options });
   }
 
@@ -26,42 +23,31 @@ export class Identities extends APIResource {
    * Update Identity
    */
   update(identityID: string, params: IdentityUpdateParams, options?: RequestOptions): APIPromise<void> {
-    const { teamId = this._client.teamID, ...body } = params;
-    return this._client.patch(path`/v2/prism/${teamId}/identity/${identityID}`, {
-      body,
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+    const { teamId = this._client.teamID, ...body } = params
+    return this._client.patch(path`/v2/prism/${teamId}/identity/${identityID}`, { body, ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
   }
 
   /**
    * List Identities
    */
   list(params: IdentityListParams, options?: RequestOptions): APIPromise<IdentityListResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
+    const { teamId = this._client.teamID, ...body } = params
     return this._client.post(path`/v2/prism/query/${teamId}/identity`, { body, ...options });
   }
 
   /**
    * Delete Identity
    */
-  delete(
-    identityID: string,
-    params: IdentityDeleteParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<void> {
-    const { teamId = this._client.teamID } = params ?? {};
-    return this._client.delete(path`/v2/prism/${teamId}/identity/${identityID}`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+  delete(identityID: string, params: IdentityDeleteParams | null | undefined = {}, options?: RequestOptions): APIPromise<void> {
+    const { teamId = this._client.teamID } = params ?? {}
+    return this._client.delete(path`/v2/prism/${teamId}/identity/${identityID}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
   }
 
   /**
    * Import Identities
    */
   import(params: IdentityImportParams, options?: RequestOptions): APIPromise<IdentityImportResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
+    const { teamId = this._client.teamID, ...body } = params
     return this._client.post(path`/v2/prism/${teamId}/identity/import`, { body, ...options });
   }
 }
@@ -292,6 +278,6 @@ export declare namespace Identities {
     type IdentityUpdateParams as IdentityUpdateParams,
     type IdentityListParams as IdentityListParams,
     type IdentityDeleteParams as IdentityDeleteParams,
-    type IdentityImportParams as IdentityImportParams,
+    type IdentityImportParams as IdentityImportParams
   };
 }

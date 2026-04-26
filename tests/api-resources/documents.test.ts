@@ -5,7 +5,7 @@ import Micro from 'micro';
 const client = new Micro({
   apiKey: 'My API Key',
   teamID: 'My Team ID',
-  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+  baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource documents', () => {
@@ -24,29 +24,26 @@ describe('resource documents', () => {
   // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.documents.create({
-      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      crm: {},
-      default: { foo: 'bar' },
-      extended: {},
-    });
+    teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    crm: {},
+    default: { foo: 'bar' },
+    extended: {},
+  });
   });
 
   // Mock server tests are disabled
   test.skip('create: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.documents.create(
-        {
-          teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          crm: {},
-          default: { foo: 'bar' },
-          extended: {},
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Micro.NotFoundError);
+    await expect(client.documents.create({
+    teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    crm: {},
+    default: { foo: 'bar' },
+    extended: {},
+  }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(Micro.NotFoundError);
   });
 
   // Mock server tests are disabled
@@ -64,12 +61,12 @@ describe('resource documents', () => {
   // Mock server tests are disabled
   test.skip('update: required and optional params', async () => {
     const response = await client.documents.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      crm: {},
-      default: { foo: 'bar' },
-      extended: {},
-    });
+    teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    crm: {},
+    default: { foo: 'bar' },
+    extended: {},
+  });
   });
 
   // Mock server tests are disabled
@@ -87,21 +84,21 @@ describe('resource documents', () => {
   // Mock server tests are disabled
   test.skip('list: required and optional params', async () => {
     const response = await client.documents.list({
-      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      query: {
-        select: ['string'],
-        combinator: 'AND',
-        crm_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        filter: [{ foo: { foo: 'string' } }],
-        limit: 0,
-        page: 0,
-        sort: [{ foo: 'asc' }],
-      },
-      id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      boxes: ['string'],
-      deleted: true,
-      sources: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
-    });
+    teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    query: {
+    select: ['string'],
+    combinator: 'AND',
+    crm_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    filter: [{ foo: { foo: 'string' } }],
+    limit: 0,
+    page: 0,
+    sort: [{ foo: 'asc' }],
+  },
+    id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    boxes: ['string'],
+    deleted: true,
+    sources: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+  });
   });
 
   // Mock server tests are disabled
@@ -118,20 +115,14 @@ describe('resource documents', () => {
 
   // Mock server tests are disabled
   test.skip('delete: required and optional params', async () => {
-    const response = await client.documents.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    });
+    const response = await client.documents.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' });
   });
 
   // Mock server tests are disabled
   test.skip('delete: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.documents.delete(
-        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        { teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Micro.NotFoundError);
+    await expect(client.documents.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }, { path: '/_stainless_unknown_path' }))
+      .rejects
+      .toThrow(Micro.NotFoundError);
   });
 });
