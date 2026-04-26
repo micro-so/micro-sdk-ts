@@ -14,11 +14,8 @@ export class Contacts extends APIResource {
   /**
    * Create Contact
    */
-  create(
-    params: ContactCreateParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<ContactCreateResponse> {
-    const { teamId = this._client.teamID, ...body } = params ?? {};
+  create(params: ContactCreateParams | null | undefined = {}, options?: RequestOptions): APIPromise<ContactCreateResponse> {
+    const { teamId = this._client.teamID, ...body } = params ?? {}
     return this._client.post(path`/v2/prism/${teamId}/contact`, { body, ...options });
   }
 
@@ -26,42 +23,31 @@ export class Contacts extends APIResource {
    * Update Contact
    */
   update(contactID: string, params: ContactUpdateParams, options?: RequestOptions): APIPromise<void> {
-    const { teamId = this._client.teamID, ...body } = params;
-    return this._client.patch(path`/v2/prism/${teamId}/contact/${contactID}`, {
-      body,
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+    const { teamId = this._client.teamID, ...body } = params
+    return this._client.patch(path`/v2/prism/${teamId}/contact/${contactID}`, { body, ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
   }
 
   /**
    * List Contacts
    */
   list(params: ContactListParams, options?: RequestOptions): APIPromise<ContactListResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
+    const { teamId = this._client.teamID, ...body } = params
     return this._client.post(path`/v2/prism/query/${teamId}/contact`, { body, ...options });
   }
 
   /**
    * Delete Contact
    */
-  delete(
-    contactID: string,
-    params: ContactDeleteParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<void> {
-    const { teamId = this._client.teamID } = params ?? {};
-    return this._client.delete(path`/v2/prism/${teamId}/contact/${contactID}`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+  delete(contactID: string, params: ContactDeleteParams | null | undefined = {}, options?: RequestOptions): APIPromise<void> {
+    const { teamId = this._client.teamID } = params ?? {}
+    return this._client.delete(path`/v2/prism/${teamId}/contact/${contactID}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
   }
 
   /**
    * Import Contacts
    */
   import(params: ContactImportParams, options?: RequestOptions): APIPromise<ContactImportResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
+    const { teamId = this._client.teamID, ...body } = params
     return this._client.post(path`/v2/prism/${teamId}/contact/import`, { body, ...options });
   }
 }
@@ -292,6 +278,6 @@ export declare namespace Contacts {
     type ContactUpdateParams as ContactUpdateParams,
     type ContactListParams as ContactListParams,
     type ContactDeleteParams as ContactDeleteParams,
-    type ContactImportParams as ContactImportParams,
+    type ContactImportParams as ContactImportParams
   };
 }

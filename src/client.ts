@@ -17,99 +17,19 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import {
-  Action,
-  ActionCreateParams,
-  ActionCreateResponse,
-  ActionDeleteParams,
-  ActionListParams,
-  ActionListResponse,
-  ActionUpdateParams,
-  Actions,
-} from './resources/actions';
-import {
-  Contact,
-  ContactCreateParams,
-  ContactCreateResponse,
-  ContactDeleteParams,
-  ContactImportParams,
-  ContactImportResponse,
-  ContactListParams,
-  ContactListResponse,
-  ContactUpdateParams,
-  Contacts,
-} from './resources/contacts';
-import {
-  Deal,
-  DealCreateParams,
-  DealCreateResponse,
-  DealDeleteParams,
-  DealImportParams,
-  DealImportResponse,
-  DealListParams,
-  DealListResponse,
-  DealUpdateParams,
-  Deals,
-} from './resources/deals';
-import {
-  Document,
-  DocumentCreateParams,
-  DocumentCreateResponse,
-  DocumentDeleteParams,
-  DocumentListParams,
-  DocumentListResponse,
-  DocumentUpdateParams,
-  Documents,
-} from './resources/documents';
+import { Action, ActionCreateParams, ActionCreateResponse, ActionDeleteParams, ActionListParams, ActionListResponse, ActionUpdateParams, Actions } from './resources/actions';
+import { Contact, ContactCreateParams, ContactCreateResponse, ContactDeleteParams, ContactImportParams, ContactImportResponse, ContactListParams, ContactListResponse, ContactUpdateParams, Contacts } from './resources/contacts';
+import { Deal, DealCreateParams, DealCreateResponse, DealDeleteParams, DealImportParams, DealImportResponse, DealListParams, DealListResponse, DealUpdateParams, Deals } from './resources/deals';
+import { Document, DocumentCreateParams, DocumentCreateResponse, DocumentDeleteParams, DocumentListParams, DocumentListResponse, DocumentUpdateParams, Documents } from './resources/documents';
 import { Event, EventListParams, EventListResponse, Events } from './resources/events';
-import {
-  Identities,
-  Identity,
-  IdentityCreateParams,
-  IdentityCreateResponse,
-  IdentityDeleteParams,
-  IdentityImportParams,
-  IdentityImportResponse,
-  IdentityListParams,
-  IdentityListResponse,
-  IdentityUpdateParams,
-} from './resources/identities';
-import {
-  Organization,
-  OrganizationCreateParams,
-  OrganizationCreateResponse,
-  OrganizationDeleteParams,
-  OrganizationImportParams,
-  OrganizationImportResponse,
-  OrganizationListParams,
-  OrganizationListResponse,
-  OrganizationUpdateParams,
-  Organizations,
-} from './resources/organizations';
-import {
-  ObjectType,
-  Prism,
-  PrismCreateObjectParams,
-  PrismDeleteObjectParams,
-  PrismDuplicateObjectParams,
-  PrismDuplicateObjectResponse,
-  PrismImportObjectsParams,
-  PrismImportObjectsResponse,
-  PrismObjectProperties,
-  PrismPatchObjectParams,
-  PrismRestoreObjectParams,
-} from './resources/prism/prism';
+import { Identities, Identity, IdentityCreateParams, IdentityCreateResponse, IdentityDeleteParams, IdentityImportParams, IdentityImportResponse, IdentityListParams, IdentityListResponse, IdentityUpdateParams } from './resources/identities';
+import { Organization, OrganizationCreateParams, OrganizationCreateResponse, OrganizationDeleteParams, OrganizationImportParams, OrganizationImportResponse, OrganizationListParams, OrganizationListResponse, OrganizationUpdateParams, Organizations } from './resources/organizations';
+import { ObjectType, Prism, PrismCreateObjectParams, PrismDeleteObjectParams, PrismDuplicateObjectParams, PrismDuplicateObjectResponse, PrismImportObjectsParams, PrismImportObjectsResponse, PrismObjectProperties, PrismPatchObjectParams, PrismRestoreObjectParams } from './resources/prism/prism';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import { readEnv } from './internal/utils/env';
-import {
-  type LogLevel,
-  type Logger,
-  formatRequestDetails,
-  loggerFor,
-  parseLogLevel,
-} from './internal/utils/log';
+import { type LogLevel, type Logger, formatRequestDetails, loggerFor, parseLogLevel } from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
 
 export interface ClientOptions {
@@ -190,7 +110,7 @@ export interface ClientOptions {
 }
 
 /**
- * API Client for interfacing with the Micro API.
+ * API Client for interfacing with the Micro API. 
  */
 export class Micro {
   apiKey: string;
@@ -229,12 +149,12 @@ export class Micro {
   }: ClientOptions) {
     if (apiKey === undefined) {
       throw new Errors.MicroError(
-        "The MICRO_API_KEY environment variable is missing or empty; either provide it, or instantiate the Micro client with an apiKey option, like new Micro({ apiKey: 'My API Key' }).",
+        'The MICRO_API_KEY environment variable is missing or empty; either provide it, or instantiate the Micro client with an apiKey option, like new Micro({ apiKey: \'My API Key\' }).'
       );
     }
     if (teamID === undefined) {
       throw new Errors.MicroError(
-        "Missing required client option teamID; you need to instantiate the Micro client with an teamID option, like new Micro({ teamID: 'My Team ID' }).",
+        'Missing required client option teamID; you need to instantiate the Micro client with an teamID option, like new Micro({ teamID: \'My Team ID\' }).'
       );
     }
 
@@ -251,10 +171,7 @@ export class Micro {
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
-    this.logLevel =
-      parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
-      parseLogLevel(readEnv('MICRO_LOG'), "process.env['MICRO_LOG']", this) ??
-      defaultLogLevel;
+    this.logLevel = parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ?? parseLogLevel(readEnv('MICRO_LOG'), 'process.env[\'MICRO_LOG\']', this) ?? defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
     this.fetch = options.fetch ?? Shims.getDefaultFetch();
@@ -281,7 +198,7 @@ export class Micro {
       fetchOptions: this.fetchOptions,
       apiKey: this.apiKey,
       teamID: this.teamID,
-      ...options,
+      ...options
     });
     return client;
   }
@@ -294,7 +211,7 @@ export class Micro {
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
-    return this._options.defaultQuery;
+    return this._options.defaultQuery
   }
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
@@ -329,11 +246,7 @@ export class Micro {
     return Errors.APIError.generate(status, error, message, headers);
   }
 
-  buildURL(
-    path: string,
-    query: Record<string, unknown> | null | undefined,
-    defaultBaseURL?: string | undefined,
-  ): string {
+  buildURL(path: string, query: Record<string, unknown> | null | undefined, defaultBaseURL?: string | undefined): string {
     const baseURL = (!this.#baseURLOverridden() && defaultBaseURL) || this.baseURL;
     const url =
       isAbsoluteURL(path) ?
@@ -421,9 +334,7 @@ export class Micro {
 
     await this.prepareOptions(options);
 
-    const { req, url, timeout } = await this.buildRequest(options, {
-      retryCount: maxRetries - retriesRemaining,
-    });
+    const { req, url, timeout } = await this.buildRequest(options, { retryCount: maxRetries - retriesRemaining });
 
     await this.prepareRequest(req, { url, options });
 
@@ -432,16 +343,7 @@ export class Micro {
     const retryLogStr = retryOfRequestLogID === undefined ? '' : `, retryOf: ${retryOfRequestLogID}`;
     const startTime = Date.now();
 
-    loggerFor(this).debug(
-      `[${requestLogID}] sending request`,
-      formatRequestDetails({
-        retryOfRequestLogID,
-        method: options.method,
-        url,
-        options,
-        headers: req.headers,
-      }),
-    );
+    loggerFor(this).debug(`[${requestLogID}] sending request`, formatRequestDetails({ retryOfRequestLogID, method: options.method, url, options, headers: req.headers }));
 
     if (options.signal?.aborted) {
       throw new Errors.APIUserAbortError();
@@ -460,45 +362,21 @@ export class Micro {
       // deno throws "TypeError: error sending request for url (https://example/): client error (Connect): tcp connect error: Operation timed out (os error 60): Operation timed out (os error 60)"
       // undici throws "TypeError: fetch failed" with cause "ConnectTimeoutError: Connect Timeout Error (attempted address: example:443, timeout: 1ms)"
       // others do not provide enough information to distinguish timeouts from other connection errors
-      const isTimeout =
-        isAbortError(response) ||
-        /timed? ?out/i.test(String(response) + ('cause' in response ? String(response.cause) : ''));
+      const isTimeout = isAbortError(response) || /timed? ?out/i.test(String(response) + ('cause' in response ? String(response.cause) : ''))
       if (retriesRemaining) {
-        loggerFor(this).info(
-          `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - ${retryMessage}`,
-        );
-        loggerFor(this).debug(
-          `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (${retryMessage})`,
-          formatRequestDetails({
-            retryOfRequestLogID,
-            url,
-            durationMs: headersTime - startTime,
-            message: response.message,
-          }),
-        );
+        loggerFor(this).info(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - ${retryMessage}`)
+        loggerFor(this).debug(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (${retryMessage})`, formatRequestDetails({ retryOfRequestLogID, url, durationMs: headersTime - startTime, message: response.message }));
         return this.retryRequest(options, retriesRemaining, retryOfRequestLogID ?? requestLogID);
       }
-      loggerFor(this).info(
-        `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - error; no more retries left`,
-      );
-      loggerFor(this).debug(
-        `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (error; no more retries left)`,
-        formatRequestDetails({
-          retryOfRequestLogID,
-          url,
-          durationMs: headersTime - startTime,
-          message: response.message,
-        }),
-      );
+      loggerFor(this).info(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - error; no more retries left`)
+      loggerFor(this).debug(`[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} (error; no more retries left)`, formatRequestDetails({ retryOfRequestLogID, url, durationMs: headersTime - startTime, message: response.message }));
       if (isTimeout) {
         throw new Errors.APIConnectionTimeoutError();
       }
       throw new Errors.APIConnectionError({ cause: response });
     }
 
-    const responseInfo = `[${requestLogID}${retryLogStr}] ${req.method} ${url} ${
-      response.ok ? 'succeeded' : 'failed'
-    } with status ${response.status} in ${headersTime - startTime}ms`;
+    const responseInfo = `[${requestLogID}${retryLogStr}] ${req.method} ${url} ${response.ok ? 'succeeded' : 'failed'} with status ${response.status} in ${headersTime - startTime}ms`;
 
     if (!response.ok) {
       const shouldRetry = await this.shouldRetry(response);
@@ -507,60 +385,27 @@ export class Micro {
 
         // We don't need the body of this response.
         await Shims.CancelReadableStream(response.body);
-        loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
-        loggerFor(this).debug(
-          `[${requestLogID}] response error (${retryMessage})`,
-          formatRequestDetails({
-            retryOfRequestLogID,
-            url: response.url,
-            status: response.status,
-            headers: response.headers,
-            durationMs: headersTime - startTime,
-          }),
-        );
-        return this.retryRequest(
-          options,
-          retriesRemaining,
-          retryOfRequestLogID ?? requestLogID,
-          response.headers,
-        );
+        loggerFor(this).info(`${responseInfo} - ${retryMessage}`)
+        loggerFor(this).debug(`[${requestLogID}] response error (${retryMessage})`, formatRequestDetails({ retryOfRequestLogID, url: response.url, status: response.status, headers: response.headers, durationMs: headersTime - startTime }));
+        return this.retryRequest(options, retriesRemaining, retryOfRequestLogID ?? requestLogID, response.headers);
       }
 
       const retryMessage = shouldRetry ? `error; no more retries left` : `error; not retryable`;
 
-      loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
+      loggerFor(this).info(`${responseInfo} - ${retryMessage}`)
 
       const errText = await response.text().catch((err: any) => castToError(err).message);
       const errJSON = safeJSON(errText) as any;
       const errMessage = errJSON ? undefined : errText;
 
-      loggerFor(this).debug(
-        `[${requestLogID}] response error (${retryMessage})`,
-        formatRequestDetails({
-          retryOfRequestLogID,
-          url: response.url,
-          status: response.status,
-          headers: response.headers,
-          message: errMessage,
-          durationMs: Date.now() - startTime,
-        }),
-      );
+      loggerFor(this).debug(`[${requestLogID}] response error (${retryMessage})`, formatRequestDetails({ retryOfRequestLogID, url: response.url, status: response.status, headers: response.headers, message: errMessage, durationMs: Date.now() - startTime }));
 
       const err = this.makeStatusError(response.status, errJSON, errMessage, response.headers);
       throw err;
     }
 
-    loggerFor(this).info(responseInfo);
-    loggerFor(this).debug(
-      `[${requestLogID}] response start`,
-      formatRequestDetails({
-        retryOfRequestLogID,
-        url: response.url,
-        status: response.status,
-        headers: response.headers,
-        durationMs: headersTime - startTime,
-      }),
-    );
+    loggerFor(this).info(responseInfo)
+    loggerFor(this).debug(`[${requestLogID}] response start`, formatRequestDetails({ retryOfRequestLogID, url: response.url, status: response.status, headers: response.headers, durationMs: headersTime - startTime }));
 
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
   }
@@ -577,9 +422,7 @@ export class Micro {
 
     const timeout = setTimeout(abort, ms);
 
-    const isReadableBody =
-      ((globalThis as any).ReadableStream && options.body instanceof (globalThis as any).ReadableStream) ||
-      (typeof options.body === 'object' && options.body !== null && Symbol.asyncIterator in options.body);
+    const isReadableBody = ((globalThis as any).ReadableStream && options.body instanceof (globalThis as any).ReadableStream) || (typeof options.body === "object" && options.body !== null && Symbol.asyncIterator in options.body);
 
     const fetchOptions: RequestInit = {
       signal: controller.signal as any,
@@ -594,6 +437,7 @@ export class Micro {
     }
 
     try {
+
       // use undefined this binding; fetch errors if bound to something else in browser/cloudflare
       return await this.fetch.call(undefined, url, fetchOptions);
     } finally {
@@ -694,12 +538,11 @@ export class Micro {
     const req: FinalizedRequestInit = {
       method,
       headers: reqHeaders,
-      ...(options.signal && { signal: options.signal }),
-      ...((globalThis as any).ReadableStream &&
-        body instanceof (globalThis as any).ReadableStream && { duplex: 'half' }),
+      ...(options.signal && { signal: options.signal}),
+      ...((globalThis as any).ReadableStream && body instanceof (globalThis as any).ReadableStream && { duplex: "half" }),
       ...(body && { body }),
-      ...((this.fetchOptions as any) ?? {}),
-      ...((options.fetchOptions as any) ?? {}),
+      ...(this.fetchOptions as any ?? {}),
+      ...(options.fetchOptions as any ?? {}),
     };
 
     return { req, url, timeout: options.timeout };
@@ -724,17 +567,15 @@ export class Micro {
 
     const headers = buildHeaders([
       idempotencyHeaders,
-      {
-        Accept: 'application/json',
-        'User-Agent': this.getUserAgent(),
-        'X-Stainless-Retry-Count': String(retryCount),
-        ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
-        ...getPlatformHeaders(),
-      },
+      {Accept: 'application/json',
+      'User-Agent': this.getUserAgent(),
+      'X-Stainless-Retry-Count': String(retryCount),
+      ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
+      ...getPlatformHeaders()},
       await this.authHeaders(options),
       this._options.defaultHeaders,
       bodyHeaders,
-      options.headers,
+      options.headers
     ]);
 
     this.validateHeaders(headers);
@@ -761,9 +602,11 @@ export class Micro {
       ArrayBuffer.isView(body) ||
       body instanceof ArrayBuffer ||
       body instanceof DataView ||
-      (typeof body === 'string' &&
+      (
+        typeof body === 'string' &&
         // Preserve legacy string encoding behavior for now
-        headers.values.has('content-type')) ||
+        headers.values.has('content-type')
+      ) ||
       // `Blob` is superset of `File`
       ((globalThis as any).Blob && body instanceof (globalThis as any).Blob) ||
       // `FormData` -> `multipart/form-data`
@@ -794,7 +637,7 @@ export class Micro {
   }
 
   static Micro = this;
-  static DEFAULT_TIMEOUT = 60000; // 1 minute
+  static DEFAULT_TIMEOUT = 60000 // 1 minute
 
   static MicroError = Errors.MicroError;
   static APIError = Errors.APIError;
@@ -856,100 +699,100 @@ Micro.Events = Events;
 Micro.Documents = Documents;
 
 export declare namespace Micro {
-  export type RequestOptions = Opts.RequestOptions;
+      export type RequestOptions = Opts.RequestOptions;
 
-  export {
-    Prism as Prism,
-    type ObjectType as ObjectType,
-    type PrismObjectProperties as PrismObjectProperties,
-    type PrismDuplicateObjectResponse as PrismDuplicateObjectResponse,
-    type PrismImportObjectsResponse as PrismImportObjectsResponse,
-    type PrismCreateObjectParams as PrismCreateObjectParams,
-    type PrismDeleteObjectParams as PrismDeleteObjectParams,
-    type PrismDuplicateObjectParams as PrismDuplicateObjectParams,
-    type PrismImportObjectsParams as PrismImportObjectsParams,
-    type PrismPatchObjectParams as PrismPatchObjectParams,
-    type PrismRestoreObjectParams as PrismRestoreObjectParams,
-  };
+      export {
+  Prism as Prism,
+  type ObjectType as ObjectType,
+  type PrismObjectProperties as PrismObjectProperties,
+  type PrismDuplicateObjectResponse as PrismDuplicateObjectResponse,
+  type PrismImportObjectsResponse as PrismImportObjectsResponse,
+  type PrismCreateObjectParams as PrismCreateObjectParams,
+  type PrismDeleteObjectParams as PrismDeleteObjectParams,
+  type PrismDuplicateObjectParams as PrismDuplicateObjectParams,
+  type PrismImportObjectsParams as PrismImportObjectsParams,
+  type PrismPatchObjectParams as PrismPatchObjectParams,
+  type PrismRestoreObjectParams as PrismRestoreObjectParams
+};
 
-  export {
-    Contacts as Contacts,
-    type Contact as Contact,
-    type ContactCreateResponse as ContactCreateResponse,
-    type ContactListResponse as ContactListResponse,
-    type ContactImportResponse as ContactImportResponse,
-    type ContactCreateParams as ContactCreateParams,
-    type ContactUpdateParams as ContactUpdateParams,
-    type ContactListParams as ContactListParams,
-    type ContactDeleteParams as ContactDeleteParams,
-    type ContactImportParams as ContactImportParams,
-  };
+export {
+  Contacts as Contacts,
+  type Contact as Contact,
+  type ContactCreateResponse as ContactCreateResponse,
+  type ContactListResponse as ContactListResponse,
+  type ContactImportResponse as ContactImportResponse,
+  type ContactCreateParams as ContactCreateParams,
+  type ContactUpdateParams as ContactUpdateParams,
+  type ContactListParams as ContactListParams,
+  type ContactDeleteParams as ContactDeleteParams,
+  type ContactImportParams as ContactImportParams
+};
 
-  export {
-    Organizations as Organizations,
-    type Organization as Organization,
-    type OrganizationCreateResponse as OrganizationCreateResponse,
-    type OrganizationListResponse as OrganizationListResponse,
-    type OrganizationImportResponse as OrganizationImportResponse,
-    type OrganizationCreateParams as OrganizationCreateParams,
-    type OrganizationUpdateParams as OrganizationUpdateParams,
-    type OrganizationListParams as OrganizationListParams,
-    type OrganizationDeleteParams as OrganizationDeleteParams,
-    type OrganizationImportParams as OrganizationImportParams,
-  };
+export {
+  Organizations as Organizations,
+  type Organization as Organization,
+  type OrganizationCreateResponse as OrganizationCreateResponse,
+  type OrganizationListResponse as OrganizationListResponse,
+  type OrganizationImportResponse as OrganizationImportResponse,
+  type OrganizationCreateParams as OrganizationCreateParams,
+  type OrganizationUpdateParams as OrganizationUpdateParams,
+  type OrganizationListParams as OrganizationListParams,
+  type OrganizationDeleteParams as OrganizationDeleteParams,
+  type OrganizationImportParams as OrganizationImportParams
+};
 
-  export {
-    Identities as Identities,
-    type Identity as Identity,
-    type IdentityCreateResponse as IdentityCreateResponse,
-    type IdentityListResponse as IdentityListResponse,
-    type IdentityImportResponse as IdentityImportResponse,
-    type IdentityCreateParams as IdentityCreateParams,
-    type IdentityUpdateParams as IdentityUpdateParams,
-    type IdentityListParams as IdentityListParams,
-    type IdentityDeleteParams as IdentityDeleteParams,
-    type IdentityImportParams as IdentityImportParams,
-  };
+export {
+  Identities as Identities,
+  type Identity as Identity,
+  type IdentityCreateResponse as IdentityCreateResponse,
+  type IdentityListResponse as IdentityListResponse,
+  type IdentityImportResponse as IdentityImportResponse,
+  type IdentityCreateParams as IdentityCreateParams,
+  type IdentityUpdateParams as IdentityUpdateParams,
+  type IdentityListParams as IdentityListParams,
+  type IdentityDeleteParams as IdentityDeleteParams,
+  type IdentityImportParams as IdentityImportParams
+};
 
-  export {
-    Deals as Deals,
-    type Deal as Deal,
-    type DealCreateResponse as DealCreateResponse,
-    type DealListResponse as DealListResponse,
-    type DealImportResponse as DealImportResponse,
-    type DealCreateParams as DealCreateParams,
-    type DealUpdateParams as DealUpdateParams,
-    type DealListParams as DealListParams,
-    type DealDeleteParams as DealDeleteParams,
-    type DealImportParams as DealImportParams,
-  };
+export {
+  Deals as Deals,
+  type Deal as Deal,
+  type DealCreateResponse as DealCreateResponse,
+  type DealListResponse as DealListResponse,
+  type DealImportResponse as DealImportResponse,
+  type DealCreateParams as DealCreateParams,
+  type DealUpdateParams as DealUpdateParams,
+  type DealListParams as DealListParams,
+  type DealDeleteParams as DealDeleteParams,
+  type DealImportParams as DealImportParams
+};
 
-  export {
-    Actions as Actions,
-    type Action as Action,
-    type ActionCreateResponse as ActionCreateResponse,
-    type ActionListResponse as ActionListResponse,
-    type ActionCreateParams as ActionCreateParams,
-    type ActionUpdateParams as ActionUpdateParams,
-    type ActionListParams as ActionListParams,
-    type ActionDeleteParams as ActionDeleteParams,
-  };
+export {
+  Actions as Actions,
+  type Action as Action,
+  type ActionCreateResponse as ActionCreateResponse,
+  type ActionListResponse as ActionListResponse,
+  type ActionCreateParams as ActionCreateParams,
+  type ActionUpdateParams as ActionUpdateParams,
+  type ActionListParams as ActionListParams,
+  type ActionDeleteParams as ActionDeleteParams
+};
 
-  export {
-    Events as Events,
-    type Event as Event,
-    type EventListResponse as EventListResponse,
-    type EventListParams as EventListParams,
-  };
+export {
+  Events as Events,
+  type Event as Event,
+  type EventListResponse as EventListResponse,
+  type EventListParams as EventListParams
+};
 
-  export {
-    Documents as Documents,
-    type Document as Document,
-    type DocumentCreateResponse as DocumentCreateResponse,
-    type DocumentListResponse as DocumentListResponse,
-    type DocumentCreateParams as DocumentCreateParams,
-    type DocumentUpdateParams as DocumentUpdateParams,
-    type DocumentListParams as DocumentListParams,
-    type DocumentDeleteParams as DocumentDeleteParams,
-  };
-}
+export {
+  Documents as Documents,
+  type Document as Document,
+  type DocumentCreateResponse as DocumentCreateResponse,
+  type DocumentListResponse as DocumentListResponse,
+  type DocumentCreateParams as DocumentCreateParams,
+  type DocumentUpdateParams as DocumentUpdateParams,
+  type DocumentListParams as DocumentListParams,
+  type DocumentDeleteParams as DocumentDeleteParams
+};
+    }

@@ -59,8 +59,8 @@ function getTSDiagnostics(code: string): string[] {
   const codeWithImport = [
     'import { Micro } from "micro";',
     functionSource.type === 'declaration' ?
-      `async function run(${functionSource.client}: Micro)`
-    : `const run: (${functionSource.client}: Micro) => Promise<unknown> =`,
+      `async function run(${functionSource.client}: Micro)` :
+      `const run: (${functionSource.client}: Micro) => Promise<unknown> =`,
     functionSource.code,
   ].join('\n');
   const sourcePath = path.resolve('code.ts');
@@ -108,45 +108,45 @@ function getTSDiagnostics(code: string): string[] {
 
 const fuse = new Fuse(
   [
-    'client.prism.createObject',
-    'client.prism.deleteObject',
-    'client.prism.duplicateObject',
-    'client.prism.importObjects',
-    'client.prism.patchObject',
-    'client.prism.restoreObject',
-    'client.prism.grant.retrieveGrant',
-    'client.prism.grant.updateGrant',
-    'client.prism.query.execute',
-    'client.prism.metadata.properties',
-    'client.contacts.create',
-    'client.contacts.delete',
-    'client.contacts.import',
-    'client.contacts.list',
-    'client.contacts.update',
-    'client.organizations.create',
-    'client.organizations.delete',
-    'client.organizations.import',
-    'client.organizations.list',
-    'client.organizations.update',
-    'client.identities.create',
-    'client.identities.delete',
-    'client.identities.import',
-    'client.identities.list',
-    'client.identities.update',
-    'client.deals.create',
-    'client.deals.delete',
-    'client.deals.import',
-    'client.deals.list',
-    'client.deals.update',
-    'client.actions.create',
-    'client.actions.delete',
-    'client.actions.list',
-    'client.actions.update',
-    'client.events.list',
-    'client.documents.create',
-    'client.documents.delete',
-    'client.documents.list',
-    'client.documents.update',
+    "client.prism.createObject",
+    "client.prism.deleteObject",
+    "client.prism.duplicateObject",
+    "client.prism.importObjects",
+    "client.prism.patchObject",
+    "client.prism.restoreObject",
+    "client.prism.grant.retrieveGrant",
+    "client.prism.grant.updateGrant",
+    "client.prism.query.execute",
+    "client.prism.metadata.properties",
+    "client.contacts.create",
+    "client.contacts.delete",
+    "client.contacts.import",
+    "client.contacts.list",
+    "client.contacts.update",
+    "client.organizations.create",
+    "client.organizations.delete",
+    "client.organizations.import",
+    "client.organizations.list",
+    "client.organizations.update",
+    "client.identities.create",
+    "client.identities.delete",
+    "client.identities.import",
+    "client.identities.list",
+    "client.identities.update",
+    "client.deals.create",
+    "client.deals.delete",
+    "client.deals.import",
+    "client.deals.list",
+    "client.deals.update",
+    "client.actions.create",
+    "client.actions.delete",
+    "client.actions.list",
+    "client.actions.update",
+    "client.events.list",
+    "client.documents.create",
+    "client.documents.delete",
+    "client.documents.list",
+    "client.documents.update"
   ],
   { threshold: 1, shouldSort: true },
 );
@@ -229,12 +229,7 @@ function parseError(code: string, error: unknown): string | undefined {
     // Deno uses V8; the first "<anonymous>:LINE:COLUMN" is the top of stack.
     const lineNumber = error.stack?.match(/<anonymous>:([0-9]+):[0-9]+/)?.[1];
     // -1 for the zero-based indexing
-    const line =
-      lineNumber &&
-      code
-        .split('\n')
-        .at(parseInt(lineNumber, 10) - 1)
-        ?.trim();
+    const line = lineNumber && code.split('\n').at(parseInt(lineNumber, 10) - 1)?.trim();
     return line ? `${message}\n  at line ${lineNumber}\n    ${line}` : message;
   } catch {
     return message;
@@ -246,9 +241,8 @@ const fetch = async (req: Request): Promise<Response> => {
 
   const runFunctionSource = code ? getRunFunctionSource(code) : null;
   if (!runFunctionSource) {
-    const message =
-      code ?
-        'The code is missing a top-level `run` function.'
+    const message = code
+      ? 'The code is missing a top-level `run` function.'
       : 'The code argument is missing. Provide one containing a top-level `run` function.';
     return Response.json(
       {
@@ -293,7 +287,7 @@ const fetch = async (req: Request): Promise<Response> => {
   try {
     let run_ = async (client: any) => {};
     run_ = (await tseval(`${code}\nexport default run;`)).default;
-    const result = await run_(makeSdkProxy(client, { path: ['client'] }));
+    const result = await run_(makeSdkProxy(client, { path: ["client"] }));
     return Response.json({
       is_error: false,
       result,

@@ -12,21 +12,8 @@ export class Query extends APIResource {
   /**
    * Query v2
    */
-  execute(
-    objectType:
-      | 'deal'
-      | 'identity'
-      | 'ai_chat_thread'
-      | 'ai_chat_message'
-      | 'document'
-      | 'organization'
-      | 'contact'
-      | 'action'
-      | 'event',
-    params: QueryExecuteParams,
-    options?: RequestOptions,
-  ): APIPromise<QueryExecuteResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
+  execute(objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'organization' | 'contact' | 'action' | 'event', params: QueryExecuteParams, options?: RequestOptions): APIPromise<QueryExecuteResponse> {
+    const { teamId = this._client.teamID, ...body } = params
     return this._client.post(path`/v2/prism/query/${teamId}/${objectType}`, { body, ...options });
   }
 }
@@ -104,5 +91,8 @@ export namespace QueryExecuteParams {
 }
 
 export declare namespace Query {
-  export { type QueryExecuteResponse as QueryExecuteResponse, type QueryExecuteParams as QueryExecuteParams };
+  export {
+    type QueryExecuteResponse as QueryExecuteResponse,
+    type QueryExecuteParams as QueryExecuteParams
+  };
 }
