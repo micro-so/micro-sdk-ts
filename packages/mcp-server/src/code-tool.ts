@@ -25,9 +25,9 @@ For example:
 
 \`\`\`
 async function run(client) {
-  const contacts = await client.contacts.list({ query: { select: ['full_name', 'email'] } });
+  const prismObjectProperties = await client.prism.createObject('deal');
 
-  console.log(contacts.data);
+  console.log(prismObjectProperties.id);
 }
 \`\`\`
 

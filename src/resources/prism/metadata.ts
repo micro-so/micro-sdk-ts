@@ -3,13 +3,9 @@
 import { APIResource } from '../../core/resource';
 import * as PrismAPI from './prism';
 import { APIPromise } from '../../core/api-promise';
-import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
-/**
- * The Prism query engine provides generic read/write access to any object type using a single unified API surface.
- */
 export class Metadata extends APIResource {
   /**
    * Get metadata properties by object type
@@ -18,15 +14,16 @@ export class Metadata extends APIResource {
     objectType: PrismAPI.ObjectType,
     params: MetadataPropertiesParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<void> {
+  ): APIPromise<MetadataPropertiesResponse> {
     const { teamId = this._client.teamID, ...query } = params ?? {};
     return this._client.get(path`/v2/prism/metadata/properties/${teamId}/${objectType}`, {
       query,
       ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
   }
 }
+
+export type MetadataPropertiesResponse = { [key: string]: unknown };
 
 export interface MetadataPropertiesParams {
   /**
@@ -51,5 +48,8 @@ export interface MetadataPropertiesParams {
 }
 
 export declare namespace Metadata {
-  export { type MetadataPropertiesParams as MetadataPropertiesParams };
+  export {
+    type MetadataPropertiesResponse as MetadataPropertiesResponse,
+    type MetadataPropertiesParams as MetadataPropertiesParams,
+  };
 }

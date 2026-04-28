@@ -2,9 +2,15 @@
 
 import { APIResource } from '../../core/resource';
 import * as GrantAPI from './grant';
-import { Grant, GrantRetrieveGrantParams, GrantUpdateGrantParams } from './grant';
+import {
+  Grant,
+  GrantRetrieveGrantParams,
+  GrantRetrieveGrantResponse,
+  GrantUpdateGrantParams,
+  GrantUpdateGrantResponse,
+} from './grant';
 import * as MetadataAPI from './metadata';
-import { Metadata, MetadataPropertiesParams } from './metadata';
+import { Metadata, MetadataPropertiesParams, MetadataPropertiesResponse } from './metadata';
 import * as QueryAPI from './query';
 import { Query, QueryExecuteParams, QueryExecuteResponse } from './query';
 import { APIPromise } from '../../core/api-promise';
@@ -12,9 +18,6 @@ import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
-/**
- * The Prism query engine provides generic read/write access to any object type using a single unified API surface.
- */
 export class Prism extends APIResource {
   grant: GrantAPI.Grant = new GrantAPI.Grant(this._client);
   query: QueryAPI.Query = new QueryAPI.Query(this._client);
@@ -27,13 +30,9 @@ export class Prism extends APIResource {
     objectType: ObjectType,
     params: PrismCreateObjectParams,
     options?: RequestOptions,
-  ): APIPromise<void> {
+  ): APIPromise<PrismObjectProperties> {
     const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v2/prism/${teamId}/${objectType}`, {
-      body,
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+    return this._client.post(path`/v2/prism/${teamId}/${objectType}`, { body, ...options });
   }
 
   /**
@@ -80,13 +79,13 @@ export class Prism extends APIResource {
   /**
    * Patch object
    */
-  patchObject(objectID: string, params: PrismPatchObjectParams, options?: RequestOptions): APIPromise<void> {
+  patchObject(
+    objectID: string,
+    params: PrismPatchObjectParams,
+    options?: RequestOptions,
+  ): APIPromise<PrismObjectProperties> {
     const { teamId = this._client.teamID, objectType, ...body } = params;
-    return this._client.patch(path`/v2/prism/${teamId}/${objectType}/${objectID}`, {
-      body,
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+    return this._client.patch(path`/v2/prism/${teamId}/${objectType}/${objectID}`, { body, ...options });
   }
 
   /**
@@ -96,12 +95,9 @@ export class Prism extends APIResource {
     objectID: string,
     params: PrismRestoreObjectParams,
     options?: RequestOptions,
-  ): APIPromise<void> {
+  ): APIPromise<PrismObjectProperties> {
     const { teamId = this._client.teamID, objectType } = params;
-    return this._client.post(path`/v2/prism/${teamId}/${objectType}/${objectID}/restore`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+    return this._client.post(path`/v2/prism/${teamId}/${objectType}/${objectID}/restore`, options);
   }
 }
 
@@ -297,6 +293,8 @@ export declare namespace Prism {
 
   export {
     Grant as Grant,
+    type GrantRetrieveGrantResponse as GrantRetrieveGrantResponse,
+    type GrantUpdateGrantResponse as GrantUpdateGrantResponse,
     type GrantRetrieveGrantParams as GrantRetrieveGrantParams,
     type GrantUpdateGrantParams as GrantUpdateGrantParams,
   };
@@ -307,5 +305,9 @@ export declare namespace Prism {
     type QueryExecuteParams as QueryExecuteParams,
   };
 
-  export { Metadata as Metadata, type MetadataPropertiesParams as MetadataPropertiesParams };
+  export {
+    Metadata as Metadata,
+    type MetadataPropertiesResponse as MetadataPropertiesResponse,
+    type MetadataPropertiesParams as MetadataPropertiesParams,
+  };
 }
