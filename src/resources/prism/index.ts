@@ -1,7 +1,13 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Grant, type GrantRetrieveGrantParams, type GrantUpdateGrantParams } from './grant';
-export { Metadata, type MetadataPropertiesParams } from './metadata';
+export {
+  Grant,
+  type GrantRetrieveGrantResponse,
+  type GrantUpdateGrantResponse,
+  type GrantRetrieveGrantParams,
+  type GrantUpdateGrantParams,
+} from './grant';
+export { Metadata, type MetadataPropertiesResponse, type MetadataPropertiesParams } from './metadata';
 export {
   Prism,
   type ObjectType,

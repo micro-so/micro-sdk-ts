@@ -17,75 +17,13 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import {
-  Action,
-  ActionCreateParams,
-  ActionCreateResponse,
-  ActionDeleteParams,
-  ActionListParams,
-  ActionListResponse,
-  ActionUpdateParams,
-  Actions,
-} from './resources/actions';
-import {
-  Contact,
-  ContactCreateParams,
-  ContactCreateResponse,
-  ContactDeleteParams,
-  ContactImportParams,
-  ContactImportResponse,
-  ContactListParams,
-  ContactListResponse,
-  ContactUpdateParams,
-  Contacts,
-} from './resources/contacts';
-import {
-  Deal,
-  DealCreateParams,
-  DealCreateResponse,
-  DealDeleteParams,
-  DealImportParams,
-  DealImportResponse,
-  DealListParams,
-  DealListResponse,
-  DealUpdateParams,
-  Deals,
-} from './resources/deals';
-import {
-  Document,
-  DocumentCreateParams,
-  DocumentCreateResponse,
-  DocumentDeleteParams,
-  DocumentListParams,
-  DocumentListResponse,
-  DocumentUpdateParams,
-  Documents,
-} from './resources/documents';
-import { Event, EventListParams, EventListResponse, Events } from './resources/events';
-import {
-  Identities,
-  Identity,
-  IdentityCreateParams,
-  IdentityCreateResponse,
-  IdentityDeleteParams,
-  IdentityImportParams,
-  IdentityImportResponse,
-  IdentityListParams,
-  IdentityListResponse,
-  IdentityUpdateParams,
-} from './resources/identities';
-import {
-  Organization,
-  OrganizationCreateParams,
-  OrganizationCreateResponse,
-  OrganizationDeleteParams,
-  OrganizationImportParams,
-  OrganizationImportResponse,
-  OrganizationListParams,
-  OrganizationListResponse,
-  OrganizationUpdateParams,
-  Organizations,
-} from './resources/organizations';
+import { Action, Actions } from './resources/actions';
+import { Contact, Contacts } from './resources/contacts';
+import { Deal, Deals } from './resources/deals';
+import { Document, Documents } from './resources/documents';
+import { Event, Events } from './resources/events';
+import { Identities, Identity } from './resources/identities';
+import { Organization, Organizations } from './resources/organizations';
 import {
   ObjectType,
   Prism,
@@ -824,37 +762,13 @@ export class Micro {
 
   static toFile = Uploads.toFile;
 
-  /**
-   * The Prism query engine provides generic read/write access to any object type using a single unified API surface.
-   */
   prism: API.Prism = new API.Prism(this);
-  /**
-   * Contacts represent individual people in Micro. Each contact can have a name, email, phone, title, and custom properties, and can be linked to an organization.
-   */
   contacts: API.Contacts = new API.Contacts(this);
-  /**
-   * Organizations represent companies or teams in Micro. Contacts and deals can be associated with an organization.
-   */
   organizations: API.Organizations = new API.Organizations(this);
-  /**
-   * Identities link multiple contacts together as the same real-world person, deduplicating people who appear in different contexts.
-   */
   identities: API.Identities = new API.Identities(this);
-  /**
-   * Deals track opportunities moving through a pipeline — fundraising rounds, sales opportunities, hiring candidates, or any custom workflow.
-   */
   deals: API.Deals = new API.Deals(this);
-  /**
-   * Actions are tasks and to-dos that can be assigned to contacts, organizations, or deals, with a status, due date, and priority.
-   */
   actions: API.Actions = new API.Actions(this);
-  /**
-   * Events are calendar items — meetings, calls, and appointments — automatically captured from your connected calendar accounts.
-   */
   events: API.Events = new API.Events(this);
-  /**
-   * Documents are rich-text notes attached to contacts, organizations, or deals, used for meeting notes, research, or context.
-   */
   documents: API.Documents = new API.Documents(this);
 }
 
@@ -884,84 +798,17 @@ export declare namespace Micro {
     type PrismRestoreObjectParams as PrismRestoreObjectParams,
   };
 
-  export {
-    Contacts as Contacts,
-    type Contact as Contact,
-    type ContactCreateResponse as ContactCreateResponse,
-    type ContactListResponse as ContactListResponse,
-    type ContactImportResponse as ContactImportResponse,
-    type ContactCreateParams as ContactCreateParams,
-    type ContactUpdateParams as ContactUpdateParams,
-    type ContactListParams as ContactListParams,
-    type ContactDeleteParams as ContactDeleteParams,
-    type ContactImportParams as ContactImportParams,
-  };
+  export { Contacts as Contacts, type Contact as Contact };
 
-  export {
-    Organizations as Organizations,
-    type Organization as Organization,
-    type OrganizationCreateResponse as OrganizationCreateResponse,
-    type OrganizationListResponse as OrganizationListResponse,
-    type OrganizationImportResponse as OrganizationImportResponse,
-    type OrganizationCreateParams as OrganizationCreateParams,
-    type OrganizationUpdateParams as OrganizationUpdateParams,
-    type OrganizationListParams as OrganizationListParams,
-    type OrganizationDeleteParams as OrganizationDeleteParams,
-    type OrganizationImportParams as OrganizationImportParams,
-  };
+  export { Organizations as Organizations, type Organization as Organization };
 
-  export {
-    Identities as Identities,
-    type Identity as Identity,
-    type IdentityCreateResponse as IdentityCreateResponse,
-    type IdentityListResponse as IdentityListResponse,
-    type IdentityImportResponse as IdentityImportResponse,
-    type IdentityCreateParams as IdentityCreateParams,
-    type IdentityUpdateParams as IdentityUpdateParams,
-    type IdentityListParams as IdentityListParams,
-    type IdentityDeleteParams as IdentityDeleteParams,
-    type IdentityImportParams as IdentityImportParams,
-  };
+  export { Identities as Identities, type Identity as Identity };
 
-  export {
-    Deals as Deals,
-    type Deal as Deal,
-    type DealCreateResponse as DealCreateResponse,
-    type DealListResponse as DealListResponse,
-    type DealImportResponse as DealImportResponse,
-    type DealCreateParams as DealCreateParams,
-    type DealUpdateParams as DealUpdateParams,
-    type DealListParams as DealListParams,
-    type DealDeleteParams as DealDeleteParams,
-    type DealImportParams as DealImportParams,
-  };
+  export { Deals as Deals, type Deal as Deal };
 
-  export {
-    Actions as Actions,
-    type Action as Action,
-    type ActionCreateResponse as ActionCreateResponse,
-    type ActionListResponse as ActionListResponse,
-    type ActionCreateParams as ActionCreateParams,
-    type ActionUpdateParams as ActionUpdateParams,
-    type ActionListParams as ActionListParams,
-    type ActionDeleteParams as ActionDeleteParams,
-  };
+  export { Actions as Actions, type Action as Action };
 
-  export {
-    Events as Events,
-    type Event as Event,
-    type EventListResponse as EventListResponse,
-    type EventListParams as EventListParams,
-  };
+  export { Events as Events, type Event as Event };
 
-  export {
-    Documents as Documents,
-    type Document as Document,
-    type DocumentCreateResponse as DocumentCreateResponse,
-    type DocumentListResponse as DocumentListResponse,
-    type DocumentCreateParams as DocumentCreateParams,
-    type DocumentUpdateParams as DocumentUpdateParams,
-    type DocumentListParams as DocumentListParams,
-    type DocumentDeleteParams as DocumentDeleteParams,
-  };
+  export { Documents as Documents, type Document as Document };
 }

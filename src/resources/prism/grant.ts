@@ -3,13 +3,9 @@
 import { APIResource } from '../../core/resource';
 import * as PrismAPI from './prism';
 import { APIPromise } from '../../core/api-promise';
-import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
-/**
- * The Prism query engine provides generic read/write access to any object type using a single unified API surface.
- */
 export class Grant extends APIResource {
   /**
    * Get grant
@@ -18,25 +14,38 @@ export class Grant extends APIResource {
     objectID: string,
     params: GrantRetrieveGrantParams,
     options?: RequestOptions,
-  ): APIPromise<void> {
+  ): APIPromise<GrantRetrieveGrantResponse> {
     const { teamId = this._client.teamID, objectType } = params;
-    return this._client.get(path`/v2/prism/grant/${teamId}/${objectType}/${objectID}`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+    return this._client.get(path`/v2/prism/grant/${teamId}/${objectType}/${objectID}`, options);
   }
 
   /**
    * Update grant
    */
-  updateGrant(objectID: string, params: GrantUpdateGrantParams, options?: RequestOptions): APIPromise<void> {
+  updateGrant(
+    objectID: string,
+    params: GrantUpdateGrantParams,
+    options?: RequestOptions,
+  ): APIPromise<GrantUpdateGrantResponse> {
     const { teamId = this._client.teamID, objectType, ...body } = params;
-    return this._client.put(path`/v2/prism/grant/${teamId}/${objectType}/${objectID}`, {
-      body,
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+    return this._client.put(path`/v2/prism/grant/${teamId}/${objectType}/${objectID}`, { body, ...options });
   }
+}
+
+export interface GrantRetrieveGrantResponse {
+  team_group_id?: Array<{ [key: string]: 'a' | 'r' | 'w' }>;
+
+  team_id?: { [key: string]: 'a' | 'r' | 'w' };
+
+  user_id?: Array<{ [key: string]: 'a' | 'r' | 'w' }>;
+}
+
+export interface GrantUpdateGrantResponse {
+  team_group_id?: Array<{ [key: string]: 'a' | 'r' | 'w' }>;
+
+  team_id?: { [key: string]: 'a' | 'r' | 'w' };
+
+  user_id?: Array<{ [key: string]: 'a' | 'r' | 'w' }>;
 }
 
 export interface GrantRetrieveGrantParams {
@@ -74,6 +83,8 @@ export interface GrantUpdateGrantParams {
 
 export declare namespace Grant {
   export {
+    type GrantRetrieveGrantResponse as GrantRetrieveGrantResponse,
+    type GrantUpdateGrantResponse as GrantUpdateGrantResponse,
     type GrantRetrieveGrantParams as GrantRetrieveGrantParams,
     type GrantUpdateGrantParams as GrantUpdateGrantParams,
   };
