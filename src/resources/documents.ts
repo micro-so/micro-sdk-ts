@@ -13,8 +13,11 @@ export class Documents extends APIResource {
   /**
    * Create Document
    */
-  create(params: DocumentCreateParams | null | undefined = {}, options?: RequestOptions): APIPromise<DocumentCreateResponse> {
-    const { teamId = this._client.teamID, ...body } = params ?? {}
+  create(
+    params: DocumentCreateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<DocumentCreateResponse> {
+    const { teamId = this._client.teamID, ...body } = params ?? {};
     return this._client.post(path`/v2/prism/${teamId}/document`, { body, ...options });
   }
 
@@ -22,24 +25,35 @@ export class Documents extends APIResource {
    * Update Document
    */
   update(documentID: string, params: DocumentUpdateParams, options?: RequestOptions): APIPromise<void> {
-    const { teamId = this._client.teamID, ...body } = params
-    return this._client.patch(path`/v2/prism/${teamId}/document/${documentID}`, { body, ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+    const { teamId = this._client.teamID, ...body } = params;
+    return this._client.patch(path`/v2/prism/${teamId}/document/${documentID}`, {
+      body,
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 
   /**
    * List Documents
    */
   list(params: DocumentListParams, options?: RequestOptions): APIPromise<DocumentListResponse> {
-    const { teamId = this._client.teamID, ...body } = params
+    const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v2/prism/query/${teamId}/document`, { body, ...options });
   }
 
   /**
    * Delete Document
    */
-  delete(documentID: string, params: DocumentDeleteParams | null | undefined = {}, options?: RequestOptions): APIPromise<void> {
-    const { teamId = this._client.teamID } = params ?? {}
-    return this._client.delete(path`/v2/prism/${teamId}/document/${documentID}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+  delete(
+    documentID: string,
+    params: DocumentDeleteParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<void> {
+    const { teamId = this._client.teamID } = params ?? {};
+    return this._client.delete(path`/v2/prism/${teamId}/document/${documentID}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -201,6 +215,6 @@ export declare namespace Documents {
     type DocumentCreateParams as DocumentCreateParams,
     type DocumentUpdateParams as DocumentUpdateParams,
     type DocumentListParams as DocumentListParams,
-    type DocumentDeleteParams as DocumentDeleteParams
+    type DocumentDeleteParams as DocumentDeleteParams,
   };
 }

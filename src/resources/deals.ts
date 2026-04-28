@@ -14,8 +14,11 @@ export class Deals extends APIResource {
   /**
    * Create Deal
    */
-  create(params: DealCreateParams | null | undefined = {}, options?: RequestOptions): APIPromise<DealCreateResponse> {
-    const { teamId = this._client.teamID, ...body } = params ?? {}
+  create(
+    params: DealCreateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<DealCreateResponse> {
+    const { teamId = this._client.teamID, ...body } = params ?? {};
     return this._client.post(path`/v2/prism/${teamId}/deal`, { body, ...options });
   }
 
@@ -23,31 +26,42 @@ export class Deals extends APIResource {
    * Update Deal
    */
   update(dealID: string, params: DealUpdateParams, options?: RequestOptions): APIPromise<void> {
-    const { teamId = this._client.teamID, ...body } = params
-    return this._client.patch(path`/v2/prism/${teamId}/deal/${dealID}`, { body, ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+    const { teamId = this._client.teamID, ...body } = params;
+    return this._client.patch(path`/v2/prism/${teamId}/deal/${dealID}`, {
+      body,
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 
   /**
    * List Deals
    */
   list(params: DealListParams, options?: RequestOptions): APIPromise<DealListResponse> {
-    const { teamId = this._client.teamID, ...body } = params
+    const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v2/prism/query/${teamId}/deal`, { body, ...options });
   }
 
   /**
    * Delete Deal
    */
-  delete(dealID: string, params: DealDeleteParams | null | undefined = {}, options?: RequestOptions): APIPromise<void> {
-    const { teamId = this._client.teamID } = params ?? {}
-    return this._client.delete(path`/v2/prism/${teamId}/deal/${dealID}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+  delete(
+    dealID: string,
+    params: DealDeleteParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<void> {
+    const { teamId = this._client.teamID } = params ?? {};
+    return this._client.delete(path`/v2/prism/${teamId}/deal/${dealID}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 
   /**
    * Import Deals
    */
   import(params: DealImportParams, options?: RequestOptions): APIPromise<DealImportResponse> {
-    const { teamId = this._client.teamID, ...body } = params
+    const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v2/prism/${teamId}/deal/import`, { body, ...options });
   }
 }
@@ -278,6 +292,6 @@ export declare namespace Deals {
     type DealUpdateParams as DealUpdateParams,
     type DealListParams as DealListParams,
     type DealDeleteParams as DealDeleteParams,
-    type DealImportParams as DealImportParams
+    type DealImportParams as DealImportParams,
   };
 }

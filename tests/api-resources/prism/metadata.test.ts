@@ -5,7 +5,7 @@ import Micro from 'micro';
 const client = new Micro({
   apiKey: 'My API Key',
   teamID: 'My Team ID',
-  baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource metadata', () => {
@@ -24,23 +24,27 @@ describe('resource metadata', () => {
   // Mock server tests are disabled
   test.skip('properties: required and optional params', async () => {
     const response = await client.prism.metadata.properties('deal', {
-    teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    autofill: true,
-    crmId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    term: 'term',
-  });
+      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      autofill: true,
+      crmId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      term: 'term',
+    });
   });
 
   // Mock server tests are disabled
   test.skip('properties: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.prism.metadata.properties('deal', {
-    teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    autofill: true,
-    crmId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    term: 'term',
-  }, { path: '/_stainless_unknown_path' }))
-      .rejects
-      .toThrow(Micro.NotFoundError);
+    await expect(
+      client.prism.metadata.properties(
+        'deal',
+        {
+          teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          autofill: true,
+          crmId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          term: 'term',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Micro.NotFoundError);
   });
 });

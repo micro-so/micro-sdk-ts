@@ -14,9 +14,17 @@ export class Metadata extends APIResource {
   /**
    * Get metadata properties by object type
    */
-  properties(objectType: PrismAPI.ObjectType, params: MetadataPropertiesParams | null | undefined = {}, options?: RequestOptions): APIPromise<void> {
-    const { teamId = this._client.teamID, ...query } = params ?? {}
-    return this._client.get(path`/v2/prism/metadata/properties/${teamId}/${objectType}`, { query, ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+  properties(
+    objectType: PrismAPI.ObjectType,
+    params: MetadataPropertiesParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<void> {
+    const { teamId = this._client.teamID, ...query } = params ?? {};
+    return this._client.get(path`/v2/prism/metadata/properties/${teamId}/${objectType}`, {
+      query,
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -43,7 +51,5 @@ export interface MetadataPropertiesParams {
 }
 
 export declare namespace Metadata {
-  export {
-    type MetadataPropertiesParams as MetadataPropertiesParams
-  };
+  export { type MetadataPropertiesParams as MetadataPropertiesParams };
 }

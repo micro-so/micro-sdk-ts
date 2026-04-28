@@ -10,9 +10,7 @@ const config: JestConfigWithTsJest = {
     '^micro-mcp$': '<rootDir>/src/index.ts',
     '^micro-mcp/(.*)$': '<rootDir>/src/$1',
   },
-  modulePathIgnorePatterns: [
-    '<rootDir>/dist/',
-  ],
+  modulePathIgnorePatterns: ['<rootDir>/dist/'],
   testPathIgnorePatterns: ['scripts'],
 };
 

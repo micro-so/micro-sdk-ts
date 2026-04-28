@@ -13,8 +13,11 @@ export class Actions extends APIResource {
   /**
    * Create Action
    */
-  create(params: ActionCreateParams | null | undefined = {}, options?: RequestOptions): APIPromise<ActionCreateResponse> {
-    const { teamId = this._client.teamID, ...body } = params ?? {}
+  create(
+    params: ActionCreateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ActionCreateResponse> {
+    const { teamId = this._client.teamID, ...body } = params ?? {};
     return this._client.post(path`/v2/prism/${teamId}/action`, { body, ...options });
   }
 
@@ -22,24 +25,35 @@ export class Actions extends APIResource {
    * Update Action
    */
   update(actionID: string, params: ActionUpdateParams, options?: RequestOptions): APIPromise<void> {
-    const { teamId = this._client.teamID, ...body } = params
-    return this._client.patch(path`/v2/prism/${teamId}/action/${actionID}`, { body, ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+    const { teamId = this._client.teamID, ...body } = params;
+    return this._client.patch(path`/v2/prism/${teamId}/action/${actionID}`, {
+      body,
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 
   /**
    * List Actions
    */
   list(params: ActionListParams, options?: RequestOptions): APIPromise<ActionListResponse> {
-    const { teamId = this._client.teamID, ...body } = params
+    const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v2/prism/query/${teamId}/action`, { body, ...options });
   }
 
   /**
    * Delete Action
    */
-  delete(actionID: string, params: ActionDeleteParams | null | undefined = {}, options?: RequestOptions): APIPromise<void> {
-    const { teamId = this._client.teamID } = params ?? {}
-    return this._client.delete(path`/v2/prism/${teamId}/action/${actionID}`, { ...options, headers: buildHeaders([{Accept: '*/*'}, options?.headers]) });
+  delete(
+    actionID: string,
+    params: ActionDeleteParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<void> {
+    const { teamId = this._client.teamID } = params ?? {};
+    return this._client.delete(path`/v2/prism/${teamId}/action/${actionID}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -201,6 +215,6 @@ export declare namespace Actions {
     type ActionCreateParams as ActionCreateParams,
     type ActionUpdateParams as ActionUpdateParams,
     type ActionListParams as ActionListParams,
-    type ActionDeleteParams as ActionDeleteParams
+    type ActionDeleteParams as ActionDeleteParams,
   };
 }

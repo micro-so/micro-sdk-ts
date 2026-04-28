@@ -13,7 +13,7 @@ export class Events extends APIResource {
    * List Events
    */
   list(params: EventListParams, options?: RequestOptions): APIPromise<EventListResponse> {
-    const { teamId = this._client.teamID, ...body } = params
+    const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v2/prism/query/${teamId}/event`, { body, ...options });
   }
 }
@@ -108,6 +108,6 @@ export declare namespace Events {
   export {
     type Event as Event,
     type EventListResponse as EventListResponse,
-    type EventListParams as EventListParams
+    type EventListParams as EventListParams,
   };
 }
