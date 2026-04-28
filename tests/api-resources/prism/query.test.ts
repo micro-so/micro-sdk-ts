@@ -5,7 +5,7 @@ import Micro from 'micro';
 const client = new Micro({
   apiKey: 'My API Key',
   teamID: 'My Team ID',
-  baseURL: process.env["TEST_API_BASE_URL"] ?? 'http://127.0.0.1:4010',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
 describe('resource query', () => {
@@ -24,20 +24,20 @@ describe('resource query', () => {
   // Mock server tests are disabled
   test.skip('execute: required and optional params', async () => {
     const response = await client.prism.query.execute('deal', {
-    teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    query: {
-    select: ['string'],
-    combinator: 'AND',
-    crm_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    filter: [{ foo: { foo: 'string' } }],
-    limit: 0,
-    page: 0,
-    sort: [{ foo: 'asc' }],
-  },
-    id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-    boxes: ['string'],
-    deleted: true,
-    sources: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
-  });
+      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      query: {
+        select: ['string'],
+        combinator: 'AND',
+        crm_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        filter: [{ foo: { foo: 'string' } }],
+        limit: 0,
+        page: 0,
+        sort: [{ foo: 'asc' }],
+      },
+      id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      boxes: ['string'],
+      deleted: true,
+      sources: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+    });
   });
 });
