@@ -39,9 +39,9 @@ const client = new Micro({
   apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
 });
 
-const prismObjectProperties = await client.prism.createObject('deal');
+const contacts = await client.contacts.list({ query: { select: ['full_name', 'email'] } });
 
-console.log(prismObjectProperties.id);
+console.log(contacts.data);
 ```
 
 ### Request & Response types
@@ -57,7 +57,8 @@ const client = new Micro({
   apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
 });
 
-const prismObjectProperties: Micro.PrismObjectProperties = await client.prism.createObject('deal');
+const params: Micro.ContactListParams = { query: { select: ['full_name', 'email'] } };
+const contacts: Micro.ContactListResponse = await client.contacts.list(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -70,15 +71,17 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const prismObjectProperties = await client.prism.createObject('deal').catch(async (err) => {
-  if (err instanceof Micro.APIError) {
-    console.log(err.status); // 400
-    console.log(err.name); // BadRequestError
-    console.log(err.headers); // {server: 'nginx', ...}
-  } else {
-    throw err;
-  }
-});
+const contacts = await client.contacts
+  .list({ query: { select: ['full_name', 'email'] } })
+  .catch(async (err) => {
+    if (err instanceof Micro.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
 Error codes are as follows:
@@ -111,7 +114,7 @@ const client = new Micro({
 });
 
 // Or, configure per-request:
-await client.prism.createObject('deal', {
+await client.contacts.list({ query: { select: ['full_name', 'email'] } }, {
   maxRetries: 5,
 });
 ```
@@ -129,7 +132,7 @@ const client = new Micro({
 });
 
 // Override per-request:
-await client.prism.createObject('deal', {
+await client.contacts.list({ query: { select: ['full_name', 'email'] } }, {
   timeout: 5 * 1000,
 });
 ```
@@ -152,15 +155,17 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Micro();
 
-const response = await client.prism.createObject('deal').asResponse();
+const response = await client.contacts
+  .list({ query: { select: ['full_name', 'email'] } })
+  .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: prismObjectProperties, response: raw } = await client.prism
-  .createObject('deal')
+const { data: contacts, response: raw } = await client.contacts
+  .list({ query: { select: ['full_name', 'email'] } })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(prismObjectProperties.id);
+console.log(contacts.data);
 ```
 
 ### Logging
@@ -240,7 +245,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.prism.createObject({
+client.contacts.list({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
