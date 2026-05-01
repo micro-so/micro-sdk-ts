@@ -1,24 +1,5 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export {
-  Grant,
-  type GrantRetrieveGrantResponse,
-  type GrantUpdateGrantResponse,
-  type GrantRetrieveGrantParams,
-  type GrantUpdateGrantParams,
-} from './grant';
-export { Metadata, type MetadataPropertiesResponse, type MetadataPropertiesParams } from './metadata';
-export {
-  Prism,
-  type ObjectType,
-  type PrismObjectProperties,
-  type PrismDuplicateObjectResponse,
-  type PrismImportObjectsResponse,
-  type PrismCreateObjectParams,
-  type PrismDeleteObjectParams,
-  type PrismDuplicateObjectParams,
-  type PrismImportObjectsParams,
-  type PrismPatchObjectParams,
-  type PrismRestoreObjectParams,
-} from './prism';
-export { Query, type QueryExecuteResponse, type QueryExecuteParams } from './query';
+export { Metadata, type MetadataListResponse, type MetadataListParams } from './metadata';
+export { Objects } from './objects/index';
+export { Prism, type PrismObjectProperties } from './prism';

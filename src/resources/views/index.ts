@@ -1,6 +1,13 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Prism, type PrismObjectProperties } from './prism/prism';
+export {
+  Records,
+  type RecordListResponse,
+  type RecordListParams,
+  type RecordPinParams,
+  type RecordReorderParams,
+  type RecordUnpinParams,
+} from './records';
 export {
   Views,
   type ViewCreateResponse,
@@ -10,4 +17,4 @@ export {
   type ViewUpdateParams,
   type ViewDeleteParams,
   type ViewGetParams,
-} from './views/views';
+} from './views';
