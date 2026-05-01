@@ -39,9 +39,9 @@ const client = new Micro({
   apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
 });
 
-const contacts = await client.contacts.list({ query: { select: ['full_name', 'email'] } });
+const response = await client.prism.objects.deals.query({ query: { select: ['id', 'name'] } });
 
-console.log(contacts.data);
+console.log(response.data);
 ```
 
 ### Request & Response types
@@ -57,8 +57,10 @@ const client = new Micro({
   apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
 });
 
-const params: Micro.ContactListParams = { query: { select: ['full_name', 'email'] } };
-const contacts: Micro.ContactListResponse = await client.contacts.list(params);
+const params: Micro.Prism.Objects.DealQueryParams = { query: { select: ['id', 'name'] } };
+const response: Micro.Prism.Objects.DealQueryResponse = await client.prism.objects.deals.query(
+  params,
+);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -71,8 +73,8 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const contacts = await client.contacts
-  .list({ query: { select: ['full_name', 'email'] } })
+const response = await client.prism.objects.deals
+  .query({ query: { select: ['id', 'name'] } })
   .catch(async (err) => {
     if (err instanceof Micro.APIError) {
       console.log(err.status); // 400
@@ -114,7 +116,7 @@ const client = new Micro({
 });
 
 // Or, configure per-request:
-await client.contacts.list({ query: { select: ['full_name', 'email'] } }, {
+await client.prism.objects.deals.query({ query: { select: ['id', 'name'] } }, {
   maxRetries: 5,
 });
 ```
@@ -132,7 +134,7 @@ const client = new Micro({
 });
 
 // Override per-request:
-await client.contacts.list({ query: { select: ['full_name', 'email'] } }, {
+await client.prism.objects.deals.query({ query: { select: ['id', 'name'] } }, {
   timeout: 5 * 1000,
 });
 ```
@@ -155,17 +157,17 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Micro();
 
-const response = await client.contacts
-  .list({ query: { select: ['full_name', 'email'] } })
+const response = await client.prism.objects.deals
+  .query({ query: { select: ['id', 'name'] } })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: contacts, response: raw } = await client.contacts
-  .list({ query: { select: ['full_name', 'email'] } })
+const { data: response, response: raw } = await client.prism.objects.deals
+  .query({ query: { select: ['id', 'name'] } })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(contacts.data);
+console.log(response.data);
 ```
 
 ### Logging
@@ -245,7 +247,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.contacts.list({
+client.prism.objects.deals.query({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',

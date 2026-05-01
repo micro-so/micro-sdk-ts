@@ -10,8 +10,8 @@ const client = new Micro({
 
 describe('resource metadata', () => {
   // Mock server tests are disabled
-  test.skip('properties: only required params', async () => {
-    const responsePromise = client.prism.metadata.properties('deal');
+  test.skip('list: only required params', async () => {
+    const responsePromise = client.prism.metadata.list('deal');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,8 +22,8 @@ describe('resource metadata', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('properties: required and optional params', async () => {
-    const response = await client.prism.metadata.properties('deal', {
+  test.skip('list: required and optional params', async () => {
+    const response = await client.prism.metadata.list('deal', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       autofill: true,
       crmId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -32,10 +32,10 @@ describe('resource metadata', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('properties: request options and params are passed correctly', async () => {
+  test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.prism.metadata.properties(
+      client.prism.metadata.list(
         'deal',
         {
           teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
