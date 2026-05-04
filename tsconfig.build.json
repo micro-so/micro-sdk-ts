@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "micro/*": ["./dist/src/*"],
-      "micro": ["./dist/src/index.ts"]
+      "@micro-so/sdk/*": ["./dist/src/*"],
+      "@micro-so/sdk": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,
