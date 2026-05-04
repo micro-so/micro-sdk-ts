@@ -9,8 +9,8 @@ It is generated with [Stainless](https://www.stainless.com/).
 Because it's not published yet, clone the repo and build it:
 
 ```sh
-git clone git@github.com:stainless-sdks/micro-typescript.git
-cd micro-typescript
+git clone git@github.com:micro-so/micro-sdk-ts.git
+cd micro-sdk-ts
 ./scripts/bootstrap
 ./scripts/build
 ```
@@ -41,7 +41,7 @@ For clients with a configuration JSON, it might look something like this:
   "mcpServers": {
     "micro_api": {
       "command": "node",
-      "args": ["/path/to/local/micro-typescript/packages/mcp-server"],
+      "args": ["/path/to/local/micro-sdk-ts/packages/mcp-server"],
       "env": {
         "MICRO_API_KEY": "My API Key",
         "MICRO_TEAM_ID": "My Team ID"
