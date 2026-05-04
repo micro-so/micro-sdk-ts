@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
-      "micro/*": ["./src/*"],
-      "micro": ["./src/index.ts"]
+      "@micro-so/sdk/*": ["./src/*"],
+      "@micro-so/sdk": ["./src/index.ts"]
     },
     "noEmit": true,
 
