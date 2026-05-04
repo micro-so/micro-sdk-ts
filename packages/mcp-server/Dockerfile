@@ -59,8 +59,8 @@ WORKDIR /app
 # Copy the build results, preserving directory structure
 COPY --from=builder /build .
 
-# Copy the built micro into node_modules
-COPY --from=builder /build/dist ./node_modules/micro
+# Copy the built @micro-so/sdk into node_modules
+COPY --from=builder /build/dist ./node_modules/@micro-so/sdk
 
 # Change ownership to nodejs user
 RUN chown -R nodejs:nodejs /app

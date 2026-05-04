@@ -1,5 +1,5 @@
-import { multipartFormRequestOptions, createForm } from 'micro/internal/uploads';
-import { toFile } from 'micro/core/uploads';
+import { multipartFormRequestOptions, createForm } from '@micro-so/sdk/internal/uploads';
+import { toFile } from '@micro-so/sdk/core/uploads';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

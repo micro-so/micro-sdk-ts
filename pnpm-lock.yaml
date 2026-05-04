@@ -79,6 +79,9 @@ importers:
       '@hono/node-server':
         specifier: ^1.19.10
         version: 1.19.11(hono@4.12.5)
+      '@micro-so/sdk':
+        specifier: workspace:*
+        version: link:../..
       '@modelcontextprotocol/sdk':
         specifier: ^1.27.1
         version: 1.27.1(zod@3.25.76)
@@ -106,9 +109,6 @@ importers:
       jq-web:
         specifier: https://github.com/stainless-api/jq-web/releases/download/v0.8.8/jq-web.tar.gz
         version: https://github.com/stainless-api/jq-web/releases/download/v0.8.8/jq-web.tar.gz
-      micro:
-        specifier: workspace:*
-        version: link:../..
       minisearch:
         specifier: ^7.2.0
         version: 7.2.0
