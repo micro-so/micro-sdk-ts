@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 (2026-05-04)
+
+Full Changelog: [v0.1.0...v0.1.1](https://github.com/micro-so/micro-sdk-ts/compare/v0.1.0...v0.1.1)
+
+### Chores
+
+* update SDK settings ([2bf32c7](https://github.com/micro-so/micro-sdk-ts/commit/2bf32c709051f9e4f7d292155f24a165a22f6057))
+
 ## 0.1.0 (2026-05-04)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.0.1...v0.1.0)
