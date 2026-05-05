@@ -1,6 +1,6 @@
 import fs from 'fs';
-import type { ResponseLike } from '@micro-so/sdk/internal/to-file';
-import { toFile } from '@micro-so/sdk/core/uploads';
+import type { ResponseLike } from 'micro/internal/to-file';
+import { toFile } from 'micro/core/uploads';
 import { File } from 'node:buffer';
 
 class MyClass {
@@ -97,7 +97,7 @@ describe('missing File error message', () => {
   });
 
   test('is thrown', async () => {
-    const uploads = await import('@micro-so/sdk/core/uploads');
+    const uploads = await import('micro/core/uploads');
     await expect(
       uploads.toFile(mockResponse({ url: 'https://example.com/my/audio.mp3' })),
     ).rejects.toMatchInlineSnapshot(

@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIPromise } from '@micro-so/sdk/core/api-promise';
+import { APIPromise } from 'micro/core/api-promise';
 
 import util from 'node:util';
-import Micro from '@micro-so/sdk';
-import { APIUserAbortError } from '@micro-so/sdk';
+import Micro from 'micro';
+import { APIUserAbortError } from 'micro';
 const defaultFetch = fetch;
 
 describe('instantiate client', () => {

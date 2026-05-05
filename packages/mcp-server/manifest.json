@@ -8,9 +8,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/micro-so/micro-sdk-ts.git"
+    "url": "git+https://github.com/stainless-sdks/micro-typescript.git"
   },
-  "homepage": "https://github.com/micro-so/micro-sdk-ts/tree/main/packages/mcp-server#readme",
+  "homepage": "https://github.com/stainless-sdks/micro-typescript/tree/main/packages/mcp-server#readme",
   "server": {
     "type": "node",
     "entry_point": "index.js",

@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Micro from '@micro-so/sdk';
+import Micro from 'micro';
 
 const client = new Micro({
   apiKey: 'My API Key',
