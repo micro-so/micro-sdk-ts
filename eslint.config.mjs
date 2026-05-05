@@ -22,7 +22,7 @@ export default tseslint.config(
         {
           patterns: [
             {
-              regex: '^@micro-so/sdk(/.*)?',
+              regex: '^micro(/.*)?',
               message: 'Use a relative import, not a package import.',
             },
           ],

@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { IncomingMessage } from 'node:http';
-import { ClientOptions } from '@micro-so/sdk';
+import { ClientOptions } from 'micro';
 import { McpOptions } from './options';
 
 export const parseClientAuthHeaders = (req: IncomingMessage, required?: boolean): Partial<ClientOptions> => {
