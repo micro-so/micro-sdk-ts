@@ -2,10 +2,23 @@
 
 import { APIResource } from '../../../core/resource';
 import * as ContactsAPI from './contacts';
-import { Contact, ContactQueryParams, ContactQueryResponse, Contacts } from './contacts';
+import {
+  Contact,
+  ContactBulkCreateParams,
+  ContactBulkCreateResponse,
+  ContactCreateParams,
+  ContactCreateResponse,
+  ContactQueryParams,
+  ContactQueryResponse,
+  Contacts,
+} from './contacts';
 import * as OrganizationsAPI from './organizations';
 import {
   Organization,
+  OrganizationBulkCreateParams,
+  OrganizationBulkCreateResponse,
+  OrganizationCreateParams,
+  OrganizationCreateResponse,
   OrganizationQueryParams,
   OrganizationQueryResponse,
   Organizations,
@@ -16,14 +29,18 @@ import {
   ActionBulkCreateParams,
   ActionBulkCreateResponse,
   ActionCreateParams,
+  ActionCreateResponse,
   ActionDeleteParams,
   ActionDuplicateParams,
   ActionDuplicateResponse,
   ActionGetParams,
+  ActionGetResponse,
   ActionQueryParams,
   ActionQueryResponse,
   ActionRestoreParams,
+  ActionRestoreResponse,
   ActionUpdateParams,
+  ActionUpdateResponse,
   Actions,
 } from './actions/actions';
 import * as DealsAPI from './deals/deals';
@@ -32,14 +49,18 @@ import {
   DealBulkCreateParams,
   DealBulkCreateResponse,
   DealCreateParams,
+  DealCreateResponse,
   DealDeleteParams,
   DealDuplicateParams,
   DealDuplicateResponse,
   DealGetParams,
+  DealGetResponse,
   DealQueryParams,
   DealQueryResponse,
   DealRestoreParams,
+  DealRestoreResponse,
   DealUpdateParams,
+  DealUpdateResponse,
   Deals,
 } from './deals/deals';
 import * as DocumentsAPI from './documents/documents';
@@ -48,18 +69,29 @@ import {
   DocumentBulkCreateParams,
   DocumentBulkCreateResponse,
   DocumentCreateParams,
+  DocumentCreateResponse,
   DocumentDeleteParams,
   DocumentDuplicateParams,
   DocumentDuplicateResponse,
   DocumentGetParams,
+  DocumentGetResponse,
   DocumentQueryParams,
   DocumentQueryResponse,
   DocumentRestoreParams,
+  DocumentRestoreResponse,
   DocumentUpdateParams,
+  DocumentUpdateResponse,
   Documents,
 } from './documents/documents';
 import * as EventsAPI from './events/events';
-import { Event, EventGetParams, EventQueryParams, EventQueryResponse, Events } from './events/events';
+import {
+  Event,
+  EventGetParams,
+  EventGetResponse,
+  EventQueryParams,
+  EventQueryResponse,
+  Events,
+} from './events/events';
 import * as IdentitiesAPI from './identities/identities';
 import {
   Identities,
@@ -67,14 +99,18 @@ import {
   IdentityBulkCreateParams,
   IdentityBulkCreateResponse,
   IdentityCreateParams,
+  IdentityCreateResponse,
   IdentityDeleteParams,
   IdentityDuplicateParams,
   IdentityDuplicateResponse,
   IdentityGetParams,
+  IdentityGetResponse,
   IdentityQueryParams,
   IdentityQueryResponse,
   IdentityRestoreParams,
+  IdentityRestoreResponse,
   IdentityUpdateParams,
+  IdentityUpdateResponse,
 } from './identities/identities';
 
 export class Objects extends APIResource {
@@ -99,23 +135,35 @@ export declare namespace Objects {
   export {
     Contacts as Contacts,
     type Contact as Contact,
+    type ContactCreateResponse as ContactCreateResponse,
+    type ContactBulkCreateResponse as ContactBulkCreateResponse,
     type ContactQueryResponse as ContactQueryResponse,
+    type ContactCreateParams as ContactCreateParams,
+    type ContactBulkCreateParams as ContactBulkCreateParams,
     type ContactQueryParams as ContactQueryParams,
   };
 
   export {
     Organizations as Organizations,
     type Organization as Organization,
+    type OrganizationCreateResponse as OrganizationCreateResponse,
+    type OrganizationBulkCreateResponse as OrganizationBulkCreateResponse,
     type OrganizationQueryResponse as OrganizationQueryResponse,
+    type OrganizationCreateParams as OrganizationCreateParams,
+    type OrganizationBulkCreateParams as OrganizationBulkCreateParams,
     type OrganizationQueryParams as OrganizationQueryParams,
   };
 
   export {
     Identities as Identities,
     type Identity as Identity,
+    type IdentityCreateResponse as IdentityCreateResponse,
+    type IdentityUpdateResponse as IdentityUpdateResponse,
     type IdentityBulkCreateResponse as IdentityBulkCreateResponse,
     type IdentityDuplicateResponse as IdentityDuplicateResponse,
+    type IdentityGetResponse as IdentityGetResponse,
     type IdentityQueryResponse as IdentityQueryResponse,
+    type IdentityRestoreResponse as IdentityRestoreResponse,
     type IdentityCreateParams as IdentityCreateParams,
     type IdentityUpdateParams as IdentityUpdateParams,
     type IdentityDeleteParams as IdentityDeleteParams,
@@ -129,9 +177,13 @@ export declare namespace Objects {
   export {
     Deals as Deals,
     type Deal as Deal,
+    type DealCreateResponse as DealCreateResponse,
+    type DealUpdateResponse as DealUpdateResponse,
     type DealBulkCreateResponse as DealBulkCreateResponse,
     type DealDuplicateResponse as DealDuplicateResponse,
+    type DealGetResponse as DealGetResponse,
     type DealQueryResponse as DealQueryResponse,
+    type DealRestoreResponse as DealRestoreResponse,
     type DealCreateParams as DealCreateParams,
     type DealUpdateParams as DealUpdateParams,
     type DealDeleteParams as DealDeleteParams,
@@ -145,9 +197,13 @@ export declare namespace Objects {
   export {
     Actions as Actions,
     type Action as Action,
+    type ActionCreateResponse as ActionCreateResponse,
+    type ActionUpdateResponse as ActionUpdateResponse,
     type ActionBulkCreateResponse as ActionBulkCreateResponse,
     type ActionDuplicateResponse as ActionDuplicateResponse,
+    type ActionGetResponse as ActionGetResponse,
     type ActionQueryResponse as ActionQueryResponse,
+    type ActionRestoreResponse as ActionRestoreResponse,
     type ActionCreateParams as ActionCreateParams,
     type ActionUpdateParams as ActionUpdateParams,
     type ActionDeleteParams as ActionDeleteParams,
@@ -161,9 +217,13 @@ export declare namespace Objects {
   export {
     Documents as Documents,
     type Document as Document,
+    type DocumentCreateResponse as DocumentCreateResponse,
+    type DocumentUpdateResponse as DocumentUpdateResponse,
     type DocumentBulkCreateResponse as DocumentBulkCreateResponse,
     type DocumentDuplicateResponse as DocumentDuplicateResponse,
+    type DocumentGetResponse as DocumentGetResponse,
     type DocumentQueryResponse as DocumentQueryResponse,
+    type DocumentRestoreResponse as DocumentRestoreResponse,
     type DocumentCreateParams as DocumentCreateParams,
     type DocumentUpdateParams as DocumentUpdateParams,
     type DocumentDeleteParams as DocumentDeleteParams,
@@ -177,6 +237,7 @@ export declare namespace Objects {
   export {
     Events as Events,
     type Event as Event,
+    type EventGetResponse as EventGetResponse,
     type EventQueryResponse as EventQueryResponse,
     type EventGetParams as EventGetParams,
     type EventQueryParams as EventQueryParams,

@@ -18,7 +18,7 @@ export class Identities extends APIResource {
   create(
     params: IdentityCreateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<IdentityCreateResponse> {
     const { teamId = this._client.teamID, ...body } = params ?? {};
     return this._client.post(path`/v2/prism/${teamId}/identity`, { body, ...options });
   }
@@ -30,7 +30,7 @@ export class Identities extends APIResource {
     identityID: string,
     params: IdentityUpdateParams,
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<IdentityUpdateResponse> {
     const { teamId = this._client.teamID, ...body } = params;
     return this._client.patch(path`/v2/prism/${teamId}/identity/${identityID}`, { body, ...options });
   }
@@ -82,7 +82,7 @@ export class Identities extends APIResource {
     identityID: string,
     params: IdentityGetParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<IdentityGetResponse> {
     const { teamId = this._client.teamID } = params ?? {};
     return this._client.get(path`/v2/prism/${teamId}/identity/${identityID}`, options);
   }
@@ -102,7 +102,7 @@ export class Identities extends APIResource {
     identityID: string,
     params: IdentityRestoreParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<IdentityRestoreResponse> {
     const { teamId = this._client.teamID } = params ?? {};
     return this._client.post(path`/v2/prism/${teamId}/identity/${identityID}/restore`, options);
   }
@@ -115,7 +115,40 @@ export interface Identity {
 
   /**
    * Properties keyed by property slug. Values can be strings, numbers, booleans,
-   * arrays, or null.
+   * arrays, or null. For select/multiselect properties, values may be option slugs
+   * or option UUIDs on write; option slugs are returned on read.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface IdentityCreateResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface IdentityUpdateResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
@@ -156,10 +189,63 @@ export interface IdentityDuplicateResponse {
   id?: string;
 }
 
-export interface IdentityQueryResponse {
-  data?: Array<unknown>;
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface IdentityGetResponse {
+  id: string;
 
-  total?: number;
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+export interface IdentityQueryResponse {
+  data: Array<IdentityQueryResponse.Data>;
+
+  /**
+   * True when the page returned the maximum number of rows; another page may exist.
+   */
+  has_more?: boolean;
+}
+
+export namespace IdentityQueryResponse {
+  /**
+   * Object returned by reads (get/create/patch/restore). id is always present.
+   */
+  export interface Data {
+    id: string;
+
+    crm?: unknown;
+
+    /**
+     * Properties keyed by property slug.
+     */
+    default?: { [key: string]: unknown };
+
+    extended?: unknown;
+  }
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface IdentityRestoreResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
 }
 
 export interface IdentityCreateParams {
@@ -180,7 +266,8 @@ export interface IdentityCreateParams {
 
   /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
-   * booleans, arrays, or null.
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
    */
   default?: { [key: string]: unknown };
 
@@ -208,7 +295,8 @@ export interface IdentityUpdateParams {
 
   /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
-   * booleans, arrays, or null.
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
    */
   default?: { [key: string]: unknown };
 
@@ -315,7 +403,7 @@ export namespace IdentityQueryParams {
 
     /**
      * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
-     * values must be option slugs
+     * values may be option slugs or option UUIDs.
      */
     filter?: Array<{ [key: string]: { [key: string]: string | boolean | Array<string> } }>;
 
@@ -339,9 +427,13 @@ Identities.Grant = Grant;
 export declare namespace Identities {
   export {
     type Identity as Identity,
+    type IdentityCreateResponse as IdentityCreateResponse,
+    type IdentityUpdateResponse as IdentityUpdateResponse,
     type IdentityBulkCreateResponse as IdentityBulkCreateResponse,
     type IdentityDuplicateResponse as IdentityDuplicateResponse,
+    type IdentityGetResponse as IdentityGetResponse,
     type IdentityQueryResponse as IdentityQueryResponse,
+    type IdentityRestoreResponse as IdentityRestoreResponse,
     type IdentityCreateParams as IdentityCreateParams,
     type IdentityUpdateParams as IdentityUpdateParams,
     type IdentityDeleteParams as IdentityDeleteParams,

@@ -18,7 +18,7 @@ export class Deals extends APIResource {
   create(
     params: DealCreateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<DealCreateResponse> {
     const { teamId = this._client.teamID, ...body } = params ?? {};
     return this._client.post(path`/v2/prism/${teamId}/deal`, { body, ...options });
   }
@@ -26,11 +26,7 @@ export class Deals extends APIResource {
   /**
    * Patch object
    */
-  update(
-    dealID: string,
-    params: DealUpdateParams,
-    options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  update(dealID: string, params: DealUpdateParams, options?: RequestOptions): APIPromise<DealUpdateResponse> {
     const { teamId = this._client.teamID, ...body } = params;
     return this._client.patch(path`/v2/prism/${teamId}/deal/${dealID}`, { body, ...options });
   }
@@ -79,7 +75,7 @@ export class Deals extends APIResource {
     dealID: string,
     params: DealGetParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<DealGetResponse> {
     const { teamId = this._client.teamID } = params ?? {};
     return this._client.get(path`/v2/prism/${teamId}/deal/${dealID}`, options);
   }
@@ -99,7 +95,7 @@ export class Deals extends APIResource {
     dealID: string,
     params: DealRestoreParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<DealRestoreResponse> {
     const { teamId = this._client.teamID } = params ?? {};
     return this._client.post(path`/v2/prism/${teamId}/deal/${dealID}/restore`, options);
   }
@@ -112,7 +108,40 @@ export interface Deal {
 
   /**
    * Properties keyed by property slug. Values can be strings, numbers, booleans,
-   * arrays, or null.
+   * arrays, or null. For select/multiselect properties, values may be option slugs
+   * or option UUIDs on write; option slugs are returned on read.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface DealCreateResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface DealUpdateResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
@@ -153,10 +182,63 @@ export interface DealDuplicateResponse {
   id?: string;
 }
 
-export interface DealQueryResponse {
-  data?: Array<unknown>;
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface DealGetResponse {
+  id: string;
 
-  total?: number;
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+export interface DealQueryResponse {
+  data: Array<DealQueryResponse.Data>;
+
+  /**
+   * True when the page returned the maximum number of rows; another page may exist.
+   */
+  has_more?: boolean;
+}
+
+export namespace DealQueryResponse {
+  /**
+   * Object returned by reads (get/create/patch/restore). id is always present.
+   */
+  export interface Data {
+    id: string;
+
+    crm?: unknown;
+
+    /**
+     * Properties keyed by property slug.
+     */
+    default?: { [key: string]: unknown };
+
+    extended?: unknown;
+  }
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface DealRestoreResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
 }
 
 export interface DealCreateParams {
@@ -177,7 +259,8 @@ export interface DealCreateParams {
 
   /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
-   * booleans, arrays, or null.
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
    */
   default?: { [key: string]: unknown };
 
@@ -205,7 +288,8 @@ export interface DealUpdateParams {
 
   /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
-   * booleans, arrays, or null.
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
    */
   default?: { [key: string]: unknown };
 
@@ -312,7 +396,7 @@ export namespace DealQueryParams {
 
     /**
      * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
-     * values must be option slugs
+     * values may be option slugs or option UUIDs.
      */
     filter?: Array<{ [key: string]: { [key: string]: string | boolean | Array<string> } }>;
 
@@ -336,9 +420,13 @@ Deals.Grant = Grant;
 export declare namespace Deals {
   export {
     type Deal as Deal,
+    type DealCreateResponse as DealCreateResponse,
+    type DealUpdateResponse as DealUpdateResponse,
     type DealBulkCreateResponse as DealBulkCreateResponse,
     type DealDuplicateResponse as DealDuplicateResponse,
+    type DealGetResponse as DealGetResponse,
     type DealQueryResponse as DealQueryResponse,
+    type DealRestoreResponse as DealRestoreResponse,
     type DealCreateParams as DealCreateParams,
     type DealUpdateParams as DealUpdateParams,
     type DealDeleteParams as DealDeleteParams,

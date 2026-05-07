@@ -18,7 +18,8 @@ export interface PrismObjectProperties {
 
   /**
    * Properties keyed by property slug. Values can be strings, numbers, booleans,
-   * arrays, or null.
+   * arrays, or null. For select/multiselect properties, values may be option slugs
+   * or option UUIDs on write; option slugs are returned on read.
    */
   default?: { [key: string]: unknown };
 

@@ -3,9 +3,13 @@
 export {
   Actions,
   type Action,
+  type ActionCreateResponse,
+  type ActionUpdateResponse,
   type ActionBulkCreateResponse,
   type ActionDuplicateResponse,
+  type ActionGetResponse,
   type ActionQueryResponse,
+  type ActionRestoreResponse,
   type ActionCreateParams,
   type ActionUpdateParams,
   type ActionDeleteParams,
@@ -15,13 +19,26 @@ export {
   type ActionQueryParams,
   type ActionRestoreParams,
 } from './actions/index';
-export { Contacts, type Contact, type ContactQueryResponse, type ContactQueryParams } from './contacts';
+export {
+  Contacts,
+  type Contact,
+  type ContactCreateResponse,
+  type ContactBulkCreateResponse,
+  type ContactQueryResponse,
+  type ContactCreateParams,
+  type ContactBulkCreateParams,
+  type ContactQueryParams,
+} from './contacts';
 export {
   Deals,
   type Deal,
+  type DealCreateResponse,
+  type DealUpdateResponse,
   type DealBulkCreateResponse,
   type DealDuplicateResponse,
+  type DealGetResponse,
   type DealQueryResponse,
+  type DealRestoreResponse,
   type DealCreateParams,
   type DealUpdateParams,
   type DealDeleteParams,
@@ -34,9 +51,13 @@ export {
 export {
   Documents,
   type Document,
+  type DocumentCreateResponse,
+  type DocumentUpdateResponse,
   type DocumentBulkCreateResponse,
   type DocumentDuplicateResponse,
+  type DocumentGetResponse,
   type DocumentQueryResponse,
+  type DocumentRestoreResponse,
   type DocumentCreateParams,
   type DocumentUpdateParams,
   type DocumentDeleteParams,
@@ -49,6 +70,7 @@ export {
 export {
   Events,
   type Event,
+  type EventGetResponse,
   type EventQueryResponse,
   type EventGetParams,
   type EventQueryParams,
@@ -56,9 +78,13 @@ export {
 export {
   Identities,
   type Identity,
+  type IdentityCreateResponse,
+  type IdentityUpdateResponse,
   type IdentityBulkCreateResponse,
   type IdentityDuplicateResponse,
+  type IdentityGetResponse,
   type IdentityQueryResponse,
+  type IdentityRestoreResponse,
   type IdentityCreateParams,
   type IdentityUpdateParams,
   type IdentityDeleteParams,
@@ -72,6 +98,10 @@ export { Objects } from './objects';
 export {
   Organizations,
   type Organization,
+  type OrganizationCreateResponse,
+  type OrganizationBulkCreateResponse,
   type OrganizationQueryResponse,
+  type OrganizationCreateParams,
+  type OrganizationBulkCreateParams,
   type OrganizationQueryParams,
 } from './organizations';
