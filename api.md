@@ -50,37 +50,25 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/prism/objects/identities/identities.ts">Identity</a></code>
-- <code><a href="./src/resources/prism/objects/identities/identities.ts">IdentityCreateResponse</a></code>
-- <code><a href="./src/resources/prism/objects/identities/identities.ts">IdentityUpdateResponse</a></code>
-- <code><a href="./src/resources/prism/objects/identities/identities.ts">IdentityBulkCreateResponse</a></code>
-- <code><a href="./src/resources/prism/objects/identities/identities.ts">IdentityDuplicateResponse</a></code>
-- <code><a href="./src/resources/prism/objects/identities/identities.ts">IdentityGetResponse</a></code>
-- <code><a href="./src/resources/prism/objects/identities/identities.ts">IdentityQueryResponse</a></code>
-- <code><a href="./src/resources/prism/objects/identities/identities.ts">IdentityRestoreResponse</a></code>
+- <code><a href="./src/resources/prism/objects/identities.ts">Identity</a></code>
+- <code><a href="./src/resources/prism/objects/identities.ts">IdentityCreateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/identities.ts">IdentityUpdateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/identities.ts">IdentityBulkCreateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/identities.ts">IdentityDuplicateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/identities.ts">IdentityGetResponse</a></code>
+- <code><a href="./src/resources/prism/objects/identities.ts">IdentityQueryResponse</a></code>
+- <code><a href="./src/resources/prism/objects/identities.ts">IdentityRestoreResponse</a></code>
 
 Methods:
 
-- <code title="post /v2/prism/{teamId}/identity">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities/identities.ts">create</a>({ ...params }) -> IdentityCreateResponse</code>
-- <code title="patch /v2/prism/{teamId}/identity/{identityId}">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities/identities.ts">update</a>(identityID, { ...params }) -> IdentityUpdateResponse</code>
-- <code title="delete /v2/prism/{teamId}/identity/{identityId}">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities/identities.ts">delete</a>(identityID, { ...params }) -> void</code>
-- <code title="post /v2/prism/{teamId}/identity/import">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities/identities.ts">bulkCreate</a>({ ...params }) -> IdentityBulkCreateResponse</code>
-- <code title="post /v2/prism/{teamId}/identity/{identityId}/duplicate">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities/identities.ts">duplicate</a>(identityID, { ...params }) -> IdentityDuplicateResponse</code>
-- <code title="get /v2/prism/{teamId}/identity/{identityId}">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities/identities.ts">get</a>(identityID, { ...params }) -> IdentityGetResponse</code>
-- <code title="post /v2/prism/query/{teamId}/identity">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities/identities.ts">query</a>({ ...params }) -> IdentityQueryResponse</code>
-- <code title="post /v2/prism/{teamId}/identity/{identityId}/restore">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities/identities.ts">restore</a>(identityID, { ...params }) -> IdentityRestoreResponse</code>
-
-#### Grant
-
-Types:
-
-- <code><a href="./src/resources/prism/objects/identities/grant.ts">GrantUpdateResponse</a></code>
-- <code><a href="./src/resources/prism/objects/identities/grant.ts">GrantGetResponse</a></code>
-
-Methods:
-
-- <code title="put /v2/prism/grant/{teamId}/identity/{identityId}">client.prism.objects.identities.grant.<a href="./src/resources/prism/objects/identities/grant.ts">update</a>(identityID, { ...params }) -> GrantUpdateResponse</code>
-- <code title="get /v2/prism/grant/{teamId}/identity/{identityId}">client.prism.objects.identities.grant.<a href="./src/resources/prism/objects/identities/grant.ts">get</a>(identityID, { ...params }) -> GrantGetResponse</code>
+- <code title="post /v2/prism/{teamId}/identity">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">create</a>({ ...params }) -> IdentityCreateResponse</code>
+- <code title="patch /v2/prism/{teamId}/identity/{identityId}">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">update</a>(identityID, { ...params }) -> IdentityUpdateResponse</code>
+- <code title="delete /v2/prism/{teamId}/identity/{identityId}">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">delete</a>(identityID, { ...params }) -> void</code>
+- <code title="post /v2/prism/{teamId}/identity/import">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">bulkCreate</a>({ ...params }) -> IdentityBulkCreateResponse</code>
+- <code title="post /v2/prism/{teamId}/identity/{identityId}/duplicate">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">duplicate</a>(identityID, { ...params }) -> IdentityDuplicateResponse</code>
+- <code title="get /v2/prism/{teamId}/identity/{identityId}">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">get</a>(identityID, { ...params }) -> IdentityGetResponse</code>
+- <code title="post /v2/prism/query/{teamId}/identity">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">query</a>({ ...params }) -> IdentityQueryResponse</code>
+- <code title="post /v2/prism/{teamId}/identity/{identityId}/restore">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">restore</a>(identityID, { ...params }) -> IdentityRestoreResponse</code>
 
 ### Deals
 

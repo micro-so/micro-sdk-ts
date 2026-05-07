@@ -93,7 +93,7 @@ export {
   type IdentityGetParams,
   type IdentityQueryParams,
   type IdentityRestoreParams,
-} from './identities/index';
+} from './identities';
 export { Objects } from './objects';
 export {
   Organizations,

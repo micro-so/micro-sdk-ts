@@ -12,6 +12,26 @@ import {
   ContactQueryResponse,
   Contacts,
 } from './contacts';
+import * as IdentitiesAPI from './identities';
+import {
+  Identities,
+  Identity,
+  IdentityBulkCreateParams,
+  IdentityBulkCreateResponse,
+  IdentityCreateParams,
+  IdentityCreateResponse,
+  IdentityDeleteParams,
+  IdentityDuplicateParams,
+  IdentityDuplicateResponse,
+  IdentityGetParams,
+  IdentityGetResponse,
+  IdentityQueryParams,
+  IdentityQueryResponse,
+  IdentityRestoreParams,
+  IdentityRestoreResponse,
+  IdentityUpdateParams,
+  IdentityUpdateResponse,
+} from './identities';
 import * as OrganizationsAPI from './organizations';
 import {
   Organization,
@@ -92,26 +112,6 @@ import {
   EventQueryResponse,
   Events,
 } from './events/events';
-import * as IdentitiesAPI from './identities/identities';
-import {
-  Identities,
-  Identity,
-  IdentityBulkCreateParams,
-  IdentityBulkCreateResponse,
-  IdentityCreateParams,
-  IdentityCreateResponse,
-  IdentityDeleteParams,
-  IdentityDuplicateParams,
-  IdentityDuplicateResponse,
-  IdentityGetParams,
-  IdentityGetResponse,
-  IdentityQueryParams,
-  IdentityQueryResponse,
-  IdentityRestoreParams,
-  IdentityRestoreResponse,
-  IdentityUpdateParams,
-  IdentityUpdateResponse,
-} from './identities/identities';
 
 export class Objects extends APIResource {
   contacts: ContactsAPI.Contacts = new ContactsAPI.Contacts(this._client);
