@@ -101,18 +101,6 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/identity/{identityId}/restore',
   },
   {
-    clientCallName: 'client.prism.objects.identities.grant.update',
-    fullyQualifiedName: 'prism.objects.identities.grant.update',
-    httpMethod: 'put',
-    httpPath: '/v2/prism/grant/{teamId}/identity/{identityId}',
-  },
-  {
-    clientCallName: 'client.prism.objects.identities.grant.get',
-    fullyQualifiedName: 'prism.objects.identities.grant.get',
-    httpMethod: 'get',
-    httpPath: '/v2/prism/grant/{teamId}/identity/{identityId}',
-  },
-  {
     clientCallName: 'client.prism.objects.deals.create',
     fullyQualifiedName: 'prism.objects.deals.create',
     httpMethod: 'post',

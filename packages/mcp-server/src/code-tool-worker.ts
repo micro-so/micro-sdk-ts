@@ -123,8 +123,6 @@ const fuse = new Fuse(
     'client.prism.objects.identities.query',
     'client.prism.objects.identities.restore',
     'client.prism.objects.identities.update',
-    'client.prism.objects.identities.grant.get',
-    'client.prism.objects.identities.grant.update',
     'client.prism.objects.deals.bulkCreate',
     'client.prism.objects.deals.create',
     'client.prism.objects.deals.delete',
