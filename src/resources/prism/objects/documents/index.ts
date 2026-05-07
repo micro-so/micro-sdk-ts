@@ -3,9 +3,13 @@
 export {
   Documents,
   type Document,
+  type DocumentCreateResponse,
+  type DocumentUpdateResponse,
   type DocumentBulkCreateResponse,
   type DocumentDuplicateResponse,
+  type DocumentGetResponse,
   type DocumentQueryResponse,
+  type DocumentRestoreResponse,
   type DocumentCreateParams,
   type DocumentUpdateParams,
   type DocumentDeleteParams,

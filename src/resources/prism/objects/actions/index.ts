@@ -3,9 +3,13 @@
 export {
   Actions,
   type Action,
+  type ActionCreateResponse,
+  type ActionUpdateResponse,
   type ActionBulkCreateResponse,
   type ActionDuplicateResponse,
+  type ActionGetResponse,
   type ActionQueryResponse,
+  type ActionRestoreResponse,
   type ActionCreateParams,
   type ActionUpdateParams,
   type ActionDeleteParams,

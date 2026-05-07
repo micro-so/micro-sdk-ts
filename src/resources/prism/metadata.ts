@@ -10,7 +10,16 @@ export class Metadata extends APIResource {
    * Get metadata properties by object type
    */
   list(
-    objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event',
+    objectType:
+      | 'deal'
+      | 'identity'
+      | 'ai_chat_thread'
+      | 'ai_chat_message'
+      | 'document'
+      | 'action'
+      | 'event'
+      | 'organization'
+      | 'contact',
     params: MetadataListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<MetadataListResponse> {

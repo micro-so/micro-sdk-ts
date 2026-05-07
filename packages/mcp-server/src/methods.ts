@@ -17,10 +17,34 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/metadata/properties/{teamId}/{objectType}',
   },
   {
+    clientCallName: 'client.prism.objects.contacts.create',
+    fullyQualifiedName: 'prism.objects.contacts.create',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/contact',
+  },
+  {
+    clientCallName: 'client.prism.objects.contacts.bulkCreate',
+    fullyQualifiedName: 'prism.objects.contacts.bulkCreate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/contact/import',
+  },
+  {
     clientCallName: 'client.prism.objects.contacts.query',
     fullyQualifiedName: 'prism.objects.contacts.query',
     httpMethod: 'post',
     httpPath: '/v2/prism/query/{teamId}/contact',
+  },
+  {
+    clientCallName: 'client.prism.objects.organizations.create',
+    fullyQualifiedName: 'prism.objects.organizations.create',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/organization',
+  },
+  {
+    clientCallName: 'client.prism.objects.organizations.bulkCreate',
+    fullyQualifiedName: 'prism.objects.organizations.bulkCreate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/organization/import',
   },
   {
     clientCallName: 'client.prism.objects.organizations.query',

@@ -60,14 +60,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     qualified: 'client.prism.metadata.list',
     params: [
       'teamId: string;',
-      "objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event';",
+      'objectType: string;',
       'autofill?: boolean;',
       'crmId?: string;',
       'term?: string;',
     ],
     response: 'object',
     markdown:
-      "## list\n\n`client.prism.metadata.list(teamId: string, objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event', autofill?: boolean, crmId?: string, term?: string): object`\n\n**get** `/v2/prism/metadata/properties/{teamId}/{objectType}`\n\nGet metadata properties by object type\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'deal' | 'identity' | 'ai_chat_thread' | 'ai_chat_message' | 'document' | 'action' | 'event'`\n\n- `autofill?: boolean`\n\n- `crmId?: string`\n\n- `term?: string`\n\n### Returns\n\n- `object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst metadata = await client.prism.metadata.list('deal');\n\nconsole.log(metadata);\n```",
+      "## list\n\n`client.prism.metadata.list(teamId: string, objectType: string, autofill?: boolean, crmId?: string, term?: string): object`\n\n**get** `/v2/prism/metadata/properties/{teamId}/{objectType}`\n\nGet metadata properties by object type\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `autofill?: boolean`\n\n- `crmId?: string`\n\n- `term?: string`\n\n### Returns\n\n- `object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst metadata = await client.prism.metadata.list('deal');\n\nconsole.log(metadata);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.metadata.list',
@@ -96,6 +96,45 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'create',
+    endpoint: '/v2/prism/{teamId}/contact',
+    httpMethod: 'post',
+    summary: 'Create object',
+    description: 'Create object',
+    stainlessPath: '(resource) prism.objects.contacts > (method) create',
+    qualified: 'client.prism.objects.contacts.create',
+    params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
+    markdown:
+      "## create\n\n`client.prism.objects.contacts.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/contact`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst contact = await client.prism.objects.contacts.create();\n\nconsole.log(contact);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.contacts.create',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst contact = await client.prism.objects.contacts.create();\n\nconsole.log(contact.id);",
+      },
+      python: {
+        method: 'prism.objects.contacts.create',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ncontact = client.prism.objects.contacts.create()\nprint(contact.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Contacts.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tcontact, err := client.Prism.Objects.Contacts.New(context.TODO(), micro.PrismObjectContactNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", contact.ID)\n}\n',
+      },
+      cli: {
+        method: 'contacts create',
+        example:
+          "micro prism:objects:contacts create \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/contact \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'query',
     endpoint: '/v2/prism/query/{teamId}/contact',
     httpMethod: 'post',
@@ -111,9 +150,10 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'deleted?: boolean;',
       'sources?: string[];',
     ],
-    response: '{ data?: object[]; total?: number; }',
+    response:
+      '{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }',
     markdown:
-      "## query\n\n`client.prism.objects.contacts.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/contact`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; total?: number; }`\n\n  - `data?: object[]`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.contacts.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
+      "## query\n\n`client.prism.objects.contacts.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data: object[]; has_more?: boolean; }`\n\n**post** `/v2/prism/query/{teamId}/contact`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values may be option slugs or option UUIDs.\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }`\n\n  - `data: { id: string; crm?: object; default?: object; extended?: object; }[]`\n  - `has_more?: boolean`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.contacts.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.contacts.query',
@@ -142,6 +182,90 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'bulk_create',
+    endpoint: '/v2/prism/{teamId}/contact/import',
+    httpMethod: 'post',
+    summary: 'Import objects',
+    description:
+      'Import multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: <100 records sync (immediate response), >=100 records async (S3/Lambda with WebSocket progress)',
+    stainlessPath: '(resource) prism.objects.contacts > (method) bulk_create',
+    qualified: 'client.prism.objects.contacts.bulkCreate',
+    params: [
+      'teamId: string;',
+      'objects: { id?: string; crm?: object; default?: object; extended?: object; }[];',
+      'options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; };',
+    ],
+    response:
+      "{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }",
+    markdown:
+      "## bulk_create\n\n`client.prism.objects.contacts.bulkCreate(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/contact/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: <100 records sync (immediate response), >=100 records async (S3/Lambda with WebSocket progress)\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.contacts.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.contacts.bulkCreate',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.contacts.bulkCreate({ objects: [{}] });\n\nconsole.log(response.results);",
+      },
+      python: {
+        method: 'prism.objects.contacts.bulk_create',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.contacts.bulk_create(\n    objects=[{}],\n)\nprint(response.results)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Contacts.BulkNew',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Contacts.BulkNew(context.TODO(), micro.PrismObjectContactBulkNewParams{\n\t\tObjects: micro.F([]micro.PrismObjectPropertiesParam{{}}),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Results)\n}\n',
+      },
+      cli: {
+        method: 'contacts bulk_create',
+        example:
+          "micro prism:objects:contacts bulk-create \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --object '{}'",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/import \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "objects": [\n            {}\n          ]\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'create',
+    endpoint: '/v2/prism/{teamId}/organization',
+    httpMethod: 'post',
+    summary: 'Create object',
+    description: 'Create object',
+    stainlessPath: '(resource) prism.objects.organizations > (method) create',
+    qualified: 'client.prism.objects.organizations.create',
+    params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
+    markdown:
+      "## create\n\n`client.prism.objects.organizations.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/organization`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst organization = await client.prism.objects.organizations.create();\n\nconsole.log(organization);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.organizations.create',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst organization = await client.prism.objects.organizations.create();\n\nconsole.log(organization.id);",
+      },
+      python: {
+        method: 'prism.objects.organizations.create',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\norganization = client.prism.objects.organizations.create()\nprint(organization.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Organizations.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\torganization, err := client.Prism.Objects.Organizations.New(context.TODO(), micro.PrismObjectOrganizationNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", organization.ID)\n}\n',
+      },
+      cli: {
+        method: 'organizations create',
+        example:
+          "micro prism:objects:organizations create \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'query',
     endpoint: '/v2/prism/query/{teamId}/organization',
     httpMethod: 'post',
@@ -157,9 +281,10 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'deleted?: boolean;',
       'sources?: string[];',
     ],
-    response: '{ data?: object[]; total?: number; }',
+    response:
+      '{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }',
     markdown:
-      "## query\n\n`client.prism.objects.organizations.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/organization`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; total?: number; }`\n\n  - `data?: object[]`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.organizations.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
+      "## query\n\n`client.prism.objects.organizations.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data: object[]; has_more?: boolean; }`\n\n**post** `/v2/prism/query/{teamId}/organization`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values may be option slugs or option UUIDs.\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }`\n\n  - `data: { id: string; crm?: object; default?: object; extended?: object; }[]`\n  - `has_more?: boolean`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.organizations.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.organizations.query',
@@ -188,6 +313,51 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'bulk_create',
+    endpoint: '/v2/prism/{teamId}/organization/import',
+    httpMethod: 'post',
+    summary: 'Import objects',
+    description:
+      'Import multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: <100 records sync (immediate response), >=100 records async (S3/Lambda with WebSocket progress)',
+    stainlessPath: '(resource) prism.objects.organizations > (method) bulk_create',
+    qualified: 'client.prism.objects.organizations.bulkCreate',
+    params: [
+      'teamId: string;',
+      'objects: { id?: string; crm?: object; default?: object; extended?: object; }[];',
+      'options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; };',
+    ],
+    response:
+      "{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }",
+    markdown:
+      "## bulk_create\n\n`client.prism.objects.organizations.bulkCreate(teamId: string, objects: { id?: string; crm?: object; default?: object; extended?: object; }[], options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }): { results?: object[]; status?: 'complete'; summary?: object; }`\n\n**post** `/v2/prism/{teamId}/organization/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: <100 records sync (immediate response), >=100 records async (S3/Lambda with WebSocket progress)\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { id?: string; crm?: object; default?: object; extended?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; crm_id?: string; dedupe_by?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `crm_id?: string`\n    App/CRM ID for context (optional)\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n\n### Returns\n\n- `{ results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]; status?: 'complete'; summary?: { created?: number; errors?: number; existing?: number; total?: number; }; }`\n\n  - `results?: { id?: string; created?: boolean; error?: string; existing?: boolean; }[]`\n  - `status?: 'complete'`\n  - `summary?: { created?: number; errors?: number; existing?: number; total?: number; }`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.organizations.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.organizations.bulkCreate',
+        example:
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.organizations.bulkCreate({ objects: [{}] });\n\nconsole.log(response.results);",
+      },
+      python: {
+        method: 'prism.objects.organizations.bulk_create',
+        example:
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.organizations.bulk_create(\n    objects=[{}],\n)\nprint(response.results)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Organizations.BulkNew',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Organizations.BulkNew(context.TODO(), micro.PrismObjectOrganizationBulkNewParams{\n\t\tObjects: micro.F([]micro.PrismObjectPropertiesParam{{}}),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Results)\n}\n',
+      },
+      cli: {
+        method: 'organizations bulk_create',
+        example:
+          "micro prism:objects:organizations bulk-create \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --object '{}'",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/import \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "objects": [\n            {}\n          ]\n        }\'',
+      },
+    },
+  },
+  {
     name: 'create',
     endpoint: '/v2/prism/{teamId}/identity',
     httpMethod: 'post',
@@ -196,24 +366,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.identities > (method) create',
     qualified: 'client.prism.objects.identities.create',
     params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## create\n\n`client.prism.objects.identities.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/identity`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.identities.create();\n\nconsole.log(prismObjectProperties);\n```",
+      "## create\n\n`client.prism.objects.identities.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/identity`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst identity = await client.prism.objects.identities.create();\n\nconsole.log(identity);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.identities.create',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.identities.create();\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst identity = await client.prism.objects.identities.create();\n\nconsole.log(identity.id);",
       },
       python: {
         method: 'prism.objects.identities.create',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.identities.create()\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nidentity = client.prism.objects.identities.create()\nprint(identity.id)',
       },
       go: {
         method: 'client.Prism.Objects.Identities.New',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Identities.New(context.TODO(), micro.PrismObjectIdentityNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tidentity, err := client.Prism.Objects.Identities.New(context.TODO(), micro.PrismObjectIdentityNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", identity.ID)\n}\n',
       },
       cli: {
         method: 'identities create',
@@ -235,24 +405,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.identities > (method) get',
     qualified: 'client.prism.objects.identities.get',
     params: ['teamId: string;', 'identityId: string;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## get\n\n`client.prism.objects.identities.get(teamId: string, identityId: string): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/identity/{identityId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `identityId: string`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.identities.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## get\n\n`client.prism.objects.identities.get(teamId: string, identityId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/identity/{identityId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `identityId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst identity = await client.prism.objects.identities.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(identity);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.identities.get',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.identities.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst identity = await client.prism.objects.identities.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(identity.id);",
       },
       python: {
         method: 'prism.objects.identities.get',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.identities.get(\n    identity_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nidentity = client.prism.objects.identities.get(\n    identity_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(identity.id)',
       },
       go: {
         method: 'client.Prism.Objects.Identities.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Identities.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectIdentityGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tidentity, err := client.Prism.Objects.Identities.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectIdentityGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", identity.ID)\n}\n',
       },
       cli: {
         method: 'identities get',
@@ -281,24 +451,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'default?: object;',
       'extended?: object;',
     ],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## update\n\n`client.prism.objects.identities.update(teamId: string, identityId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**patch** `/v2/prism/{teamId}/identity/{identityId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `identityId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.identities.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## update\n\n`client.prism.objects.identities.update(teamId: string, identityId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**patch** `/v2/prism/{teamId}/identity/{identityId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `identityId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst identity = await client.prism.objects.identities.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(identity);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.identities.update',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.identities.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst identity = await client.prism.objects.identities.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(identity.id);",
       },
       python: {
         method: 'prism.objects.identities.update',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.identities.update(\n    identity_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nidentity = client.prism.objects.identities.update(\n    identity_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(identity.id)',
       },
       go: {
         method: 'client.Prism.Objects.Identities.Update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Identities.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectIdentityUpdateParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tidentity, err := client.Prism.Objects.Identities.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectIdentityUpdateParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", identity.ID)\n}\n',
       },
       cli: {
         method: 'identities update',
@@ -365,9 +535,10 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'deleted?: boolean;',
       'sources?: string[];',
     ],
-    response: '{ data?: object[]; total?: number; }',
+    response:
+      '{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }',
     markdown:
-      "## query\n\n`client.prism.objects.identities.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/identity`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; total?: number; }`\n\n  - `data?: object[]`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.identities.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
+      "## query\n\n`client.prism.objects.identities.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data: object[]; has_more?: boolean; }`\n\n**post** `/v2/prism/query/{teamId}/identity`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values may be option slugs or option UUIDs.\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }`\n\n  - `data: { id: string; crm?: object; default?: object; extended?: object; }[]`\n  - `has_more?: boolean`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.identities.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.identities.query',
@@ -488,24 +659,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.identities > (method) restore',
     qualified: 'client.prism.objects.identities.restore',
     params: ['teamId: string;', 'identityId: string;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## restore\n\n`client.prism.objects.identities.restore(teamId: string, identityId: string): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/identity/{identityId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `identityId: string`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.identities.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## restore\n\n`client.prism.objects.identities.restore(teamId: string, identityId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/identity/{identityId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `identityId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.identities.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.identities.restore',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.identities.restore(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.identities.restore(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(response.id);",
       },
       python: {
         method: 'prism.objects.identities.restore',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.identities.restore(\n    identity_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.identities.restore(\n    identity_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.id)',
       },
       go: {
         method: 'client.Prism.Objects.Identities.Restore',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Identities.Restore(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectIdentityRestoreParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Identities.Restore(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectIdentityRestoreParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
       },
       cli: {
         method: 'identities restore',
@@ -611,24 +782,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.deals > (method) create',
     qualified: 'client.prism.objects.deals.create',
     params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## create\n\n`client.prism.objects.deals.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/deal`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.deals.create();\n\nconsole.log(prismObjectProperties);\n```",
+      "## create\n\n`client.prism.objects.deals.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/deal`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst deal = await client.prism.objects.deals.create();\n\nconsole.log(deal);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.deals.create',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.deals.create();\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst deal = await client.prism.objects.deals.create();\n\nconsole.log(deal.id);",
       },
       python: {
         method: 'prism.objects.deals.create',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.deals.create()\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ndeal = client.prism.objects.deals.create()\nprint(deal.id)',
       },
       go: {
         method: 'client.Prism.Objects.Deals.New',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Deals.New(context.TODO(), micro.PrismObjectDealNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tdeal, err := client.Prism.Objects.Deals.New(context.TODO(), micro.PrismObjectDealNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", deal.ID)\n}\n',
       },
       cli: {
         method: 'deals create',
@@ -650,24 +821,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.deals > (method) get',
     qualified: 'client.prism.objects.deals.get',
     params: ['teamId: string;', 'dealId: string;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## get\n\n`client.prism.objects.deals.get(teamId: string, dealId: string): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/deal/{dealId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.deals.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## get\n\n`client.prism.objects.deals.get(teamId: string, dealId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/deal/{dealId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst deal = await client.prism.objects.deals.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(deal);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.deals.get',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.deals.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst deal = await client.prism.objects.deals.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(deal.id);",
       },
       python: {
         method: 'prism.objects.deals.get',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.deals.get(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ndeal = client.prism.objects.deals.get(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(deal.id)',
       },
       go: {
         method: 'client.Prism.Objects.Deals.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Deals.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDealGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tdeal, err := client.Prism.Objects.Deals.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDealGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", deal.ID)\n}\n',
       },
       cli: {
         method: 'deals get',
@@ -696,24 +867,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'default?: object;',
       'extended?: object;',
     ],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## update\n\n`client.prism.objects.deals.update(teamId: string, dealId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**patch** `/v2/prism/{teamId}/deal/{dealId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.deals.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## update\n\n`client.prism.objects.deals.update(teamId: string, dealId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**patch** `/v2/prism/{teamId}/deal/{dealId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst deal = await client.prism.objects.deals.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(deal);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.deals.update',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.deals.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst deal = await client.prism.objects.deals.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(deal.id);",
       },
       python: {
         method: 'prism.objects.deals.update',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.deals.update(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ndeal = client.prism.objects.deals.update(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(deal.id)',
       },
       go: {
         method: 'client.Prism.Objects.Deals.Update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Deals.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDealUpdateParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tdeal, err := client.Prism.Objects.Deals.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDealUpdateParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", deal.ID)\n}\n',
       },
       cli: {
         method: 'deals update',
@@ -780,9 +951,10 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'deleted?: boolean;',
       'sources?: string[];',
     ],
-    response: '{ data?: object[]; total?: number; }',
+    response:
+      '{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }',
     markdown:
-      "## query\n\n`client.prism.objects.deals.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/deal`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; total?: number; }`\n\n  - `data?: object[]`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.deals.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
+      "## query\n\n`client.prism.objects.deals.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data: object[]; has_more?: boolean; }`\n\n**post** `/v2/prism/query/{teamId}/deal`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values may be option slugs or option UUIDs.\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }`\n\n  - `data: { id: string; crm?: object; default?: object; extended?: object; }[]`\n  - `has_more?: boolean`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.deals.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.deals.query',
@@ -903,24 +1075,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.deals > (method) restore',
     qualified: 'client.prism.objects.deals.restore',
     params: ['teamId: string;', 'dealId: string;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## restore\n\n`client.prism.objects.deals.restore(teamId: string, dealId: string): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/deal/{dealId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.deals.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## restore\n\n`client.prism.objects.deals.restore(teamId: string, dealId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/deal/{dealId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.deals.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.deals.restore',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.deals.restore(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.deals.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.id);",
       },
       python: {
         method: 'prism.objects.deals.restore',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.deals.restore(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.deals.restore(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.id)',
       },
       go: {
         method: 'client.Prism.Objects.Deals.Restore',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Deals.Restore(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDealRestoreParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Deals.Restore(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDealRestoreParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
       },
       cli: {
         method: 'deals restore',
@@ -1026,24 +1198,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.actions > (method) create',
     qualified: 'client.prism.objects.actions.create',
     params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## create\n\n`client.prism.objects.actions.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/action`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.actions.create();\n\nconsole.log(prismObjectProperties);\n```",
+      "## create\n\n`client.prism.objects.actions.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/action`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst action = await client.prism.objects.actions.create();\n\nconsole.log(action);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.actions.create',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.actions.create();\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst action = await client.prism.objects.actions.create();\n\nconsole.log(action.id);",
       },
       python: {
         method: 'prism.objects.actions.create',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.actions.create()\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\naction = client.prism.objects.actions.create()\nprint(action.id)',
       },
       go: {
         method: 'client.Prism.Objects.Actions.New',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Actions.New(context.TODO(), micro.PrismObjectActionNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\taction, err := client.Prism.Objects.Actions.New(context.TODO(), micro.PrismObjectActionNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", action.ID)\n}\n',
       },
       cli: {
         method: 'actions create',
@@ -1065,24 +1237,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.actions > (method) get',
     qualified: 'client.prism.objects.actions.get',
     params: ['teamId: string;', 'actionId: string;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## get\n\n`client.prism.objects.actions.get(teamId: string, actionId: string): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/action/{actionId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.actions.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## get\n\n`client.prism.objects.actions.get(teamId: string, actionId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/action/{actionId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst action = await client.prism.objects.actions.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(action);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.actions.get',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.actions.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst action = await client.prism.objects.actions.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(action.id);",
       },
       python: {
         method: 'prism.objects.actions.get',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.actions.get(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\naction = client.prism.objects.actions.get(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(action.id)',
       },
       go: {
         method: 'client.Prism.Objects.Actions.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Actions.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectActionGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\taction, err := client.Prism.Objects.Actions.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectActionGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", action.ID)\n}\n',
       },
       cli: {
         method: 'actions get',
@@ -1111,24 +1283,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'default?: object;',
       'extended?: object;',
     ],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## update\n\n`client.prism.objects.actions.update(teamId: string, actionId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**patch** `/v2/prism/{teamId}/action/{actionId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.actions.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## update\n\n`client.prism.objects.actions.update(teamId: string, actionId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**patch** `/v2/prism/{teamId}/action/{actionId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst action = await client.prism.objects.actions.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(action);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.actions.update',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.actions.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst action = await client.prism.objects.actions.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(action.id);",
       },
       python: {
         method: 'prism.objects.actions.update',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.actions.update(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\naction = client.prism.objects.actions.update(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(action.id)',
       },
       go: {
         method: 'client.Prism.Objects.Actions.Update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Actions.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectActionUpdateParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\taction, err := client.Prism.Objects.Actions.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectActionUpdateParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", action.ID)\n}\n',
       },
       cli: {
         method: 'actions update',
@@ -1195,9 +1367,10 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'deleted?: boolean;',
       'sources?: string[];',
     ],
-    response: '{ data?: object[]; total?: number; }',
+    response:
+      '{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }',
     markdown:
-      "## query\n\n`client.prism.objects.actions.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/action`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; total?: number; }`\n\n  - `data?: object[]`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.actions.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
+      "## query\n\n`client.prism.objects.actions.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data: object[]; has_more?: boolean; }`\n\n**post** `/v2/prism/query/{teamId}/action`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values may be option slugs or option UUIDs.\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }`\n\n  - `data: { id: string; crm?: object; default?: object; extended?: object; }[]`\n  - `has_more?: boolean`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.actions.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.actions.query',
@@ -1318,24 +1491,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.actions > (method) restore',
     qualified: 'client.prism.objects.actions.restore',
     params: ['teamId: string;', 'actionId: string;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## restore\n\n`client.prism.objects.actions.restore(teamId: string, actionId: string): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/action/{actionId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.actions.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## restore\n\n`client.prism.objects.actions.restore(teamId: string, actionId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/action/{actionId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.actions.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.actions.restore',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.actions.restore(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.actions.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.id);",
       },
       python: {
         method: 'prism.objects.actions.restore',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.actions.restore(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.actions.restore(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.id)',
       },
       go: {
         method: 'client.Prism.Objects.Actions.Restore',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Actions.Restore(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectActionRestoreParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Actions.Restore(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectActionRestoreParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
       },
       cli: {
         method: 'actions restore',
@@ -1441,24 +1614,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.documents > (method) create',
     qualified: 'client.prism.objects.documents.create',
     params: ['teamId: string;', 'id?: string;', 'crm?: object;', 'default?: object;', 'extended?: object;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## create\n\n`client.prism.objects.documents.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/document`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.documents.create();\n\nconsole.log(prismObjectProperties);\n```",
+      "## create\n\n`client.prism.objects.documents.create(teamId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/document`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst document = await client.prism.objects.documents.create();\n\nconsole.log(document);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.documents.create',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.documents.create();\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst document = await client.prism.objects.documents.create();\n\nconsole.log(document.id);",
       },
       python: {
         method: 'prism.objects.documents.create',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.documents.create()\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ndocument = client.prism.objects.documents.create()\nprint(document.id)',
       },
       go: {
         method: 'client.Prism.Objects.Documents.New',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Documents.New(context.TODO(), micro.PrismObjectDocumentNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tdocument, err := client.Prism.Objects.Documents.New(context.TODO(), micro.PrismObjectDocumentNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", document.ID)\n}\n',
       },
       cli: {
         method: 'documents create',
@@ -1480,24 +1653,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.documents > (method) get',
     qualified: 'client.prism.objects.documents.get',
     params: ['teamId: string;', 'documentId: string;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## get\n\n`client.prism.objects.documents.get(teamId: string, documentId: string): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/document/{documentId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.documents.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## get\n\n`client.prism.objects.documents.get(teamId: string, documentId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/document/{documentId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst document = await client.prism.objects.documents.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(document);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.documents.get',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.documents.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst document = await client.prism.objects.documents.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(document.id);",
       },
       python: {
         method: 'prism.objects.documents.get',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.documents.get(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ndocument = client.prism.objects.documents.get(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(document.id)',
       },
       go: {
         method: 'client.Prism.Objects.Documents.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Documents.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDocumentGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tdocument, err := client.Prism.Objects.Documents.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDocumentGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", document.ID)\n}\n',
       },
       cli: {
         method: 'documents get',
@@ -1526,24 +1699,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'default?: object;',
       'extended?: object;',
     ],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## update\n\n`client.prism.objects.documents.update(teamId: string, documentId: string, id?: string, crm?: object, default?: object, extended?: object): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**patch** `/v2/prism/{teamId}/document/{documentId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.documents.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## update\n\n`client.prism.objects.documents.update(teamId: string, documentId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**patch** `/v2/prism/{teamId}/document/{documentId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst document = await client.prism.objects.documents.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(document);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.documents.update',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.documents.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst document = await client.prism.objects.documents.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(document.id);",
       },
       python: {
         method: 'prism.objects.documents.update',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.documents.update(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ndocument = client.prism.objects.documents.update(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(document.id)',
       },
       go: {
         method: 'client.Prism.Objects.Documents.Update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Documents.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDocumentUpdateParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tdocument, err := client.Prism.Objects.Documents.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDocumentUpdateParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", document.ID)\n}\n',
       },
       cli: {
         method: 'documents update',
@@ -1610,9 +1783,10 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'deleted?: boolean;',
       'sources?: string[];',
     ],
-    response: '{ data?: object[]; total?: number; }',
+    response:
+      '{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }',
     markdown:
-      "## query\n\n`client.prism.objects.documents.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/document`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; total?: number; }`\n\n  - `data?: object[]`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.documents.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
+      "## query\n\n`client.prism.objects.documents.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data: object[]; has_more?: boolean; }`\n\n**post** `/v2/prism/query/{teamId}/document`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values may be option slugs or option UUIDs.\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }`\n\n  - `data: { id: string; crm?: object; default?: object; extended?: object; }[]`\n  - `has_more?: boolean`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.documents.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.documents.query',
@@ -1733,24 +1907,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.documents > (method) restore',
     qualified: 'client.prism.objects.documents.restore',
     params: ['teamId: string;', 'documentId: string;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## restore\n\n`client.prism.objects.documents.restore(teamId: string, documentId: string): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/document/{documentId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.documents.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## restore\n\n`client.prism.objects.documents.restore(teamId: string, documentId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/document/{documentId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.documents.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.documents.restore',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.documents.restore(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.documents.restore(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(response.id);",
       },
       python: {
         method: 'prism.objects.documents.restore',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.documents.restore(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.documents.restore(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.id)',
       },
       go: {
         method: 'client.Prism.Objects.Documents.Restore',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Documents.Restore(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDocumentRestoreParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Documents.Restore(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDocumentRestoreParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
       },
       cli: {
         method: 'documents restore',
@@ -1856,24 +2030,24 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.events > (method) get',
     qualified: 'client.prism.objects.events.get',
     params: ['teamId: string;', 'eventId: string;'],
-    response: '{ id?: string; crm?: object; default?: object; extended?: object; }',
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
     markdown:
-      "## get\n\n`client.prism.objects.events.get(teamId: string, eventId: string): { id?: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/event/{eventId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `eventId: string`\n\n### Returns\n\n- `{ id?: string; crm?: object; default?: object; extended?: object; }`\n\n  - `id?: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst prismObjectProperties = await client.prism.objects.events.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(prismObjectProperties);\n```",
+      "## get\n\n`client.prism.objects.events.get(teamId: string, eventId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/event/{eventId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `eventId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst event = await client.prism.objects.events.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(event);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.events.get',
         example:
-          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst prismObjectProperties = await client.prism.objects.events.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(prismObjectProperties.id);",
+          "import Micro from 'micro';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst event = await client.prism.objects.events.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(event.id);",
       },
       python: {
         method: 'prism.objects.events.get',
         example:
-          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nprism_object_properties = client.prism.objects.events.get(\n    event_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(prism_object_properties.id)',
+          'import os\nfrom micro import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nevent = client.prism.objects.events.get(\n    event_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(event.id)',
       },
       go: {
         method: 'client.Prism.Objects.Events.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tprismObjectProperties, err := client.Prism.Objects.Events.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEventGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", prismObjectProperties.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/stainless-sdks/micro-go"\n\t"github.com/stainless-sdks/micro-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tevent, err := client.Prism.Objects.Events.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEventGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", event.ID)\n}\n',
       },
       cli: {
         method: 'events get',
@@ -1902,9 +2076,10 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'deleted?: boolean;',
       'sources?: string[];',
     ],
-    response: '{ data?: object[]; total?: number; }',
+    response:
+      '{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }',
     markdown:
-      "## query\n\n`client.prism.objects.events.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data?: object[]; total?: number; }`\n\n**post** `/v2/prism/query/{teamId}/event`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values must be option slugs\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data?: object[]; total?: number; }`\n\n  - `data?: object[]`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.events.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
+      "## query\n\n`client.prism.objects.events.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], deleted?: boolean, sources?: string[]): { data: object[]; has_more?: boolean; }`\n\n**post** `/v2/prism/query/{teamId}/event`\n\nQuery v2\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; crm_id?: string; filter?: object[]; limit?: number; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name)\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `crm_id?: string`\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values may be option slugs or option UUIDs.\n  - `limit?: number`\n  - `page?: number`\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `deleted?: boolean`\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data: { id: string; crm?: object; default?: object; extended?: object; }[]; has_more?: boolean; }`\n\n  - `data: { id: string; crm?: object; default?: object; extended?: object; }[]`\n  - `has_more?: boolean`\n\n### Example\n\n```typescript\nimport Micro from 'micro';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.events.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.events.query',

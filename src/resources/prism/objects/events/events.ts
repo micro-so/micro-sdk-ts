@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../../core/resource';
-import * as PrismAPI from '../../prism';
 import * as GrantAPI from './grant';
 import { Grant, GrantGetParams, GrantGetResponse, GrantUpdateParams, GrantUpdateResponse } from './grant';
 import { APIPromise } from '../../../../core/api-promise';
@@ -18,7 +17,7 @@ export class Events extends APIResource {
     eventID: string,
     params: EventGetParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<EventGetResponse> {
     const { teamId = this._client.teamID } = params ?? {};
     return this._client.get(path`/v2/prism/${teamId}/event/${eventID}`, options);
   }
@@ -39,7 +38,24 @@ export interface Event {
 
   /**
    * Properties keyed by property slug. Values can be strings, numbers, booleans,
-   * arrays, or null.
+   * arrays, or null. For select/multiselect properties, values may be option slugs
+   * or option UUIDs on write; option slugs are returned on read.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface EventGetResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
@@ -47,9 +63,30 @@ export interface Event {
 }
 
 export interface EventQueryResponse {
-  data?: Array<unknown>;
+  data: Array<EventQueryResponse.Data>;
 
-  total?: number;
+  /**
+   * True when the page returned the maximum number of rows; another page may exist.
+   */
+  has_more?: boolean;
+}
+
+export namespace EventQueryResponse {
+  /**
+   * Object returned by reads (get/create/patch/restore). id is always present.
+   */
+  export interface Data {
+    id: string;
+
+    crm?: unknown;
+
+    /**
+     * Properties keyed by property slug.
+     */
+    default?: { [key: string]: unknown };
+
+    extended?: unknown;
+  }
 }
 
 export interface EventGetParams {
@@ -105,7 +142,7 @@ export namespace EventQueryParams {
 
     /**
      * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
-     * values must be option slugs
+     * values may be option slugs or option UUIDs.
      */
     filter?: Array<{ [key: string]: { [key: string]: string | boolean | Array<string> } }>;
 
@@ -125,6 +162,7 @@ Events.Grant = Grant;
 export declare namespace Events {
   export {
     type Event as Event,
+    type EventGetResponse as EventGetResponse,
     type EventQueryResponse as EventQueryResponse,
     type EventGetParams as EventGetParams,
     type EventQueryParams as EventQueryParams,

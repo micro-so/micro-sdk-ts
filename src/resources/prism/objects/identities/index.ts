@@ -10,9 +10,13 @@ export {
 export {
   Identities,
   type Identity,
+  type IdentityCreateResponse,
+  type IdentityUpdateResponse,
   type IdentityBulkCreateResponse,
   type IdentityDuplicateResponse,
+  type IdentityGetResponse,
   type IdentityQueryResponse,
+  type IdentityRestoreResponse,
   type IdentityCreateParams,
   type IdentityUpdateParams,
   type IdentityDeleteParams,

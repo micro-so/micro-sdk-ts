@@ -109,7 +109,11 @@ function getTSDiagnostics(code: string): string[] {
 const fuse = new Fuse(
   [
     'client.prism.metadata.list',
+    'client.prism.objects.contacts.bulkCreate',
+    'client.prism.objects.contacts.create',
     'client.prism.objects.contacts.query',
+    'client.prism.objects.organizations.bulkCreate',
+    'client.prism.objects.organizations.create',
     'client.prism.objects.organizations.query',
     'client.prism.objects.identities.bulkCreate',
     'client.prism.objects.identities.create',

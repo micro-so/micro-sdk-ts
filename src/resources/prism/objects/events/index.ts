@@ -3,6 +3,7 @@
 export {
   Events,
   type Event,
+  type EventGetResponse,
   type EventQueryResponse,
   type EventGetParams,
   type EventQueryParams,
