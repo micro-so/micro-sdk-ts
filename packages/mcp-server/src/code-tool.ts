@@ -149,7 +149,8 @@ const remoteStainlessHandler = async ({
       readEnv('MICRO_API_KEY') ?? client.apiKey,
       'set MICRO_API_KEY environment variable or provide apiKey client option',
     ),
-    MICRO_BASE_URL: readEnv('MICRO_BASE_URL') ?? client.baseURL ?? undefined,
+    MICRO_BASE_URL:
+      readEnv('MICRO_BASE_URL') ?? readEnv('MICRO_ENVIRONMENT') ? undefined : client.baseURL ?? undefined,
   };
   // Merge any upstream client envs from the request header, with upstream values taking precedence.
   const mergedClientEnvs = { ...localClientEnvs, ...reqContext.upstreamClientEnvs };
@@ -166,7 +167,10 @@ const remoteStainlessHandler = async ({
       project_name: 'micro',
       code,
       intent,
-      client_opts: { teamID: readEnvOrError('MICRO_TEAM_ID') },
+      client_opts: {
+        teamID: readEnvOrError('MICRO_TEAM_ID'),
+        environment: (readEnv('MICRO_ENVIRONMENT') || undefined) as any,
+      },
     } satisfies WorkerInput),
   });
 

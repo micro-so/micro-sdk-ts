@@ -20,8 +20,11 @@ Use the Micro MCP Server to enable AI assistants to interact with this API, allo
 ## Installation
 
 ```sh
-npm install @micro-so/sdk
+npm install git+ssh://git@github.com:micro-so/micro-sdk-ts.git
 ```
+
+> [!NOTE]
+> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install @micro-so/sdk`
 
 ## Usage
 
@@ -34,6 +37,7 @@ import Micro from '@micro-so/sdk';
 const client = new Micro({
   teamID: 'My Team ID',
   apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
+  environment: 'production', // defaults to 'staging'
 });
 
 const response = await client.prism.objects.deals.query({ query: { select: ['id', 'name'] } });
@@ -52,6 +56,7 @@ import Micro from '@micro-so/sdk';
 const client = new Micro({
   teamID: 'My Team ID',
   apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
+  environment: 'production', // defaults to 'staging'
 });
 
 const params: Micro.Prism.Objects.DealQueryParams = { query: { select: ['id', 'name'] } };
