@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.2.0 (2026-05-08)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** api update ([56c2538](https://github.com/micro-so/micro-sdk-ts/commit/56c2538a2a18e5abf28222d8b1a71e267d5d509e))
+* **api:** api update ([41a8496](https://github.com/micro-so/micro-sdk-ts/commit/41a8496b1ea42da75f23abc92a2450edcc09b088))
+* **api:** api update ([d483dbd](https://github.com/micro-so/micro-sdk-ts/commit/d483dbdd150244b0f3539bc59ab0469fae2bd867))
+* **api:** api update ([b0491b7](https://github.com/micro-so/micro-sdk-ts/commit/b0491b74ee0059eb58fddadc4a51012d6bb1323b))
+* **api:** api update ([20e8541](https://github.com/micro-so/micro-sdk-ts/commit/20e8541a34d3de695ffcd4f2d2d2011ba10d4bf4))
+* **api:** api update ([bf2e00d](https://github.com/micro-so/micro-sdk-ts/commit/bf2e00daa55bd9838f44fd2791cf39ac69e531ff))
+* **api:** api update ([a9b8534](https://github.com/micro-so/micro-sdk-ts/commit/a9b8534ff5dba5c6530e2df9464da9f7702f9876))
+* **api:** api update ([cf0f077](https://github.com/micro-so/micro-sdk-ts/commit/cf0f077c2b439a319c5322f4097911cf11f3b0f7))
+* **api:** api update ([731d5c3](https://github.com/micro-so/micro-sdk-ts/commit/731d5c34c207b34036ad0876036f7c34302b6c93))
+* **api:** api update ([b4f4f66](https://github.com/micro-so/micro-sdk-ts/commit/b4f4f66c872830ae0a908e839a3cfc131b1f0d23))
+
+
+### Chores
+
+* redact api-key headers in debug logs ([a83cf72](https://github.com/micro-so/micro-sdk-ts/commit/a83cf72d8056cf7456eefec166af17c00eabb805))
+* update SDK settings ([87cd8cd](https://github.com/micro-so/micro-sdk-ts/commit/87cd8cd162f4ec8400a0883c8a2935faf1ea796f))
+* update SDK settings ([1e9dab8](https://github.com/micro-so/micro-sdk-ts/commit/1e9dab8aa7d310ebfc489a981c99697812054dc8))
+* update SDK settings ([58dde06](https://github.com/micro-so/micro-sdk-ts/commit/58dde060a0a61fb6046d420c575be11e2cb26798))
+* update SDK settings ([8d620e0](https://github.com/micro-so/micro-sdk-ts/commit/8d620e0b73c37e0e78b6662d3e476021a8834cd4))
+* update SDK settings ([fdcfcd7](https://github.com/micro-so/micro-sdk-ts/commit/fdcfcd7725cd2743d59802e9918716f0d42e1242))
+* update SDK settings ([fef86a9](https://github.com/micro-so/micro-sdk-ts/commit/fef86a927c3cc7dc8bb7d6883f337a706945013e))
+* update SDK settings ([d7abfdd](https://github.com/micro-so/micro-sdk-ts/commit/d7abfdd5b2cfc976aa16208f19455103294fb32c))
+* update SDK settings ([2bf32c7](https://github.com/micro-so/micro-sdk-ts/commit/2bf32c709051f9e4f7d292155f24a165a22f6057))
+
 ## 0.1.0 (2026-05-04)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.0.1...v0.1.0)
