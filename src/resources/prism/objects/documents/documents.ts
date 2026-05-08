@@ -18,7 +18,7 @@ export class Documents extends APIResource {
   create(
     params: DocumentCreateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<DocumentCreateResponse> {
     const { teamId = this._client.teamID, ...body } = params ?? {};
     return this._client.post(path`/v2/prism/${teamId}/document`, { body, ...options });
   }
@@ -30,7 +30,7 @@ export class Documents extends APIResource {
     documentID: string,
     params: DocumentUpdateParams,
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<DocumentUpdateResponse> {
     const { teamId = this._client.teamID, ...body } = params;
     return this._client.patch(path`/v2/prism/${teamId}/document/${documentID}`, { body, ...options });
   }
@@ -82,13 +82,13 @@ export class Documents extends APIResource {
     documentID: string,
     params: DocumentGetParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<DocumentGetResponse> {
     const { teamId = this._client.teamID } = params ?? {};
     return this._client.get(path`/v2/prism/${teamId}/document/${documentID}`, options);
   }
 
   /**
-   * Query v2
+   * Query
    */
   query(params: DocumentQueryParams, options?: RequestOptions): APIPromise<DocumentQueryResponse> {
     const { teamId = this._client.teamID, ...body } = params;
@@ -102,7 +102,7 @@ export class Documents extends APIResource {
     documentID: string,
     params: DocumentRestoreParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<DocumentRestoreResponse> {
     const { teamId = this._client.teamID } = params ?? {};
     return this._client.post(path`/v2/prism/${teamId}/document/${documentID}/restore`, options);
   }
@@ -115,7 +115,40 @@ export interface Document {
 
   /**
    * Properties keyed by property slug. Values can be strings, numbers, booleans,
-   * arrays, or null.
+   * arrays, or null. For select/multiselect properties, values may be option slugs
+   * or option UUIDs on write; option slugs are returned on read.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface DocumentCreateResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface DocumentUpdateResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
@@ -156,10 +189,63 @@ export interface DocumentDuplicateResponse {
   id?: string;
 }
 
-export interface DocumentQueryResponse {
-  data?: Array<unknown>;
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface DocumentGetResponse {
+  id: string;
 
-  total?: number;
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+export interface DocumentQueryResponse {
+  data: Array<DocumentQueryResponse.Data>;
+
+  /**
+   * True when the page returned the maximum number of rows; another page may exist.
+   */
+  has_more?: boolean;
+}
+
+export namespace DocumentQueryResponse {
+  /**
+   * Object returned by reads (get/create/patch/restore). id is always present.
+   */
+  export interface Data {
+    id: string;
+
+    crm?: unknown;
+
+    /**
+     * Properties keyed by property slug.
+     */
+    default?: { [key: string]: unknown };
+
+    extended?: unknown;
+  }
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface DocumentRestoreResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
 }
 
 export interface DocumentCreateParams {
@@ -180,7 +266,8 @@ export interface DocumentCreateParams {
 
   /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
-   * booleans, arrays, or null.
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
    */
   default?: { [key: string]: unknown };
 
@@ -208,7 +295,8 @@ export interface DocumentUpdateParams {
 
   /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
-   * booleans, arrays, or null.
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
    */
   default?: { [key: string]: unknown };
 
@@ -315,7 +403,7 @@ export namespace DocumentQueryParams {
 
     /**
      * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
-     * values must be option slugs
+     * values may be option slugs or option UUIDs.
      */
     filter?: Array<{ [key: string]: { [key: string]: string | boolean | Array<string> } }>;
 
@@ -339,9 +427,13 @@ Documents.Grant = Grant;
 export declare namespace Documents {
   export {
     type Document as Document,
+    type DocumentCreateResponse as DocumentCreateResponse,
+    type DocumentUpdateResponse as DocumentUpdateResponse,
     type DocumentBulkCreateResponse as DocumentBulkCreateResponse,
     type DocumentDuplicateResponse as DocumentDuplicateResponse,
+    type DocumentGetResponse as DocumentGetResponse,
     type DocumentQueryResponse as DocumentQueryResponse,
+    type DocumentRestoreResponse as DocumentRestoreResponse,
     type DocumentCreateParams as DocumentCreateParams,
     type DocumentUpdateParams as DocumentUpdateParams,
     type DocumentDeleteParams as DocumentDeleteParams,

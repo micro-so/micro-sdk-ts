@@ -18,7 +18,7 @@ export class Actions extends APIResource {
   create(
     params: ActionCreateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<ActionCreateResponse> {
     const { teamId = this._client.teamID, ...body } = params ?? {};
     return this._client.post(path`/v2/prism/${teamId}/action`, { body, ...options });
   }
@@ -30,7 +30,7 @@ export class Actions extends APIResource {
     actionID: string,
     params: ActionUpdateParams,
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<ActionUpdateResponse> {
     const { teamId = this._client.teamID, ...body } = params;
     return this._client.patch(path`/v2/prism/${teamId}/action/${actionID}`, { body, ...options });
   }
@@ -79,13 +79,13 @@ export class Actions extends APIResource {
     actionID: string,
     params: ActionGetParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<ActionGetResponse> {
     const { teamId = this._client.teamID } = params ?? {};
     return this._client.get(path`/v2/prism/${teamId}/action/${actionID}`, options);
   }
 
   /**
-   * Query v2
+   * Query
    */
   query(params: ActionQueryParams, options?: RequestOptions): APIPromise<ActionQueryResponse> {
     const { teamId = this._client.teamID, ...body } = params;
@@ -99,7 +99,7 @@ export class Actions extends APIResource {
     actionID: string,
     params: ActionRestoreParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PrismAPI.PrismObjectProperties> {
+  ): APIPromise<ActionRestoreResponse> {
     const { teamId = this._client.teamID } = params ?? {};
     return this._client.post(path`/v2/prism/${teamId}/action/${actionID}/restore`, options);
   }
@@ -112,7 +112,40 @@ export interface Action {
 
   /**
    * Properties keyed by property slug. Values can be strings, numbers, booleans,
-   * arrays, or null.
+   * arrays, or null. For select/multiselect properties, values may be option slugs
+   * or option UUIDs on write; option slugs are returned on read.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface ActionCreateResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface ActionUpdateResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
@@ -153,10 +186,63 @@ export interface ActionDuplicateResponse {
   id?: string;
 }
 
-export interface ActionQueryResponse {
-  data?: Array<unknown>;
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface ActionGetResponse {
+  id: string;
 
-  total?: number;
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+export interface ActionQueryResponse {
+  data: Array<ActionQueryResponse.Data>;
+
+  /**
+   * True when the page returned the maximum number of rows; another page may exist.
+   */
+  has_more?: boolean;
+}
+
+export namespace ActionQueryResponse {
+  /**
+   * Object returned by reads (get/create/patch/restore). id is always present.
+   */
+  export interface Data {
+    id: string;
+
+    crm?: unknown;
+
+    /**
+     * Properties keyed by property slug.
+     */
+    default?: { [key: string]: unknown };
+
+    extended?: unknown;
+  }
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface ActionRestoreResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
 }
 
 export interface ActionCreateParams {
@@ -177,7 +263,8 @@ export interface ActionCreateParams {
 
   /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
-   * booleans, arrays, or null.
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
    */
   default?: { [key: string]: unknown };
 
@@ -205,7 +292,8 @@ export interface ActionUpdateParams {
 
   /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
-   * booleans, arrays, or null.
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
    */
   default?: { [key: string]: unknown };
 
@@ -312,7 +400,7 @@ export namespace ActionQueryParams {
 
     /**
      * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
-     * values must be option slugs
+     * values may be option slugs or option UUIDs.
      */
     filter?: Array<{ [key: string]: { [key: string]: string | boolean | Array<string> } }>;
 
@@ -336,9 +424,13 @@ Actions.Grant = Grant;
 export declare namespace Actions {
   export {
     type Action as Action,
+    type ActionCreateResponse as ActionCreateResponse,
+    type ActionUpdateResponse as ActionUpdateResponse,
     type ActionBulkCreateResponse as ActionBulkCreateResponse,
     type ActionDuplicateResponse as ActionDuplicateResponse,
+    type ActionGetResponse as ActionGetResponse,
     type ActionQueryResponse as ActionQueryResponse,
+    type ActionRestoreResponse as ActionRestoreResponse,
     type ActionCreateParams as ActionCreateParams,
     type ActionUpdateParams as ActionUpdateParams,
     type ActionDeleteParams as ActionDeleteParams,

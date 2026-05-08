@@ -3,9 +3,13 @@
 export {
   Deals,
   type Deal,
+  type DealCreateResponse,
+  type DealUpdateResponse,
   type DealBulkCreateResponse,
   type DealDuplicateResponse,
+  type DealGetResponse,
   type DealQueryResponse,
+  type DealRestoreResponse,
   type DealCreateParams,
   type DealUpdateParams,
   type DealDeleteParams,

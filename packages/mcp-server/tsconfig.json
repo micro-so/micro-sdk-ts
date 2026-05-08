@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
-      "micro-mcp/*": ["./src/*"],
-      "micro-mcp": ["./src/index.ts"]
+      "@micro-so/mcp/*": ["./src/*"],
+      "@micro-so/mcp": ["./src/index.ts"]
     },
     "noEmit": true,
 
