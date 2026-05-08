@@ -84,7 +84,7 @@ export class Identities extends APIResource {
   }
 
   /**
-   * Query v2
+   * Query
    */
   query(params: IdentityQueryParams, options?: RequestOptions): APIPromise<IdentityQueryResponse> {
     const { teamId = this._client.teamID, ...body } = params;

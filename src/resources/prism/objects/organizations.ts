@@ -84,7 +84,7 @@ export class Organizations extends APIResource {
   }
 
   /**
-   * Query v2
+   * Query
    */
   query(params: OrganizationQueryParams, options?: RequestOptions): APIPromise<OrganizationQueryResponse> {
     const { teamId = this._client.teamID, ...body } = params;
