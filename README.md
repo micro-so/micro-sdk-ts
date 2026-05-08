@@ -20,8 +20,11 @@ Use the Micro MCP Server to enable AI assistants to interact with this API, allo
 ## Installation
 
 ```sh
-npm install @micro-so/sdk
+npm install git+ssh://git@github.com:micro-so/micro-sdk-ts.git
 ```
+
+> [!NOTE]
+> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install @micro-so/sdk`
 
 ## Usage
 
