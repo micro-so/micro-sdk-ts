@@ -4,32 +4,17 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
-### Building
+### Direct invocation
 
-Because it's not published yet, clone the repo and build it:
-
-```sh
-git clone git@github.com:micro-so/micro-sdk-ts.git
-cd micro-sdk-ts
-./scripts/bootstrap
-./scripts/build
-```
-
-### Running
+You can run the MCP Server directly via `npx`:
 
 ```sh
-# set env vars as needed
 export MICRO_API_KEY="My API Key"
 export MICRO_TEAM_ID="My Team ID"
-node ./packages/mcp-server/dist/index.js
+npx -y @micro-so/mcp@latest
 ```
 
-> [!NOTE]
-> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npx -y @micro-so/mcp`
-
 ### Via MCP Client
-
-[Build the project](#building) as mentioned above.
 
 There is a partial list of existing clients at [modelcontextprotocol.io](https://modelcontextprotocol.io/clients). If you already
 have a client, consult their documentation to install the MCP server.
@@ -40,8 +25,8 @@ For clients with a configuration JSON, it might look something like this:
 {
   "mcpServers": {
     "micro_so_sdk_api": {
-      "command": "node",
-      "args": ["/path/to/local/micro-sdk-ts/packages/mcp-server"],
+      "command": "npx",
+      "args": ["-y", "@micro-so/mcp"],
       "env": {
         "MICRO_API_KEY": "My API Key",
         "MICRO_TEAM_ID": "My Team ID"
@@ -49,6 +34,29 @@ For clients with a configuration JSON, it might look something like this:
     }
   }
 }
+```
+
+### Cursor
+
+If you use Cursor, you can install the MCP server by using the button below. You will need to set your environment variables
+in Cursor's `mcp.json`, which can be found in Cursor Settings > Tools & MCP > New MCP Server.
+
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40micro-so%2Fmcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBtaWNyby1zby9tY3AiXSwiZW52Ijp7Ik1JQ1JPX0FQSV9LRVkiOiJNeSBBUEkgS2V5IiwiTUlDUk9fVEVBTV9JRCI6Ik15IFRlYW0gSUQifX0)
+
+### VS Code
+
+If you use MCP, you can install the MCP server by clicking the link below. You will need to set your environment variables
+in VS Code's `mcp.json`, which can be found via Command Palette > MCP: Open User Configuration.
+
+[Open VS Code](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22%40micro-so%2Fmcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40micro-so%2Fmcp%22%5D%2C%22env%22%3A%7B%22MICRO_API_KEY%22%3A%22My%20API%20Key%22%2C%22MICRO_TEAM_ID%22%3A%22My%20Team%20ID%22%7D%7D)
+
+### Claude Code
+
+If you use Claude Code, you can install the MCP server by running the command below in your terminal. You will need to set your
+environment variables in Claude Code's `.claude.json`, which can be found in your home directory.
+
+```
+claude mcp add micro_so_mcp_api --env MICRO_API_KEY="My API Key" MICRO_TEAM_ID="My Team ID" -- npx -y @micro-so/mcp
 ```
 
 ## Code Mode
