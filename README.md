@@ -20,11 +20,8 @@ Use the Micro MCP Server to enable AI assistants to interact with this API, allo
 ## Installation
 
 ```sh
-npm install git+ssh://git@github.com:stainless-sdks/micro-typescript.git
+npm install micro
 ```
-
-> [!NOTE]
-> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install micro`
 
 ## Usage
 
@@ -357,7 +354,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/micro-typescript/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/micro-so/micro-sdk-ts/issues) with questions, bugs, or suggestions.
 
 ## Requirements
 
