@@ -23,10 +23,34 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/contact',
   },
   {
+    clientCallName: 'client.prism.objects.contacts.update',
+    fullyQualifiedName: 'prism.objects.contacts.update',
+    httpMethod: 'patch',
+    httpPath: '/v2/prism/{teamId}/contact/{contactId}',
+  },
+  {
+    clientCallName: 'client.prism.objects.contacts.delete',
+    fullyQualifiedName: 'prism.objects.contacts.delete',
+    httpMethod: 'delete',
+    httpPath: '/v2/prism/{teamId}/contact/{contactId}',
+  },
+  {
     clientCallName: 'client.prism.objects.contacts.bulkCreate',
     fullyQualifiedName: 'prism.objects.contacts.bulkCreate',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/contact/import',
+  },
+  {
+    clientCallName: 'client.prism.objects.contacts.duplicate',
+    fullyQualifiedName: 'prism.objects.contacts.duplicate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/contact/{contactId}/duplicate',
+  },
+  {
+    clientCallName: 'client.prism.objects.contacts.get',
+    fullyQualifiedName: 'prism.objects.contacts.get',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/contact/{contactId}',
   },
   {
     clientCallName: 'client.prism.objects.contacts.query',
@@ -35,10 +59,28 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/query/{teamId}/contact',
   },
   {
+    clientCallName: 'client.prism.objects.contacts.restore',
+    fullyQualifiedName: 'prism.objects.contacts.restore',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/contact/{contactId}/restore',
+  },
+  {
     clientCallName: 'client.prism.objects.organizations.create',
     fullyQualifiedName: 'prism.objects.organizations.create',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/organization',
+  },
+  {
+    clientCallName: 'client.prism.objects.organizations.update',
+    fullyQualifiedName: 'prism.objects.organizations.update',
+    httpMethod: 'patch',
+    httpPath: '/v2/prism/{teamId}/organization/{organizationId}',
+  },
+  {
+    clientCallName: 'client.prism.objects.organizations.delete',
+    fullyQualifiedName: 'prism.objects.organizations.delete',
+    httpMethod: 'delete',
+    httpPath: '/v2/prism/{teamId}/organization/{organizationId}',
   },
   {
     clientCallName: 'client.prism.objects.organizations.bulkCreate',
@@ -47,10 +89,28 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/organization/import',
   },
   {
+    clientCallName: 'client.prism.objects.organizations.duplicate',
+    fullyQualifiedName: 'prism.objects.organizations.duplicate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/organization/{organizationId}/duplicate',
+  },
+  {
+    clientCallName: 'client.prism.objects.organizations.get',
+    fullyQualifiedName: 'prism.objects.organizations.get',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/organization/{organizationId}',
+  },
+  {
     clientCallName: 'client.prism.objects.organizations.query',
     fullyQualifiedName: 'prism.objects.organizations.query',
     httpMethod: 'post',
     httpPath: '/v2/prism/query/{teamId}/organization',
+  },
+  {
+    clientCallName: 'client.prism.objects.organizations.restore',
+    fullyQualifiedName: 'prism.objects.organizations.restore',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/organization/{organizationId}/restore',
   },
   {
     clientCallName: 'client.prism.objects.identities.create',

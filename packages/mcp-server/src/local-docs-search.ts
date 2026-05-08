@@ -135,6 +135,129 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'get',
+    endpoint: '/v2/prism/{teamId}/contact/{contactId}',
+    httpMethod: 'get',
+    summary: 'Get object',
+    description: 'Get object',
+    stainlessPath: '(resource) prism.objects.contacts > (method) get',
+    qualified: 'client.prism.objects.contacts.get',
+    params: ['teamId: string;', 'contactId: string;'],
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
+    markdown:
+      "## get\n\n`client.prism.objects.contacts.get(teamId: string, contactId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/contact/{contactId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `contactId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst contact = await client.prism.objects.contacts.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(contact);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.contacts.get',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst contact = await client.prism.objects.contacts.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(contact.id);",
+      },
+      python: {
+        method: 'prism.objects.contacts.get',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ncontact = client.prism.objects.contacts.get(\n    contact_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(contact.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Contacts.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tcontact, err := client.Prism.Objects.Contacts.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectContactGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", contact.ID)\n}\n',
+      },
+      cli: {
+        method: 'contacts get',
+        example:
+          "micro prism:objects:contacts get \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --contact-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/$CONTACT_ID \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v2/prism/{teamId}/contact/{contactId}',
+    httpMethod: 'patch',
+    summary: 'Patch object',
+    description: 'Patch object',
+    stainlessPath: '(resource) prism.objects.contacts > (method) update',
+    qualified: 'client.prism.objects.contacts.update',
+    params: [
+      'teamId: string;',
+      'contactId: string;',
+      'id?: string;',
+      'crm?: object;',
+      'default?: object;',
+      'extended?: object;',
+    ],
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
+    markdown:
+      "## update\n\n`client.prism.objects.contacts.update(teamId: string, contactId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**patch** `/v2/prism/{teamId}/contact/{contactId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `contactId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst contact = await client.prism.objects.contacts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(contact);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.contacts.update',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst contact = await client.prism.objects.contacts.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(contact.id);",
+      },
+      python: {
+        method: 'prism.objects.contacts.update',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ncontact = client.prism.objects.contacts.update(\n    contact_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(contact.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Contacts.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tcontact, err := client.Prism.Objects.Contacts.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectContactUpdateParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", contact.ID)\n}\n',
+      },
+      cli: {
+        method: 'contacts update',
+        example:
+          "micro prism:objects:contacts update \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --contact-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/$CONTACT_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/v2/prism/{teamId}/contact/{contactId}',
+    httpMethod: 'delete',
+    summary: 'Delete object',
+    description: 'Delete object',
+    stainlessPath: '(resource) prism.objects.contacts > (method) delete',
+    qualified: 'client.prism.objects.contacts.delete',
+    params: ['teamId: string;', 'contactId: string;'],
+    markdown:
+      "## delete\n\n`client.prism.objects.contacts.delete(teamId: string, contactId: string): void`\n\n**delete** `/v2/prism/{teamId}/contact/{contactId}`\n\nDelete object\n\n### Parameters\n\n- `teamId: string`\n\n- `contactId: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.prism.objects.contacts.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.contacts.delete',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.objects.contacts.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+      },
+      python: {
+        method: 'prism.objects.contacts.delete',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.objects.contacts.delete(\n    contact_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Contacts.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.Objects.Contacts.Delete(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectContactDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      cli: {
+        method: 'contacts delete',
+        example:
+          "micro prism:objects:contacts delete \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --contact-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/$CONTACT_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'query',
     endpoint: '/v2/prism/query/{teamId}/contact',
     httpMethod: 'post',
@@ -227,6 +350,84 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'duplicate',
+    endpoint: '/v2/prism/{teamId}/contact/{contactId}/duplicate',
+    httpMethod: 'post',
+    summary: 'Duplicate object',
+    description: 'Duplicate object',
+    stainlessPath: '(resource) prism.objects.contacts > (method) duplicate',
+    qualified: 'client.prism.objects.contacts.duplicate',
+    params: ['teamId: string;', 'contactId: string;'],
+    response: '{ id?: string; }',
+    markdown:
+      "## duplicate\n\n`client.prism.objects.contacts.duplicate(teamId: string, contactId: string): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/contact/{contactId}/duplicate`\n\nDuplicate object\n\n### Parameters\n\n- `teamId: string`\n\n- `contactId: string`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.contacts.duplicate('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.contacts.duplicate',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.contacts.duplicate(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(response.id);",
+      },
+      python: {
+        method: 'prism.objects.contacts.duplicate',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.contacts.duplicate(\n    contact_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Contacts.Duplicate',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Contacts.Duplicate(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectContactDuplicateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
+      },
+      cli: {
+        method: 'contacts duplicate',
+        example:
+          "micro prism:objects:contacts duplicate \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --contact-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/$CONTACT_ID/duplicate \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'restore',
+    endpoint: '/v2/prism/{teamId}/contact/{contactId}/restore',
+    httpMethod: 'post',
+    summary: 'Restore object',
+    description: 'Restore object',
+    stainlessPath: '(resource) prism.objects.contacts > (method) restore',
+    qualified: 'client.prism.objects.contacts.restore',
+    params: ['teamId: string;', 'contactId: string;'],
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
+    markdown:
+      "## restore\n\n`client.prism.objects.contacts.restore(teamId: string, contactId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/contact/{contactId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `contactId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.contacts.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.contacts.restore',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.contacts.restore(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(response.id);",
+      },
+      python: {
+        method: 'prism.objects.contacts.restore',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.contacts.restore(\n    contact_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Contacts.Restore',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Contacts.Restore(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectContactRestoreParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
+      },
+      cli: {
+        method: 'contacts restore',
+        example:
+          "micro prism:objects:contacts restore \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --contact-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/contact/$CONTACT_ID/restore \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'create',
     endpoint: '/v2/prism/{teamId}/organization',
     httpMethod: 'post',
@@ -262,6 +463,129 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       http: {
         example:
           'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'get',
+    endpoint: '/v2/prism/{teamId}/organization/{organizationId}',
+    httpMethod: 'get',
+    summary: 'Get object',
+    description: 'Get object',
+    stainlessPath: '(resource) prism.objects.organizations > (method) get',
+    qualified: 'client.prism.objects.organizations.get',
+    params: ['teamId: string;', 'organizationId: string;'],
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
+    markdown:
+      "## get\n\n`client.prism.objects.organizations.get(teamId: string, organizationId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**get** `/v2/prism/{teamId}/organization/{organizationId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `organizationId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst organization = await client.prism.objects.organizations.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(organization);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.organizations.get',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst organization = await client.prism.objects.organizations.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(organization.id);",
+      },
+      python: {
+        method: 'prism.objects.organizations.get',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\norganization = client.prism.objects.organizations.get(\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(organization.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Organizations.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\torganization, err := client.Prism.Objects.Organizations.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectOrganizationGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", organization.ID)\n}\n',
+      },
+      cli: {
+        method: 'organizations get',
+        example:
+          "micro prism:objects:organizations get \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --organization-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/$ORGANIZATION_ID \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v2/prism/{teamId}/organization/{organizationId}',
+    httpMethod: 'patch',
+    summary: 'Patch object',
+    description: 'Patch object',
+    stainlessPath: '(resource) prism.objects.organizations > (method) update',
+    qualified: 'client.prism.objects.organizations.update',
+    params: [
+      'teamId: string;',
+      'organizationId: string;',
+      'id?: string;',
+      'crm?: object;',
+      'default?: object;',
+      'extended?: object;',
+    ],
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
+    markdown:
+      "## update\n\n`client.prism.objects.organizations.update(teamId: string, organizationId: string, id?: string, crm?: object, default?: object, extended?: object): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**patch** `/v2/prism/{teamId}/organization/{organizationId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `organizationId: string`\n\n- `id?: string`\n\n- `crm?: object`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `extended?: object`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst organization = await client.prism.objects.organizations.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(organization);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.organizations.update',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst organization = await client.prism.objects.organizations.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(organization.id);",
+      },
+      python: {
+        method: 'prism.objects.organizations.update',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\norganization = client.prism.objects.organizations.update(\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(organization.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Organizations.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\torganization, err := client.Prism.Objects.Organizations.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectOrganizationUpdateParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", organization.ID)\n}\n',
+      },
+      cli: {
+        method: 'organizations update',
+        example:
+          "micro prism:objects:organizations update \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --organization-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/$ORGANIZATION_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/v2/prism/{teamId}/organization/{organizationId}',
+    httpMethod: 'delete',
+    summary: 'Delete object',
+    description: 'Delete object',
+    stainlessPath: '(resource) prism.objects.organizations > (method) delete',
+    qualified: 'client.prism.objects.organizations.delete',
+    params: ['teamId: string;', 'organizationId: string;'],
+    markdown:
+      "## delete\n\n`client.prism.objects.organizations.delete(teamId: string, organizationId: string): void`\n\n**delete** `/v2/prism/{teamId}/organization/{organizationId}`\n\nDelete object\n\n### Parameters\n\n- `teamId: string`\n\n- `organizationId: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.prism.objects.organizations.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.organizations.delete',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.objects.organizations.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+      },
+      python: {
+        method: 'prism.objects.organizations.delete',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.objects.organizations.delete(\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Organizations.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.Objects.Organizations.Delete(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectOrganizationDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      cli: {
+        method: 'organizations delete',
+        example:
+          "micro prism:objects:organizations delete \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --organization-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/$ORGANIZATION_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
     },
   },
@@ -354,6 +678,84 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       http: {
         example:
           'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/import \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "objects": [\n            {}\n          ]\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'duplicate',
+    endpoint: '/v2/prism/{teamId}/organization/{organizationId}/duplicate',
+    httpMethod: 'post',
+    summary: 'Duplicate object',
+    description: 'Duplicate object',
+    stainlessPath: '(resource) prism.objects.organizations > (method) duplicate',
+    qualified: 'client.prism.objects.organizations.duplicate',
+    params: ['teamId: string;', 'organizationId: string;'],
+    response: '{ id?: string; }',
+    markdown:
+      "## duplicate\n\n`client.prism.objects.organizations.duplicate(teamId: string, organizationId: string): { id?: string; }`\n\n**post** `/v2/prism/{teamId}/organization/{organizationId}/duplicate`\n\nDuplicate object\n\n### Parameters\n\n- `teamId: string`\n\n- `organizationId: string`\n\n### Returns\n\n- `{ id?: string; }`\n\n  - `id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.organizations.duplicate('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.organizations.duplicate',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.organizations.duplicate(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(response.id);",
+      },
+      python: {
+        method: 'prism.objects.organizations.duplicate',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.organizations.duplicate(\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Organizations.Duplicate',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Organizations.Duplicate(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectOrganizationDuplicateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
+      },
+      cli: {
+        method: 'organizations duplicate',
+        example:
+          "micro prism:objects:organizations duplicate \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --organization-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/$ORGANIZATION_ID/duplicate \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'restore',
+    endpoint: '/v2/prism/{teamId}/organization/{organizationId}/restore',
+    httpMethod: 'post',
+    summary: 'Restore object',
+    description: 'Restore object',
+    stainlessPath: '(resource) prism.objects.organizations > (method) restore',
+    qualified: 'client.prism.objects.organizations.restore',
+    params: ['teamId: string;', 'organizationId: string;'],
+    response: '{ id: string; crm?: object; default?: object; extended?: object; }',
+    markdown:
+      "## restore\n\n`client.prism.objects.organizations.restore(teamId: string, organizationId: string): { id: string; crm?: object; default?: object; extended?: object; }`\n\n**post** `/v2/prism/{teamId}/organization/{organizationId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `organizationId: string`\n\n### Returns\n\n- `{ id: string; crm?: object; default?: object; extended?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `crm?: object`\n  - `default?: object`\n  - `extended?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.organizations.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.organizations.restore',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.organizations.restore(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(response.id);",
+      },
+      python: {
+        method: 'prism.objects.organizations.restore',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.organizations.restore(\n    organization_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Organizations.Restore',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Organizations.Restore(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectOrganizationRestoreParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
+      },
+      cli: {
+        method: 'organizations restore',
+        example:
+          "micro prism:objects:organizations restore \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --organization-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/organization/$ORGANIZATION_ID/restore \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
     },
   },
