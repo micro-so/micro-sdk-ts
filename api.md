@@ -22,14 +22,23 @@ Types:
 
 - <code><a href="./src/resources/prism/objects/contacts.ts">Contact</a></code>
 - <code><a href="./src/resources/prism/objects/contacts.ts">ContactCreateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/contacts.ts">ContactUpdateResponse</a></code>
 - <code><a href="./src/resources/prism/objects/contacts.ts">ContactBulkCreateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/contacts.ts">ContactDuplicateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/contacts.ts">ContactGetResponse</a></code>
 - <code><a href="./src/resources/prism/objects/contacts.ts">ContactQueryResponse</a></code>
+- <code><a href="./src/resources/prism/objects/contacts.ts">ContactRestoreResponse</a></code>
 
 Methods:
 
 - <code title="post /v2/prism/{teamId}/contact">client.prism.objects.contacts.<a href="./src/resources/prism/objects/contacts.ts">create</a>({ ...params }) -> ContactCreateResponse</code>
+- <code title="patch /v2/prism/{teamId}/contact/{contactId}">client.prism.objects.contacts.<a href="./src/resources/prism/objects/contacts.ts">update</a>(contactID, { ...params }) -> ContactUpdateResponse</code>
+- <code title="delete /v2/prism/{teamId}/contact/{contactId}">client.prism.objects.contacts.<a href="./src/resources/prism/objects/contacts.ts">delete</a>(contactID, { ...params }) -> void</code>
 - <code title="post /v2/prism/{teamId}/contact/import">client.prism.objects.contacts.<a href="./src/resources/prism/objects/contacts.ts">bulkCreate</a>({ ...params }) -> ContactBulkCreateResponse</code>
+- <code title="post /v2/prism/{teamId}/contact/{contactId}/duplicate">client.prism.objects.contacts.<a href="./src/resources/prism/objects/contacts.ts">duplicate</a>(contactID, { ...params }) -> ContactDuplicateResponse</code>
+- <code title="get /v2/prism/{teamId}/contact/{contactId}">client.prism.objects.contacts.<a href="./src/resources/prism/objects/contacts.ts">get</a>(contactID, { ...params }) -> ContactGetResponse</code>
 - <code title="post /v2/prism/query/{teamId}/contact">client.prism.objects.contacts.<a href="./src/resources/prism/objects/contacts.ts">query</a>({ ...params }) -> ContactQueryResponse</code>
+- <code title="post /v2/prism/{teamId}/contact/{contactId}/restore">client.prism.objects.contacts.<a href="./src/resources/prism/objects/contacts.ts">restore</a>(contactID, { ...params }) -> ContactRestoreResponse</code>
 
 ### Organizations
 
@@ -37,14 +46,23 @@ Types:
 
 - <code><a href="./src/resources/prism/objects/organizations.ts">Organization</a></code>
 - <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationCreateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationUpdateResponse</a></code>
 - <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationBulkCreateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationDuplicateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationGetResponse</a></code>
 - <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationQueryResponse</a></code>
+- <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationRestoreResponse</a></code>
 
 Methods:
 
 - <code title="post /v2/prism/{teamId}/organization">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">create</a>({ ...params }) -> OrganizationCreateResponse</code>
+- <code title="patch /v2/prism/{teamId}/organization/{organizationId}">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">update</a>(organizationID, { ...params }) -> OrganizationUpdateResponse</code>
+- <code title="delete /v2/prism/{teamId}/organization/{organizationId}">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">delete</a>(organizationID, { ...params }) -> void</code>
 - <code title="post /v2/prism/{teamId}/organization/import">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">bulkCreate</a>({ ...params }) -> OrganizationBulkCreateResponse</code>
+- <code title="post /v2/prism/{teamId}/organization/{organizationId}/duplicate">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">duplicate</a>(organizationID, { ...params }) -> OrganizationDuplicateResponse</code>
+- <code title="get /v2/prism/{teamId}/organization/{organizationId}">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">get</a>(organizationID, { ...params }) -> OrganizationGetResponse</code>
 - <code title="post /v2/prism/query/{teamId}/organization">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">query</a>({ ...params }) -> OrganizationQueryResponse</code>
+- <code title="post /v2/prism/{teamId}/organization/{organizationId}/restore">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">restore</a>(organizationID, { ...params }) -> OrganizationRestoreResponse</code>
 
 ### Identities
 

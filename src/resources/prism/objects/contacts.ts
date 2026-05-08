@@ -3,6 +3,7 @@
 import { APIResource } from '../../../core/resource';
 import * as PrismAPI from '../prism';
 import { APIPromise } from '../../../core/api-promise';
+import { buildHeaders } from '../../../internal/headers';
 import { RequestOptions } from '../../../internal/request-options';
 import { path } from '../../../internal/utils/path';
 
@@ -19,6 +20,33 @@ export class Contacts extends APIResource {
   }
 
   /**
+   * Patch object
+   */
+  update(
+    contactID: string,
+    params: ContactUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<ContactUpdateResponse> {
+    const { teamId = this._client.teamID, ...body } = params;
+    return this._client.patch(path`/v2/prism/${teamId}/contact/${contactID}`, { body, ...options });
+  }
+
+  /**
+   * Delete object
+   */
+  delete(
+    contactID: string,
+    params: ContactDeleteParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<void> {
+    const { teamId = this._client.teamID } = params ?? {};
+    return this._client.delete(path`/v2/prism/${teamId}/contact/${contactID}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
+  }
+
+  /**
    * Import multiple objects in batch. Properties are keyed by slug. Automatically
    * routes based on size: <100 records sync (immediate response), >=100 records
    * async (S3/Lambda with WebSocket progress)
@@ -32,11 +60,47 @@ export class Contacts extends APIResource {
   }
 
   /**
+   * Duplicate object
+   */
+  duplicate(
+    contactID: string,
+    params: ContactDuplicateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ContactDuplicateResponse> {
+    const { teamId = this._client.teamID } = params ?? {};
+    return this._client.post(path`/v2/prism/${teamId}/contact/${contactID}/duplicate`, options);
+  }
+
+  /**
+   * Get object
+   */
+  get(
+    contactID: string,
+    params: ContactGetParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ContactGetResponse> {
+    const { teamId = this._client.teamID } = params ?? {};
+    return this._client.get(path`/v2/prism/${teamId}/contact/${contactID}`, options);
+  }
+
+  /**
    * Query v2
    */
   query(params: ContactQueryParams, options?: RequestOptions): APIPromise<ContactQueryResponse> {
     const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v2/prism/query/${teamId}/contact`, { body, ...options });
+  }
+
+  /**
+   * Restore object
+   */
+  restore(
+    contactID: string,
+    params: ContactRestoreParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ContactRestoreResponse> {
+    const { teamId = this._client.teamID } = params ?? {};
+    return this._client.post(path`/v2/prism/${teamId}/contact/${contactID}/restore`, options);
   }
 }
 
@@ -59,6 +123,22 @@ export interface Contact {
  * Object returned by reads (get/create/patch/restore). id is always present.
  */
 export interface ContactCreateResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface ContactUpdateResponse {
   id: string;
 
   crm?: unknown;
@@ -101,6 +181,26 @@ export namespace ContactBulkCreateResponse {
   }
 }
 
+export interface ContactDuplicateResponse {
+  id?: string;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface ContactGetResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
+}
+
 export interface ContactQueryResponse {
   data: Array<ContactQueryResponse.Data>;
 
@@ -126,6 +226,22 @@ export namespace ContactQueryResponse {
 
     extended?: unknown;
   }
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface ContactRestoreResponse {
+  id: string;
+
+  crm?: unknown;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  extended?: unknown;
 }
 
 export interface ContactCreateParams {
@@ -155,6 +271,39 @@ export interface ContactCreateParams {
    * Body param
    */
   extended?: unknown;
+}
+
+export interface ContactUpdateParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Body param
+   */
+  id?: string;
+
+  /**
+   * Body param
+   */
+  crm?: unknown;
+
+  /**
+   * Body param: Properties keyed by property slug. Values can be strings, numbers,
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
+   */
+  default?: { [key: string]: unknown };
+
+  /**
+   * Body param
+   */
+  extended?: unknown;
+}
+
+export interface ContactDeleteParams {
+  teamId?: string;
 }
 
 export interface ContactBulkCreateParams {
@@ -191,6 +340,14 @@ export namespace ContactBulkCreateParams {
      */
     dedupe_by?: string;
   }
+}
+
+export interface ContactDuplicateParams {
+  teamId?: string;
+}
+
+export interface ContactGetParams {
+  teamId?: string;
 }
 
 export interface ContactQueryParams {
@@ -257,14 +414,27 @@ export namespace ContactQueryParams {
   }
 }
 
+export interface ContactRestoreParams {
+  teamId?: string;
+}
+
 export declare namespace Contacts {
   export {
     type Contact as Contact,
     type ContactCreateResponse as ContactCreateResponse,
+    type ContactUpdateResponse as ContactUpdateResponse,
     type ContactBulkCreateResponse as ContactBulkCreateResponse,
+    type ContactDuplicateResponse as ContactDuplicateResponse,
+    type ContactGetResponse as ContactGetResponse,
     type ContactQueryResponse as ContactQueryResponse,
+    type ContactRestoreResponse as ContactRestoreResponse,
     type ContactCreateParams as ContactCreateParams,
+    type ContactUpdateParams as ContactUpdateParams,
+    type ContactDeleteParams as ContactDeleteParams,
     type ContactBulkCreateParams as ContactBulkCreateParams,
+    type ContactDuplicateParams as ContactDuplicateParams,
+    type ContactGetParams as ContactGetParams,
     type ContactQueryParams as ContactQueryParams,
+    type ContactRestoreParams as ContactRestoreParams,
   };
 }
