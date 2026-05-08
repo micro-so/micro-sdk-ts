@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { ClientOptions } from 'micro';
+import { ClientOptions } from '@micro-so/sdk';
 
 export type WorkerInput = {
   project_name: string;

@@ -7,8 +7,8 @@ import {
   ListToolsRequestSchema,
   SetLevelRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { ClientOptions } from 'micro';
-import Micro from 'micro';
+import { ClientOptions } from '@micro-so/sdk';
+import Micro from '@micro-so/sdk';
 import { codeTool } from './code-tool';
 import docsSearchTool from './docs-search-tool';
 import { setLocalSearch } from './docs-search-tool';
@@ -28,7 +28,7 @@ export const newMcpServer = async ({
 }) =>
   new McpServer(
     {
-      name: 'micro_api',
+      name: 'micro_so_sdk_api',
       version: '0.1.0',
     },
     {
