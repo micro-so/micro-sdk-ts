@@ -81,7 +81,7 @@ export class Deals extends APIResource {
   }
 
   /**
-   * Query v2
+   * Query
    */
   query(params: DealQueryParams, options?: RequestOptions): APIPromise<DealQueryResponse> {
     const { teamId = this._client.teamID, ...body } = params;

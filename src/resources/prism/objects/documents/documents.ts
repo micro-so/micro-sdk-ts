@@ -88,7 +88,7 @@ export class Documents extends APIResource {
   }
 
   /**
-   * Query v2
+   * Query
    */
   query(params: DocumentQueryParams, options?: RequestOptions): APIPromise<DocumentQueryResponse> {
     const { teamId = this._client.teamID, ...body } = params;

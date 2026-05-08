@@ -85,7 +85,7 @@ export class Actions extends APIResource {
   }
 
   /**
-   * Query v2
+   * Query
    */
   query(params: ActionQueryParams, options?: RequestOptions): APIPromise<ActionQueryResponse> {
     const { teamId = this._client.teamID, ...body } = params;

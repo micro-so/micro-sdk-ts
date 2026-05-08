@@ -84,7 +84,7 @@ export class Contacts extends APIResource {
   }
 
   /**
-   * Query v2
+   * Query
    */
   query(params: ContactQueryParams, options?: RequestOptions): APIPromise<ContactQueryResponse> {
     const { teamId = this._client.teamID, ...body } = params;

@@ -23,7 +23,7 @@ export class Events extends APIResource {
   }
 
   /**
-   * Query v2
+   * Query
    */
   query(params: EventQueryParams, options?: RequestOptions): APIPromise<EventQueryResponse> {
     const { teamId = this._client.teamID, ...body } = params;
