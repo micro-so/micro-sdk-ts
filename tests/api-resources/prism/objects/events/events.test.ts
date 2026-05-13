@@ -59,9 +59,9 @@ describe('resource events', () => {
       query: {
         select: ['string'],
         combinator: 'AND',
-        crm_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        filter: [{ foo: { foo: 'string' } }],
+        filter: [{ foo: { '=': 'string' } }],
         limit: 1,
+        list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         page: 0,
         sort: [{ foo: 'asc' }],
       },

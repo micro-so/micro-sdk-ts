@@ -11,7 +11,6 @@ You can run the MCP Server directly via `npx`:
 ```sh
 export MICRO_API_KEY="My API Key"
 export MICRO_TEAM_ID="My Team ID"
-export MICRO_ENVIRONMENT="staging"
 npx -y @micro-so/mcp@latest
 ```
 
@@ -30,8 +29,7 @@ For clients with a configuration JSON, it might look something like this:
       "args": ["-y", "@micro-so/mcp"],
       "env": {
         "MICRO_API_KEY": "My API Key",
-        "MICRO_TEAM_ID": "My Team ID",
-        "MICRO_ENVIRONMENT": "staging"
+        "MICRO_TEAM_ID": "My Team ID"
       }
     }
   }

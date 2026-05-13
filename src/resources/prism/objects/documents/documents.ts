@@ -109,10 +109,6 @@ export class Documents extends APIResource {
 }
 
 export interface Document {
-  id?: string;
-
-  crm?: unknown;
-
   /**
    * Properties keyed by property slug. Values can be strings, numbers, booleans,
    * arrays, or null. For select/multiselect properties, values may be option slugs
@@ -120,7 +116,7 @@ export interface Document {
    */
   default?: { [key: string]: unknown };
 
-  extended?: unknown;
+  list?: unknown;
 }
 
 /**
@@ -129,14 +125,12 @@ export interface Document {
 export interface DocumentCreateResponse {
   id: string;
 
-  crm?: unknown;
-
   /**
    * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
-  extended?: unknown;
+  list?: unknown;
 }
 
 /**
@@ -145,14 +139,12 @@ export interface DocumentCreateResponse {
 export interface DocumentUpdateResponse {
   id: string;
 
-  crm?: unknown;
-
   /**
    * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
-  extended?: unknown;
+  list?: unknown;
 }
 
 export interface DocumentBulkCreateResponse {
@@ -195,14 +187,12 @@ export interface DocumentDuplicateResponse {
 export interface DocumentGetResponse {
   id: string;
 
-  crm?: unknown;
-
   /**
    * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
-  extended?: unknown;
+  list?: unknown;
 }
 
 export interface DocumentQueryResponse {
@@ -221,14 +211,12 @@ export namespace DocumentQueryResponse {
   export interface Data {
     id: string;
 
-    crm?: unknown;
-
     /**
      * Properties keyed by property slug.
      */
     default?: { [key: string]: unknown };
 
-    extended?: unknown;
+    list?: unknown;
   }
 }
 
@@ -238,14 +226,12 @@ export namespace DocumentQueryResponse {
 export interface DocumentRestoreResponse {
   id: string;
 
-  crm?: unknown;
-
   /**
    * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
-  extended?: unknown;
+  list?: unknown;
 }
 
 export interface DocumentCreateParams {
@@ -255,16 +241,6 @@ export interface DocumentCreateParams {
   teamId?: string;
 
   /**
-   * Body param
-   */
-  id?: string;
-
-  /**
-   * Body param
-   */
-  crm?: unknown;
-
-  /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
    * booleans, arrays, or null. For select/multiselect properties, values may be
    * option slugs or option UUIDs on write; option slugs are returned on read.
@@ -274,7 +250,7 @@ export interface DocumentCreateParams {
   /**
    * Body param
    */
-  extended?: unknown;
+  list?: unknown;
 }
 
 export interface DocumentUpdateParams {
@@ -284,16 +260,6 @@ export interface DocumentUpdateParams {
   teamId?: string;
 
   /**
-   * Body param
-   */
-  id?: string;
-
-  /**
-   * Body param
-   */
-  crm?: unknown;
-
-  /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
    * booleans, arrays, or null. For select/multiselect properties, values may be
    * option slugs or option UUIDs on write; option slugs are returned on read.
@@ -303,7 +269,7 @@ export interface DocumentUpdateParams {
   /**
    * Body param
    */
-  extended?: unknown;
+  list?: unknown;
 }
 
 export interface DocumentDeleteParams {
@@ -335,14 +301,14 @@ export namespace DocumentBulkCreateParams {
     caseInsensitive?: boolean;
 
     /**
-     * App/CRM ID for context (optional)
-     */
-    crm_id?: string;
-
-    /**
      * Property slug to deduplicate on
      */
     dedupe_by?: string;
+
+    /**
+     * App/CRM ID for context (optional)
+     */
+    list_id?: string;
   }
 }
 
@@ -399,15 +365,31 @@ export namespace DocumentQueryParams {
      */
     combinator?: 'AND' | 'OR';
 
-    crm_id?: string;
-
     /**
      * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
      * values may be option slugs or option UUIDs.
      */
-    filter?: Array<{ [key: string]: { [key: string]: string | boolean | Array<string> } }>;
+    filter?: Array<{
+      [key: string]:
+        | Query._
+        | Query._
+        | Query._
+        | Query._
+        | Query._
+        | Query._
+        | Query.LikeRegex
+        | Query.BeginsWith
+        | Query.EndsWith
+        | Query.NotContains
+        | Query.Exists
+        | Query.NotExists
+        | Query.In
+        | Query.NotIn;
+    }>;
 
     limit?: number;
+
+    list_id?: string;
 
     page?: number;
 
@@ -415,6 +397,64 @@ export namespace DocumentQueryParams {
      * Sort order as [{ slug: direction }]. Array order determines sort priority
      */
     sort?: Array<{ [key: string]: 'asc' | 'desc' }>;
+  }
+
+  export namespace Query {
+    export interface _ {
+      '=': string | boolean;
+    }
+
+    export interface _ {
+      '!=': string | boolean;
+    }
+
+    export interface _ {
+      '<': string;
+    }
+
+    export interface _ {
+      '>': string;
+    }
+
+    export interface _ {
+      '<=': string;
+    }
+
+    export interface _ {
+      '>=': string;
+    }
+
+    export interface LikeRegex {
+      like_regex: string;
+    }
+
+    export interface BeginsWith {
+      begins_with: string;
+    }
+
+    export interface EndsWith {
+      ends_with: string;
+    }
+
+    export interface NotContains {
+      not_contains: string;
+    }
+
+    export interface Exists {
+      exists: boolean;
+    }
+
+    export interface NotExists {
+      not_exists: boolean;
+    }
+
+    export interface In {
+      in: Array<string>;
+    }
+
+    export interface NotIn {
+      not_in: Array<string>;
+    }
   }
 }
 

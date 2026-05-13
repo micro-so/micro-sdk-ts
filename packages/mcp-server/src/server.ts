@@ -17,7 +17,7 @@ import { getInstructions } from './instructions';
 import { McpOptions } from './options';
 import { blockedMethodsForCodeTool } from './methods';
 import { HandlerFunction, McpRequestContext, ToolCallResult, McpTool } from './types';
-import { readEnv, readEnvOrError } from './util';
+import { readEnvOrError } from './util';
 
 export const newMcpServer = async ({
   stainlessApiKey,
@@ -29,7 +29,7 @@ export const newMcpServer = async ({
   new McpServer(
     {
       name: 'micro_so_sdk_api',
-      version: '0.2.1',
+      version: '0.3.0',
     },
     {
       instructions: await getInstructions({ stainlessApiKey, customInstructionsPath }),
@@ -82,10 +82,7 @@ export async function initMcpServer(params: {
     if (!_client) {
       try {
         _client = new Micro({
-          ...{
-            teamID: readEnvOrError('MICRO_TEAM_ID'),
-            environment: (readEnv('MICRO_ENVIRONMENT') || undefined) as any,
-          },
+          ...{ teamID: readEnvOrError('MICRO_TEAM_ID') },
           logger,
           ...params.clientOptions,
           defaultHeaders: {
