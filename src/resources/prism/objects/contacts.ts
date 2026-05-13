@@ -105,10 +105,6 @@ export class Contacts extends APIResource {
 }
 
 export interface Contact {
-  id?: string;
-
-  crm?: unknown;
-
   /**
    * Properties keyed by property slug. Values can be strings, numbers, booleans,
    * arrays, or null. For select/multiselect properties, values may be option slugs
@@ -116,7 +112,7 @@ export interface Contact {
    */
   default?: { [key: string]: unknown };
 
-  extended?: unknown;
+  list?: unknown;
 }
 
 /**
@@ -125,14 +121,12 @@ export interface Contact {
 export interface ContactCreateResponse {
   id: string;
 
-  crm?: unknown;
-
   /**
    * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
-  extended?: unknown;
+  list?: unknown;
 }
 
 /**
@@ -141,14 +135,12 @@ export interface ContactCreateResponse {
 export interface ContactUpdateResponse {
   id: string;
 
-  crm?: unknown;
-
   /**
    * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
-  extended?: unknown;
+  list?: unknown;
 }
 
 export interface ContactBulkCreateResponse {
@@ -191,14 +183,12 @@ export interface ContactDuplicateResponse {
 export interface ContactGetResponse {
   id: string;
 
-  crm?: unknown;
-
   /**
    * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
-  extended?: unknown;
+  list?: unknown;
 }
 
 export interface ContactQueryResponse {
@@ -217,14 +207,12 @@ export namespace ContactQueryResponse {
   export interface Data {
     id: string;
 
-    crm?: unknown;
-
     /**
      * Properties keyed by property slug.
      */
     default?: { [key: string]: unknown };
 
-    extended?: unknown;
+    list?: unknown;
   }
 }
 
@@ -234,14 +222,12 @@ export namespace ContactQueryResponse {
 export interface ContactRestoreResponse {
   id: string;
 
-  crm?: unknown;
-
   /**
    * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
-  extended?: unknown;
+  list?: unknown;
 }
 
 export interface ContactCreateParams {
@@ -251,16 +237,6 @@ export interface ContactCreateParams {
   teamId?: string;
 
   /**
-   * Body param
-   */
-  id?: string;
-
-  /**
-   * Body param
-   */
-  crm?: unknown;
-
-  /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
    * booleans, arrays, or null. For select/multiselect properties, values may be
    * option slugs or option UUIDs on write; option slugs are returned on read.
@@ -270,7 +246,7 @@ export interface ContactCreateParams {
   /**
    * Body param
    */
-  extended?: unknown;
+  list?: unknown;
 }
 
 export interface ContactUpdateParams {
@@ -280,16 +256,6 @@ export interface ContactUpdateParams {
   teamId?: string;
 
   /**
-   * Body param
-   */
-  id?: string;
-
-  /**
-   * Body param
-   */
-  crm?: unknown;
-
-  /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
    * booleans, arrays, or null. For select/multiselect properties, values may be
    * option slugs or option UUIDs on write; option slugs are returned on read.
@@ -299,7 +265,7 @@ export interface ContactUpdateParams {
   /**
    * Body param
    */
-  extended?: unknown;
+  list?: unknown;
 }
 
 export interface ContactDeleteParams {
@@ -331,14 +297,14 @@ export namespace ContactBulkCreateParams {
     caseInsensitive?: boolean;
 
     /**
-     * App/CRM ID for context (optional)
-     */
-    crm_id?: string;
-
-    /**
      * Property slug to deduplicate on
      */
     dedupe_by?: string;
+
+    /**
+     * App/CRM ID for context (optional)
+     */
+    list_id?: string;
   }
 }
 
@@ -395,15 +361,31 @@ export namespace ContactQueryParams {
      */
     combinator?: 'AND' | 'OR';
 
-    crm_id?: string;
-
     /**
      * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
      * values may be option slugs or option UUIDs.
      */
-    filter?: Array<{ [key: string]: { [key: string]: string | boolean | Array<string> } }>;
+    filter?: Array<{
+      [key: string]:
+        | Query._
+        | Query._
+        | Query._
+        | Query._
+        | Query._
+        | Query._
+        | Query.LikeRegex
+        | Query.BeginsWith
+        | Query.EndsWith
+        | Query.NotContains
+        | Query.Exists
+        | Query.NotExists
+        | Query.In
+        | Query.NotIn;
+    }>;
 
     limit?: number;
+
+    list_id?: string;
 
     page?: number;
 
@@ -411,6 +393,64 @@ export namespace ContactQueryParams {
      * Sort order as [{ slug: direction }]. Array order determines sort priority
      */
     sort?: Array<{ [key: string]: 'asc' | 'desc' }>;
+  }
+
+  export namespace Query {
+    export interface _ {
+      '=': string | boolean;
+    }
+
+    export interface _ {
+      '!=': string | boolean;
+    }
+
+    export interface _ {
+      '<': string;
+    }
+
+    export interface _ {
+      '>': string;
+    }
+
+    export interface _ {
+      '<=': string;
+    }
+
+    export interface _ {
+      '>=': string;
+    }
+
+    export interface LikeRegex {
+      like_regex: string;
+    }
+
+    export interface BeginsWith {
+      begins_with: string;
+    }
+
+    export interface EndsWith {
+      ends_with: string;
+    }
+
+    export interface NotContains {
+      not_contains: string;
+    }
+
+    export interface Exists {
+      exists: boolean;
+    }
+
+    export interface NotExists {
+      not_exists: boolean;
+    }
+
+    export interface In {
+      in: Array<string>;
+    }
+
+    export interface NotIn {
+      not_in: Array<string>;
+    }
   }
 }
 

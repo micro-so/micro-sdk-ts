@@ -84,8 +84,6 @@ export interface ViewCreateResponse {
 
   created_at?: string;
 
-  crm_id?: string | null;
-
   /**
    * Each entry is { slug: { comparator: value } }
    */
@@ -103,6 +101,8 @@ export interface ViewCreateResponse {
   group_sort?: string | null;
 
   icon?: string | null;
+
+  list_id?: string | null;
 
   /**
    * Property slugs (dot-paths permitted for refs)
@@ -145,8 +145,6 @@ export interface ViewUpdateResponse {
 
   created_at?: string;
 
-  crm_id?: string | null;
-
   /**
    * Each entry is { slug: { comparator: value } }
    */
@@ -164,6 +162,8 @@ export interface ViewUpdateResponse {
   group_sort?: string | null;
 
   icon?: string | null;
+
+  list_id?: string | null;
 
   /**
    * Property slugs (dot-paths permitted for refs)
@@ -206,8 +206,6 @@ export interface ViewGetResponse {
 
   created_at?: string;
 
-  crm_id?: string | null;
-
   /**
    * Each entry is { slug: { comparator: value } }
    */
@@ -225,6 +223,8 @@ export interface ViewGetResponse {
   group_sort?: string | null;
 
   icon?: string | null;
+
+  list_id?: string | null;
 
   /**
    * Property slugs (dot-paths permitted for refs)
@@ -292,11 +292,6 @@ export interface ViewCreateParams {
   created_at?: string;
 
   /**
-   * Body param
-   */
-  crm_id?: string | null;
-
-  /**
    * Body param: Each entry is { slug: { comparator: value } }
    */
   filter?: Array<{ [key: string]: unknown }>;
@@ -325,6 +320,11 @@ export interface ViewCreateParams {
    * Body param
    */
   icon?: string | null;
+
+  /**
+   * Body param
+   */
+  list_id?: string | null;
 
   /**
    * Body param: Property slugs (dot-paths permitted for refs)
@@ -391,11 +391,6 @@ export interface ViewUpdateParams {
   /**
    * Body param
    */
-  crm_id?: string | null;
-
-  /**
-   * Body param
-   */
   filter?: Array<{ [key: string]: unknown }>;
 
   /**
@@ -422,6 +417,11 @@ export interface ViewUpdateParams {
    * Body param
    */
   icon?: string | null;
+
+  /**
+   * Body param
+   */
+  list_id?: string | null;
 
   /**
    * Body param
