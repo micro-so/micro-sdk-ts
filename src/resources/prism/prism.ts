@@ -12,10 +12,6 @@ export class Prism extends APIResource {
 }
 
 export interface PrismObjectProperties {
-  id?: string;
-
-  crm?: unknown;
-
   /**
    * Properties keyed by property slug. Values can be strings, numbers, booleans,
    * arrays, or null. For select/multiselect properties, values may be option slugs
@@ -23,7 +19,7 @@ export interface PrismObjectProperties {
    */
   default?: { [key: string]: unknown };
 
-  extended?: unknown;
+  list?: unknown;
 }
 
 Prism.Metadata = Metadata;

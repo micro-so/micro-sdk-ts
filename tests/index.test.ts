@@ -354,36 +354,13 @@ describe('instantiate client', () => {
     test('empty env variable', () => {
       process.env['MICRO_BASE_URL'] = ''; // empty
       const client = new Micro({ apiKey: 'My API Key', teamID: 'My Team ID' });
-      expect(client.baseURL).toEqual('https://developers.staging.micro.so');
+      expect(client.baseURL).toEqual('https://developers.micro.so');
     });
 
     test('blank env variable', () => {
       process.env['MICRO_BASE_URL'] = '  '; // blank
       const client = new Micro({ apiKey: 'My API Key', teamID: 'My Team ID' });
-      expect(client.baseURL).toEqual('https://developers.staging.micro.so');
-    });
-
-    test('env variable with environment', () => {
-      process.env['MICRO_BASE_URL'] = 'https://example.com/from_env';
-
-      expect(
-        () =>
-          new Micro({
-            apiKey: 'My API Key',
-            teamID: 'My Team ID',
-            environment: 'staging',
-          }),
-      ).toThrowErrorMatchingInlineSnapshot(
-        `"Ambiguous URL; The \`baseURL\` option (or MICRO_BASE_URL env var) and the \`environment\` option are given. If you want to use the environment you must pass baseURL: null"`,
-      );
-
-      const client = new Micro({
-        apiKey: 'My API Key',
-        teamID: 'My Team ID',
-        baseURL: null,
-        environment: 'staging',
-      });
-      expect(client.baseURL).toEqual('https://developers.staging.micro.so');
+      expect(client.baseURL).toEqual('https://developers.micro.so');
     });
 
     test('in request options', () => {

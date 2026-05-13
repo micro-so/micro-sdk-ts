@@ -25,10 +25,8 @@ describe('resource actions', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.prism.objects.actions.create({
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      crm: {},
       default: { foo: 'bar' },
-      extended: {},
+      list: {},
     });
   });
 
@@ -39,10 +37,8 @@ describe('resource actions', () => {
       client.prism.objects.actions.create(
         {
           teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          crm: {},
           default: { foo: 'bar' },
-          extended: {},
+          list: {},
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -65,10 +61,8 @@ describe('resource actions', () => {
   test.skip('update: required and optional params', async () => {
     const response = await client.prism.objects.actions.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      crm: {},
       default: { foo: 'bar' },
-      extended: {},
+      list: {},
     });
   });
 
@@ -121,16 +115,14 @@ describe('resource actions', () => {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       objects: [
         {
-          id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          crm: {},
           default: { foo: 'bar' },
-          extended: {},
+          list: {},
         },
       ],
       options: {
         caseInsensitive: true,
-        crm_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         dedupe_by: 'dedupe_by',
+        list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       },
     });
   });
@@ -216,9 +208,9 @@ describe('resource actions', () => {
       query: {
         select: ['string'],
         combinator: 'AND',
-        crm_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        filter: [{ foo: { foo: 'string' } }],
+        filter: [{ foo: { '=': 'string' } }],
         limit: 1,
+        list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         page: 0,
         sort: [{ foo: 'asc' }],
       },

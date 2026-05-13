@@ -34,7 +34,6 @@ import Micro from '@micro-so/sdk';
 const client = new Micro({
   teamID: 'My Team ID',
   apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
-  environment: 'production', // defaults to 'staging'
 });
 
 const response = await client.prism.objects.deals.query({ query: { select: ['id', 'name'] } });
@@ -53,7 +52,6 @@ import Micro from '@micro-so/sdk';
 const client = new Micro({
   teamID: 'My Team ID',
   apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted
-  environment: 'production', // defaults to 'staging'
 });
 
 const params: Micro.Prism.Objects.DealQueryParams = { query: { select: ['id', 'name'] } };

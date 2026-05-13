@@ -26,7 +26,7 @@ describe('resource metadata', () => {
     const response = await client.prism.metadata.list('deal', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       autofill: true,
-      crmId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      listId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       term: 'term',
     });
   });
@@ -40,7 +40,7 @@ describe('resource metadata', () => {
         {
           teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           autofill: true,
-          crmId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          listId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           term: 'term',
         },
         { path: '/_stainless_unknown_path' },

@@ -31,6 +31,11 @@ export class Metadata extends APIResource {
   }
 }
 
+/**
+ * Property definitions keyed by object type, then by property definition id
+ * (UUID). When the request scopes to a single object type, only that key is
+ * present.
+ */
 export type MetadataListResponse = { [key: string]: unknown };
 
 export interface MetadataListParams {
@@ -47,7 +52,7 @@ export interface MetadataListParams {
   /**
    * Query param
    */
-  crmId?: string;
+  listId?: string;
 
   /**
    * Query param
