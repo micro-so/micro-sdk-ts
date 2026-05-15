@@ -371,12 +371,12 @@ export namespace DocumentQueryParams {
      */
     filter?: Array<{
       [key: string]:
-        | Query._
-        | Query._
-        | Query._
-        | Query._
-        | Query._
-        | Query._
+        | Query.PrismQueryFilterEq
+        | Query.PrismQueryFilterNe
+        | Query.PrismQueryFilterLt
+        | Query.PrismQueryFilterGt
+        | Query.PrismQueryFilterLte
+        | Query.PrismQueryFilterGte
         | Query.LikeRegex
         | Query.BeginsWith
         | Query.EndsWith
@@ -400,27 +400,27 @@ export namespace DocumentQueryParams {
   }
 
   export namespace Query {
-    export interface _ {
+    export interface PrismQueryFilterEq {
       '=': string | boolean;
     }
 
-    export interface _ {
+    export interface PrismQueryFilterNe {
       '!=': string | boolean;
     }
 
-    export interface _ {
+    export interface PrismQueryFilterLt {
       '<': string;
     }
 
-    export interface _ {
+    export interface PrismQueryFilterGt {
       '>': string;
     }
 
-    export interface _ {
+    export interface PrismQueryFilterLte {
       '<=': string;
     }
 
-    export interface _ {
+    export interface PrismQueryFilterGte {
       '>=': string;
     }
 
