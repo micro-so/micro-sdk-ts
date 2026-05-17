@@ -202,17 +202,24 @@ export interface ContactQueryResponse {
 
 export namespace ContactQueryResponse {
   /**
-   * Object returned by reads (get/create/patch/restore). id is always present.
+   * Row returned by the query endpoint. `id` is always present at the top level.
+   * Selected property values are returned under `properties`, keyed by property
+   * slug. Reference-typed values are returned as nested `{ id, properties }`
+   * objects.
    */
   export interface Data {
     id: string;
 
-    /**
-     * Properties keyed by property slug.
-     */
-    default?: { [key: string]: unknown };
+    is_user_object?: boolean;
 
-    list?: unknown;
+    /**
+     * Selected property values keyed by property slug. For select/multiselect
+     * properties, option slugs are returned. For reference properties, values are
+     * nested `{ id, properties }` objects.
+     */
+    properties?: { [key: string]: unknown };
+
+    source?: string | null;
   }
 }
 
@@ -352,7 +359,8 @@ export namespace ContactQueryParams {
   export interface Query {
     /**
      * Property slugs to select. Use dot notation for relationships (e.g.
-     * attendee.contact.first_name)
+     * attendee.contact.first_name). `id` is always returned at the top level of each
+     * row and does not need to be selected.
      */
     select: Array<string>;
 
@@ -373,7 +381,7 @@ export namespace ContactQueryParams {
         | Query.PrismQueryFilterGt
         | Query.PrismQueryFilterLte
         | Query.PrismQueryFilterGte
-        | Query.LikeRegex
+        | Query.Contains
         | Query.BeginsWith
         | Query.EndsWith
         | Query.NotContains
@@ -383,6 +391,10 @@ export namespace ContactQueryParams {
         | Query.NotIn;
     }>;
 
+    /**
+     * Maximum number of rows to return. Capped server-side at 50; requests above the
+     * cap are rejected.
+     */
     limit?: number;
 
     list_id?: string;
@@ -420,8 +432,8 @@ export namespace ContactQueryParams {
       '>=': string;
     }
 
-    export interface LikeRegex {
-      like_regex: string;
+    export interface Contains {
+      contains: string | boolean | Array<string>;
     }
 
     export interface BeginsWith {
