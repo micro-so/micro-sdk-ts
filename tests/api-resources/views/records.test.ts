@@ -28,6 +28,7 @@ describe('resource records', () => {
     const response = await client.views.records.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       viewObjectType: 'action',
+      cursor: 'cursor',
       limit: 0,
       page: 1,
     });
@@ -54,6 +55,7 @@ describe('resource records', () => {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       viewObjectType: 'action',
       viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      'Idempotency-Key': 'x',
     });
   });
 
@@ -78,6 +80,7 @@ describe('resource records', () => {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       viewObjectType: 'action',
       object_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+      'Idempotency-Key': 'x',
     });
   });
 

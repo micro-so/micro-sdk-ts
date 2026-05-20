@@ -1,13 +1,22 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as MetadataAPI from './metadata';
-import { Metadata, MetadataListParams, MetadataListResponse } from './metadata';
+import * as ImportsAPI from './imports';
+import { ImportGetParams, ImportGetResponse, Imports } from './imports';
+import * as PropertiesAPI from './properties';
+import {
+  Properties,
+  PropertyListAllParams,
+  PropertyListAllResponse,
+  PropertyListParams,
+  PropertyListResponse,
+} from './properties';
 import * as ObjectsAPI from './objects/objects';
 import { Objects } from './objects/objects';
 
 export class Prism extends APIResource {
-  metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
+  properties: PropertiesAPI.Properties = new PropertiesAPI.Properties(this._client);
+  imports: ImportsAPI.Imports = new ImportsAPI.Imports(this._client);
   objects: ObjectsAPI.Objects = new ObjectsAPI.Objects(this._client);
 }
 
@@ -22,16 +31,25 @@ export interface PrismObjectProperties {
   list?: unknown;
 }
 
-Prism.Metadata = Metadata;
+Prism.Properties = Properties;
+Prism.Imports = Imports;
 Prism.Objects = Objects;
 
 export declare namespace Prism {
   export { type PrismObjectProperties as PrismObjectProperties };
 
   export {
-    Metadata as Metadata,
-    type MetadataListResponse as MetadataListResponse,
-    type MetadataListParams as MetadataListParams,
+    Properties as Properties,
+    type PropertyListResponse as PropertyListResponse,
+    type PropertyListAllResponse as PropertyListAllResponse,
+    type PropertyListParams as PropertyListParams,
+    type PropertyListAllParams as PropertyListAllParams,
+  };
+
+  export {
+    Imports as Imports,
+    type ImportGetResponse as ImportGetResponse,
+    type ImportGetParams as ImportGetParams,
   };
 
   export { Objects as Objects };
