@@ -15,8 +15,15 @@ export class Identities extends APIResource {
     params: IdentityCreateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<IdentityCreateResponse> {
-    const { teamId = this._client.teamID, ...body } = params ?? {};
-    return this._client.post(path`/v2/prism/${teamId}/identity`, { body, ...options });
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params ?? {};
+    return this._client.post(path`/v2/prism/${teamId}/identity`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -27,8 +34,40 @@ export class Identities extends APIResource {
     params: IdentityUpdateParams,
     options?: RequestOptions,
   ): APIPromise<IdentityUpdateResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
-    return this._client.patch(path`/v2/prism/${teamId}/identity/${identityID}`, { body, ...options });
+    const {
+      teamId = this._client.teamID,
+      'Idempotency-Key': idempotencyKey,
+      'If-Match': ifMatch,
+      ...body
+    } = params;
+    return this._client.patch(path`/v2/prism/${teamId}/identity/${identityID}`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(ifMatch != null ? { 'If-Match': ifMatch } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Convenience list endpoint. Equivalent to
+   * `POST /v2/prism/{teamId}/{objectType}/query` with an empty body, plus
+   * query-string sugar for the common cases. Any unrecognized query parameter is
+   * interpreted as an equality filter on a property of that name; pass arrays for
+   * `in`. Values are received as strings, so non-string property filters via this
+   * endpoint may not work — use the `query` endpoint for typed comparisons or
+   * anything beyond simple equality.
+   */
+  list(
+    params: IdentityListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<IdentityListResponse> {
+    const { teamId = this._client.teamID, ...query } = params ?? {};
+    return this._client.get(path`/v2/prism/${teamId}/identity`, { query, ...options });
   }
 
   /**
@@ -39,24 +78,89 @@ export class Identities extends APIResource {
     params: IdentityDeleteParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<void> {
-    const { teamId = this._client.teamID } = params ?? {};
+    const { teamId = this._client.teamID, 'If-Match': ifMatch } = params ?? {};
     return this._client.delete(path`/v2/prism/${teamId}/identity/${identityID}`, {
       ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+      headers: buildHeaders([
+        { Accept: '*/*', ...(ifMatch != null ? { 'If-Match': ifMatch } : undefined) },
+        options?.headers,
+      ]),
     });
   }
 
   /**
    * Import multiple objects in batch. Properties are keyed by slug. Automatically
-   * routes based on size: <100 records sync (immediate response), >=100 records
-   * async (S3/Lambda with WebSocket progress)
+   * routes based on size: small batches complete synchronously and return 200 with
+   * the final `ImportJob`; large batches start an async job, return 202 with
+   * `status: processing` and a `Location` header, and can be polled via
+   * `GET /v2/prism/{teamId}/imports/{jobId}`.
    */
   bulkCreate(
     params: IdentityBulkCreateParams,
     options?: RequestOptions,
   ): APIPromise<IdentityBulkCreateResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v2/prism/${teamId}/identity/import`, { body, ...options });
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    return this._client.post(path`/v2/prism/${teamId}/identity/import`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Soft-delete up to 100 records in a single call. Same partial-success contract as
+   * batch/update.
+   */
+  bulkDelete(
+    params: IdentityBulkDeleteParams,
+    options?: RequestOptions,
+  ): APIPromise<IdentityBulkDeleteResponse> {
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    return this._client.post(path`/v2/prism/${teamId}/identity/batch/delete`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Patch up to 100 records in a single call. Each item is attempted independently —
+   * failures don't abort the batch. Inspect `results[].status` per item.
+   */
+  bulkUpdate(
+    params: IdentityBulkUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<IdentityBulkUpdateResponse> {
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    return this._client.post(path`/v2/prism/${teamId}/identity/batch/update`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Returns the total number of records of this object type that the caller can see.
+   * Avoids the page-overshoot anti-pattern — clients no longer need to keep paging
+   * until `has_more` flips false to discover the total. Currently does not apply
+   * query filters; for a filtered total, pass `include_total: true` in a POST
+   * `/query` body.
+   */
+  count(
+    params: IdentityCountParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<IdentityCountResponse> {
+    const { teamId = this._client.teamID, ...query } = params ?? {};
+    return this._client.get(path`/v2/prism/${teamId}/identity/count`, { query, ...options });
   }
 
   /**
@@ -67,8 +171,27 @@ export class Identities extends APIResource {
     params: IdentityDuplicateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<IdentityDuplicateResponse> {
-    const { teamId = this._client.teamID } = params ?? {};
-    return this._client.post(path`/v2/prism/${teamId}/identity/${identityID}/duplicate`, options);
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey } = params ?? {};
+    return this._client.post(path`/v2/prism/${teamId}/identity/${identityID}/duplicate`, {
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Returns the single record whose property `{slug}` equals `{value}`. 404 if
+   * nothing matches; 409 if more than one record matches.
+   */
+  find(
+    value: string,
+    params: IdentityFindParams,
+    options?: RequestOptions,
+  ): APIPromise<IdentityFindResponse> {
+    const { teamId = this._client.teamID, slug, ...query } = params;
+    return this._client.get(path`/v2/prism/${teamId}/identity/by/${slug}/${value}`, { query, ...options });
   }
 
   /**
@@ -79,8 +202,8 @@ export class Identities extends APIResource {
     params: IdentityGetParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<IdentityGetResponse> {
-    const { teamId = this._client.teamID } = params ?? {};
-    return this._client.get(path`/v2/prism/${teamId}/identity/${identityID}`, options);
+    const { teamId = this._client.teamID, ...query } = params ?? {};
+    return this._client.get(path`/v2/prism/${teamId}/identity/${identityID}`, { query, ...options });
   }
 
   /**
@@ -88,7 +211,7 @@ export class Identities extends APIResource {
    */
   query(params: IdentityQueryParams, options?: RequestOptions): APIPromise<IdentityQueryResponse> {
     const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v2/prism/query/${teamId}/identity`, { body, ...options });
+    return this._client.post(path`/v2/prism/${teamId}/identity/query`, { body, ...options });
   }
 
   /**
@@ -99,8 +222,36 @@ export class Identities extends APIResource {
     params: IdentityRestoreParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<IdentityRestoreResponse> {
-    const { teamId = this._client.teamID } = params ?? {};
-    return this._client.post(path`/v2/prism/${teamId}/identity/${identityID}/restore`, options);
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey } = params ?? {};
+    return this._client.post(path`/v2/prism/${teamId}/identity/${identityID}/restore`, {
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Idempotent create-or-update keyed on `{slug}={value}`. If exactly one record
+   * matches, it is patched and 200 is returned. If none match, a new record is
+   * created (with the lookup property set if absent) and 201 is returned. If
+   * multiple records match, 409 is returned and you should patch by id instead.
+   */
+  upsert(
+    value: string,
+    params: IdentityUpsertParams,
+    options?: RequestOptions,
+  ): APIPromise<IdentityUpsertResponse> {
+    const { teamId = this._client.teamID, slug, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    return this._client.put(path`/v2/prism/${teamId}/identity/by/${slug}/${value}`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 }
 
@@ -143,38 +294,271 @@ export interface IdentityUpdateResponse {
   list?: unknown;
 }
 
+export interface IdentityListResponse {
+  data: Array<IdentityListResponse.Data>;
+
+  /**
+   * Accurate end-of-data signal — false on the last page, never forces clients to
+   * overshoot.
+   */
+  has_more: boolean;
+
+  next_cursor?: string | null;
+
+  /**
+   * Populated only when `?include_total=true` was passed.
+   */
+  total?: number | null;
+}
+
+export namespace IdentityListResponse {
+  /**
+   * Row returned by the query endpoint. `id` is always present at the top level.
+   * Selected property values are returned under `properties`, keyed by property
+   * slug. Reference-typed values are returned as nested `{ id, properties }`
+   * objects.
+   */
+  export interface Data {
+    id: string;
+
+    is_user_object?: boolean;
+
+    /**
+     * Selected property values keyed by property slug. For select/multiselect
+     * properties, option slugs are returned. For reference properties, values are
+     * nested `{ id, properties }` objects.
+     */
+    properties?: { [key: string]: unknown };
+
+    source?: string | null;
+  }
+}
+
+/**
+ * Status snapshot of an import job. Same shape used by the POST /import response
+ * and by GET /imports/{jobId}.
+ */
 export interface IdentityBulkCreateResponse {
+  /**
+   * Null for sync imports (results inlined). Set for async imports.
+   */
+  job_id: string | null;
+
+  status: 'complete' | 'processing' | 'failed';
+
+  /**
+   * Total number of rows in the import.
+   */
+  total: number;
+
+  created_at?: string;
+
+  /**
+   * Set when status=failed; describes the job-level failure (not per-row).
+   */
+  error?: IdentityBulkCreateResponse.Error;
+
+  expires_at?: string;
+
+  failed?: number;
+
+  /**
+   * Rows that have been attempted (succeeded + failed).
+   */
+  processed?: number;
+
+  /**
+   * Per-row outcomes. Always present for sync imports; populated for async imports
+   * once the job reaches `complete`.
+   */
   results?: Array<IdentityBulkCreateResponse.Result>;
 
-  status?: 'complete';
+  succeeded?: number;
 
-  summary?: IdentityBulkCreateResponse.Summary;
+  updated_at?: string;
 }
 
 export namespace IdentityBulkCreateResponse {
+  /**
+   * Set when status=failed; describes the job-level failure (not per-row).
+   */
+  export interface Error {
+    code?: string;
+
+    message?: string;
+  }
+
   export interface Result {
     id?: string | null;
 
     created?: boolean;
 
-    error?: string;
+    error?: Result.Error;
 
+    /**
+     * True if the row matched an existing record via the dedupe key.
+     */
     existing?: boolean;
   }
 
-  export interface Summary {
-    created?: number;
+  export namespace Result {
+    export interface Error {
+      code?: string;
 
-    errors?: number;
-
-    existing?: number;
-
-    total?: number;
+      message?: string;
+    }
   }
 }
 
+/**
+ * Partial-success bulk operation result. Inspect `results[].status` per item; the
+ * operation as a whole returns 200 even if some items failed.
+ */
+export interface IdentityBulkDeleteResponse {
+  results: Array<IdentityBulkDeleteResponse.Result>;
+
+  summary: IdentityBulkDeleteResponse.Summary;
+}
+
+export namespace IdentityBulkDeleteResponse {
+  export interface Result {
+    /**
+     * Item ID, or null if the input was unparseable.
+     */
+    id: string | null;
+
+    status: 'ok' | 'error';
+
+    error?: Result.Error;
+
+    /**
+     * Object returned by reads (get/create/patch/restore). id is always present.
+     */
+    record?: Result.Record;
+  }
+
+  export namespace Result {
+    export interface Error {
+      code?: string;
+
+      message?: string;
+    }
+
+    /**
+     * Object returned by reads (get/create/patch/restore). id is always present.
+     */
+    export interface Record {
+      id: string;
+
+      /**
+       * Properties keyed by property slug.
+       */
+      default?: { [key: string]: unknown };
+
+      list?: unknown;
+    }
+  }
+
+  export interface Summary {
+    failed: number;
+
+    succeeded: number;
+
+    total: number;
+  }
+}
+
+/**
+ * Partial-success bulk operation result. Inspect `results[].status` per item; the
+ * operation as a whole returns 200 even if some items failed.
+ */
+export interface IdentityBulkUpdateResponse {
+  results: Array<IdentityBulkUpdateResponse.Result>;
+
+  summary: IdentityBulkUpdateResponse.Summary;
+}
+
+export namespace IdentityBulkUpdateResponse {
+  export interface Result {
+    /**
+     * Item ID, or null if the input was unparseable.
+     */
+    id: string | null;
+
+    status: 'ok' | 'error';
+
+    error?: Result.Error;
+
+    /**
+     * Object returned by reads (get/create/patch/restore). id is always present.
+     */
+    record?: Result.Record;
+  }
+
+  export namespace Result {
+    export interface Error {
+      code?: string;
+
+      message?: string;
+    }
+
+    /**
+     * Object returned by reads (get/create/patch/restore). id is always present.
+     */
+    export interface Record {
+      id: string;
+
+      /**
+       * Properties keyed by property slug.
+       */
+      default?: { [key: string]: unknown };
+
+      list?: unknown;
+    }
+  }
+
+  export interface Summary {
+    failed: number;
+
+    succeeded: number;
+
+    total: number;
+  }
+}
+
+export interface IdentityCountResponse {
+  /**
+   * Number of records matching the access scope.
+   */
+  total: number;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
 export interface IdentityDuplicateResponse {
-  id?: string;
+  id: string;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  list?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface IdentityFindResponse {
+  id: string;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  list?: unknown;
 }
 
 /**
@@ -195,9 +579,25 @@ export interface IdentityQueryResponse {
   data: Array<IdentityQueryResponse.Data>;
 
   /**
-   * True when the page returned the maximum number of rows; another page may exist.
+   * Accurate end-of-data signal. False when this page contains the last record; true
+   * only when at least one more record exists. (Implementation note: the server
+   * fetches one extra row internally to determine this — clients never need to
+   * overshoot to discover the end.)
    */
-  has_more?: boolean;
+  has_more: boolean;
+
+  /**
+   * Opaque cursor pointing at the next page. Pass it back unchanged in the request
+   * body (`cursor`) of the next call. Null when `has_more` is false.
+   */
+  next_cursor?: string | null;
+
+  /**
+   * Only populated when the request set `include_total: true`. Total number of
+   * records matching the query, ignoring pagination. Opt-in because it costs an
+   * additional pass over the result set.
+   */
+  total?: number | null;
 }
 
 export namespace IdentityQueryResponse {
@@ -237,6 +637,20 @@ export interface IdentityRestoreResponse {
   list?: unknown;
 }
 
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface IdentityUpsertResponse {
+  id: string;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  list?: unknown;
+}
+
 export interface IdentityCreateParams {
   /**
    * Path param
@@ -254,6 +668,16 @@ export interface IdentityCreateParams {
    * Body param
    */
   list?: unknown;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
 }
 
 export interface IdentityUpdateParams {
@@ -273,10 +697,87 @@ export interface IdentityUpdateParams {
    * Body param
    */
   list?: unknown;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
+   * Header param: Optimistic concurrency. Pass back the `etag` header from a
+   * previous GET of this record; the write only proceeds if the record hasn't
+   * changed since. Mismatch → 412 `precondition_failed`. Use `*` to require the
+   * record exists (any ETag accepted).
+   */
+  'If-Match'?: string;
+}
+
+export interface IdentityListParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Query param: Opaque cursor from a previous response's `next_cursor`. Pass it
+   * back unchanged to fetch the next page.
+   */
+  cursor?: string;
+
+  /**
+   * Query param: Include soft-deleted records. Pass the literal string `true`.
+   */
+  deleted?: boolean;
+
+  /**
+   * Query param: When set to `true`, the response includes a `total` field with the
+   * unpaginated row count. Costs an extra pass; prefer `GET .../count` for the
+   * unfiltered total.
+   */
+  include_total?: boolean;
+
+  /**
+   * Query param: Maximum number of rows to return. Capped server-side at 50.
+   */
+  limit?: number;
+
+  /**
+   * Query param: Scope properties to a specific list/app.
+   */
+  list_id?: string;
+
+  /**
+   * Query param: Comma-separated property slugs to return. Use dot notation for
+   * relationships. `id` is always returned at the top level. Defaults to all
+   * properties.
+   */
+  select?: string;
+
+  /**
+   * Query param: Comma-separated list of slugs. Prefix with `-` for descending.
+   * Example: `sort=-updated_at,name`.
+   */
+  sort?: string;
 }
 
 export interface IdentityDeleteParams {
+  /**
+   * Path param
+   */
   teamId?: string;
+
+  /**
+   * Header param: Optimistic concurrency. Pass back the `etag` header from a
+   * previous GET of this record; the write only proceeds if the record hasn't
+   * changed since. Mismatch → 412 `precondition_failed`. Use `*` to require the
+   * record exists (any ETag accepted).
+   */
+  'If-Match'?: string;
 }
 
 export interface IdentityBulkCreateParams {
@@ -294,6 +795,16 @@ export interface IdentityBulkCreateParams {
    * Body param
    */
   options?: IdentityBulkCreateParams.Options;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
 }
 
 export namespace IdentityBulkCreateParams {
@@ -315,12 +826,120 @@ export namespace IdentityBulkCreateParams {
   }
 }
 
-export interface IdentityDuplicateParams {
+export interface IdentityBulkDeleteParams {
+  /**
+   * Path param
+   */
   teamId?: string;
+
+  /**
+   * Body param
+   */
+  ids: Array<string>;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
+}
+
+export interface IdentityBulkUpdateParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Body param
+   */
+  items: Array<IdentityBulkUpdateParams.Item>;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
+}
+
+export namespace IdentityBulkUpdateParams {
+  /**
+   * Object with `id` plus the same property body shape as PATCH
+   * (`default`/`list`/`extended`).
+   */
+  export interface Item {
+    id: string;
+
+    [k: string]: unknown;
+  }
+}
+
+export interface IdentityCountParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Query param: Scope the count to a specific list/app.
+   */
+  list_id?: string;
+}
+
+export interface IdentityDuplicateParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
+}
+
+export interface IdentityFindParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Path param: Property slug to match (e.g. `email`).
+   */
+  slug: string;
+
+  /**
+   * Query param: Scope the lookup to a specific list/app.
+   */
+  list_id?: string;
 }
 
 export interface IdentityGetParams {
+  /**
+   * Path param
+   */
   teamId?: string;
+
+  /**
+   * Query param: Comma-separated property slugs to return. Use dot notation for
+   * relationships. `id` is always returned at the top level. Defaults to all
+   * properties.
+   */
+  select?: string;
 }
 
 export interface IdentityQueryParams {
@@ -345,9 +964,22 @@ export interface IdentityQueryParams {
   boxes?: Array<string>;
 
   /**
+   * Body param: Alternative location for the opaque cursor (sibling of `query`). Use
+   * whichever feels more natural; if both are present, `query.cursor` wins.
+   */
+  cursor?: string;
+
+  /**
    * Body param
    */
   deleted?: boolean;
+
+  /**
+   * Body param: When true, the response includes a `total` field with the
+   * unpaginated row count. Costs an additional pass over the result set — for
+   * unfiltered totals prefer `GET /v2/prism/{teamId}/{objectType}/count` instead.
+   */
+  include_total?: boolean;
 
   /**
    * Body param
@@ -370,6 +1002,13 @@ export namespace IdentityQueryParams {
     combinator?: 'AND' | 'OR';
 
     /**
+     * Opaque cursor from a previous response's `next_cursor`. Pass it back unchanged
+     * to fetch the next page. When set, `page` and `limit` are derived from the cursor
+     * and any explicit values are ignored.
+     */
+    cursor?: string;
+
+    /**
      * Filters as [{ slug: { operator: value } }]. For select/multiselect properties,
      * values may be option slugs or option UUIDs.
      */
@@ -387,6 +1026,9 @@ export namespace IdentityQueryParams {
         | Query.NotContains
         | Query.Exists
         | Query.NotExists
+        | Query.IsNull
+        | Query.IsNotNull
+        | Query.Between
         | Query.In
         | Query.NotIn;
     }>;
@@ -399,6 +1041,10 @@ export namespace IdentityQueryParams {
 
     list_id?: string;
 
+    /**
+     * @deprecated Page number (1-based). Prefer `cursor`. Page-number pagination
+     * drifts under concurrent writes; use it only for one-shot exports.
+     */
     page?: number;
 
     /**
@@ -456,6 +1102,18 @@ export namespace IdentityQueryParams {
       not_exists: boolean;
     }
 
+    export interface IsNull {
+      is_null: string | boolean | Array<string>;
+    }
+
+    export interface IsNotNull {
+      is_not_null: string | boolean | Array<string>;
+    }
+
+    export interface Between {
+      between: string | boolean | Array<string>;
+    }
+
     export interface In {
       in: Array<string>;
     }
@@ -467,7 +1125,54 @@ export namespace IdentityQueryParams {
 }
 
 export interface IdentityRestoreParams {
+  /**
+   * Path param
+   */
   teamId?: string;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
+}
+
+export interface IdentityUpsertParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Path param
+   */
+  slug: string;
+
+  /**
+   * Body param: Properties keyed by property slug. Values can be strings, numbers,
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
+   */
+  default?: { [key: string]: unknown };
+
+  /**
+   * Body param
+   */
+  list?: unknown;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
 }
 
 export declare namespace Identities {
@@ -475,18 +1180,30 @@ export declare namespace Identities {
     type Identity as Identity,
     type IdentityCreateResponse as IdentityCreateResponse,
     type IdentityUpdateResponse as IdentityUpdateResponse,
+    type IdentityListResponse as IdentityListResponse,
     type IdentityBulkCreateResponse as IdentityBulkCreateResponse,
+    type IdentityBulkDeleteResponse as IdentityBulkDeleteResponse,
+    type IdentityBulkUpdateResponse as IdentityBulkUpdateResponse,
+    type IdentityCountResponse as IdentityCountResponse,
     type IdentityDuplicateResponse as IdentityDuplicateResponse,
+    type IdentityFindResponse as IdentityFindResponse,
     type IdentityGetResponse as IdentityGetResponse,
     type IdentityQueryResponse as IdentityQueryResponse,
     type IdentityRestoreResponse as IdentityRestoreResponse,
+    type IdentityUpsertResponse as IdentityUpsertResponse,
     type IdentityCreateParams as IdentityCreateParams,
     type IdentityUpdateParams as IdentityUpdateParams,
+    type IdentityListParams as IdentityListParams,
     type IdentityDeleteParams as IdentityDeleteParams,
     type IdentityBulkCreateParams as IdentityBulkCreateParams,
+    type IdentityBulkDeleteParams as IdentityBulkDeleteParams,
+    type IdentityBulkUpdateParams as IdentityBulkUpdateParams,
+    type IdentityCountParams as IdentityCountParams,
     type IdentityDuplicateParams as IdentityDuplicateParams,
+    type IdentityFindParams as IdentityFindParams,
     type IdentityGetParams as IdentityGetParams,
     type IdentityQueryParams as IdentityQueryParams,
     type IdentityRestoreParams as IdentityRestoreParams,
+    type IdentityUpsertParams as IdentityUpsertParams,
   };
 }

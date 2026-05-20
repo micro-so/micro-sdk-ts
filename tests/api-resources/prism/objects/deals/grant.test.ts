@@ -31,6 +31,7 @@ describe('resource grant', () => {
       team_group_id: [{ foo: 'a' }],
       team_id: { foo: 'a' },
       user_id: [{ foo: 'a' }],
+      'Idempotency-Key': 'x',
     });
   });
 

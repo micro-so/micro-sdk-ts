@@ -46,6 +46,7 @@ describe('resource views', () => {
       team_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       updated_at: 'updated_at',
       user_id: 'user_id',
+      'Idempotency-Key': 'x',
     });
   });
 
@@ -86,6 +87,7 @@ describe('resource views', () => {
       team_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       user_id: 'user_id',
       view_type: 'view_type',
+      'Idempotency-Key': 'x',
     });
   });
 
@@ -130,6 +132,10 @@ describe('resource views', () => {
     const response = await client.views.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       viewObjectType: 'action',
+      cursor: 'cursor',
+      include: 'records',
+      limit: 0,
+      page: 1,
     });
   });
 });

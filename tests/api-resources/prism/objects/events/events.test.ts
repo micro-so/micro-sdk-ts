@@ -10,6 +10,104 @@ const client = new Micro({
 
 describe('resource events', () => {
   // Mock server tests are disabled
+  test.skip('list: only required params', async () => {
+    const responsePromise = client.prism.objects.events.list();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('list: required and optional params', async () => {
+    const response = await client.prism.objects.events.list({
+      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      cursor: 'cursor',
+      deleted: true,
+      include_total: true,
+      limit: 1,
+      list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      select: 'select',
+      sort: 'sort',
+    });
+  });
+
+  // Mock server tests are disabled
+  test.skip('list: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.prism.objects.events.list(
+        {
+          teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          cursor: 'cursor',
+          deleted: true,
+          include_total: true,
+          limit: 1,
+          list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          select: 'select',
+          sort: 'sort',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Micro.NotFoundError);
+  });
+
+  // Mock server tests are disabled
+  test.skip('count: only required params', async () => {
+    const responsePromise = client.prism.objects.events.count();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('count: required and optional params', async () => {
+    const response = await client.prism.objects.events.count({
+      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    });
+  });
+
+  // Mock server tests are disabled
+  test.skip('count: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.prism.objects.events.count(
+        { teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Micro.NotFoundError);
+  });
+
+  // Mock server tests are disabled
+  test.skip('find: only required params', async () => {
+    const responsePromise = client.prism.objects.events.find('value', { slug: 'slug' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('find: required and optional params', async () => {
+    const response = await client.prism.objects.events.find('value', {
+      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      slug: 'slug',
+      list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    });
+  });
+
+  // Mock server tests are disabled
   test.skip('get: only required params', async () => {
     const responsePromise = client.prism.objects.events.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
@@ -25,6 +123,7 @@ describe('resource events', () => {
   test.skip('get: required and optional params', async () => {
     const response = await client.prism.objects.events.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      select: 'select',
     });
   });
 
@@ -34,7 +133,7 @@ describe('resource events', () => {
     await expect(
       client.prism.objects.events.get(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        { teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        { teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', select: 'select' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Micro.NotFoundError);
@@ -59,6 +158,7 @@ describe('resource events', () => {
       query: {
         select: ['string'],
         combinator: 'AND',
+        cursor: 'cursor',
         filter: [{ foo: { '=': 'string' } }],
         limit: 1,
         list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -67,7 +167,9 @@ describe('resource events', () => {
       },
       id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       boxes: ['string'],
+      cursor: 'cursor',
       deleted: true,
+      include_total: true,
       sources: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
     });
   });
