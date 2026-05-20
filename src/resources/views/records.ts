@@ -13,7 +13,7 @@ export class Records extends APIResource {
    */
   list(viewID: string, params: RecordListParams, options?: RequestOptions): APIPromise<RecordListResponse> {
     const { teamId = this._client.teamID, viewObjectType, ...query } = params;
-    return this._client.get(path`/v2/prism/${teamId}/view/${viewObjectType}/${viewID}/records`, {
+    return this._client.get(path`/v2/prism/${teamId}/${viewObjectType}/views/${viewID}/records`, {
       query,
       ...options,
     });
@@ -23,22 +23,41 @@ export class Records extends APIResource {
    * Pin a record to the view (append to record_order)
    */
   pin(objectID: string, params: RecordPinParams, options?: RequestOptions): APIPromise<void> {
-    const { teamId = this._client.teamID, viewObjectType, viewId } = params;
-    return this._client.post(path`/v2/prism/${teamId}/view/${viewObjectType}/${viewId}/records/${objectID}`, {
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+    const {
+      teamId = this._client.teamID,
+      viewObjectType,
+      viewId,
+      'Idempotency-Key': idempotencyKey,
+    } = params;
+    return this._client.post(
+      path`/v2/prism/${teamId}/${viewObjectType}/views/${viewId}/records/${objectID}`,
+      {
+        ...options,
+        headers: buildHeaders([
+          { Accept: '*/*', ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+          options?.headers,
+        ]),
+      },
+    );
   }
 
   /**
    * Bulk reorder pinned records
    */
   reorder(viewID: string, params: RecordReorderParams, options?: RequestOptions): APIPromise<void> {
-    const { teamId = this._client.teamID, viewObjectType, ...body } = params;
-    return this._client.patch(path`/v2/prism/${teamId}/view/${viewObjectType}/${viewID}/records`, {
+    const {
+      teamId = this._client.teamID,
+      viewObjectType,
+      'Idempotency-Key': idempotencyKey,
+      ...body
+    } = params;
+    return this._client.patch(path`/v2/prism/${teamId}/${viewObjectType}/views/${viewID}/records`, {
       body,
       ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+      headers: buildHeaders([
+        { Accept: '*/*', ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
     });
   }
 
@@ -48,13 +67,25 @@ export class Records extends APIResource {
   unpin(objectID: string, params: RecordUnpinParams, options?: RequestOptions): APIPromise<void> {
     const { teamId = this._client.teamID, viewObjectType, viewId } = params;
     return this._client.delete(
-      path`/v2/prism/${teamId}/view/${viewObjectType}/${viewId}/records/${objectID}`,
+      path`/v2/prism/${teamId}/${viewObjectType}/views/${viewId}/records/${objectID}`,
       { ...options, headers: buildHeaders([{ Accept: '*/*' }, options?.headers]) },
     );
   }
 }
 
-export type RecordListResponse = Array<{ [key: string]: unknown }>;
+export interface RecordListResponse {
+  data: Array<{ [key: string]: unknown }>;
+
+  /**
+   * True if more records exist beyond this page.
+   */
+  has_more: boolean;
+
+  /**
+   * Opaque cursor for the next page; null when `has_more` is false.
+   */
+  next_cursor?: string | null;
+}
 
 export interface RecordListParams {
   /**
@@ -68,22 +99,48 @@ export interface RecordListParams {
   viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';
 
   /**
+   * Query param: Opaque cursor from a previous response's `next_cursor`. Pass it
+   * back unchanged to fetch the next page. When set, `page` and `limit` are derived
+   * from the cursor.
+   */
+  cursor?: string;
+
+  /**
    * Query param
    */
   limit?: number;
 
   /**
-   * Query param
+   * Query param: Page number (1-based). Prefer `cursor`.
    */
   page?: number;
 }
 
 export interface RecordPinParams {
+  /**
+   * Path param
+   */
   teamId?: string;
 
+  /**
+   * Path param
+   */
   viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';
 
+  /**
+   * Path param
+   */
   viewId: string;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
 }
 
 export interface RecordReorderParams {
@@ -101,6 +158,16 @@ export interface RecordReorderParams {
    * Body param
    */
   object_ids: Array<string>;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
 }
 
 export interface RecordUnpinParams {

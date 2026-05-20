@@ -11,10 +11,22 @@ export type SdkMethod = {
 
 export const sdkMethods: SdkMethod[] = [
   {
-    clientCallName: 'client.prism.metadata.list',
-    fullyQualifiedName: 'prism.metadata.list',
+    clientCallName: 'client.prism.properties.list',
+    fullyQualifiedName: 'prism.properties.list',
     httpMethod: 'get',
-    httpPath: '/v2/prism/metadata/properties/{teamId}/{objectType}',
+    httpPath: '/v2/prism/{teamId}/{objectType}/properties',
+  },
+  {
+    clientCallName: 'client.prism.properties.listAll',
+    fullyQualifiedName: 'prism.properties.listAll',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/properties',
+  },
+  {
+    clientCallName: 'client.prism.imports.get',
+    fullyQualifiedName: 'prism.imports.get',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/imports/{jobId}',
   },
   {
     clientCallName: 'client.prism.objects.contacts.create',
@@ -29,6 +41,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/contact/{contactId}',
   },
   {
+    clientCallName: 'client.prism.objects.contacts.list',
+    fullyQualifiedName: 'prism.objects.contacts.list',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/contact',
+  },
+  {
     clientCallName: 'client.prism.objects.contacts.delete',
     fullyQualifiedName: 'prism.objects.contacts.delete',
     httpMethod: 'delete',
@@ -41,10 +59,34 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/contact/import',
   },
   {
+    clientCallName: 'client.prism.objects.contacts.bulkDelete',
+    fullyQualifiedName: 'prism.objects.contacts.bulkDelete',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/contact/batch/delete',
+  },
+  {
+    clientCallName: 'client.prism.objects.contacts.bulkUpdate',
+    fullyQualifiedName: 'prism.objects.contacts.bulkUpdate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/contact/batch/update',
+  },
+  {
+    clientCallName: 'client.prism.objects.contacts.count',
+    fullyQualifiedName: 'prism.objects.contacts.count',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/contact/count',
+  },
+  {
     clientCallName: 'client.prism.objects.contacts.duplicate',
     fullyQualifiedName: 'prism.objects.contacts.duplicate',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/contact/{contactId}/duplicate',
+  },
+  {
+    clientCallName: 'client.prism.objects.contacts.find',
+    fullyQualifiedName: 'prism.objects.contacts.find',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/contact/by/{slug}/{value}',
   },
   {
     clientCallName: 'client.prism.objects.contacts.get',
@@ -56,13 +98,19 @@ export const sdkMethods: SdkMethod[] = [
     clientCallName: 'client.prism.objects.contacts.query',
     fullyQualifiedName: 'prism.objects.contacts.query',
     httpMethod: 'post',
-    httpPath: '/v2/prism/query/{teamId}/contact',
+    httpPath: '/v2/prism/{teamId}/contact/query',
   },
   {
     clientCallName: 'client.prism.objects.contacts.restore',
     fullyQualifiedName: 'prism.objects.contacts.restore',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/contact/{contactId}/restore',
+  },
+  {
+    clientCallName: 'client.prism.objects.contacts.upsert',
+    fullyQualifiedName: 'prism.objects.contacts.upsert',
+    httpMethod: 'put',
+    httpPath: '/v2/prism/{teamId}/contact/by/{slug}/{value}',
   },
   {
     clientCallName: 'client.prism.objects.organizations.create',
@@ -77,6 +125,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/organization/{organizationId}',
   },
   {
+    clientCallName: 'client.prism.objects.organizations.list',
+    fullyQualifiedName: 'prism.objects.organizations.list',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/organization',
+  },
+  {
     clientCallName: 'client.prism.objects.organizations.delete',
     fullyQualifiedName: 'prism.objects.organizations.delete',
     httpMethod: 'delete',
@@ -89,10 +143,34 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/organization/import',
   },
   {
+    clientCallName: 'client.prism.objects.organizations.bulkDelete',
+    fullyQualifiedName: 'prism.objects.organizations.bulkDelete',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/organization/batch/delete',
+  },
+  {
+    clientCallName: 'client.prism.objects.organizations.bulkUpdate',
+    fullyQualifiedName: 'prism.objects.organizations.bulkUpdate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/organization/batch/update',
+  },
+  {
+    clientCallName: 'client.prism.objects.organizations.count',
+    fullyQualifiedName: 'prism.objects.organizations.count',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/organization/count',
+  },
+  {
     clientCallName: 'client.prism.objects.organizations.duplicate',
     fullyQualifiedName: 'prism.objects.organizations.duplicate',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/organization/{organizationId}/duplicate',
+  },
+  {
+    clientCallName: 'client.prism.objects.organizations.find',
+    fullyQualifiedName: 'prism.objects.organizations.find',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/organization/by/{slug}/{value}',
   },
   {
     clientCallName: 'client.prism.objects.organizations.get',
@@ -104,13 +182,19 @@ export const sdkMethods: SdkMethod[] = [
     clientCallName: 'client.prism.objects.organizations.query',
     fullyQualifiedName: 'prism.objects.organizations.query',
     httpMethod: 'post',
-    httpPath: '/v2/prism/query/{teamId}/organization',
+    httpPath: '/v2/prism/{teamId}/organization/query',
   },
   {
     clientCallName: 'client.prism.objects.organizations.restore',
     fullyQualifiedName: 'prism.objects.organizations.restore',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/organization/{organizationId}/restore',
+  },
+  {
+    clientCallName: 'client.prism.objects.organizations.upsert',
+    fullyQualifiedName: 'prism.objects.organizations.upsert',
+    httpMethod: 'put',
+    httpPath: '/v2/prism/{teamId}/organization/by/{slug}/{value}',
   },
   {
     clientCallName: 'client.prism.objects.identities.create',
@@ -125,6 +209,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/identity/{identityId}',
   },
   {
+    clientCallName: 'client.prism.objects.identities.list',
+    fullyQualifiedName: 'prism.objects.identities.list',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/identity',
+  },
+  {
     clientCallName: 'client.prism.objects.identities.delete',
     fullyQualifiedName: 'prism.objects.identities.delete',
     httpMethod: 'delete',
@@ -137,10 +227,34 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/identity/import',
   },
   {
+    clientCallName: 'client.prism.objects.identities.bulkDelete',
+    fullyQualifiedName: 'prism.objects.identities.bulkDelete',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/identity/batch/delete',
+  },
+  {
+    clientCallName: 'client.prism.objects.identities.bulkUpdate',
+    fullyQualifiedName: 'prism.objects.identities.bulkUpdate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/identity/batch/update',
+  },
+  {
+    clientCallName: 'client.prism.objects.identities.count',
+    fullyQualifiedName: 'prism.objects.identities.count',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/identity/count',
+  },
+  {
     clientCallName: 'client.prism.objects.identities.duplicate',
     fullyQualifiedName: 'prism.objects.identities.duplicate',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/identity/{identityId}/duplicate',
+  },
+  {
+    clientCallName: 'client.prism.objects.identities.find',
+    fullyQualifiedName: 'prism.objects.identities.find',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/identity/by/{slug}/{value}',
   },
   {
     clientCallName: 'client.prism.objects.identities.get',
@@ -152,13 +266,19 @@ export const sdkMethods: SdkMethod[] = [
     clientCallName: 'client.prism.objects.identities.query',
     fullyQualifiedName: 'prism.objects.identities.query',
     httpMethod: 'post',
-    httpPath: '/v2/prism/query/{teamId}/identity',
+    httpPath: '/v2/prism/{teamId}/identity/query',
   },
   {
     clientCallName: 'client.prism.objects.identities.restore',
     fullyQualifiedName: 'prism.objects.identities.restore',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/identity/{identityId}/restore',
+  },
+  {
+    clientCallName: 'client.prism.objects.identities.upsert',
+    fullyQualifiedName: 'prism.objects.identities.upsert',
+    httpMethod: 'put',
+    httpPath: '/v2/prism/{teamId}/identity/by/{slug}/{value}',
   },
   {
     clientCallName: 'client.prism.objects.deals.create',
@@ -173,6 +293,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/deal/{dealId}',
   },
   {
+    clientCallName: 'client.prism.objects.deals.list',
+    fullyQualifiedName: 'prism.objects.deals.list',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/deal',
+  },
+  {
     clientCallName: 'client.prism.objects.deals.delete',
     fullyQualifiedName: 'prism.objects.deals.delete',
     httpMethod: 'delete',
@@ -185,10 +311,34 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/deal/import',
   },
   {
+    clientCallName: 'client.prism.objects.deals.bulkDelete',
+    fullyQualifiedName: 'prism.objects.deals.bulkDelete',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/deal/batch/delete',
+  },
+  {
+    clientCallName: 'client.prism.objects.deals.bulkUpdate',
+    fullyQualifiedName: 'prism.objects.deals.bulkUpdate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/deal/batch/update',
+  },
+  {
+    clientCallName: 'client.prism.objects.deals.count',
+    fullyQualifiedName: 'prism.objects.deals.count',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/deal/count',
+  },
+  {
     clientCallName: 'client.prism.objects.deals.duplicate',
     fullyQualifiedName: 'prism.objects.deals.duplicate',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/deal/{dealId}/duplicate',
+  },
+  {
+    clientCallName: 'client.prism.objects.deals.find',
+    fullyQualifiedName: 'prism.objects.deals.find',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/deal/by/{slug}/{value}',
   },
   {
     clientCallName: 'client.prism.objects.deals.get',
@@ -200,7 +350,7 @@ export const sdkMethods: SdkMethod[] = [
     clientCallName: 'client.prism.objects.deals.query',
     fullyQualifiedName: 'prism.objects.deals.query',
     httpMethod: 'post',
-    httpPath: '/v2/prism/query/{teamId}/deal',
+    httpPath: '/v2/prism/{teamId}/deal/query',
   },
   {
     clientCallName: 'client.prism.objects.deals.restore',
@@ -209,16 +359,22 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/deal/{dealId}/restore',
   },
   {
+    clientCallName: 'client.prism.objects.deals.upsert',
+    fullyQualifiedName: 'prism.objects.deals.upsert',
+    httpMethod: 'put',
+    httpPath: '/v2/prism/{teamId}/deal/by/{slug}/{value}',
+  },
+  {
     clientCallName: 'client.prism.objects.deals.grant.update',
     fullyQualifiedName: 'prism.objects.deals.grant.update',
     httpMethod: 'put',
-    httpPath: '/v2/prism/grant/{teamId}/deal/{dealId}',
+    httpPath: '/v2/prism/{teamId}/deal/{dealId}/grant',
   },
   {
     clientCallName: 'client.prism.objects.deals.grant.get',
     fullyQualifiedName: 'prism.objects.deals.grant.get',
     httpMethod: 'get',
-    httpPath: '/v2/prism/grant/{teamId}/deal/{dealId}',
+    httpPath: '/v2/prism/{teamId}/deal/{dealId}/grant',
   },
   {
     clientCallName: 'client.prism.objects.actions.create',
@@ -233,6 +389,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/action/{actionId}',
   },
   {
+    clientCallName: 'client.prism.objects.actions.list',
+    fullyQualifiedName: 'prism.objects.actions.list',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/action',
+  },
+  {
     clientCallName: 'client.prism.objects.actions.delete',
     fullyQualifiedName: 'prism.objects.actions.delete',
     httpMethod: 'delete',
@@ -245,10 +407,34 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/action/import',
   },
   {
+    clientCallName: 'client.prism.objects.actions.bulkDelete',
+    fullyQualifiedName: 'prism.objects.actions.bulkDelete',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/action/batch/delete',
+  },
+  {
+    clientCallName: 'client.prism.objects.actions.bulkUpdate',
+    fullyQualifiedName: 'prism.objects.actions.bulkUpdate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/action/batch/update',
+  },
+  {
+    clientCallName: 'client.prism.objects.actions.count',
+    fullyQualifiedName: 'prism.objects.actions.count',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/action/count',
+  },
+  {
     clientCallName: 'client.prism.objects.actions.duplicate',
     fullyQualifiedName: 'prism.objects.actions.duplicate',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/action/{actionId}/duplicate',
+  },
+  {
+    clientCallName: 'client.prism.objects.actions.find',
+    fullyQualifiedName: 'prism.objects.actions.find',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/action/by/{slug}/{value}',
   },
   {
     clientCallName: 'client.prism.objects.actions.get',
@@ -260,7 +446,7 @@ export const sdkMethods: SdkMethod[] = [
     clientCallName: 'client.prism.objects.actions.query',
     fullyQualifiedName: 'prism.objects.actions.query',
     httpMethod: 'post',
-    httpPath: '/v2/prism/query/{teamId}/action',
+    httpPath: '/v2/prism/{teamId}/action/query',
   },
   {
     clientCallName: 'client.prism.objects.actions.restore',
@@ -269,16 +455,22 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/action/{actionId}/restore',
   },
   {
+    clientCallName: 'client.prism.objects.actions.upsert',
+    fullyQualifiedName: 'prism.objects.actions.upsert',
+    httpMethod: 'put',
+    httpPath: '/v2/prism/{teamId}/action/by/{slug}/{value}',
+  },
+  {
     clientCallName: 'client.prism.objects.actions.grant.update',
     fullyQualifiedName: 'prism.objects.actions.grant.update',
     httpMethod: 'put',
-    httpPath: '/v2/prism/grant/{teamId}/action/{actionId}',
+    httpPath: '/v2/prism/{teamId}/action/{actionId}/grant',
   },
   {
     clientCallName: 'client.prism.objects.actions.grant.get',
     fullyQualifiedName: 'prism.objects.actions.grant.get',
     httpMethod: 'get',
-    httpPath: '/v2/prism/grant/{teamId}/action/{actionId}',
+    httpPath: '/v2/prism/{teamId}/action/{actionId}/grant',
   },
   {
     clientCallName: 'client.prism.objects.documents.create',
@@ -293,6 +485,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/document/{documentId}',
   },
   {
+    clientCallName: 'client.prism.objects.documents.list',
+    fullyQualifiedName: 'prism.objects.documents.list',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/document',
+  },
+  {
     clientCallName: 'client.prism.objects.documents.delete',
     fullyQualifiedName: 'prism.objects.documents.delete',
     httpMethod: 'delete',
@@ -305,10 +503,34 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/document/import',
   },
   {
+    clientCallName: 'client.prism.objects.documents.bulkDelete',
+    fullyQualifiedName: 'prism.objects.documents.bulkDelete',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/document/batch/delete',
+  },
+  {
+    clientCallName: 'client.prism.objects.documents.bulkUpdate',
+    fullyQualifiedName: 'prism.objects.documents.bulkUpdate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/document/batch/update',
+  },
+  {
+    clientCallName: 'client.prism.objects.documents.count',
+    fullyQualifiedName: 'prism.objects.documents.count',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/document/count',
+  },
+  {
     clientCallName: 'client.prism.objects.documents.duplicate',
     fullyQualifiedName: 'prism.objects.documents.duplicate',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/document/{documentId}/duplicate',
+  },
+  {
+    clientCallName: 'client.prism.objects.documents.find',
+    fullyQualifiedName: 'prism.objects.documents.find',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/document/by/{slug}/{value}',
   },
   {
     clientCallName: 'client.prism.objects.documents.get',
@@ -320,7 +542,7 @@ export const sdkMethods: SdkMethod[] = [
     clientCallName: 'client.prism.objects.documents.query',
     fullyQualifiedName: 'prism.objects.documents.query',
     httpMethod: 'post',
-    httpPath: '/v2/prism/query/{teamId}/document',
+    httpPath: '/v2/prism/{teamId}/document/query',
   },
   {
     clientCallName: 'client.prism.objects.documents.restore',
@@ -329,16 +551,40 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/document/{documentId}/restore',
   },
   {
+    clientCallName: 'client.prism.objects.documents.upsert',
+    fullyQualifiedName: 'prism.objects.documents.upsert',
+    httpMethod: 'put',
+    httpPath: '/v2/prism/{teamId}/document/by/{slug}/{value}',
+  },
+  {
     clientCallName: 'client.prism.objects.documents.grant.update',
     fullyQualifiedName: 'prism.objects.documents.grant.update',
     httpMethod: 'put',
-    httpPath: '/v2/prism/grant/{teamId}/document/{documentId}',
+    httpPath: '/v2/prism/{teamId}/document/{documentId}/grant',
   },
   {
     clientCallName: 'client.prism.objects.documents.grant.get',
     fullyQualifiedName: 'prism.objects.documents.grant.get',
     httpMethod: 'get',
-    httpPath: '/v2/prism/grant/{teamId}/document/{documentId}',
+    httpPath: '/v2/prism/{teamId}/document/{documentId}/grant',
+  },
+  {
+    clientCallName: 'client.prism.objects.events.list',
+    fullyQualifiedName: 'prism.objects.events.list',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/event',
+  },
+  {
+    clientCallName: 'client.prism.objects.events.count',
+    fullyQualifiedName: 'prism.objects.events.count',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/event/count',
+  },
+  {
+    clientCallName: 'client.prism.objects.events.find',
+    fullyQualifiedName: 'prism.objects.events.find',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/event/by/{slug}/{value}',
   },
   {
     clientCallName: 'client.prism.objects.events.get',
@@ -350,67 +596,67 @@ export const sdkMethods: SdkMethod[] = [
     clientCallName: 'client.prism.objects.events.query',
     fullyQualifiedName: 'prism.objects.events.query',
     httpMethod: 'post',
-    httpPath: '/v2/prism/query/{teamId}/event',
+    httpPath: '/v2/prism/{teamId}/event/query',
   },
   {
     clientCallName: 'client.prism.objects.events.grant.update',
     fullyQualifiedName: 'prism.objects.events.grant.update',
     httpMethod: 'put',
-    httpPath: '/v2/prism/grant/{teamId}/event/{eventId}',
+    httpPath: '/v2/prism/{teamId}/event/{eventId}/grant',
   },
   {
     clientCallName: 'client.prism.objects.events.grant.get',
     fullyQualifiedName: 'prism.objects.events.grant.get',
     httpMethod: 'get',
-    httpPath: '/v2/prism/grant/{teamId}/event/{eventId}',
+    httpPath: '/v2/prism/{teamId}/event/{eventId}/grant',
   },
   {
     clientCallName: 'client.views.create',
     fullyQualifiedName: 'views.create',
     httpMethod: 'post',
-    httpPath: '/v2/prism/{teamId}/view/{viewObjectType}',
+    httpPath: '/v2/prism/{teamId}/{viewObjectType}/views',
   },
   {
     clientCallName: 'client.views.update',
     fullyQualifiedName: 'views.update',
     httpMethod: 'patch',
-    httpPath: '/v2/prism/{teamId}/view/{viewObjectType}/{viewId}',
+    httpPath: '/v2/prism/{teamId}/{viewObjectType}/views/{viewId}',
   },
   {
     clientCallName: 'client.views.delete',
     fullyQualifiedName: 'views.delete',
     httpMethod: 'delete',
-    httpPath: '/v2/prism/{teamId}/view/{viewObjectType}/{viewId}',
+    httpPath: '/v2/prism/{teamId}/{viewObjectType}/views/{viewId}',
   },
   {
     clientCallName: 'client.views.get',
     fullyQualifiedName: 'views.get',
     httpMethod: 'get',
-    httpPath: '/v2/prism/{teamId}/view/{viewObjectType}/{viewId}',
+    httpPath: '/v2/prism/{teamId}/{viewObjectType}/views/{viewId}',
   },
   {
     clientCallName: 'client.views.records.list',
     fullyQualifiedName: 'views.records.list',
     httpMethod: 'get',
-    httpPath: '/v2/prism/{teamId}/view/{viewObjectType}/{viewId}/records',
+    httpPath: '/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records',
   },
   {
     clientCallName: 'client.views.records.pin',
     fullyQualifiedName: 'views.records.pin',
     httpMethod: 'post',
-    httpPath: '/v2/prism/{teamId}/view/{viewObjectType}/{viewId}/records/{objectId}',
+    httpPath: '/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records/{objectId}',
   },
   {
     clientCallName: 'client.views.records.reorder',
     fullyQualifiedName: 'views.records.reorder',
     httpMethod: 'patch',
-    httpPath: '/v2/prism/{teamId}/view/{viewObjectType}/{viewId}/records',
+    httpPath: '/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records',
   },
   {
     clientCallName: 'client.views.records.unpin',
     fullyQualifiedName: 'views.records.unpin',
     httpMethod: 'delete',
-    httpPath: '/v2/prism/{teamId}/view/{viewObjectType}/{viewId}/records/{objectId}',
+    httpPath: '/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records/{objectId}',
   },
 ];
 
