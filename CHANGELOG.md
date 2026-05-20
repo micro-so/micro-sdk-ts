@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.5.0 (2026-05-20)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* **api:** api update ([27c368a](https://github.com/micro-so/micro-sdk-ts/commit/27c368a320614ec7f95170227c13712574ab4101))
+
+
+### Bug Fixes
+
+* **typescript:** upgrade tsc-multi so that it works with Node 26 ([01d7e8a](https://github.com/micro-so/micro-sdk-ts/commit/01d7e8ac87beeea7fa1e94bed37296399228d284))
+
+
+### Chores
+
+* **tests:** remove redundant File import ([b767009](https://github.com/micro-so/micro-sdk-ts/commit/b767009fd0c446afbf461c5ca5c3c0a1770d6953))
+* update SDK settings ([e93397e](https://github.com/micro-so/micro-sdk-ts/commit/e93397e09c65c131c3b890aa6f2f0c76673f82ba))
+* update SDK settings ([01aad13](https://github.com/micro-so/micro-sdk-ts/commit/01aad139f1c67024c1709db632d7e6215cd8d303))
+
 ## 0.4.0 (2026-05-17)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.3.0...v0.4.0)
