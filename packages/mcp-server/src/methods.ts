@@ -23,8 +23,8 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/properties',
   },
   {
-    clientCallName: 'client.prism.importJobs.get',
-    fullyQualifiedName: 'prism.importJobs.get',
+    clientCallName: 'client.prism.imports.get',
+    fullyQualifiedName: 'prism.imports.get',
     httpMethod: 'get',
     httpPath: '/v2/prism/{teamId}/imports/{jobId}',
   },
