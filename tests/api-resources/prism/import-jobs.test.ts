@@ -8,10 +8,10 @@ const client = new Micro({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource imports', () => {
+describe('resource importJobs', () => {
   // Mock server tests are disabled
   test.skip('get: only required params', async () => {
-    const responsePromise = client.prism.imports.get('jobId');
+    const responsePromise = client.prism.importJobs.get('jobId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,7 +23,7 @@ describe('resource imports', () => {
 
   // Mock server tests are disabled
   test.skip('get: required and optional params', async () => {
-    const response = await client.prism.imports.get('jobId', {
+    const response = await client.prism.importJobs.get('jobId', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
@@ -32,7 +32,7 @@ describe('resource imports', () => {
   test.skip('get: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.prism.imports.get(
+      client.prism.importJobs.get(
         'jobId',
         { teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
         { path: '/_stainless_unknown_path' },
