@@ -16,15 +16,15 @@ Methods:
 - <code title="get /v2/prism/{teamId}/{objectType}/properties">client.prism.properties.<a href="./src/resources/prism/properties.ts">list</a>(objectType, { ...params }) -> PropertyListResponse</code>
 - <code title="get /v2/prism/{teamId}/properties">client.prism.properties.<a href="./src/resources/prism/properties.ts">listAll</a>({ ...params }) -> PropertyListAllResponse</code>
 
-## ImportJobs
+## Imports
 
 Types:
 
-- <code><a href="./src/resources/prism/import-jobs.ts">ImportJobGetResponse</a></code>
+- <code><a href="./src/resources/prism/imports.ts">ImportGetResponse</a></code>
 
 Methods:
 
-- <code title="get /v2/prism/{teamId}/imports/{jobId}">client.prism.importJobs.<a href="./src/resources/prism/import-jobs.ts">get</a>(jobID, { ...params }) -> ImportJobGetResponse</code>
+- <code title="get /v2/prism/{teamId}/imports/{jobId}">client.prism.imports.<a href="./src/resources/prism/imports.ts">get</a>(jobID, { ...params }) -> ImportGetResponse</code>
 
 ## Objects
 

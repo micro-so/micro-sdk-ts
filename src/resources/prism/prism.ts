@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as ImportJobsAPI from './import-jobs';
-import { ImportJobGetParams, ImportJobGetResponse, ImportJobs } from './import-jobs';
+import * as ImportsAPI from './imports';
+import { ImportGetParams, ImportGetResponse, Imports } from './imports';
 import * as PropertiesAPI from './properties';
 import {
   Properties,
@@ -16,7 +16,7 @@ import { Objects } from './objects/objects';
 
 export class Prism extends APIResource {
   properties: PropertiesAPI.Properties = new PropertiesAPI.Properties(this._client);
-  importJobs: ImportJobsAPI.ImportJobs = new ImportJobsAPI.ImportJobs(this._client);
+  imports: ImportsAPI.Imports = new ImportsAPI.Imports(this._client);
   objects: ObjectsAPI.Objects = new ObjectsAPI.Objects(this._client);
 }
 
@@ -32,7 +32,7 @@ export interface PrismObjectProperties {
 }
 
 Prism.Properties = Properties;
-Prism.ImportJobs = ImportJobs;
+Prism.Imports = Imports;
 Prism.Objects = Objects;
 
 export declare namespace Prism {
@@ -47,9 +47,9 @@ export declare namespace Prism {
   };
 
   export {
-    ImportJobs as ImportJobs,
-    type ImportJobGetResponse as ImportJobGetResponse,
-    type ImportJobGetParams as ImportJobGetParams,
+    Imports as Imports,
+    type ImportGetResponse as ImportGetResponse,
+    type ImportGetParams as ImportGetParams,
   };
 
   export { Objects as Objects };

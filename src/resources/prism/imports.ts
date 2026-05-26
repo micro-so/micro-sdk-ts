@@ -5,7 +5,7 @@ import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
-export class ImportJobs extends APIResource {
+export class Imports extends APIResource {
   /**
    * Poll the status of an async import. Sync imports complete in the original
    * response and don't appear here. Async jobs are retained for 7 days. Returns 404
@@ -13,9 +13,9 @@ export class ImportJobs extends APIResource {
    */
   get(
     jobID: string,
-    params: ImportJobGetParams | null | undefined = {},
+    params: ImportGetParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<ImportJobGetResponse> {
+  ): APIPromise<ImportGetResponse> {
     const { teamId = this._client.teamID } = params ?? {};
     return this._client.get(path`/v2/prism/${teamId}/imports/${jobID}`, options);
   }
@@ -25,7 +25,7 @@ export class ImportJobs extends APIResource {
  * Status snapshot of an import job. Same shape used by the POST /import response
  * and by GET /imports/{jobId}.
  */
-export interface ImportJobGetResponse {
+export interface ImportGetResponse {
   /**
    * Null for sync imports (results inlined). Set for async imports.
    */
@@ -43,7 +43,7 @@ export interface ImportJobGetResponse {
   /**
    * Set when status=failed; describes the job-level failure (not per-row).
    */
-  error?: ImportJobGetResponse.Error;
+  error?: ImportGetResponse.Error;
 
   expires_at?: string;
 
@@ -58,14 +58,14 @@ export interface ImportJobGetResponse {
    * Per-row outcomes. Always present for sync imports; populated for async imports
    * once the job reaches `complete`.
    */
-  results?: Array<ImportJobGetResponse.Result>;
+  results?: Array<ImportGetResponse.Result>;
 
   succeeded?: number;
 
   updated_at?: string;
 }
 
-export namespace ImportJobGetResponse {
+export namespace ImportGetResponse {
   /**
    * Set when status=failed; describes the job-level failure (not per-row).
    */
@@ -97,10 +97,10 @@ export namespace ImportJobGetResponse {
   }
 }
 
-export interface ImportJobGetParams {
+export interface ImportGetParams {
   teamId?: string;
 }
 
-export declare namespace ImportJobs {
-  export { type ImportJobGetResponse as ImportJobGetResponse, type ImportJobGetParams as ImportJobGetParams };
+export declare namespace Imports {
+  export { type ImportGetResponse as ImportGetResponse, type ImportGetParams as ImportGetParams };
 }
