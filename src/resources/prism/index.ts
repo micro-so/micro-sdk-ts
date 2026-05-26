@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Imports, type ImportGetResponse, type ImportGetParams } from './imports';
+export { ImportJobs, type ImportJobGetResponse, type ImportJobGetParams } from './import-jobs';
 export { Objects } from './objects/index';
 export { Prism, type PrismObjectProperties } from './prism';
 export {

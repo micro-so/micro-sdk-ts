@@ -110,7 +110,7 @@ const fuse = new Fuse(
   [
     'client.prism.properties.list',
     'client.prism.properties.listAll',
-    'client.prism.imports.get',
+    'client.prism.importJobs.get',
     'client.prism.objects.contacts.bulkCreate',
     'client.prism.objects.contacts.bulkDelete',
     'client.prism.objects.contacts.bulkUpdate',

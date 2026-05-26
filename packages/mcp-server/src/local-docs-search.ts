@@ -141,33 +141,33 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     summary: 'Get the status of an import job',
     description:
       "Poll the status of an async import. Sync imports complete in the original response and don't appear here. Async jobs are retained for 7 days. Returns 404 once the job has expired.",
-    stainlessPath: '(resource) prism.imports > (method) get',
-    qualified: 'client.prism.imports.get',
+    stainlessPath: '(resource) prism.import_jobs > (method) get',
+    qualified: 'client.prism.importJobs.get',
     params: ['teamId: string;', 'jobId: string;'],
     response:
       "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }",
     markdown:
-      "## get\n\n`client.prism.imports.get(teamId: string, jobId: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**get** `/v2/prism/{teamId}/imports/{jobId}`\n\nPoll the status of an async import. Sync imports complete in the original response and don't appear here. Async jobs are retained for 7 days. Returns 404 once the job has expired.\n\n### Parameters\n\n- `teamId: string`\n\n- `jobId: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst _import = await client.prism.imports.get('jobId');\n\nconsole.log(_import);\n```",
+      "## get\n\n`client.prism.importJobs.get(teamId: string, jobId: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**get** `/v2/prism/{teamId}/imports/{jobId}`\n\nPoll the status of an async import. Sync imports complete in the original response and don't appear here. Async jobs are retained for 7 days. Returns 404 once the job has expired.\n\n### Parameters\n\n- `teamId: string`\n\n- `jobId: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst importJob = await client.prism.importJobs.get('jobId');\n\nconsole.log(importJob);\n```",
     perLanguage: {
       typescript: {
-        method: 'client.prism.imports.get',
+        method: 'client.prism.importJobs.get',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst _import = await client.prism.imports.get('jobId');\n\nconsole.log(_import.job_id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst importJob = await client.prism.importJobs.get('jobId');\n\nconsole.log(importJob.job_id);",
       },
       python: {
-        method: 'prism.imports.get',
+        method: 'prism.import_jobs.get',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nimport_ = client.prism.imports.get(\n    job_id="jobId",\n)\nprint(import_.job_id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nimport_job = client.prism.import_jobs.get(\n    job_id="jobId",\n)\nprint(import_job.job_id)',
       },
       go: {
-        method: 'client.Prism.Imports.Get',
+        method: 'client.Prism.ImportJobs.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\timport_, err := client.Prism.Imports.Get(\n\t\tcontext.TODO(),\n\t\t"jobId",\n\t\tmicro.PrismImportGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", import_.JobID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\timportJob, err := client.Prism.ImportJobs.Get(\n\t\tcontext.TODO(),\n\t\t"jobId",\n\t\tmicro.PrismImportJobGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", importJob.JobID)\n}\n',
       },
       cli: {
-        method: 'imports get',
+        method: 'import_jobs get',
         example:
-          "micro prism:imports get \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --job-id jobId",
+          "micro prism:import-jobs get \\\n  --api-key 'My API Key' \\\n  --team-id 'My Team ID' \\\n  --team-id 182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e \\\n  --job-id jobId",
       },
       http: {
         example:
