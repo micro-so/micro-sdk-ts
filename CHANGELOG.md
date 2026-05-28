@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0 (2026-05-28)
+
+Full Changelog: [v0.5.0...v0.6.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.5.0...v0.6.0)
+
+### Features
+
+* **api:** api update ([944bc07](https://github.com/micro-so/micro-sdk-ts/commit/944bc079ce565843dbeb320956fd8b3e998bf860))
+* **api:** api update ([ac8c963](https://github.com/micro-so/micro-sdk-ts/commit/ac8c963bb2cfbe0b52f7c0e624df1a03c9950491))
+* **api:** manual updates ([78f66c8](https://github.com/micro-so/micro-sdk-ts/commit/78f66c84ff23c5309f3e03ac4f8dd1f88b6053fe))
+
 ## 0.5.0 (2026-05-20)
 
 Full Changelog: [v0.4.0...v0.5.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.4.0...v0.5.0)

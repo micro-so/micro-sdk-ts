@@ -326,7 +326,7 @@ export namespace ContactListResponse {
      */
     properties?: { [key: string]: unknown };
 
-    source?: string | null;
+    source?: Array<string> | null;
   }
 }
 
@@ -615,7 +615,7 @@ export namespace ContactQueryResponse {
      */
     properties?: { [key: string]: unknown };
 
-    source?: string | null;
+    source?: Array<string> | null;
   }
 }
 
@@ -960,8 +960,8 @@ export interface ContactQueryParams {
   boxes?: Array<string>;
 
   /**
-   * Body param: Alternative location for the opaque cursor (sibling of `query`). Use
-   * whichever feels more natural; if both are present, `query.cursor` wins.
+   * Body param: Alternative location for the opaque cursor (a sibling of `query`).
+   * Use whichever feels more natural; if both are present, `query.cursor` wins.
    */
   cursor?: string;
 
