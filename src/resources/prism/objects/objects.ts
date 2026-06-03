@@ -194,7 +194,37 @@ import {
   Documents,
 } from './documents/documents';
 import * as EngagementsAPI from './engagements/engagements';
-import { Engagement, Engagements } from './engagements/engagements';
+import {
+  Engagement,
+  EngagementBulkCreateParams,
+  EngagementBulkCreateResponse,
+  EngagementBulkDeleteParams,
+  EngagementBulkDeleteResponse,
+  EngagementBulkUpdateParams,
+  EngagementBulkUpdateResponse,
+  EngagementCountParams,
+  EngagementCountResponse,
+  EngagementCreateParams,
+  EngagementCreateResponse,
+  EngagementDeleteParams,
+  EngagementDuplicateParams,
+  EngagementDuplicateResponse,
+  EngagementFindParams,
+  EngagementFindResponse,
+  EngagementGetParams,
+  EngagementGetResponse,
+  EngagementListParams,
+  EngagementListResponse,
+  EngagementQueryParams,
+  EngagementQueryResponse,
+  EngagementRestoreParams,
+  EngagementRestoreResponse,
+  EngagementUpdateParams,
+  EngagementUpdateResponse,
+  EngagementUpsertParams,
+  EngagementUpsertResponse,
+  Engagements,
+} from './engagements/engagements';
 import * as EventsAPI from './events/events';
 import {
   Event,
@@ -439,5 +469,35 @@ export declare namespace Objects {
     type EventQueryParams as EventQueryParams,
   };
 
-  export { Engagements as Engagements, type Engagement as Engagement };
+  export {
+    Engagements as Engagements,
+    type Engagement as Engagement,
+    type EngagementCreateResponse as EngagementCreateResponse,
+    type EngagementUpdateResponse as EngagementUpdateResponse,
+    type EngagementListResponse as EngagementListResponse,
+    type EngagementBulkCreateResponse as EngagementBulkCreateResponse,
+    type EngagementBulkDeleteResponse as EngagementBulkDeleteResponse,
+    type EngagementBulkUpdateResponse as EngagementBulkUpdateResponse,
+    type EngagementCountResponse as EngagementCountResponse,
+    type EngagementDuplicateResponse as EngagementDuplicateResponse,
+    type EngagementFindResponse as EngagementFindResponse,
+    type EngagementGetResponse as EngagementGetResponse,
+    type EngagementQueryResponse as EngagementQueryResponse,
+    type EngagementRestoreResponse as EngagementRestoreResponse,
+    type EngagementUpsertResponse as EngagementUpsertResponse,
+    type EngagementCreateParams as EngagementCreateParams,
+    type EngagementUpdateParams as EngagementUpdateParams,
+    type EngagementListParams as EngagementListParams,
+    type EngagementDeleteParams as EngagementDeleteParams,
+    type EngagementBulkCreateParams as EngagementBulkCreateParams,
+    type EngagementBulkDeleteParams as EngagementBulkDeleteParams,
+    type EngagementBulkUpdateParams as EngagementBulkUpdateParams,
+    type EngagementCountParams as EngagementCountParams,
+    type EngagementDuplicateParams as EngagementDuplicateParams,
+    type EngagementFindParams as EngagementFindParams,
+    type EngagementGetParams as EngagementGetParams,
+    type EngagementQueryParams as EngagementQueryParams,
+    type EngagementRestoreParams as EngagementRestoreParams,
+    type EngagementUpsertParams as EngagementUpsertParams,
+  };
 }

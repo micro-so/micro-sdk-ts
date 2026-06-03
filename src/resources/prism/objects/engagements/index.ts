@@ -1,4 +1,40 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Engagements, type Engagement } from './engagements';
-export { Grant } from './grant';
+export {
+  Engagements,
+  type Engagement,
+  type EngagementCreateResponse,
+  type EngagementUpdateResponse,
+  type EngagementListResponse,
+  type EngagementBulkCreateResponse,
+  type EngagementBulkDeleteResponse,
+  type EngagementBulkUpdateResponse,
+  type EngagementCountResponse,
+  type EngagementDuplicateResponse,
+  type EngagementFindResponse,
+  type EngagementGetResponse,
+  type EngagementQueryResponse,
+  type EngagementRestoreResponse,
+  type EngagementUpsertResponse,
+  type EngagementCreateParams,
+  type EngagementUpdateParams,
+  type EngagementListParams,
+  type EngagementDeleteParams,
+  type EngagementBulkCreateParams,
+  type EngagementBulkDeleteParams,
+  type EngagementBulkUpdateParams,
+  type EngagementCountParams,
+  type EngagementDuplicateParams,
+  type EngagementFindParams,
+  type EngagementGetParams,
+  type EngagementQueryParams,
+  type EngagementRestoreParams,
+  type EngagementUpsertParams,
+} from './engagements';
+export {
+  Grant,
+  type GrantUpdateResponse,
+  type GrantGetResponse,
+  type GrantUpdateParams,
+  type GrantGetParams,
+} from './grant';
