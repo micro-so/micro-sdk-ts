@@ -22,7 +22,15 @@ export class Views extends APIResource {
    * Create a view bundle (view + select/filter/sort)
    */
   create(
-    viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization',
+    viewObjectType:
+      | 'comment'
+      | 'action'
+      | 'deal'
+      | 'engagement'
+      | 'document'
+      | 'event'
+      | 'identity'
+      | 'organization',
     params: ViewCreateParams,
     options?: RequestOptions,
   ): APIPromise<ViewCreateResponse> {
@@ -492,7 +500,15 @@ export interface ViewUpdateParams {
   /**
    * Path param
    */
-  viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';
+  viewObjectType:
+    | 'comment'
+    | 'action'
+    | 'deal'
+    | 'engagement'
+    | 'document'
+    | 'event'
+    | 'identity'
+    | 'organization';
 
   /**
    * Body param
@@ -598,7 +614,15 @@ export interface ViewUpdateParams {
 export interface ViewDeleteParams {
   teamId?: string;
 
-  viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';
+  viewObjectType:
+    | 'comment'
+    | 'action'
+    | 'deal'
+    | 'engagement'
+    | 'document'
+    | 'event'
+    | 'identity'
+    | 'organization';
 }
 
 export interface ViewGetParams {
@@ -610,7 +634,15 @@ export interface ViewGetParams {
   /**
    * Path param
    */
-  viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';
+  viewObjectType:
+    | 'comment'
+    | 'action'
+    | 'deal'
+    | 'engagement'
+    | 'document'
+    | 'event'
+    | 'identity'
+    | 'organization';
 
   /**
    * Query param: Forwarded to the records sub-resource when `include=records`.
