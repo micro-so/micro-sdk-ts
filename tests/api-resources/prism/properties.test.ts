@@ -11,7 +11,7 @@ const client = new Micro({
 describe('resource properties', () => {
   // Mock server tests are disabled
   test.skip('list: only required params', async () => {
-    const responsePromise = client.prism.properties.list('deal');
+    const responsePromise = client.prism.properties.list('comment');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,7 +23,7 @@ describe('resource properties', () => {
 
   // Mock server tests are disabled
   test.skip('list: required and optional params', async () => {
-    const response = await client.prism.properties.list('deal', {
+    const response = await client.prism.properties.list('comment', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       autofill: true,
       list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -36,7 +36,7 @@ describe('resource properties', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.prism.properties.list(
-        'deal',
+        'comment',
         {
           teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           autofill: true,

@@ -124,6 +124,7 @@ export {
   type DocumentRestoreParams,
   type DocumentUpsertParams,
 } from './documents/index';
+export { Engagements, type Engagement } from './engagements/index';
 export {
   Events,
   type Event,

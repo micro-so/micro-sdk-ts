@@ -311,6 +311,14 @@ Methods:
 - <code title="put /v2/prism/{teamId}/event/{eventId}/grant">client.prism.objects.events.grant.<a href="./src/resources/prism/objects/events/grant.ts">update</a>(eventID, { ...params }) -> GrantUpdateResponse</code>
 - <code title="get /v2/prism/{teamId}/event/{eventId}/grant">client.prism.objects.events.grant.<a href="./src/resources/prism/objects/events/grant.ts">get</a>(eventID, { ...params }) -> GrantGetResponse</code>
 
+### Engagements
+
+Types:
+
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">Engagement</a></code>
+
+#### Grant
+
 # Views
 
 Types:

@@ -11,7 +11,9 @@ export class Properties extends APIResource {
    */
   list(
     objectType:
+      | 'comment'
       | 'deal'
+      | 'engagement'
       | 'identity'
       | 'ai_chat_thread'
       | 'ai_chat_message'

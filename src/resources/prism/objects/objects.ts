@@ -193,6 +193,8 @@ import {
   DocumentUpsertResponse,
   Documents,
 } from './documents/documents';
+import * as EngagementsAPI from './engagements/engagements';
+import { Engagement, Engagements } from './engagements/engagements';
 import * as EventsAPI from './events/events';
 import {
   Event,
@@ -217,6 +219,7 @@ export class Objects extends APIResource {
   actions: ActionsAPI.Actions = new ActionsAPI.Actions(this._client);
   documents: DocumentsAPI.Documents = new DocumentsAPI.Documents(this._client);
   events: EventsAPI.Events = new EventsAPI.Events(this._client);
+  engagements: EngagementsAPI.Engagements = new EngagementsAPI.Engagements(this._client);
 }
 
 Objects.Contacts = Contacts;
@@ -226,6 +229,7 @@ Objects.Deals = Deals;
 Objects.Actions = Actions;
 Objects.Documents = Documents;
 Objects.Events = Events;
+Objects.Engagements = Engagements;
 
 export declare namespace Objects {
   export {
@@ -434,4 +438,6 @@ export declare namespace Objects {
     type EventGetParams as EventGetParams,
     type EventQueryParams as EventQueryParams,
   };
+
+  export { Engagements as Engagements, type Engagement as Engagement };
 }
