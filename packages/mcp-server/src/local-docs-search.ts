@@ -67,22 +67,22 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: 'object',
     markdown:
-      "## list\n\n`client.prism.properties.list(teamId: string, objectType: string, autofill?: boolean, list_id?: string, term?: string): object`\n\n**get** `/v2/prism/{teamId}/{objectType}/properties`\n\nGet metadata properties by object type\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `autofill?: boolean`\n\n- `list_id?: string`\n  Scope properties to a specific list/app.\n\n- `term?: string`\n\n### Returns\n\n- `object`\n  Property definitions keyed by object type, then by property definition id (UUID). When the request scopes to a single object type, only that key is present.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst properties = await client.prism.properties.list('deal');\n\nconsole.log(properties);\n```",
+      "## list\n\n`client.prism.properties.list(teamId: string, objectType: string, autofill?: boolean, list_id?: string, term?: string): object`\n\n**get** `/v2/prism/{teamId}/{objectType}/properties`\n\nGet metadata properties by object type\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `autofill?: boolean`\n\n- `list_id?: string`\n  Scope properties to a specific list/app.\n\n- `term?: string`\n\n### Returns\n\n- `object`\n  Property definitions keyed by object type, then by property definition id (UUID). When the request scopes to a single object type, only that key is present.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst properties = await client.prism.properties.list('comment');\n\nconsole.log(properties);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.properties.list',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst properties = await client.prism.properties.list('deal');\n\nconsole.log(properties);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst properties = await client.prism.properties.list('comment');\n\nconsole.log(properties);",
       },
       python: {
         method: 'prism.properties.list',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nproperties = client.prism.properties.list(\n    object_type="deal",\n)\nprint(properties)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nproperties = client.prism.properties.list(\n    object_type="comment",\n)\nprint(properties)',
       },
       go: {
         method: 'client.Prism.Properties.List',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tproperties, err := client.Prism.Properties.List(\n\t\tcontext.TODO(),\n\t\tmicro.PrismPropertyListParamsObjectTypeDeal,\n\t\tmicro.PrismPropertyListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", properties)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tproperties, err := client.Prism.Properties.List(\n\t\tcontext.TODO(),\n\t\tmicro.PrismPropertyListParamsObjectTypeComment,\n\t\tmicro.PrismPropertyListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", properties)\n}\n',
       },
       http: {
         example:
@@ -3799,6 +3799,605 @@ const EMBEDDED_METHODS: MethodEntry[] = [
   },
   {
     name: 'create',
+    endpoint: '/v2/prism/{teamId}/engagement',
+    httpMethod: 'post',
+    summary: 'Create object',
+    description: 'Create object',
+    stainlessPath: '(resource) prism.objects.engagements > (method) create',
+    qualified: 'client.prism.objects.engagements.create',
+    params: ['teamId: string;', 'default?: object;', 'list?: object;', 'Idempotency-Key?: string;'],
+    response: '{ id: string; default?: object; list?: object; }',
+    markdown:
+      "## create\n\n`client.prism.objects.engagements.create(teamId: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**post** `/v2/prism/{teamId}/engagement`\n\nCreate object\n\n### Parameters\n\n- `teamId: string`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst engagement = await client.prism.objects.engagements.create();\n\nconsole.log(engagement);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.create',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst engagement = await client.prism.objects.engagements.create();\n\nconsole.log(engagement.id);",
+      },
+      python: {
+        method: 'prism.objects.engagements.create',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nengagement = client.prism.objects.engagements.create()\nprint(engagement.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tengagement, err := client.Prism.Objects.Engagements.New(context.TODO(), micro.PrismObjectEngagementNewParams{\n\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", engagement.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/v2/prism/{teamId}/engagement',
+    httpMethod: 'get',
+    summary: 'List records of an object type',
+    description:
+      'Convenience list endpoint. Equivalent to `POST /v2/prism/{teamId}/{objectType}/query` with an empty body, plus query-string sugar for the common cases. Any unrecognized query parameter is interpreted as an equality filter on a property of that name; pass arrays for `in`. Values are received as strings, so non-string property filters via this endpoint may not work — use the `query` endpoint for typed comparisons or anything beyond simple equality.',
+    stainlessPath: '(resource) prism.objects.engagements > (method) list',
+    qualified: 'client.prism.objects.engagements.list',
+    params: [
+      'teamId: string;',
+      'cursor?: string;',
+      'deleted?: boolean;',
+      'include_total?: boolean;',
+      'limit?: number;',
+      'list_id?: string;',
+      'select?: string;',
+      'sort?: string;',
+    ],
+    response:
+      '{ data: { id: string; is_user_object?: boolean; properties?: object; source?: string[]; }[]; has_more: boolean; next_cursor?: string; total?: number; }',
+    markdown:
+      "## list\n\n`client.prism.objects.engagements.list(teamId: string, cursor?: string, deleted?: boolean, include_total?: boolean, limit?: number, list_id?: string, select?: string, sort?: string): { data: object[]; has_more: boolean; next_cursor?: string; total?: number; }`\n\n**get** `/v2/prism/{teamId}/engagement`\n\nConvenience list endpoint. Equivalent to `POST /v2/prism/{teamId}/{objectType}/query` with an empty body, plus query-string sugar for the common cases. Any unrecognized query parameter is interpreted as an equality filter on a property of that name; pass arrays for `in`. Values are received as strings, so non-string property filters via this endpoint may not work — use the `query` endpoint for typed comparisons or anything beyond simple equality.\n\n### Parameters\n\n- `teamId: string`\n\n- `cursor?: string`\n  Opaque cursor from a previous response's `next_cursor`. Pass it back unchanged to fetch the next page.\n\n- `deleted?: boolean`\n  Include soft-deleted records. Pass the literal string `true`.\n\n- `include_total?: boolean`\n  When set to `true`, the response includes a `total` field with the unpaginated row count. Costs an extra pass; prefer `GET .../count` for the unfiltered total.\n\n- `limit?: number`\n  Maximum number of rows to return. Capped server-side at 50.\n\n- `list_id?: string`\n  Scope properties to a specific list/app.\n\n- `select?: string`\n  Comma-separated property slugs to return. Use dot notation for relationships. `id` is always returned at the top level. Defaults to all properties.\n\n- `sort?: string`\n  Comma-separated list of slugs. Prefix with `-` for descending. Example: `sort=-updated_at,name`.\n\n### Returns\n\n- `{ data: { id: string; is_user_object?: boolean; properties?: object; source?: string[]; }[]; has_more: boolean; next_cursor?: string; total?: number; }`\n\n  - `data: { id: string; is_user_object?: boolean; properties?: object; source?: string[]; }[]`\n  - `has_more: boolean`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst engagements = await client.prism.objects.engagements.list();\n\nconsole.log(engagements);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.list',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst engagements = await client.prism.objects.engagements.list();\n\nconsole.log(engagements.data);",
+      },
+      python: {
+        method: 'prism.objects.engagements.list',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nengagements = client.prism.objects.engagements.list()\nprint(engagements.data)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tengagements, err := client.Prism.Objects.Engagements.List(context.TODO(), micro.PrismObjectEngagementListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", engagements.Data)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'get',
+    endpoint: '/v2/prism/{teamId}/engagement/{engagementId}',
+    httpMethod: 'get',
+    summary: 'Get object',
+    description: 'Get object',
+    stainlessPath: '(resource) prism.objects.engagements > (method) get',
+    qualified: 'client.prism.objects.engagements.get',
+    params: ['teamId: string;', 'engagementId: string;', 'select?: string;'],
+    response: '{ id: string; default?: object; list?: object; }',
+    markdown:
+      "## get\n\n`client.prism.objects.engagements.get(teamId: string, engagementId: string, select?: string): { id: string; default?: object; list?: object; }`\n\n**get** `/v2/prism/{teamId}/engagement/{engagementId}`\n\nGet object\n\n### Parameters\n\n- `teamId: string`\n\n- `engagementId: string`\n\n- `select?: string`\n  Comma-separated property slugs to return. Use dot notation for relationships. `id` is always returned at the top level. Defaults to all properties.\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst engagement = await client.prism.objects.engagements.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(engagement);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.get',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst engagement = await client.prism.objects.engagements.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(engagement.id);",
+      },
+      python: {
+        method: 'prism.objects.engagements.get',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nengagement = client.prism.objects.engagements.get(\n    engagement_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(engagement.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tengagement, err := client.Prism.Objects.Engagements.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEngagementGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", engagement.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/$ENGAGEMENT_ID \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v2/prism/{teamId}/engagement/{engagementId}',
+    httpMethod: 'patch',
+    summary: 'Patch object',
+    description: 'Patch object',
+    stainlessPath: '(resource) prism.objects.engagements > (method) update',
+    qualified: 'client.prism.objects.engagements.update',
+    params: [
+      'teamId: string;',
+      'engagementId: string;',
+      'default?: object;',
+      'list?: object;',
+      'Idempotency-Key?: string;',
+      'If-Match?: string;',
+    ],
+    response: '{ id: string; default?: object; list?: object; }',
+    markdown:
+      "## update\n\n`client.prism.objects.engagements.update(teamId: string, engagementId: string, default?: object, list?: object, Idempotency-Key?: string, If-Match?: string): { id: string; default?: object; list?: object; }`\n\n**patch** `/v2/prism/{teamId}/engagement/{engagementId}`\n\nPatch object\n\n### Parameters\n\n- `teamId: string`\n\n- `engagementId: string`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n- `If-Match?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst engagement = await client.prism.objects.engagements.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(engagement);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.update',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst engagement = await client.prism.objects.engagements.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(engagement.id);",
+      },
+      python: {
+        method: 'prism.objects.engagements.update',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nengagement = client.prism.objects.engagements.update(\n    engagement_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(engagement.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tengagement, err := client.Prism.Objects.Engagements.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEngagementUpdateParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", engagement.ID)\n}\n',
+      },
+      http: {
+        example:
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/$ENGAGEMENT_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/v2/prism/{teamId}/engagement/{engagementId}',
+    httpMethod: 'delete',
+    summary: 'Delete object',
+    description: 'Delete object',
+    stainlessPath: '(resource) prism.objects.engagements > (method) delete',
+    qualified: 'client.prism.objects.engagements.delete',
+    params: ['teamId: string;', 'engagementId: string;', 'If-Match?: string;'],
+    markdown:
+      "## delete\n\n`client.prism.objects.engagements.delete(teamId: string, engagementId: string, If-Match?: string): void`\n\n**delete** `/v2/prism/{teamId}/engagement/{engagementId}`\n\nDelete object\n\n### Parameters\n\n- `teamId: string`\n\n- `engagementId: string`\n\n- `If-Match?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.prism.objects.engagements.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.delete',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.objects.engagements.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+      },
+      python: {
+        method: 'prism.objects.engagements.delete',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.objects.engagements.delete(\n    engagement_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.Objects.Engagements.Delete(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEngagementDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/$ENGAGEMENT_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'query',
+    endpoint: '/v2/prism/{teamId}/engagement/query',
+    httpMethod: 'post',
+    summary: 'Query',
+    description: 'Query',
+    stainlessPath: '(resource) prism.objects.engagements > (method) query',
+    qualified: 'client.prism.objects.engagements.query',
+    params: [
+      'teamId: string;',
+      "query: { select: string[]; combinator?: 'AND' | 'OR'; cursor?: string; filter?: object[]; limit?: number; list_id?: string; page?: number; sort?: object[]; };",
+      'id?: string | string[];',
+      'boxes?: string[];',
+      'cursor?: string;',
+      'deleted?: boolean;',
+      'include_total?: boolean;',
+      'sources?: string[];',
+    ],
+    response:
+      '{ data: { id: string; is_user_object?: boolean; properties?: object; source?: string[]; }[]; has_more: boolean; next_cursor?: string; total?: number; }',
+    markdown:
+      "## query\n\n`client.prism.objects.engagements.query(teamId: string, query: { select: string[]; combinator?: 'AND' | 'OR'; cursor?: string; filter?: object[]; limit?: number; list_id?: string; page?: number; sort?: object[]; }, id?: string | string[], boxes?: string[], cursor?: string, deleted?: boolean, include_total?: boolean, sources?: string[]): { data: object[]; has_more: boolean; next_cursor?: string; total?: number; }`\n\n**post** `/v2/prism/{teamId}/engagement/query`\n\nQuery\n\n### Parameters\n\n- `teamId: string`\n\n- `query: { select: string[]; combinator?: 'AND' | 'OR'; cursor?: string; filter?: object[]; limit?: number; list_id?: string; page?: number; sort?: object[]; }`\n  - `select: string[]`\n    Property slugs to select. Use dot notation for relationships (e.g. attendee.contact.first_name). `id` is always returned at the top level of each row and does not need to be selected.\n  - `combinator?: 'AND' | 'OR'`\n    Logical operator for combining filters\n  - `cursor?: string`\n    Opaque cursor from a previous response's `next_cursor`. Pass it back unchanged to fetch the next page. When set, `page` and `limit` are derived from the cursor and any explicit values are ignored.\n  - `filter?: object[]`\n    Filters as [{ slug: { operator: value } }]. For select/multiselect properties, values may be option slugs or option UUIDs.\n  - `limit?: number`\n    Maximum number of rows to return. Capped server-side at 50; requests above the cap are rejected.\n  - `list_id?: string`\n  - `page?: number`\n    Page number (1-based). Prefer `cursor`. Page-number pagination drifts under concurrent writes; use it only for one-shot exports.\n  - `sort?: object[]`\n    Sort order as [{ slug: direction }]. Array order determines sort priority\n\n- `id?: string | string[]`\n\n- `boxes?: string[]`\n\n- `cursor?: string`\n  Alternative location for the opaque cursor (a sibling of `query`). Use whichever feels more natural; if both are present, `query.cursor` wins.\n\n- `deleted?: boolean`\n\n- `include_total?: boolean`\n  When true, the response includes a `total` field with the unpaginated row count. Costs an additional pass over the result set — for unfiltered totals prefer `GET /v2/prism/{teamId}/{objectType}/count` instead.\n\n- `sources?: string[]`\n\n### Returns\n\n- `{ data: { id: string; is_user_object?: boolean; properties?: object; source?: string[]; }[]; has_more: boolean; next_cursor?: string; total?: number; }`\n\n  - `data: { id: string; is_user_object?: boolean; properties?: object; source?: string[]; }[]`\n  - `has_more: boolean`\n  - `next_cursor?: string`\n  - `total?: number`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.query({ query: { select: ['string'] } });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.query',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.engagements.query({ query: { select: ['string'] } });\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'prism.objects.engagements.query',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.engagements.query(\n    query={\n        "select": ["string"]\n    },\n)\nprint(response.data)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.Query',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Engagements.Query(context.TODO(), micro.PrismObjectEngagementQueryParams{\n\t\tQuery: micro.F(micro.PrismObjectEngagementQueryParamsQuery{\n\t\t\tSelect: micro.F([]string{"string"}),\n\t\t}),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/query \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "query": {\n            "select": [\n              "string"\n            ]\n          }\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'count',
+    endpoint: '/v2/prism/{teamId}/engagement/count',
+    httpMethod: 'get',
+    summary: 'Total record count for an object type',
+    description:
+      'Returns the total number of records of this object type that the caller can see. Avoids the page-overshoot anti-pattern — clients no longer need to keep paging until `has_more` flips false to discover the total. Currently does not apply query filters; for a filtered total, pass `include_total: true` in a POST `/query` body.',
+    stainlessPath: '(resource) prism.objects.engagements > (method) count',
+    qualified: 'client.prism.objects.engagements.count',
+    params: ['teamId: string;', 'list_id?: string;'],
+    response: '{ total: number; }',
+    markdown:
+      "## count\n\n`client.prism.objects.engagements.count(teamId: string, list_id?: string): { total: number; }`\n\n**get** `/v2/prism/{teamId}/engagement/count`\n\nReturns the total number of records of this object type that the caller can see. Avoids the page-overshoot anti-pattern — clients no longer need to keep paging until `has_more` flips false to discover the total. Currently does not apply query filters; for a filtered total, pass `include_total: true` in a POST `/query` body.\n\n### Parameters\n\n- `teamId: string`\n\n- `list_id?: string`\n  Scope the count to a specific list/app.\n\n### Returns\n\n- `{ total: number; }`\n\n  - `total: number`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.count();\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.count',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.engagements.count();\n\nconsole.log(response.total);",
+      },
+      python: {
+        method: 'prism.objects.engagements.count',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.engagements.count()\nprint(response.total)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.Count',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Engagements.Count(context.TODO(), micro.PrismObjectEngagementCountParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Total)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/count \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'find',
+    endpoint: '/v2/prism/{teamId}/engagement/by/{slug}/{value}',
+    httpMethod: 'get',
+    summary: 'Find a record by property value',
+    description:
+      'Returns the single record whose property `{slug}` equals `{value}`. 404 if nothing matches; 409 if more than one record matches.',
+    stainlessPath: '(resource) prism.objects.engagements > (method) find',
+    qualified: 'client.prism.objects.engagements.find',
+    params: ['teamId: string;', 'slug: string;', 'value: string;', 'list_id?: string;'],
+    response: '{ id: string; default?: object; list?: object; }',
+    markdown:
+      "## find\n\n`client.prism.objects.engagements.find(teamId: string, slug: string, value: string, list_id?: string): { id: string; default?: object; list?: object; }`\n\n**get** `/v2/prism/{teamId}/engagement/by/{slug}/{value}`\n\nReturns the single record whose property `{slug}` equals `{value}`. 404 if nothing matches; 409 if more than one record matches.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `list_id?: string`\n  Scope the lookup to a specific list/app.\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.find('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.find',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.engagements.find('value', { slug: 'slug' });\n\nconsole.log(response.id);",
+      },
+      python: {
+        method: 'prism.objects.engagements.find',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.engagements.find(\n    value="value",\n    slug="slug",\n)\nprint(response.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.Find',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Engagements.Find(\n\t\tcontext.TODO(),\n\t\t"slug",\n\t\t"value",\n\t\tmicro.PrismObjectEngagementFindParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/by/$SLUG/$VALUE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'upsert',
+    endpoint: '/v2/prism/{teamId}/engagement/by/{slug}/{value}',
+    httpMethod: 'put',
+    summary: 'Upsert by property value',
+    description:
+      'Idempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.',
+    stainlessPath: '(resource) prism.objects.engagements > (method) upsert',
+    qualified: 'client.prism.objects.engagements.upsert',
+    params: [
+      'teamId: string;',
+      'slug: string;',
+      'value: string;',
+      'default?: object;',
+      'list?: object;',
+      'Idempotency-Key?: string;',
+    ],
+    response: '{ id: string; default?: object; list?: object; }',
+    markdown:
+      "## upsert\n\n`client.prism.objects.engagements.upsert(teamId: string, slug: string, value: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/engagement/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.upsert',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.engagements.upsert('value', { slug: 'slug' });\n\nconsole.log(response.id);",
+      },
+      python: {
+        method: 'prism.objects.engagements.upsert',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.engagements.upsert(\n    value="value",\n    slug="slug",\n)\nprint(response.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.Upsert',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Engagements.Upsert(\n\t\tcontext.TODO(),\n\t\t"slug",\n\t\t"value",\n\t\tmicro.PrismObjectEngagementUpsertParams{\n\t\t\tPrismObjectProperties: micro.PrismObjectPropertiesParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
+      },
+      http: {
+        example:
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/by/$SLUG/$VALUE \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
+      },
+    },
+  },
+  {
+    name: 'bulk_create',
+    endpoint: '/v2/prism/{teamId}/engagement/import',
+    httpMethod: 'post',
+    summary: 'Import objects',
+    description:
+      'Import multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.',
+    stainlessPath: '(resource) prism.objects.engagements > (method) bulk_create',
+    qualified: 'client.prism.objects.engagements.bulkCreate',
+    params: [
+      'teamId: string;',
+      'objects: { default?: object; list?: object; }[];',
+      'options?: { caseInsensitive?: boolean; dedupe_by?: string; list_id?: string; };',
+      'Idempotency-Key?: string;',
+    ],
+    response:
+      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }",
+    markdown:
+      "## bulk_create\n\n`client.prism.objects.engagements.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; dedupe_by?: string; list_id?: string; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/engagement/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; dedupe_by?: string; list_id?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.bulkCreate',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.engagements.bulkCreate({ objects: [{}] });\n\nconsole.log(response.job_id);",
+      },
+      python: {
+        method: 'prism.objects.engagements.bulk_create',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.engagements.bulk_create(\n    objects=[{}],\n)\nprint(response.job_id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.BulkNew',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Engagements.BulkNew(context.TODO(), micro.PrismObjectEngagementBulkNewParams{\n\t\tObjects: micro.F([]micro.PrismObjectPropertiesParam{{}}),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.JobID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/import \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "objects": [\n            {}\n          ]\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'bulk_update',
+    endpoint: '/v2/prism/{teamId}/engagement/batch/update',
+    httpMethod: 'post',
+    summary: 'Bulk update records (partial success)',
+    description:
+      "Patch up to 100 records in a single call. Each item is attempted independently — failures don't abort the batch. Inspect `results[].status` per item.",
+    stainlessPath: '(resource) prism.objects.engagements > (method) bulk_update',
+    qualified: 'client.prism.objects.engagements.bulkUpdate',
+    params: ['teamId: string;', 'items: { id: string; }[];', 'Idempotency-Key?: string;'],
+    response:
+      "{ results: { id: string; status: 'ok' | 'error'; error?: { code?: string; message?: string; }; record?: { id: string; default?: object; list?: object; }; }[]; summary: { failed: number; succeeded: number; total: number; }; }",
+    markdown:
+      "## bulk_update\n\n`client.prism.objects.engagements.bulkUpdate(teamId: string, items: { id: string; }[], Idempotency-Key?: string): { results: object[]; summary: object; }`\n\n**post** `/v2/prism/{teamId}/engagement/batch/update`\n\nPatch up to 100 records in a single call. Each item is attempted independently — failures don't abort the batch. Inspect `results[].status` per item.\n\n### Parameters\n\n- `teamId: string`\n\n- `items: { id: string; }[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ results: { id: string; status: 'ok' | 'error'; error?: { code?: string; message?: string; }; record?: { id: string; default?: object; list?: object; }; }[]; summary: { failed: number; succeeded: number; total: number; }; }`\n  Partial-success bulk operation result. Inspect `results[].status` per item; the operation as a whole returns 200 even if some items failed.\n\n  - `results: { id: string; status: 'ok' | 'error'; error?: { code?: string; message?: string; }; record?: { id: string; default?: object; list?: object; }; }[]`\n  - `summary: { failed: number; succeeded: number; total: number; }`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.bulkUpdate({ items: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }] });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.bulkUpdate',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.engagements.bulkUpdate({\n  items: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n});\n\nconsole.log(response.results);",
+      },
+      python: {
+        method: 'prism.objects.engagements.bulk_update',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.engagements.bulk_update(\n    items=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n)\nprint(response.results)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.BulkUpdate',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Engagements.BulkUpdate(context.TODO(), micro.PrismObjectEngagementBulkUpdateParams{\n\t\tItems: micro.F([]micro.PrismObjectEngagementBulkUpdateParamsItem{{\n\t\t\tID: micro.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),\n\t\t}}),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Results)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/batch/update \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "items": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ]\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'bulk_delete',
+    endpoint: '/v2/prism/{teamId}/engagement/batch/delete',
+    httpMethod: 'post',
+    summary: 'Bulk delete records (partial success)',
+    description:
+      'Soft-delete up to 100 records in a single call. Same partial-success contract as batch/update.',
+    stainlessPath: '(resource) prism.objects.engagements > (method) bulk_delete',
+    qualified: 'client.prism.objects.engagements.bulkDelete',
+    params: ['teamId: string;', 'ids: string[];', 'Idempotency-Key?: string;'],
+    response:
+      "{ results: { id: string; status: 'ok' | 'error'; error?: { code?: string; message?: string; }; record?: { id: string; default?: object; list?: object; }; }[]; summary: { failed: number; succeeded: number; total: number; }; }",
+    markdown:
+      "## bulk_delete\n\n`client.prism.objects.engagements.bulkDelete(teamId: string, ids: string[], Idempotency-Key?: string): { results: object[]; summary: object; }`\n\n**post** `/v2/prism/{teamId}/engagement/batch/delete`\n\nSoft-delete up to 100 records in a single call. Same partial-success contract as batch/update.\n\n### Parameters\n\n- `teamId: string`\n\n- `ids: string[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ results: { id: string; status: 'ok' | 'error'; error?: { code?: string; message?: string; }; record?: { id: string; default?: object; list?: object; }; }[]; summary: { failed: number; succeeded: number; total: number; }; }`\n  Partial-success bulk operation result. Inspect `results[].status` per item; the operation as a whole returns 200 even if some items failed.\n\n  - `results: { id: string; status: 'ok' | 'error'; error?: { code?: string; message?: string; }; record?: { id: string; default?: object; list?: object; }; }[]`\n  - `summary: { failed: number; succeeded: number; total: number; }`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.bulkDelete({ ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'] });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.bulkDelete',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.engagements.bulkDelete({\n  ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],\n});\n\nconsole.log(response.results);",
+      },
+      python: {
+        method: 'prism.objects.engagements.bulk_delete',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.engagements.bulk_delete(\n    ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],\n)\nprint(response.results)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.BulkDelete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Engagements.BulkDelete(context.TODO(), micro.PrismObjectEngagementBulkDeleteParams{\n\t\tIDs: micro.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Results)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/batch/delete \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "ids": [\n            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n          ]\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'duplicate',
+    endpoint: '/v2/prism/{teamId}/engagement/{engagementId}/duplicate',
+    httpMethod: 'post',
+    summary: 'Duplicate object',
+    description: 'Duplicate object',
+    stainlessPath: '(resource) prism.objects.engagements > (method) duplicate',
+    qualified: 'client.prism.objects.engagements.duplicate',
+    params: ['teamId: string;', 'engagementId: string;', 'Idempotency-Key?: string;'],
+    response: '{ id: string; default?: object; list?: object; }',
+    markdown:
+      "## duplicate\n\n`client.prism.objects.engagements.duplicate(teamId: string, engagementId: string, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**post** `/v2/prism/{teamId}/engagement/{engagementId}/duplicate`\n\nDuplicate object\n\n### Parameters\n\n- `teamId: string`\n\n- `engagementId: string`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.duplicate('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.duplicate',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.engagements.duplicate(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(response.id);",
+      },
+      python: {
+        method: 'prism.objects.engagements.duplicate',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.engagements.duplicate(\n    engagement_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.Duplicate',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Engagements.Duplicate(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEngagementDuplicateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/$ENGAGEMENT_ID/duplicate \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'restore',
+    endpoint: '/v2/prism/{teamId}/engagement/{engagementId}/restore',
+    httpMethod: 'post',
+    summary: 'Restore object',
+    description: 'Restore object',
+    stainlessPath: '(resource) prism.objects.engagements > (method) restore',
+    qualified: 'client.prism.objects.engagements.restore',
+    params: ['teamId: string;', 'engagementId: string;', 'Idempotency-Key?: string;'],
+    response: '{ id: string; default?: object; list?: object; }',
+    markdown:
+      "## restore\n\n`client.prism.objects.engagements.restore(teamId: string, engagementId: string, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**post** `/v2/prism/{teamId}/engagement/{engagementId}/restore`\n\nRestore object\n\n### Parameters\n\n- `teamId: string`\n\n- `engagementId: string`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.restore',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.prism.objects.engagements.restore(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(response.id);",
+      },
+      python: {
+        method: 'prism.objects.engagements.restore',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.prism.objects.engagements.restore(\n    engagement_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.Restore',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Prism.Objects.Engagements.Restore(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEngagementRestoreParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/$ENGAGEMENT_ID/restore \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'get',
+    endpoint: '/v2/prism/{teamId}/engagement/{engagementId}/grant',
+    httpMethod: 'get',
+    summary: 'Get grant',
+    description: 'Get grant',
+    stainlessPath: '(resource) prism.objects.engagements.grant > (method) get',
+    qualified: 'client.prism.objects.engagements.grant.get',
+    params: ['teamId: string;', 'engagementId: string;'],
+    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    markdown:
+      "## get\n\n`client.prism.objects.engagements.grant.get(teamId: string, engagementId: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**get** `/v2/prism/{teamId}/engagement/{engagementId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `engagementId: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.engagements.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.grant.get',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.engagements.grant.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.team_group_id);",
+      },
+      python: {
+        method: 'prism.objects.engagements.grant.get',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.engagements.grant.get(\n    engagement_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.Grant.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Engagements.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEngagementGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/$ENGAGEMENT_ID/grant \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v2/prism/{teamId}/engagement/{engagementId}/grant',
+    httpMethod: 'put',
+    summary: 'Update grant',
+    description: 'Update grant',
+    stainlessPath: '(resource) prism.objects.engagements.grant > (method) update',
+    qualified: 'client.prism.objects.engagements.grant.update',
+    params: [
+      'teamId: string;',
+      'engagementId: string;',
+      'team_group_id?: object[];',
+      'team_id?: object;',
+      'user_id?: object[];',
+      'Idempotency-Key?: string;',
+    ],
+    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    markdown:
+      "## update\n\n`client.prism.objects.engagements.grant.update(teamId: string, engagementId: string, team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**put** `/v2/prism/{teamId}/engagement/{engagementId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `engagementId: string`\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.engagements.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.engagements.grant.update',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.engagements.grant.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.team_group_id);",
+      },
+      python: {
+        method: 'prism.objects.engagements.grant.update',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.engagements.grant.update(\n    engagement_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Engagements.Grant.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Engagements.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEngagementGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+      },
+      http: {
+        example:
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/$ENGAGEMENT_ID/grant \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
+      },
+    },
+  },
+  {
+    name: 'create',
     endpoint: '/v2/prism/{teamId}/{viewObjectType}/views',
     httpMethod: 'post',
     summary: 'Create a view bundle (view + select/filter/sort)',
@@ -3807,7 +4406,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     qualified: 'client.views.create',
     params: [
       'teamId: string;',
-      "viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';",
+      "viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
       'name: string;',
       'view_type: string;',
       'id?: string;',
@@ -3834,22 +4433,22 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     response:
       "{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }",
     markdown:
-      "## create\n\n`client.views.create(teamId: string, viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization', name: string, view_type: string, id?: string, aggregation_prop_def_id?: string, aggregation_type?: string, column_layout?: object, combinator?: 'AND' | 'OR', created_at?: string, filter?: object[], group_by?: string, group_hidden_option_ids?: object[] | object, group_hide_empty?: boolean, group_sort?: string, icon?: string, list_id?: string, select?: string[], sort?: object[], sort_order?: number, team_id?: string, updated_at?: string, user_id?: string, Idempotency-Key?: string): { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n\n**post** `/v2/prism/{teamId}/{viewObjectType}/views`\n\nCreate a view bundle (view + select/filter/sort)\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `name: string`\n\n- `view_type: string`\n\n- `id?: string`\n\n- `aggregation_prop_def_id?: string`\n\n- `aggregation_type?: string`\n\n- `column_layout?: object`\n\n- `combinator?: 'AND' | 'OR'`\n\n- `created_at?: string`\n\n- `filter?: object[]`\n  Each entry is { slug: { comparator: value } }\n\n- `group_by?: string`\n  Property slug to group by\n\n- `group_hidden_option_ids?: object[] | object`\n\n- `group_hide_empty?: boolean`\n\n- `group_sort?: string`\n\n- `icon?: string`\n\n- `list_id?: string`\n\n- `select?: string[]`\n  Property slugs (dot-paths permitted for refs)\n\n- `sort?: object[]`\n  Each entry is { slug: 'asc' | 'desc' }\n\n- `sort_order?: number`\n\n- `team_id?: string`\n\n- `updated_at?: string`\n\n- `user_id?: string`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n  A view (saved configuration for displaying records of a given object type) plus its select/filter/sort children. Properties in select/filter/sort are referenced by slug.\n\n  - `name: string`\n  - `view_type: string`\n  - `id?: string`\n  - `aggregation_prop_def_id?: string`\n  - `aggregation_type?: string`\n  - `column_layout?: object`\n  - `combinator?: 'AND' | 'OR'`\n  - `created_at?: string`\n  - `filter?: object[]`\n  - `group_by?: string`\n  - `group_hidden_option_ids?: object[] | object`\n  - `group_hide_empty?: boolean`\n  - `group_sort?: string`\n  - `icon?: string`\n  - `list_id?: string`\n  - `select?: string[]`\n  - `sort?: object[]`\n  - `sort_order?: number`\n  - `team_id?: string`\n  - `updated_at?: string`\n  - `user_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst view = await client.views.create('action', { name: 'name', view_type: 'view_type' });\n\nconsole.log(view);\n```",
+      "## create\n\n`client.views.create(teamId: string, viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', name: string, view_type: string, id?: string, aggregation_prop_def_id?: string, aggregation_type?: string, column_layout?: object, combinator?: 'AND' | 'OR', created_at?: string, filter?: object[], group_by?: string, group_hidden_option_ids?: object[] | object, group_hide_empty?: boolean, group_sort?: string, icon?: string, list_id?: string, select?: string[], sort?: object[], sort_order?: number, team_id?: string, updated_at?: string, user_id?: string, Idempotency-Key?: string): { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n\n**post** `/v2/prism/{teamId}/{viewObjectType}/views`\n\nCreate a view bundle (view + select/filter/sort)\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `name: string`\n\n- `view_type: string`\n\n- `id?: string`\n\n- `aggregation_prop_def_id?: string`\n\n- `aggregation_type?: string`\n\n- `column_layout?: object`\n\n- `combinator?: 'AND' | 'OR'`\n\n- `created_at?: string`\n\n- `filter?: object[]`\n  Each entry is { slug: { comparator: value } }\n\n- `group_by?: string`\n  Property slug to group by\n\n- `group_hidden_option_ids?: object[] | object`\n\n- `group_hide_empty?: boolean`\n\n- `group_sort?: string`\n\n- `icon?: string`\n\n- `list_id?: string`\n\n- `select?: string[]`\n  Property slugs (dot-paths permitted for refs)\n\n- `sort?: object[]`\n  Each entry is { slug: 'asc' | 'desc' }\n\n- `sort_order?: number`\n\n- `team_id?: string`\n\n- `updated_at?: string`\n\n- `user_id?: string`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n  A view (saved configuration for displaying records of a given object type) plus its select/filter/sort children. Properties in select/filter/sort are referenced by slug.\n\n  - `name: string`\n  - `view_type: string`\n  - `id?: string`\n  - `aggregation_prop_def_id?: string`\n  - `aggregation_type?: string`\n  - `column_layout?: object`\n  - `combinator?: 'AND' | 'OR'`\n  - `created_at?: string`\n  - `filter?: object[]`\n  - `group_by?: string`\n  - `group_hidden_option_ids?: object[] | object`\n  - `group_hide_empty?: boolean`\n  - `group_sort?: string`\n  - `icon?: string`\n  - `list_id?: string`\n  - `select?: string[]`\n  - `sort?: object[]`\n  - `sort_order?: number`\n  - `team_id?: string`\n  - `updated_at?: string`\n  - `user_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst view = await client.views.create('comment', { name: 'name', view_type: 'view_type' });\n\nconsole.log(view);\n```",
     perLanguage: {
       typescript: {
         method: 'client.views.create',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst view = await client.views.create('action', { name: 'name', view_type: 'view_type' });\n\nconsole.log(view.id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst view = await client.views.create('comment', { name: 'name', view_type: 'view_type' });\n\nconsole.log(view.id);",
       },
       python: {
         method: 'views.create',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nview = client.views.create(\n    view_object_type="action",\n    name="name",\n    view_type="view_type",\n)\nprint(view.id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nview = client.views.create(\n    view_object_type="comment",\n    name="name",\n    view_type="view_type",\n)\nprint(view.id)',
       },
       go: {
         method: 'client.Views.New',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tview, err := client.Views.New(\n\t\tcontext.TODO(),\n\t\tmicro.ViewNewParamsViewObjectTypeAction,\n\t\tmicro.ViewNewParams{\n\t\t\tName:     micro.F("name"),\n\t\t\tViewType: micro.F("view_type"),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", view.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tview, err := client.Views.New(\n\t\tcontext.TODO(),\n\t\tmicro.ViewNewParamsViewObjectTypeComment,\n\t\tmicro.ViewNewParams{\n\t\t\tName:     micro.F("name"),\n\t\t\tViewType: micro.F("view_type"),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", view.ID)\n}\n',
       },
       http: {
         example:
@@ -3868,7 +4467,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     qualified: 'client.views.get',
     params: [
       'teamId: string;',
-      "viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';",
+      "viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
       'viewId: string;',
       'cursor?: string;',
       'include?: string;',
@@ -3878,22 +4477,22 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     response:
       "{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; } | { records: { data: object[]; has_more: boolean; next_cursor?: string; }; view: { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }; }",
     markdown:
-      "## get\n\n`client.views.get(teamId: string, viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization', viewId: string, cursor?: string, include?: string, limit?: number, page?: number): { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; } | { records: object; view: object; }`\n\n**get** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}`\n\nReturns the view bundle. Pass `?include=records` to also fetch a page of records selected by the view in the same call; the response is then wrapped as `{view, records}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `cursor?: string`\n  Forwarded to the records sub-resource when `include=records`.\n\n- `include?: string`\n  Comma-separated list of optional sub-resources to inline. Currently the only recognized value is `records` — when present, the response is `{view, records}` rather than the bare view bundle.\n\n- `limit?: number`\n  Forwarded to the records sub-resource when `include=records`.\n\n- `page?: number`\n  Forwarded to the records sub-resource when `include=records`.\n\n### Returns\n\n- `{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; } | { records: { data: object[]; has_more: boolean; next_cursor?: string; }; view: { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }; }`\n  A view (saved configuration for displaying records of a given object type) plus its select/filter/sort children. Properties in select/filter/sort are referenced by slug.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst view = await client.views.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'action' });\n\nconsole.log(view);\n```",
+      "## get\n\n`client.views.get(teamId: string, viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, cursor?: string, include?: string, limit?: number, page?: number): { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; } | { records: object; view: object; }`\n\n**get** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}`\n\nReturns the view bundle. Pass `?include=records` to also fetch a page of records selected by the view in the same call; the response is then wrapped as `{view, records}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `cursor?: string`\n  Forwarded to the records sub-resource when `include=records`.\n\n- `include?: string`\n  Comma-separated list of optional sub-resources to inline. Currently the only recognized value is `records` — when present, the response is `{view, records}` rather than the bare view bundle.\n\n- `limit?: number`\n  Forwarded to the records sub-resource when `include=records`.\n\n- `page?: number`\n  Forwarded to the records sub-resource when `include=records`.\n\n### Returns\n\n- `{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; } | { records: { data: object[]; has_more: boolean; next_cursor?: string; }; view: { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }; }`\n  A view (saved configuration for displaying records of a given object type) plus its select/filter/sort children. Properties in select/filter/sort are referenced by slug.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst view = await client.views.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'comment' });\n\nconsole.log(view);\n```",
     perLanguage: {
       typescript: {
         method: 'client.views.get',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst view = await client.views.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'action',\n});\n\nconsole.log(view);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst view = await client.views.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'comment',\n});\n\nconsole.log(view);",
       },
       python: {
         method: 'views.get',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nview = client.views.get(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="action",\n)\nprint(view)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nview = client.views.get(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="comment",\n)\nprint(view)',
       },
       go: {
         method: 'client.Views.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tview, err := client.Views.Get(\n\t\tcontext.TODO(),\n\t\tmicro.ViewGetParamsViewObjectTypeAction,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", view)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tview, err := client.Views.Get(\n\t\tcontext.TODO(),\n\t\tmicro.ViewGetParamsViewObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", view)\n}\n',
       },
       http: {
         example:
@@ -3911,7 +4510,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     qualified: 'client.views.update',
     params: [
       'teamId: string;',
-      "viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';",
+      "viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
       'viewId: string;',
       'aggregation_prop_def_id?: string;',
       'aggregation_type?: string;',
@@ -3936,22 +4535,22 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     response:
       "{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }",
     markdown:
-      "## update\n\n`client.views.update(teamId: string, viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization', viewId: string, aggregation_prop_def_id?: string, aggregation_type?: string, column_layout?: object, combinator?: 'AND' | 'OR', filter?: object[], group_by?: string, group_hidden_option_ids?: object[] | object, group_hide_empty?: boolean, group_sort?: string, icon?: string, list_id?: string, name?: string, select?: string[], sort?: object[], sort_order?: number, team_id?: string, user_id?: string, view_type?: string, Idempotency-Key?: string): { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n\n**patch** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}`\n\nUpdate a view bundle (select/filter/sort arrays are replaced wholesale when supplied)\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `aggregation_prop_def_id?: string`\n\n- `aggregation_type?: string`\n\n- `column_layout?: object`\n\n- `combinator?: 'AND' | 'OR'`\n\n- `filter?: object[]`\n\n- `group_by?: string`\n\n- `group_hidden_option_ids?: object[] | object`\n\n- `group_hide_empty?: boolean`\n\n- `group_sort?: string`\n\n- `icon?: string`\n\n- `list_id?: string`\n\n- `name?: string`\n\n- `select?: string[]`\n\n- `sort?: object[]`\n\n- `sort_order?: number`\n\n- `team_id?: string`\n\n- `user_id?: string`\n\n- `view_type?: string`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n  A view (saved configuration for displaying records of a given object type) plus its select/filter/sort children. Properties in select/filter/sort are referenced by slug.\n\n  - `name: string`\n  - `view_type: string`\n  - `id?: string`\n  - `aggregation_prop_def_id?: string`\n  - `aggregation_type?: string`\n  - `column_layout?: object`\n  - `combinator?: 'AND' | 'OR'`\n  - `created_at?: string`\n  - `filter?: object[]`\n  - `group_by?: string`\n  - `group_hidden_option_ids?: object[] | object`\n  - `group_hide_empty?: boolean`\n  - `group_sort?: string`\n  - `icon?: string`\n  - `list_id?: string`\n  - `select?: string[]`\n  - `sort?: object[]`\n  - `sort_order?: number`\n  - `team_id?: string`\n  - `updated_at?: string`\n  - `user_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst view = await client.views.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'action' });\n\nconsole.log(view);\n```",
+      "## update\n\n`client.views.update(teamId: string, viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, aggregation_prop_def_id?: string, aggregation_type?: string, column_layout?: object, combinator?: 'AND' | 'OR', filter?: object[], group_by?: string, group_hidden_option_ids?: object[] | object, group_hide_empty?: boolean, group_sort?: string, icon?: string, list_id?: string, name?: string, select?: string[], sort?: object[], sort_order?: number, team_id?: string, user_id?: string, view_type?: string, Idempotency-Key?: string): { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n\n**patch** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}`\n\nUpdate a view bundle (select/filter/sort arrays are replaced wholesale when supplied)\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `aggregation_prop_def_id?: string`\n\n- `aggregation_type?: string`\n\n- `column_layout?: object`\n\n- `combinator?: 'AND' | 'OR'`\n\n- `filter?: object[]`\n\n- `group_by?: string`\n\n- `group_hidden_option_ids?: object[] | object`\n\n- `group_hide_empty?: boolean`\n\n- `group_sort?: string`\n\n- `icon?: string`\n\n- `list_id?: string`\n\n- `name?: string`\n\n- `select?: string[]`\n\n- `sort?: object[]`\n\n- `sort_order?: number`\n\n- `team_id?: string`\n\n- `user_id?: string`\n\n- `view_type?: string`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n  A view (saved configuration for displaying records of a given object type) plus its select/filter/sort children. Properties in select/filter/sort are referenced by slug.\n\n  - `name: string`\n  - `view_type: string`\n  - `id?: string`\n  - `aggregation_prop_def_id?: string`\n  - `aggregation_type?: string`\n  - `column_layout?: object`\n  - `combinator?: 'AND' | 'OR'`\n  - `created_at?: string`\n  - `filter?: object[]`\n  - `group_by?: string`\n  - `group_hidden_option_ids?: object[] | object`\n  - `group_hide_empty?: boolean`\n  - `group_sort?: string`\n  - `icon?: string`\n  - `list_id?: string`\n  - `select?: string[]`\n  - `sort?: object[]`\n  - `sort_order?: number`\n  - `team_id?: string`\n  - `updated_at?: string`\n  - `user_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst view = await client.views.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'comment' });\n\nconsole.log(view);\n```",
     perLanguage: {
       typescript: {
         method: 'client.views.update',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst view = await client.views.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'action',\n});\n\nconsole.log(view.id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst view = await client.views.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'comment',\n});\n\nconsole.log(view.id);",
       },
       python: {
         method: 'views.update',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nview = client.views.update(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="action",\n)\nprint(view.id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nview = client.views.update(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="comment",\n)\nprint(view.id)',
       },
       go: {
         method: 'client.Views.Update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tview, err := client.Views.Update(\n\t\tcontext.TODO(),\n\t\tmicro.ViewUpdateParamsViewObjectTypeAction,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", view.ID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tview, err := client.Views.Update(\n\t\tcontext.TODO(),\n\t\tmicro.ViewUpdateParamsViewObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", view.ID)\n}\n',
       },
       http: {
         example:
@@ -3969,26 +4568,26 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     qualified: 'client.views.delete',
     params: [
       'teamId: string;',
-      "viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';",
+      "viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
       'viewId: string;',
     ],
     markdown:
-      "## delete\n\n`client.views.delete(teamId: string, viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization', viewId: string): void`\n\n**delete** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}`\n\nDelete a view bundle\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'action' })\n```",
+      "## delete\n\n`client.views.delete(teamId: string, viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string): void`\n\n**delete** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}`\n\nDelete a view bundle\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'comment' })\n```",
     perLanguage: {
       typescript: {
         method: 'client.views.delete',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'action' });",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'comment' });",
       },
       python: {
         method: 'views.delete',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.delete(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="action",\n)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.delete(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="comment",\n)',
       },
       go: {
         method: 'client.Views.Delete',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Delete(\n\t\tcontext.TODO(),\n\t\tmicro.ViewDeleteParamsViewObjectTypeAction,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Delete(\n\t\tcontext.TODO(),\n\t\tmicro.ViewDeleteParamsViewObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       http: {
         example:
@@ -4008,7 +4607,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     qualified: 'client.views.records.list',
     params: [
       'teamId: string;',
-      "viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';",
+      "viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
       'viewId: string;',
       'cursor?: string;',
       'limit?: number;',
@@ -4016,22 +4615,22 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: '{ data: object[]; has_more: boolean; next_cursor?: string; }',
     markdown:
-      "## list\n\n`client.views.records.list(teamId: string, viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization', viewId: string, cursor?: string, limit?: number, page?: number): { data: object[]; has_more: boolean; next_cursor?: string; }`\n\n**get** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records`\n\nList records selected by a view (filters and sorts applied; pinned record_order overlaid first)\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `cursor?: string`\n  Opaque cursor from a previous response's `next_cursor`. Pass it back unchanged to fetch the next page. When set, `page` and `limit` are derived from the cursor.\n\n- `limit?: number`\n\n- `page?: number`\n  Page number (1-based). Prefer `cursor`.\n\n### Returns\n\n- `{ data: object[]; has_more: boolean; next_cursor?: string; }`\n\n  - `data: object[]`\n  - `has_more: boolean`\n  - `next_cursor?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst records = await client.views.records.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'action' });\n\nconsole.log(records);\n```",
+      "## list\n\n`client.views.records.list(teamId: string, viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, cursor?: string, limit?: number, page?: number): { data: object[]; has_more: boolean; next_cursor?: string; }`\n\n**get** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records`\n\nList records selected by a view (filters and sorts applied; pinned record_order overlaid first)\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `cursor?: string`\n  Opaque cursor from a previous response's `next_cursor`. Pass it back unchanged to fetch the next page. When set, `page` and `limit` are derived from the cursor.\n\n- `limit?: number`\n\n- `page?: number`\n  Page number (1-based). Prefer `cursor`.\n\n### Returns\n\n- `{ data: object[]; has_more: boolean; next_cursor?: string; }`\n\n  - `data: object[]`\n  - `has_more: boolean`\n  - `next_cursor?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst records = await client.views.records.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'comment' });\n\nconsole.log(records);\n```",
     perLanguage: {
       typescript: {
         method: 'client.views.records.list',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst records = await client.views.records.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'action',\n});\n\nconsole.log(records.data);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst records = await client.views.records.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'comment',\n});\n\nconsole.log(records.data);",
       },
       python: {
         method: 'views.records.list',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nrecords = client.views.records.list(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="action",\n)\nprint(records.data)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nrecords = client.views.records.list(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="comment",\n)\nprint(records.data)',
       },
       go: {
         method: 'client.Views.Records.List',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\trecords, err := client.Views.Records.List(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordListParamsViewObjectTypeAction,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", records.Data)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\trecords, err := client.Views.Records.List(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordListParamsViewObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", records.Data)\n}\n',
       },
       http: {
         example:
@@ -4049,28 +4648,28 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     qualified: 'client.views.records.reorder',
     params: [
       'teamId: string;',
-      "viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';",
+      "viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
       'viewId: string;',
       'object_ids: string[];',
       'Idempotency-Key?: string;',
     ],
     markdown:
-      "## reorder\n\n`client.views.records.reorder(teamId: string, viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization', viewId: string, object_ids: string[], Idempotency-Key?: string): void`\n\n**patch** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records`\n\nBulk reorder pinned records\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `object_ids: string[]`\n\n- `Idempotency-Key?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.records.reorder('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'action', object_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'] })\n```",
+      "## reorder\n\n`client.views.records.reorder(teamId: string, viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, object_ids: string[], Idempotency-Key?: string): void`\n\n**patch** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records`\n\nBulk reorder pinned records\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `object_ids: string[]`\n\n- `Idempotency-Key?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.records.reorder('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'comment', object_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'] })\n```",
     perLanguage: {
       typescript: {
         method: 'client.views.records.reorder',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.records.reorder('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'action',\n  object_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],\n});",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.records.reorder('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'comment',\n  object_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],\n});",
       },
       python: {
         method: 'views.records.reorder',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.records.reorder(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="action",\n    object_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],\n)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.records.reorder(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="comment",\n    object_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],\n)',
       },
       go: {
         method: 'client.Views.Records.Reorder',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Records.Reorder(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordReorderParamsViewObjectTypeAction,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordReorderParams{\n\t\t\tObjectIDs: micro.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Records.Reorder(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordReorderParamsViewObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordReorderParams{\n\t\t\tObjectIDs: micro.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       http: {
         example:
@@ -4088,28 +4687,28 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     qualified: 'client.views.records.pin',
     params: [
       'teamId: string;',
-      "viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';",
+      "viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
       'viewId: string;',
       'objectId: string;',
       'Idempotency-Key?: string;',
     ],
     markdown:
-      "## pin\n\n`client.views.records.pin(teamId: string, viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization', viewId: string, objectId: string, Idempotency-Key?: string): void`\n\n**post** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records/{objectId}`\n\nPin a record to the view (append to record_order)\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `objectId: string`\n\n- `Idempotency-Key?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.records.pin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'action', viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' })\n```",
+      "## pin\n\n`client.views.records.pin(teamId: string, viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, objectId: string, Idempotency-Key?: string): void`\n\n**post** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records/{objectId}`\n\nPin a record to the view (append to record_order)\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `objectId: string`\n\n- `Idempotency-Key?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.records.pin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'comment', viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' })\n```",
     perLanguage: {
       typescript: {
         method: 'client.views.records.pin',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.records.pin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'action',\n  viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.records.pin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'comment',\n  viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});",
       },
       python: {
         method: 'views.records.pin',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.records.pin(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="action",\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.records.pin(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="comment",\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       go: {
         method: 'client.Views.Records.Pin',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Records.Pin(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordPinParamsViewObjectTypeAction,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordPinParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Records.Pin(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordPinParamsViewObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordPinParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       http: {
         example:
@@ -4127,27 +4726,27 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     qualified: 'client.views.records.unpin',
     params: [
       'teamId: string;',
-      "viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';",
+      "viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
       'viewId: string;',
       'objectId: string;',
     ],
     markdown:
-      "## unpin\n\n`client.views.records.unpin(teamId: string, viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization', viewId: string, objectId: string): void`\n\n**delete** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records/{objectId}`\n\nUnpin a record from the view\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `objectId: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.records.unpin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'action', viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' })\n```",
+      "## unpin\n\n`client.views.records.unpin(teamId: string, viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, objectId: string): void`\n\n**delete** `/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records/{objectId}`\n\nUnpin a record from the view\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `objectId: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.records.unpin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { viewObjectType: 'comment', viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' })\n```",
     perLanguage: {
       typescript: {
         method: 'client.views.records.unpin',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.records.unpin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'action',\n  viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.records.unpin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  viewObjectType: 'comment',\n  viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});",
       },
       python: {
         method: 'views.records.unpin',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.records.unpin(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="action",\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.records.unpin(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    view_object_type="comment",\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
       },
       go: {
         method: 'client.Views.Records.Unpin',
         example:
-          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Records.Unpin(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordUnpinParamsViewObjectTypeAction,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordUnpinParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Records.Unpin(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordUnpinParamsViewObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordUnpinParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
       },
       http: {
         example:

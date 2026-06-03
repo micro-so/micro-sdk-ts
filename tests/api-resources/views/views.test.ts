@@ -11,7 +11,7 @@ const client = new Micro({
 describe('resource views', () => {
   // Mock server tests are disabled
   test.skip('create: only required params', async () => {
-    const responsePromise = client.views.create('action', { name: 'name', view_type: 'view_type' });
+    const responsePromise = client.views.create('comment', { name: 'name', view_type: 'view_type' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,7 +23,7 @@ describe('resource views', () => {
 
   // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
-    const response = await client.views.create('action', {
+    const response = await client.views.create('comment', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       name: 'name',
       view_type: 'view_type',
@@ -53,7 +53,7 @@ describe('resource views', () => {
   // Mock server tests are disabled
   test.skip('update: only required params', async () => {
     const responsePromise = client.views.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -68,7 +68,7 @@ describe('resource views', () => {
   test.skip('update: required and optional params', async () => {
     const response = await client.views.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
       aggregation_prop_def_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       aggregation_type: 'aggregation_type',
       column_layout: { foo: 'bar' },
@@ -94,7 +94,7 @@ describe('resource views', () => {
   // Mock server tests are disabled
   test.skip('delete: only required params', async () => {
     const responsePromise = client.views.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -109,14 +109,14 @@ describe('resource views', () => {
   test.skip('delete: required and optional params', async () => {
     const response = await client.views.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
     });
   });
 
   // Mock server tests are disabled
   test.skip('get: only required params', async () => {
     const responsePromise = client.views.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -131,7 +131,7 @@ describe('resource views', () => {
   test.skip('get: required and optional params', async () => {
     const response = await client.views.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
       cursor: 'cursor',
       include: 'records',
       limit: 0,

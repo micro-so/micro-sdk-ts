@@ -311,6 +311,54 @@ Methods:
 - <code title="put /v2/prism/{teamId}/event/{eventId}/grant">client.prism.objects.events.grant.<a href="./src/resources/prism/objects/events/grant.ts">update</a>(eventID, { ...params }) -> GrantUpdateResponse</code>
 - <code title="get /v2/prism/{teamId}/event/{eventId}/grant">client.prism.objects.events.grant.<a href="./src/resources/prism/objects/events/grant.ts">get</a>(eventID, { ...params }) -> GrantGetResponse</code>
 
+### Engagements
+
+Types:
+
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">Engagement</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementCreateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementUpdateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementListResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementBulkCreateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementBulkDeleteResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementBulkUpdateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementCountResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementDuplicateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementFindResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementGetResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementQueryResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementRestoreResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/engagements.ts">EngagementUpsertResponse</a></code>
+
+Methods:
+
+- <code title="post /v2/prism/{teamId}/engagement">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">create</a>({ ...params }) -> EngagementCreateResponse</code>
+- <code title="patch /v2/prism/{teamId}/engagement/{engagementId}">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">update</a>(engagementID, { ...params }) -> EngagementUpdateResponse</code>
+- <code title="get /v2/prism/{teamId}/engagement">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">list</a>({ ...params }) -> EngagementListResponse</code>
+- <code title="delete /v2/prism/{teamId}/engagement/{engagementId}">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">delete</a>(engagementID, { ...params }) -> void</code>
+- <code title="post /v2/prism/{teamId}/engagement/import">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">bulkCreate</a>({ ...params }) -> EngagementBulkCreateResponse</code>
+- <code title="post /v2/prism/{teamId}/engagement/batch/delete">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">bulkDelete</a>({ ...params }) -> EngagementBulkDeleteResponse</code>
+- <code title="post /v2/prism/{teamId}/engagement/batch/update">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">bulkUpdate</a>({ ...params }) -> EngagementBulkUpdateResponse</code>
+- <code title="get /v2/prism/{teamId}/engagement/count">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">count</a>({ ...params }) -> EngagementCountResponse</code>
+- <code title="post /v2/prism/{teamId}/engagement/{engagementId}/duplicate">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">duplicate</a>(engagementID, { ...params }) -> EngagementDuplicateResponse</code>
+- <code title="get /v2/prism/{teamId}/engagement/by/{slug}/{value}">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">find</a>(value, { ...params }) -> EngagementFindResponse</code>
+- <code title="get /v2/prism/{teamId}/engagement/{engagementId}">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">get</a>(engagementID, { ...params }) -> EngagementGetResponse</code>
+- <code title="post /v2/prism/{teamId}/engagement/query">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">query</a>({ ...params }) -> EngagementQueryResponse</code>
+- <code title="post /v2/prism/{teamId}/engagement/{engagementId}/restore">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">restore</a>(engagementID, { ...params }) -> EngagementRestoreResponse</code>
+- <code title="put /v2/prism/{teamId}/engagement/by/{slug}/{value}">client.prism.objects.engagements.<a href="./src/resources/prism/objects/engagements/engagements.ts">upsert</a>(value, { ...params }) -> EngagementUpsertResponse</code>
+
+#### Grant
+
+Types:
+
+- <code><a href="./src/resources/prism/objects/engagements/grant.ts">GrantUpdateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/engagements/grant.ts">GrantGetResponse</a></code>
+
+Methods:
+
+- <code title="put /v2/prism/{teamId}/engagement/{engagementId}/grant">client.prism.objects.engagements.grant.<a href="./src/resources/prism/objects/engagements/grant.ts">update</a>(engagementID, { ...params }) -> GrantUpdateResponse</code>
+- <code title="get /v2/prism/{teamId}/engagement/{engagementId}/grant">client.prism.objects.engagements.grant.<a href="./src/resources/prism/objects/engagements/grant.ts">get</a>(engagementID, { ...params }) -> GrantGetResponse</code>
+
 # Views
 
 Types:

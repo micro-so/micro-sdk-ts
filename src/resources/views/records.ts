@@ -96,7 +96,15 @@ export interface RecordListParams {
   /**
    * Path param
    */
-  viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';
+  viewObjectType:
+    | 'comment'
+    | 'action'
+    | 'deal'
+    | 'engagement'
+    | 'document'
+    | 'event'
+    | 'identity'
+    | 'organization';
 
   /**
    * Query param: Opaque cursor from a previous response's `next_cursor`. Pass it
@@ -125,7 +133,15 @@ export interface RecordPinParams {
   /**
    * Path param
    */
-  viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';
+  viewObjectType:
+    | 'comment'
+    | 'action'
+    | 'deal'
+    | 'engagement'
+    | 'document'
+    | 'event'
+    | 'identity'
+    | 'organization';
 
   /**
    * Path param
@@ -152,7 +168,15 @@ export interface RecordReorderParams {
   /**
    * Path param
    */
-  viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';
+  viewObjectType:
+    | 'comment'
+    | 'action'
+    | 'deal'
+    | 'engagement'
+    | 'document'
+    | 'event'
+    | 'identity'
+    | 'organization';
 
   /**
    * Body param
@@ -173,7 +197,15 @@ export interface RecordReorderParams {
 export interface RecordUnpinParams {
   teamId?: string;
 
-  viewObjectType: 'action' | 'deal' | 'document' | 'event' | 'identity' | 'organization';
+  viewObjectType:
+    | 'comment'
+    | 'action'
+    | 'deal'
+    | 'engagement'
+    | 'document'
+    | 'event'
+    | 'identity'
+    | 'organization';
 
   viewId: string;
 }

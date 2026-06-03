@@ -12,7 +12,7 @@ describe('resource records', () => {
   // Mock server tests are disabled
   test.skip('list: only required params', async () => {
     const responsePromise = client.views.records.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -27,7 +27,7 @@ describe('resource records', () => {
   test.skip('list: required and optional params', async () => {
     const response = await client.views.records.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
       cursor: 'cursor',
       limit: 0,
       page: 1,
@@ -37,7 +37,7 @@ describe('resource records', () => {
   // Mock server tests are disabled
   test.skip('pin: only required params', async () => {
     const responsePromise = client.views.records.pin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
       viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -53,7 +53,7 @@ describe('resource records', () => {
   test.skip('pin: required and optional params', async () => {
     const response = await client.views.records.pin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
       viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       'Idempotency-Key': 'x',
     });
@@ -62,7 +62,7 @@ describe('resource records', () => {
   // Mock server tests are disabled
   test.skip('reorder: only required params', async () => {
     const responsePromise = client.views.records.reorder('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
       object_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
     });
     const rawResponse = await responsePromise.asResponse();
@@ -78,7 +78,7 @@ describe('resource records', () => {
   test.skip('reorder: required and optional params', async () => {
     const response = await client.views.records.reorder('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
       object_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
       'Idempotency-Key': 'x',
     });
@@ -87,7 +87,7 @@ describe('resource records', () => {
   // Mock server tests are disabled
   test.skip('unpin: only required params', async () => {
     const responsePromise = client.views.records.unpin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
       viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -103,7 +103,7 @@ describe('resource records', () => {
   test.skip('unpin: required and optional params', async () => {
     const response = await client.views.records.unpin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      viewObjectType: 'action',
+      viewObjectType: 'comment',
       viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
