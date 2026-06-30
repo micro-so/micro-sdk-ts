@@ -17,6 +17,7 @@ export class Properties extends APIResource {
       | 'identity'
       | 'ai_chat_thread'
       | 'ai_chat_message'
+      | 'agent_artifact'
       | 'document'
       | 'action'
       | 'event'
