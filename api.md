@@ -386,3 +386,13 @@ Methods:
 - <code title="post /v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records/{objectId}">client.views.records.<a href="./src/resources/views/records.ts">pin</a>(objectID, { ...params }) -> void</code>
 - <code title="patch /v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records">client.views.records.<a href="./src/resources/views/records.ts">reorder</a>(viewID, { ...params }) -> void</code>
 - <code title="delete /v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records/{objectId}">client.views.records.<a href="./src/resources/views/records.ts">unpin</a>(objectID, { ...params }) -> void</code>
+
+# Realtime
+
+Types:
+
+- <code><a href="./src/resources/realtime.ts">RealtimeCreateTicketResponse</a></code>
+
+Methods:
+
+- <code title="post /v2/realtime/ticket">client.realtime.<a href="./src/resources/realtime.ts">createTicket</a>() -> RealtimeCreateTicketResponse</code>

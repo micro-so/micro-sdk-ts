@@ -754,6 +754,12 @@ export const sdkMethods: SdkMethod[] = [
     httpMethod: 'delete',
     httpPath: '/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records/{objectId}',
   },
+  {
+    clientCallName: 'client.realtime.createTicket',
+    fullyQualifiedName: 'realtime.createTicket',
+    httpMethod: 'post',
+    httpPath: '/v2/realtime/ticket',
+  },
 ];
 
 function allowedMethodsForCodeTool(options: McpOptions | undefined): SdkMethod[] | undefined {
