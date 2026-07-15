@@ -17,6 +17,7 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
+import { Realtime, RealtimeCreateTicketResponse } from './resources/realtime';
 import { Prism, PrismObjectProperties } from './resources/prism/prism';
 import {
   ViewCreateParams,
@@ -763,10 +764,12 @@ export class Micro {
 
   prism: API.Prism = new API.Prism(this);
   views: API.Views = new API.Views(this);
+  realtime: API.Realtime = new API.Realtime(this);
 }
 
 Micro.Prism = Prism;
 Micro.Views = Views;
+Micro.Realtime = Realtime;
 
 export declare namespace Micro {
   export type RequestOptions = Opts.RequestOptions;
@@ -783,4 +786,6 @@ export declare namespace Micro {
     type ViewDeleteParams as ViewDeleteParams,
     type ViewGetParams as ViewGetParams,
   };
+
+  export { Realtime as Realtime, type RealtimeCreateTicketResponse as RealtimeCreateTicketResponse };
 }
