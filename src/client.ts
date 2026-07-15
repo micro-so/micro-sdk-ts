@@ -17,6 +17,7 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
+import { Realtime, RealtimeCreateTicketResponse } from './resources/realtime';
 import { Prism, PrismObjectProperties } from './resources/prism/prism';
 import {
   ViewCreateParams,
@@ -689,11 +690,19 @@ export class Micro {
     return () => controller.abort();
   }
 
-  private buildBody({ options: { body, headers: rawHeaders } }: { options: FinalRequestOptions }): {
+  private buildBody({ options }: { options: FinalRequestOptions }): {
     bodyHeaders: HeadersLike;
     body: BodyInit | undefined;
   } {
+    const { body, headers: rawHeaders } = options;
     if (!body) {
+      // A resource method always passes a `body` key when its operation defines a
+      // request body, even if the caller omitted an optional body param. Keep the
+      // content-type for those, and only elide it for operations with no body at
+      // all (e.g. GET/DELETE).
+      if (body == null && 'body' in options) {
+        return this.#encoder({ body, headers: buildHeaders([rawHeaders]) });
+      }
       return { bodyHeaders: undefined, body: undefined };
     }
     const headers = buildHeaders([rawHeaders]);
@@ -755,10 +764,12 @@ export class Micro {
 
   prism: API.Prism = new API.Prism(this);
   views: API.Views = new API.Views(this);
+  realtime: API.Realtime = new API.Realtime(this);
 }
 
 Micro.Prism = Prism;
 Micro.Views = Views;
+Micro.Realtime = Realtime;
 
 export declare namespace Micro {
   export type RequestOptions = Opts.RequestOptions;
@@ -775,4 +786,6 @@ export declare namespace Micro {
     type ViewDeleteParams as ViewDeleteParams,
     type ViewGetParams as ViewGetParams,
   };
+
+  export { Realtime as Realtime, type RealtimeCreateTicketResponse as RealtimeCreateTicketResponse };
 }

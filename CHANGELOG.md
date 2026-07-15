@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.8.0 (2026-07-15)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **api:** api update ([76e4661](https://github.com/micro-so/micro-sdk-ts/commit/76e4661a2863cda2682ebe1a928e9a5ce030ab7a))
+* **api:** api update ([44d6400](https://github.com/micro-so/micro-sdk-ts/commit/44d6400c409a7fb51e12fbad12d8fa2b6521d2dd))
+
+
+### Bug Fixes
+
+* **ci:** bump @arethetypeswrong/cli to ^0.18.0 and run CI workflows on Node 24 ([aef2669](https://github.com/micro-so/micro-sdk-ts/commit/aef266993f4c12f677d0e28f4c70169f96f3358a))
+* **client:** send content-type header for requests with an omitted optional body ([c1afd00](https://github.com/micro-so/micro-sdk-ts/commit/c1afd009412fab0329b07836babbbb14461f2c26))
+
 ## 0.7.0 (2026-06-03)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.6.0...v0.7.0)

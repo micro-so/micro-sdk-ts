@@ -232,6 +232,7 @@ const fuse = new Fuse(
     'client.views.records.pin',
     'client.views.records.reorder',
     'client.views.records.unpin',
+    'client.realtime.createTicket',
   ],
   { threshold: 1, shouldSort: true },
 );

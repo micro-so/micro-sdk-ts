@@ -4754,6 +4754,40 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
     },
   },
+  {
+    name: 'create_ticket',
+    endpoint: '/v2/realtime/ticket',
+    httpMethod: 'post',
+    summary: 'Create a realtime streaming ticket',
+    description:
+      'Exchange your API key (or session) for a short-lived ticket that authenticates a connection to the realtime object-change stream. Open a WebSocket to the push endpoint with the returned ticket as the `token` query parameter. The ticket is single-purpose and expires quickly; call this again to obtain a fresh one before reconnecting.',
+    stainlessPath: '(resource) realtime > (method) create_ticket',
+    qualified: 'client.realtime.createTicket',
+    response: '{ expires_in: number; ticket: string; ws_url: string; }',
+    markdown:
+      "## create_ticket\n\n`client.realtime.createTicket(): { expires_in: number; ticket: string; ws_url: string; }`\n\n**post** `/v2/realtime/ticket`\n\nExchange your API key (or session) for a short-lived ticket that authenticates a connection to the realtime object-change stream. Open a WebSocket to the push endpoint with the returned ticket as the `token` query parameter. The ticket is single-purpose and expires quickly; call this again to obtain a fresh one before reconnecting.\n\n### Returns\n\n- `{ expires_in: number; ticket: string; ws_url: string; }`\n\n  - `expires_in: number`\n  - `ticket: string`\n  - `ws_url: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.realtime.createTicket();\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.realtime.createTicket',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.realtime.createTicket();\n\nconsole.log(response.expires_in);",
+      },
+      python: {
+        method: 'realtime.create_ticket',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.realtime.create_ticket()\nprint(response.expires_in)',
+      },
+      go: {
+        method: 'client.Realtime.NewTicket',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Realtime.NewTicket(context.TODO())\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.ExpiresIn)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/realtime/ticket \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
 ];
 
 const EMBEDDED_READMES: { language: string; content: string }[] = [
