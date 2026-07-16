@@ -18,6 +18,16 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import { Realtime, RealtimeCreateTicketResponse } from './resources/realtime';
+import {
+  TriggeredAutomation,
+  TriggeredAutomationCreateParams,
+  TriggeredAutomationDeleteParams,
+  TriggeredAutomationGetParams,
+  TriggeredAutomationListParams,
+  TriggeredAutomationListResponse,
+  TriggeredAutomationUpdateParams,
+  TriggeredAutomations,
+} from './resources/triggered-automations';
 import { Prism, PrismObjectProperties } from './resources/prism/prism';
 import {
   ViewCreateParams,
@@ -764,11 +774,13 @@ export class Micro {
 
   prism: API.Prism = new API.Prism(this);
   views: API.Views = new API.Views(this);
+  triggeredAutomations: API.TriggeredAutomations = new API.TriggeredAutomations(this);
   realtime: API.Realtime = new API.Realtime(this);
 }
 
 Micro.Prism = Prism;
 Micro.Views = Views;
+Micro.TriggeredAutomations = TriggeredAutomations;
 Micro.Realtime = Realtime;
 
 export declare namespace Micro {
@@ -785,6 +797,17 @@ export declare namespace Micro {
     type ViewUpdateParams as ViewUpdateParams,
     type ViewDeleteParams as ViewDeleteParams,
     type ViewGetParams as ViewGetParams,
+  };
+
+  export {
+    TriggeredAutomations as TriggeredAutomations,
+    type TriggeredAutomation as TriggeredAutomation,
+    type TriggeredAutomationListResponse as TriggeredAutomationListResponse,
+    type TriggeredAutomationCreateParams as TriggeredAutomationCreateParams,
+    type TriggeredAutomationUpdateParams as TriggeredAutomationUpdateParams,
+    type TriggeredAutomationListParams as TriggeredAutomationListParams,
+    type TriggeredAutomationDeleteParams as TriggeredAutomationDeleteParams,
+    type TriggeredAutomationGetParams as TriggeredAutomationGetParams,
   };
 
   export { Realtime as Realtime, type RealtimeCreateTicketResponse as RealtimeCreateTicketResponse };
