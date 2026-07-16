@@ -4755,6 +4755,223 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'create',
+    endpoint: '/v2/prism/{teamId}/{automationObjectType}/triggered_automations',
+    httpMethod: 'post',
+    summary: 'Create a triggered automation (state + changeset filter trees)',
+    description: 'Create a triggered automation (state + changeset filter trees)',
+    stainlessPath: '(resource) triggered_automations > (method) create',
+    qualified: 'client.triggeredAutomations.create',
+    params: [
+      'teamId: string;',
+      'automationObjectType: string;',
+      "kind: 'update' | 'lifecycle';",
+      'name: string;',
+      'id?: string;',
+      "actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[];",
+      "changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; };",
+      'created_at?: string;',
+      'enabled?: boolean;',
+      'list_id?: string;',
+      'on_create?: boolean;',
+      'on_delete?: boolean;',
+      "state?: { combinator?: 'AND' | 'OR'; filter?: object[]; };",
+      'team_id?: string;',
+      'updated_at?: string;',
+      'user_id?: string;',
+      'Idempotency-Key?: string;',
+    ],
+    response:
+      "{ kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]; changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; team_id?: string; updated_at?: string; user_id?: string; }",
+    markdown:
+      "## create\n\n`client.triggeredAutomations.create(teamId: string, automationObjectType: string, kind: 'update' | 'lifecycle', name: string, id?: string, actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[], changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }, created_at?: string, enabled?: boolean, list_id?: string, on_create?: boolean, on_delete?: boolean, state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }, team_id?: string, updated_at?: string, user_id?: string, Idempotency-Key?: string): { kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: object[]; changeset?: object; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: object; team_id?: string; updated_at?: string; user_id?: string; }`\n\n**post** `/v2/prism/{teamId}/{automationObjectType}/triggered_automations`\n\nCreate a triggered automation (state + changeset filter trees)\n\n### Parameters\n\n- `teamId: string`\n\n- `automationObjectType: string`\n  Object types that support triggered automations. Must match the triggered-automation whitelist in @micro/database migrate-sql (TRIGGERED_AUTOMATION_OBJECTS).\n\n- `kind: 'update' | 'lifecycle'`\n\n- `name: string`\n\n- `id?: string`\n\n- `actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]`\n  Actions to run when the automation fires; each item has a `type` plus type-specific fields.\n\n- `changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }`\n  A changeset filter group (update automations only): a combinator plus an array of transition clauses matching what is changing. Dot-paths (nested reference filters) are NOT permitted — direct properties only.\n  - `combinator?: 'AND' | 'OR'`\n  - `filter?: object[]`\n    Each entry is a transition clause { slug: { from?: { comparator: value }, to?: { comparator: value } } }. `from` matches the prior value, `to` the new value; an empty body { slug: {} } matches any change to that property.\n\n- `created_at?: string`\n\n- `enabled?: boolean`\n\n- `list_id?: string`\n\n- `on_create?: boolean`\n  Lifecycle automations only.\n\n- `on_delete?: boolean`\n  Lifecycle automations only.\n\n- `state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }`\n  A filter group: a combinator plus an array of slug-based clauses. Dot-paths (e.g. `organization.location`) express nested reference filters.\n  - `combinator?: 'AND' | 'OR'`\n  - `filter?: object[]`\n    Each entry is { slug: { comparator: value } }\n\n- `team_id?: string`\n\n- `updated_at?: string`\n\n- `user_id?: string`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]; changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; team_id?: string; updated_at?: string; user_id?: string; }`\n  A triggered automation. `kind` selects the shape: `update` fires on object updates and requires a `changeset` (from/to transition) filter plus an optional `state` precondition; `lifecycle` fires on create and/or delete (`on_create`/`on_delete`) and requires a `state` filter (no changeset). `state` permits dot-paths (nested reference filters); `changeset` is direct properties only. Object type is taken from the path.\n\n  - `kind: 'update' | 'lifecycle'`\n  - `name: string`\n  - `id?: string`\n  - `actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]`\n  - `changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }`\n  - `created_at?: string`\n  - `enabled?: boolean`\n  - `list_id?: string`\n  - `on_create?: boolean`\n  - `on_delete?: boolean`\n  - `state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }`\n  - `team_id?: string`\n  - `updated_at?: string`\n  - `user_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst triggeredAutomation = await client.triggeredAutomations.create('message', { kind: 'update', name: 'name' });\n\nconsole.log(triggeredAutomation);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.triggeredAutomations.create',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst triggeredAutomation = await client.triggeredAutomations.create('message', {\n  kind: 'update',\n  name: 'name',\n});\n\nconsole.log(triggeredAutomation.id);",
+      },
+      python: {
+        method: 'triggered_automations.create',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ntriggered_automation = client.triggered_automations.create(\n    automation_object_type="message",\n    kind="update",\n    name="name",\n)\nprint(triggered_automation.id)',
+      },
+      go: {
+        method: 'client.TriggeredAutomations.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\ttriggeredAutomation, err := client.TriggeredAutomations.New(\n\t\tcontext.TODO(),\n\t\tmicro.TriggeredAutomationNewParamsAutomationObjectTypeMessage,\n\t\tmicro.TriggeredAutomationNewParams{\n\t\t\tTriggeredAutomation: micro.TriggeredAutomationParam{\n\t\t\t\tKind: micro.F(micro.TriggeredAutomationKindUpdate),\n\t\t\t\tName: micro.F("name"),\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", triggeredAutomation.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$AUTOMATION_OBJECT_TYPE/triggered_automations \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "kind": "update",\n          "name": "name"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/v2/prism/{teamId}/{automationObjectType}/triggered_automations',
+    httpMethod: 'get',
+    summary: 'List triggered automations for an owner',
+    description: 'List triggered automations for an owner',
+    stainlessPath: '(resource) triggered_automations > (method) list',
+    qualified: 'client.triggeredAutomations.list',
+    params: [
+      'teamId: string;',
+      'automationObjectType: string;',
+      'cursor?: string;',
+      "kind?: 'update' | 'lifecycle';",
+      'limit?: number;',
+      'list_id?: string;',
+      'page?: number;',
+    ],
+    response:
+      "{ data: { kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: object[]; changeset?: object; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: object; team_id?: string; updated_at?: string; user_id?: string; }[]; has_more: boolean; next_cursor?: string; }",
+    markdown:
+      "## list\n\n`client.triggeredAutomations.list(teamId: string, automationObjectType: string, cursor?: string, kind?: 'update' | 'lifecycle', limit?: number, list_id?: string, page?: number): { data: triggered_automation[]; has_more: boolean; next_cursor?: string; }`\n\n**get** `/v2/prism/{teamId}/{automationObjectType}/triggered_automations`\n\nList triggered automations for an owner\n\n### Parameters\n\n- `teamId: string`\n\n- `automationObjectType: string`\n  Object types that support triggered automations. Must match the triggered-automation whitelist in @micro/database migrate-sql (TRIGGERED_AUTOMATION_OBJECTS).\n\n- `cursor?: string`\n  Opaque pagination cursor (from a prior response's next_cursor); supersedes page/limit when present.\n\n- `kind?: 'update' | 'lifecycle'`\n  Optional filter to a single automation kind. When omitted, both kinds are returned.\n\n- `limit?: number`\n  Maximum items per page (<= 50; defaults to 50).\n\n- `list_id?: string`\n  List (CRM) id to scope the listing to. When omitted, automations owned by the path team are returned.\n\n- `page?: number`\n  1-based page number. Prefer cursor.\n\n### Returns\n\n- `{ data: { kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: object[]; changeset?: object; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: object; team_id?: string; updated_at?: string; user_id?: string; }[]; has_more: boolean; next_cursor?: string; }`\n\n  - `data: { kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]; changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; team_id?: string; updated_at?: string; user_id?: string; }[]`\n  - `has_more: boolean`\n  - `next_cursor?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst triggeredAutomations = await client.triggeredAutomations.list('message');\n\nconsole.log(triggeredAutomations);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.triggeredAutomations.list',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst triggeredAutomations = await client.triggeredAutomations.list('message');\n\nconsole.log(triggeredAutomations.data);",
+      },
+      python: {
+        method: 'triggered_automations.list',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ntriggered_automations = client.triggered_automations.list(\n    automation_object_type="message",\n)\nprint(triggered_automations.data)',
+      },
+      go: {
+        method: 'client.TriggeredAutomations.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\ttriggeredAutomations, err := client.TriggeredAutomations.List(\n\t\tcontext.TODO(),\n\t\tmicro.TriggeredAutomationListParamsAutomationObjectTypeMessage,\n\t\tmicro.TriggeredAutomationListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", triggeredAutomations.Data)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$AUTOMATION_OBJECT_TYPE/triggered_automations \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'get',
+    endpoint: '/v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}',
+    httpMethod: 'get',
+    summary: 'Read a triggered automation',
+    description: 'Read a triggered automation',
+    stainlessPath: '(resource) triggered_automations > (method) get',
+    qualified: 'client.triggeredAutomations.get',
+    params: ['teamId: string;', 'automationObjectType: string;', 'automationId: string;'],
+    response:
+      "{ kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]; changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; team_id?: string; updated_at?: string; user_id?: string; }",
+    markdown:
+      "## get\n\n`client.triggeredAutomations.get(teamId: string, automationObjectType: string, automationId: string): { kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: object[]; changeset?: object; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: object; team_id?: string; updated_at?: string; user_id?: string; }`\n\n**get** `/v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}`\n\nRead a triggered automation\n\n### Parameters\n\n- `teamId: string`\n\n- `automationObjectType: string`\n  Object types that support triggered automations. Must match the triggered-automation whitelist in @micro/database migrate-sql (TRIGGERED_AUTOMATION_OBJECTS).\n\n- `automationId: string`\n\n### Returns\n\n- `{ kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]; changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; team_id?: string; updated_at?: string; user_id?: string; }`\n  A triggered automation. `kind` selects the shape: `update` fires on object updates and requires a `changeset` (from/to transition) filter plus an optional `state` precondition; `lifecycle` fires on create and/or delete (`on_create`/`on_delete`) and requires a `state` filter (no changeset). `state` permits dot-paths (nested reference filters); `changeset` is direct properties only. Object type is taken from the path.\n\n  - `kind: 'update' | 'lifecycle'`\n  - `name: string`\n  - `id?: string`\n  - `actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]`\n  - `changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }`\n  - `created_at?: string`\n  - `enabled?: boolean`\n  - `list_id?: string`\n  - `on_create?: boolean`\n  - `on_delete?: boolean`\n  - `state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }`\n  - `team_id?: string`\n  - `updated_at?: string`\n  - `user_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst triggeredAutomation = await client.triggeredAutomations.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { automationObjectType: 'message' });\n\nconsole.log(triggeredAutomation);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.triggeredAutomations.get',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst triggeredAutomation = await client.triggeredAutomations.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { automationObjectType: 'message' },\n);\n\nconsole.log(triggeredAutomation.id);",
+      },
+      python: {
+        method: 'triggered_automations.get',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ntriggered_automation = client.triggered_automations.get(\n    automation_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    automation_object_type="message",\n)\nprint(triggered_automation.id)',
+      },
+      go: {
+        method: 'client.TriggeredAutomations.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\ttriggeredAutomation, err := client.TriggeredAutomations.Get(\n\t\tcontext.TODO(),\n\t\tmicro.TriggeredAutomationGetParamsAutomationObjectTypeMessage,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.TriggeredAutomationGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", triggeredAutomation.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$AUTOMATION_OBJECT_TYPE/triggered_automations/$AUTOMATION_ID \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}',
+    httpMethod: 'put',
+    summary: 'Replace a triggered automation (idempotent full write of the whole tree)',
+    description: 'Replace a triggered automation (idempotent full write of the whole tree)',
+    stainlessPath: '(resource) triggered_automations > (method) update',
+    qualified: 'client.triggeredAutomations.update',
+    params: [
+      'teamId: string;',
+      'automationObjectType: string;',
+      'automationId: string;',
+      "kind: 'update' | 'lifecycle';",
+      'name: string;',
+      'id?: string;',
+      "actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[];",
+      "changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; };",
+      'created_at?: string;',
+      'enabled?: boolean;',
+      'list_id?: string;',
+      'on_create?: boolean;',
+      'on_delete?: boolean;',
+      "state?: { combinator?: 'AND' | 'OR'; filter?: object[]; };",
+      'team_id?: string;',
+      'updated_at?: string;',
+      'user_id?: string;',
+    ],
+    response:
+      "{ kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]; changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; team_id?: string; updated_at?: string; user_id?: string; }",
+    markdown:
+      "## update\n\n`client.triggeredAutomations.update(teamId: string, automationObjectType: string, automationId: string, kind: 'update' | 'lifecycle', name: string, id?: string, actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[], changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }, created_at?: string, enabled?: boolean, list_id?: string, on_create?: boolean, on_delete?: boolean, state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }, team_id?: string, updated_at?: string, user_id?: string): { kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: object[]; changeset?: object; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: object; team_id?: string; updated_at?: string; user_id?: string; }`\n\n**put** `/v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}`\n\nReplace a triggered automation (idempotent full write of the whole tree)\n\n### Parameters\n\n- `teamId: string`\n\n- `automationObjectType: string`\n  Object types that support triggered automations. Must match the triggered-automation whitelist in @micro/database migrate-sql (TRIGGERED_AUTOMATION_OBJECTS).\n\n- `automationId: string`\n\n- `kind: 'update' | 'lifecycle'`\n\n- `name: string`\n\n- `id?: string`\n\n- `actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]`\n  Actions to run when the automation fires; each item has a `type` plus type-specific fields.\n\n- `changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }`\n  A changeset filter group (update automations only): a combinator plus an array of transition clauses matching what is changing. Dot-paths (nested reference filters) are NOT permitted — direct properties only.\n  - `combinator?: 'AND' | 'OR'`\n  - `filter?: object[]`\n    Each entry is a transition clause { slug: { from?: { comparator: value }, to?: { comparator: value } } }. `from` matches the prior value, `to` the new value; an empty body { slug: {} } matches any change to that property.\n\n- `created_at?: string`\n\n- `enabled?: boolean`\n\n- `list_id?: string`\n\n- `on_create?: boolean`\n  Lifecycle automations only.\n\n- `on_delete?: boolean`\n  Lifecycle automations only.\n\n- `state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }`\n  A filter group: a combinator plus an array of slug-based clauses. Dot-paths (e.g. `organization.location`) express nested reference filters.\n  - `combinator?: 'AND' | 'OR'`\n  - `filter?: object[]`\n    Each entry is { slug: { comparator: value } }\n\n- `team_id?: string`\n\n- `updated_at?: string`\n\n- `user_id?: string`\n\n### Returns\n\n- `{ kind: 'update' | 'lifecycle'; name: string; id?: string; actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]; changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; created_at?: string; enabled?: boolean; list_id?: string; on_create?: boolean; on_delete?: boolean; state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }; team_id?: string; updated_at?: string; user_id?: string; }`\n  A triggered automation. `kind` selects the shape: `update` fires on object updates and requires a `changeset` (from/to transition) filter plus an optional `state` precondition; `lifecycle` fires on create and/or delete (`on_create`/`on_delete`) and requires a `state` filter (no changeset). `state` permits dot-paths (nested reference filters); `changeset` is direct properties only. Object type is taken from the path.\n\n  - `kind: 'update' | 'lifecycle'`\n  - `name: string`\n  - `id?: string`\n  - `actions?: { type: 'agent' | 'webhook' | 'wait'; agent_id?: string; cron_expression?: string; delay_seconds?: number; timezone?: string; webhook_id?: string; }[]`\n  - `changeset?: { combinator?: 'AND' | 'OR'; filter?: object[]; }`\n  - `created_at?: string`\n  - `enabled?: boolean`\n  - `list_id?: string`\n  - `on_create?: boolean`\n  - `on_delete?: boolean`\n  - `state?: { combinator?: 'AND' | 'OR'; filter?: object[]; }`\n  - `team_id?: string`\n  - `updated_at?: string`\n  - `user_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst triggeredAutomation = await client.triggeredAutomations.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  automationObjectType: 'message',\n  kind: 'update',\n  name: 'name',\n});\n\nconsole.log(triggeredAutomation);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.triggeredAutomations.update',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst triggeredAutomation = await client.triggeredAutomations.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  {\n    automationObjectType: 'message',\n    kind: 'update',\n    name: 'name',\n  },\n);\n\nconsole.log(triggeredAutomation.id);",
+      },
+      python: {
+        method: 'triggered_automations.update',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ntriggered_automation = client.triggered_automations.update(\n    automation_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    automation_object_type="message",\n    kind="update",\n    name="name",\n)\nprint(triggered_automation.id)',
+      },
+      go: {
+        method: 'client.TriggeredAutomations.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\ttriggeredAutomation, err := client.TriggeredAutomations.Update(\n\t\tcontext.TODO(),\n\t\tmicro.TriggeredAutomationUpdateParamsAutomationObjectTypeMessage,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.TriggeredAutomationUpdateParams{\n\t\t\tTriggeredAutomation: micro.TriggeredAutomationParam{\n\t\t\t\tKind: micro.F(micro.TriggeredAutomationKindUpdate),\n\t\t\t\tName: micro.F("name"),\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", triggeredAutomation.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$AUTOMATION_OBJECT_TYPE/triggered_automations/$AUTOMATION_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "kind": "update",\n          "name": "name"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}',
+    httpMethod: 'delete',
+    summary: 'Delete a triggered automation and its filter trees',
+    description: 'Delete a triggered automation and its filter trees',
+    stainlessPath: '(resource) triggered_automations > (method) delete',
+    qualified: 'client.triggeredAutomations.delete',
+    params: ['teamId: string;', 'automationObjectType: string;', 'automationId: string;'],
+    markdown:
+      "## delete\n\n`client.triggeredAutomations.delete(teamId: string, automationObjectType: string, automationId: string): void`\n\n**delete** `/v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}`\n\nDelete a triggered automation and its filter trees\n\n### Parameters\n\n- `teamId: string`\n\n- `automationObjectType: string`\n  Object types that support triggered automations. Must match the triggered-automation whitelist in @micro/database migrate-sql (TRIGGERED_AUTOMATION_OBJECTS).\n\n- `automationId: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.triggeredAutomations.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { automationObjectType: 'message' })\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.triggeredAutomations.delete',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.triggeredAutomations.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  automationObjectType: 'message',\n});",
+      },
+      python: {
+        method: 'triggered_automations.delete',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.triggered_automations.delete(\n    automation_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    automation_object_type="message",\n)',
+      },
+      go: {
+        method: 'client.TriggeredAutomations.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.TriggeredAutomations.Delete(\n\t\tcontext.TODO(),\n\t\tmicro.TriggeredAutomationDeleteParamsAutomationObjectTypeMessage,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.TriggeredAutomationDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$AUTOMATION_OBJECT_TYPE/triggered_automations/$AUTOMATION_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'create_ticket',
     endpoint: '/v2/realtime/ticket',
     httpMethod: 'post',

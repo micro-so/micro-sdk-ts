@@ -755,6 +755,36 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records/{objectId}',
   },
   {
+    clientCallName: 'client.triggeredAutomations.create',
+    fullyQualifiedName: 'triggeredAutomations.create',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/{automationObjectType}/triggered_automations',
+  },
+  {
+    clientCallName: 'client.triggeredAutomations.update',
+    fullyQualifiedName: 'triggeredAutomations.update',
+    httpMethod: 'put',
+    httpPath: '/v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}',
+  },
+  {
+    clientCallName: 'client.triggeredAutomations.list',
+    fullyQualifiedName: 'triggeredAutomations.list',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/{automationObjectType}/triggered_automations',
+  },
+  {
+    clientCallName: 'client.triggeredAutomations.delete',
+    fullyQualifiedName: 'triggeredAutomations.delete',
+    httpMethod: 'delete',
+    httpPath: '/v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}',
+  },
+  {
+    clientCallName: 'client.triggeredAutomations.get',
+    fullyQualifiedName: 'triggeredAutomations.get',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}',
+  },
+  {
     clientCallName: 'client.realtime.createTicket',
     fullyQualifiedName: 'realtime.createTicket',
     httpMethod: 'post',
