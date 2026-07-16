@@ -387,6 +387,21 @@ Methods:
 - <code title="patch /v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records">client.views.records.<a href="./src/resources/views/records.ts">reorder</a>(viewID, { ...params }) -> void</code>
 - <code title="delete /v2/prism/{teamId}/{viewObjectType}/views/{viewId}/records/{objectId}">client.views.records.<a href="./src/resources/views/records.ts">unpin</a>(objectID, { ...params }) -> void</code>
 
+# TriggeredAutomations
+
+Types:
+
+- <code><a href="./src/resources/triggered-automations.ts">TriggeredAutomation</a></code>
+- <code><a href="./src/resources/triggered-automations.ts">TriggeredAutomationListResponse</a></code>
+
+Methods:
+
+- <code title="post /v2/prism/{teamId}/{automationObjectType}/triggered_automations">client.triggeredAutomations.<a href="./src/resources/triggered-automations.ts">create</a>(automationObjectType, { ...params }) -> TriggeredAutomation</code>
+- <code title="put /v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}">client.triggeredAutomations.<a href="./src/resources/triggered-automations.ts">update</a>(automationID, { ...params }) -> TriggeredAutomation</code>
+- <code title="get /v2/prism/{teamId}/{automationObjectType}/triggered_automations">client.triggeredAutomations.<a href="./src/resources/triggered-automations.ts">list</a>(automationObjectType, { ...params }) -> TriggeredAutomationListResponse</code>
+- <code title="delete /v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}">client.triggeredAutomations.<a href="./src/resources/triggered-automations.ts">delete</a>(automationID, { ...params }) -> void</code>
+- <code title="get /v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}">client.triggeredAutomations.<a href="./src/resources/triggered-automations.ts">get</a>(automationID, { ...params }) -> TriggeredAutomation</code>
+
 # Realtime
 
 Types:
