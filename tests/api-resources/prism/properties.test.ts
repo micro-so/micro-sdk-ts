@@ -26,6 +26,7 @@ describe('resource properties', () => {
     const response = await client.prism.properties.list('comment', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       autofill: true,
+      include_options: 'true',
       list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       term: 'term',
     });
@@ -40,6 +41,7 @@ describe('resource properties', () => {
         {
           teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           autofill: true,
+          include_options: 'true',
           list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           term: 'term',
         },
@@ -65,6 +67,7 @@ describe('resource properties', () => {
     const response = await client.prism.properties.listAll({
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       autofill: true,
+      include_options: 'true',
       list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       term: 'term',
     });
@@ -78,6 +81,7 @@ describe('resource properties', () => {
         {
           teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           autofill: true,
+          include_options: 'true',
           list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           term: 'term',
         },

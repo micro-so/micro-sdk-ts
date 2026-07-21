@@ -4,11 +4,57 @@ import { APIResource } from '../../../../core/resource';
 import * as GrantAPI from './grant';
 import { Grant, GrantGetParams, GrantGetResponse, GrantUpdateParams, GrantUpdateResponse } from './grant';
 import { APIPromise } from '../../../../core/api-promise';
+import { buildHeaders } from '../../../../internal/headers';
 import { RequestOptions } from '../../../../internal/request-options';
 import { path } from '../../../../internal/utils/path';
 
 export class Events extends APIResource {
   grant: GrantAPI.Grant = new GrantAPI.Grant(this._client);
+
+  /**
+   * Create object
+   */
+  create(
+    params: EventCreateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<EventCreateResponse> {
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params ?? {};
+    return this._client.post(path`/v2/prism/${teamId}/event`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Patch object
+   */
+  update(
+    eventID: string,
+    params: EventUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<EventUpdateResponse> {
+    const {
+      teamId = this._client.teamID,
+      'Idempotency-Key': idempotencyKey,
+      'If-Match': ifMatch,
+      ...body
+    } = params;
+    return this._client.patch(path`/v2/prism/${teamId}/event/${eventID}`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        {
+          ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined),
+          ...(ifMatch != null ? { 'If-Match': ifMatch } : undefined),
+        },
+        options?.headers,
+      ]),
+    });
+  }
 
   /**
    * Convenience list endpoint. Equivalent to
@@ -28,6 +74,24 @@ export class Events extends APIResource {
   }
 
   /**
+   * Delete object
+   */
+  delete(
+    eventID: string,
+    params: EventDeleteParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<void> {
+    const { teamId = this._client.teamID, 'If-Match': ifMatch } = params ?? {};
+    return this._client.delete(path`/v2/prism/${teamId}/event/${eventID}`, {
+      ...options,
+      headers: buildHeaders([
+        { Accept: '*/*', ...(ifMatch != null ? { 'If-Match': ifMatch } : undefined) },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
    * Returns the total number of records of this object type that the caller can see.
    * Avoids the page-overshoot anti-pattern — clients no longer need to keep paging
    * until `has_more` flips false to discover the total. Currently does not apply
@@ -40,6 +104,24 @@ export class Events extends APIResource {
   ): APIPromise<EventCountResponse> {
     const { teamId = this._client.teamID, ...query } = params ?? {};
     return this._client.get(path`/v2/prism/${teamId}/event/count`, { query, ...options });
+  }
+
+  /**
+   * Duplicate object
+   */
+  duplicate(
+    eventID: string,
+    params: EventDuplicateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<EventDuplicateResponse> {
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey } = params ?? {};
+    return this._client.post(path`/v2/prism/${teamId}/event/${eventID}/duplicate`, {
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
@@ -70,6 +152,46 @@ export class Events extends APIResource {
     const { teamId = this._client.teamID, ...body } = params;
     return this._client.post(path`/v2/prism/${teamId}/event/query`, { body, ...options });
   }
+
+  /**
+   * Restore object
+   */
+  restore(
+    eventID: string,
+    params: EventRestoreParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<EventRestoreResponse> {
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey } = params ?? {};
+    return this._client.post(path`/v2/prism/${teamId}/event/${eventID}/restore`, {
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
+   * Idempotent create-or-update keyed on `{slug}={value}`. If exactly one record
+   * matches, it is patched and 200 is returned. If none match, a new record is
+   * created (with the lookup property set if absent) and 201 is returned. If
+   * multiple records match, 409 is returned and you should patch by id instead.
+   */
+  upsert(
+    value: string,
+    params: EventUpsertParams,
+    options?: RequestOptions,
+  ): APIPromise<EventUpsertResponse> {
+    const { teamId = this._client.teamID, slug, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    return this._client.put(path`/v2/prism/${teamId}/event/by/${slug}/${value}`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
+  }
 }
 
 export interface Event {
@@ -77,6 +199,34 @@ export interface Event {
    * Properties keyed by property slug. Values can be strings, numbers, booleans,
    * arrays, or null. For select/multiselect properties, values may be option slugs
    * or option UUIDs on write; option slugs are returned on read.
+   */
+  default?: { [key: string]: unknown };
+
+  list?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface EventCreateResponse {
+  id: string;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  list?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface EventUpdateResponse {
+  id: string;
+
+  /**
+   * Properties keyed by property slug.
    */
   default?: { [key: string]: unknown };
 
@@ -128,6 +278,20 @@ export interface EventCountResponse {
    * Number of records matching the access scope.
    */
   total: number;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface EventDuplicateResponse {
+  id: string;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  list?: unknown;
 }
 
 /**
@@ -206,6 +370,100 @@ export namespace EventQueryResponse {
   }
 }
 
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface EventRestoreResponse {
+  id: string;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  list?: unknown;
+}
+
+/**
+ * Object returned by reads (get/create/patch/restore). id is always present.
+ */
+export interface EventUpsertResponse {
+  id: string;
+
+  /**
+   * Properties keyed by property slug.
+   */
+  default?: { [key: string]: unknown };
+
+  list?: unknown;
+}
+
+export interface EventCreateParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Body param: Properties keyed by property slug. Values can be strings, numbers,
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
+   */
+  default?: { [key: string]: unknown };
+
+  /**
+   * Body param
+   */
+  list?: unknown;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
+}
+
+export interface EventUpdateParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Body param: Properties keyed by property slug. Values can be strings, numbers,
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
+   */
+  default?: { [key: string]: unknown };
+
+  /**
+   * Body param
+   */
+  list?: unknown;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
+
+  /**
+   * Header param: Optimistic concurrency. Pass back the `etag` header from a
+   * previous GET of this record; the write only proceeds if the record hasn't
+   * changed since. Mismatch → 412 `precondition_failed`. Use `*` to require the
+   * record exists (any ETag accepted).
+   */
+  'If-Match'?: string;
+}
+
 export interface EventListParams {
   /**
    * Path param
@@ -254,6 +512,21 @@ export interface EventListParams {
   sort?: string;
 }
 
+export interface EventDeleteParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Header param: Optimistic concurrency. Pass back the `etag` header from a
+   * previous GET of this record; the write only proceeds if the record hasn't
+   * changed since. Mismatch → 412 `precondition_failed`. Use `*` to require the
+   * record exists (any ETag accepted).
+   */
+  'If-Match'?: string;
+}
+
 export interface EventCountParams {
   /**
    * Path param
@@ -264,6 +537,23 @@ export interface EventCountParams {
    * Query param: Scope the count to a specific list/app.
    */
   list_id?: string;
+}
+
+export interface EventDuplicateParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
 }
 
 export interface EventFindParams {
@@ -479,21 +769,83 @@ export namespace EventQueryParams {
   }
 }
 
+export interface EventRestoreParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
+}
+
+export interface EventUpsertParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Path param
+   */
+  slug: string;
+
+  /**
+   * Body param: Properties keyed by property slug. Values can be strings, numbers,
+   * booleans, arrays, or null. For select/multiselect properties, values may be
+   * option slugs or option UUIDs on write; option slugs are returned on read.
+   */
+  default?: { [key: string]: unknown };
+
+  /**
+   * Body param
+   */
+  list?: unknown;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
+   * identifies this logical request. The server caches the first response under this
+   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
+   * to make network retries deterministic. Reusing the same key with a different
+   * body returns 409 `idempotency_key_mismatch`. Replays include the
+   * `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
+}
+
 Events.Grant = Grant;
 
 export declare namespace Events {
   export {
     type Event as Event,
+    type EventCreateResponse as EventCreateResponse,
+    type EventUpdateResponse as EventUpdateResponse,
     type EventListResponse as EventListResponse,
     type EventCountResponse as EventCountResponse,
+    type EventDuplicateResponse as EventDuplicateResponse,
     type EventFindResponse as EventFindResponse,
     type EventGetResponse as EventGetResponse,
     type EventQueryResponse as EventQueryResponse,
+    type EventRestoreResponse as EventRestoreResponse,
+    type EventUpsertResponse as EventUpsertResponse,
+    type EventCreateParams as EventCreateParams,
+    type EventUpdateParams as EventUpdateParams,
     type EventListParams as EventListParams,
+    type EventDeleteParams as EventDeleteParams,
     type EventCountParams as EventCountParams,
+    type EventDuplicateParams as EventDuplicateParams,
     type EventFindParams as EventFindParams,
     type EventGetParams as EventGetParams,
     type EventQueryParams as EventQueryParams,
+    type EventRestoreParams as EventRestoreParams,
+    type EventUpsertParams as EventUpsertParams,
   };
 
   export {

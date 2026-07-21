@@ -798,6 +798,12 @@ export namespace DealBulkCreateParams {
     caseInsensitive?: boolean;
 
     /**
+     * When true, unknown values for select/multiselect properties are created as new
+     * options instead of failing the import
+     */
+    create_missing_options?: boolean;
+
+    /**
      * Property slug to deduplicate on
      */
     dedupe_by?: string;
