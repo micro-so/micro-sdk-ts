@@ -569,16 +569,40 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/document/{documentId}/grant',
   },
   {
+    clientCallName: 'client.prism.objects.events.create',
+    fullyQualifiedName: 'prism.objects.events.create',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/event',
+  },
+  {
+    clientCallName: 'client.prism.objects.events.update',
+    fullyQualifiedName: 'prism.objects.events.update',
+    httpMethod: 'patch',
+    httpPath: '/v2/prism/{teamId}/event/{eventId}',
+  },
+  {
     clientCallName: 'client.prism.objects.events.list',
     fullyQualifiedName: 'prism.objects.events.list',
     httpMethod: 'get',
     httpPath: '/v2/prism/{teamId}/event',
   },
   {
+    clientCallName: 'client.prism.objects.events.delete',
+    fullyQualifiedName: 'prism.objects.events.delete',
+    httpMethod: 'delete',
+    httpPath: '/v2/prism/{teamId}/event/{eventId}',
+  },
+  {
     clientCallName: 'client.prism.objects.events.count',
     fullyQualifiedName: 'prism.objects.events.count',
     httpMethod: 'get',
     httpPath: '/v2/prism/{teamId}/event/count',
+  },
+  {
+    clientCallName: 'client.prism.objects.events.duplicate',
+    fullyQualifiedName: 'prism.objects.events.duplicate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/event/{eventId}/duplicate',
   },
   {
     clientCallName: 'client.prism.objects.events.find',
@@ -597,6 +621,18 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'prism.objects.events.query',
     httpMethod: 'post',
     httpPath: '/v2/prism/{teamId}/event/query',
+  },
+  {
+    clientCallName: 'client.prism.objects.events.restore',
+    fullyQualifiedName: 'prism.objects.events.restore',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/event/{eventId}/restore',
+  },
+  {
+    clientCallName: 'client.prism.objects.events.upsert',
+    fullyQualifiedName: 'prism.objects.events.upsert',
+    httpMethod: 'put',
+    httpPath: '/v2/prism/{teamId}/event/by/{slug}/{value}',
   },
   {
     clientCallName: 'client.prism.objects.events.grant.update',

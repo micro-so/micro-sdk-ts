@@ -285,19 +285,30 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/prism/objects/events/events.ts">Event</a></code>
+- <code><a href="./src/resources/prism/objects/events/events.ts">EventCreateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/events/events.ts">EventUpdateResponse</a></code>
 - <code><a href="./src/resources/prism/objects/events/events.ts">EventListResponse</a></code>
 - <code><a href="./src/resources/prism/objects/events/events.ts">EventCountResponse</a></code>
+- <code><a href="./src/resources/prism/objects/events/events.ts">EventDuplicateResponse</a></code>
 - <code><a href="./src/resources/prism/objects/events/events.ts">EventFindResponse</a></code>
 - <code><a href="./src/resources/prism/objects/events/events.ts">EventGetResponse</a></code>
 - <code><a href="./src/resources/prism/objects/events/events.ts">EventQueryResponse</a></code>
+- <code><a href="./src/resources/prism/objects/events/events.ts">EventRestoreResponse</a></code>
+- <code><a href="./src/resources/prism/objects/events/events.ts">EventUpsertResponse</a></code>
 
 Methods:
 
+- <code title="post /v2/prism/{teamId}/event">client.prism.objects.events.<a href="./src/resources/prism/objects/events/events.ts">create</a>({ ...params }) -> EventCreateResponse</code>
+- <code title="patch /v2/prism/{teamId}/event/{eventId}">client.prism.objects.events.<a href="./src/resources/prism/objects/events/events.ts">update</a>(eventID, { ...params }) -> EventUpdateResponse</code>
 - <code title="get /v2/prism/{teamId}/event">client.prism.objects.events.<a href="./src/resources/prism/objects/events/events.ts">list</a>({ ...params }) -> EventListResponse</code>
+- <code title="delete /v2/prism/{teamId}/event/{eventId}">client.prism.objects.events.<a href="./src/resources/prism/objects/events/events.ts">delete</a>(eventID, { ...params }) -> void</code>
 - <code title="get /v2/prism/{teamId}/event/count">client.prism.objects.events.<a href="./src/resources/prism/objects/events/events.ts">count</a>({ ...params }) -> EventCountResponse</code>
+- <code title="post /v2/prism/{teamId}/event/{eventId}/duplicate">client.prism.objects.events.<a href="./src/resources/prism/objects/events/events.ts">duplicate</a>(eventID, { ...params }) -> EventDuplicateResponse</code>
 - <code title="get /v2/prism/{teamId}/event/by/{slug}/{value}">client.prism.objects.events.<a href="./src/resources/prism/objects/events/events.ts">find</a>(value, { ...params }) -> EventFindResponse</code>
 - <code title="get /v2/prism/{teamId}/event/{eventId}">client.prism.objects.events.<a href="./src/resources/prism/objects/events/events.ts">get</a>(eventID, { ...params }) -> EventGetResponse</code>
 - <code title="post /v2/prism/{teamId}/event/query">client.prism.objects.events.<a href="./src/resources/prism/objects/events/events.ts">query</a>({ ...params }) -> EventQueryResponse</code>
+- <code title="post /v2/prism/{teamId}/event/{eventId}/restore">client.prism.objects.events.<a href="./src/resources/prism/objects/events/events.ts">restore</a>(eventID, { ...params }) -> EventRestoreResponse</code>
+- <code title="put /v2/prism/{teamId}/event/by/{slug}/{value}">client.prism.objects.events.<a href="./src/resources/prism/objects/events/events.ts">upsert</a>(value, { ...params }) -> EventUpsertResponse</code>
 
 #### Grant
 
