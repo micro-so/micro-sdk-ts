@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.10.0 (2026-07-21)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.9.0...v0.10.0)
+
+### Features
+
+* **api:** api update ([ec8c843](https://github.com/micro-so/micro-sdk-ts/commit/ec8c843f3e3ca83eb5fbe0b7e3d3ac4351404847))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([47e0665](https://github.com/micro-so/micro-sdk-ts/commit/47e066524b3fe1da88850308e1953163398bda2a))
+
 ## 0.9.0 (2026-07-16)
 
 Full Changelog: [v0.8.0...v0.9.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.8.0...v0.9.0)
