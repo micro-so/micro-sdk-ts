@@ -68,6 +68,15 @@ export interface PropertyListParams {
   autofill?: boolean;
 
   /**
+   * Query param: When false, return property definitions without hydrating
+   * select/multiselect option rows. Defaults to true server-side
+   * (parseIncludeOptions). Accepts boolean or query-string forms (true/false/0/1).
+   * Uses anyOf (not oneOf) so qs/AJV boolean-vs-string ambiguity does not 400 when
+   * Speakeasy SDKs send include_options=true.
+   */
+  include_options?: boolean | 'true' | 'false' | '0' | '1';
+
+  /**
    * Query param: Scope properties to a specific list/app.
    */
   list_id?: string;
@@ -88,6 +97,15 @@ export interface PropertyListAllParams {
    * Query param
    */
   autofill?: boolean;
+
+  /**
+   * Query param: When false, return property definitions without hydrating
+   * select/multiselect option rows. Defaults to true server-side
+   * (parseIncludeOptions). Accepts boolean or query-string forms (true/false/0/1).
+   * Uses anyOf (not oneOf) so qs/AJV boolean-vs-string ambiguity does not 400 when
+   * Speakeasy SDKs send include_options=true.
+   */
+  include_options?: boolean | 'true' | 'false' | '0' | '1';
 
   /**
    * Query param: Scope properties to a specific list/app.

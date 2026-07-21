@@ -166,10 +166,11 @@ export namespace TriggeredAutomation {
   /**
    * An action the automation runs when it fires. `type` selects the kind; the
    * remaining fields are type-specific (`agent` → `agent_id`, `webhook` →
-   * `webhook_id`). Generic: new action types add fields here.
+   * `webhook_id`, `email`/`linkedin` → the send-as user, template, and
+   * recipient-view fields). Generic: new action types add fields here.
    */
   export interface Action {
-    type: 'agent' | 'webhook' | 'wait';
+    type: 'agent' | 'webhook' | 'wait' | 'email' | 'linkedin';
 
     /**
      * Required when `type` is `agent`. The agent to run.
@@ -187,6 +188,50 @@ export namespace TriggeredAutomation {
      * cron_expression.
      */
     delay_seconds?: number | null;
+
+    /**
+     * Required when `type` is `email`. The property (on the recipient view object)
+     * holding the recipient email address.
+     */
+    recipient_email_prop_def_id?: string | null;
+
+    /**
+     * Required when `type` is `linkedin`. The property (on the recipient view object)
+     * holding the recipient LinkedIn provider id.
+     */
+    recipient_provider_prop_def_id?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. The saved prism view resolved at
+     * send time to the recipient audience (its filter re-runs each step, so responders
+     * drop out of later drip sends).
+     */
+    recipient_view_id?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. Must be `contact` — the recipient
+     * audience is a contact view (contacts carry the direct email / linkedin provider
+     * property).
+     */
+    recipient_view_object_type?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. The user (external id) the
+     * message is sent as.
+     */
+    send_as_user_id?: string | null;
+
+    /**
+     * Required when `type` is `email`. The subject line; rendered as a Liquid template
+     * per recipient.
+     */
+    subject?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. The email-template document whose
+     * body is rendered (Liquid) per recipient.
+     */
+    template_id?: string | null;
 
     /**
      * wait: IANA timezone for evaluating cron_expression (optional).
@@ -341,10 +386,11 @@ export namespace TriggeredAutomationCreateParams {
   /**
    * An action the automation runs when it fires. `type` selects the kind; the
    * remaining fields are type-specific (`agent` → `agent_id`, `webhook` →
-   * `webhook_id`). Generic: new action types add fields here.
+   * `webhook_id`, `email`/`linkedin` → the send-as user, template, and
+   * recipient-view fields). Generic: new action types add fields here.
    */
   export interface Action {
-    type: 'agent' | 'webhook' | 'wait';
+    type: 'agent' | 'webhook' | 'wait' | 'email' | 'linkedin';
 
     /**
      * Required when `type` is `agent`. The agent to run.
@@ -362,6 +408,50 @@ export namespace TriggeredAutomationCreateParams {
      * cron_expression.
      */
     delay_seconds?: number | null;
+
+    /**
+     * Required when `type` is `email`. The property (on the recipient view object)
+     * holding the recipient email address.
+     */
+    recipient_email_prop_def_id?: string | null;
+
+    /**
+     * Required when `type` is `linkedin`. The property (on the recipient view object)
+     * holding the recipient LinkedIn provider id.
+     */
+    recipient_provider_prop_def_id?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. The saved prism view resolved at
+     * send time to the recipient audience (its filter re-runs each step, so responders
+     * drop out of later drip sends).
+     */
+    recipient_view_id?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. Must be `contact` — the recipient
+     * audience is a contact view (contacts carry the direct email / linkedin provider
+     * property).
+     */
+    recipient_view_object_type?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. The user (external id) the
+     * message is sent as.
+     */
+    send_as_user_id?: string | null;
+
+    /**
+     * Required when `type` is `email`. The subject line; rendered as a Liquid template
+     * per recipient.
+     */
+    subject?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. The email-template document whose
+     * body is rendered (Liquid) per recipient.
+     */
+    template_id?: string | null;
 
     /**
      * wait: IANA timezone for evaluating cron_expression (optional).
@@ -508,10 +598,11 @@ export namespace TriggeredAutomationUpdateParams {
   /**
    * An action the automation runs when it fires. `type` selects the kind; the
    * remaining fields are type-specific (`agent` → `agent_id`, `webhook` →
-   * `webhook_id`). Generic: new action types add fields here.
+   * `webhook_id`, `email`/`linkedin` → the send-as user, template, and
+   * recipient-view fields). Generic: new action types add fields here.
    */
   export interface Action {
-    type: 'agent' | 'webhook' | 'wait';
+    type: 'agent' | 'webhook' | 'wait' | 'email' | 'linkedin';
 
     /**
      * Required when `type` is `agent`. The agent to run.
@@ -529,6 +620,50 @@ export namespace TriggeredAutomationUpdateParams {
      * cron_expression.
      */
     delay_seconds?: number | null;
+
+    /**
+     * Required when `type` is `email`. The property (on the recipient view object)
+     * holding the recipient email address.
+     */
+    recipient_email_prop_def_id?: string | null;
+
+    /**
+     * Required when `type` is `linkedin`. The property (on the recipient view object)
+     * holding the recipient LinkedIn provider id.
+     */
+    recipient_provider_prop_def_id?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. The saved prism view resolved at
+     * send time to the recipient audience (its filter re-runs each step, so responders
+     * drop out of later drip sends).
+     */
+    recipient_view_id?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. Must be `contact` — the recipient
+     * audience is a contact view (contacts carry the direct email / linkedin provider
+     * property).
+     */
+    recipient_view_object_type?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. The user (external id) the
+     * message is sent as.
+     */
+    send_as_user_id?: string | null;
+
+    /**
+     * Required when `type` is `email`. The subject line; rendered as a Liquid template
+     * per recipient.
+     */
+    subject?: string | null;
+
+    /**
+     * Required when `type` is `email` or `linkedin`. The email-template document whose
+     * body is rendered (Liquid) per recipient.
+     */
+    template_id?: string | null;
 
     /**
      * wait: IANA timezone for evaluating cron_expression (optional).
