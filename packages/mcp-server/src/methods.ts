@@ -755,6 +755,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/{viewObjectType}/views/{viewId}',
   },
   {
+    clientCallName: 'client.views.list',
+    fullyQualifiedName: 'views.list',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/{viewObjectType}/views',
+  },
+  {
     clientCallName: 'client.views.delete',
     fullyQualifiedName: 'views.delete',
     httpMethod: 'delete',

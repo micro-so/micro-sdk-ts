@@ -376,12 +376,14 @@ Types:
 
 - <code><a href="./src/resources/views/views.ts">ViewCreateResponse</a></code>
 - <code><a href="./src/resources/views/views.ts">ViewUpdateResponse</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewListResponse</a></code>
 - <code><a href="./src/resources/views/views.ts">ViewGetResponse</a></code>
 
 Methods:
 
 - <code title="post /v2/prism/{teamId}/{viewObjectType}/views">client.views.<a href="./src/resources/views/views.ts">create</a>(viewObjectType, { ...params }) -> ViewCreateResponse</code>
 - <code title="patch /v2/prism/{teamId}/{viewObjectType}/views/{viewId}">client.views.<a href="./src/resources/views/views.ts">update</a>(viewID, { ...params }) -> ViewUpdateResponse</code>
+- <code title="get /v2/prism/{teamId}/{viewObjectType}/views">client.views.<a href="./src/resources/views/views.ts">list</a>(viewObjectType, { ...params }) -> ViewListResponse</code>
 - <code title="delete /v2/prism/{teamId}/{viewObjectType}/views/{viewId}">client.views.<a href="./src/resources/views/views.ts">delete</a>(viewID, { ...params }) -> void</code>
 - <code title="get /v2/prism/{teamId}/{viewObjectType}/views/{viewId}">client.views.<a href="./src/resources/views/views.ts">get</a>(viewID, { ...params }) -> ViewGetResponse</code>
 

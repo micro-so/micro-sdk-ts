@@ -4682,6 +4682,49 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'list',
+    endpoint: '/v2/prism/{teamId}/{viewObjectType}/views',
+    httpMethod: 'get',
+    summary: 'List saved views for an owner',
+    description:
+      'Returns saved view bundles for the path team. Pass `?list_id=` to scope to a list (CRM) instead. Cursor pagination matches other Prism list endpoints.',
+    stainlessPath: '(resource) views > (method) list',
+    qualified: 'client.views.list',
+    params: [
+      'teamId: string;',
+      "viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
+      'cursor?: string;',
+      'limit?: number;',
+      'list_id?: string;',
+      'page?: number;',
+    ],
+    response:
+      "{ data: { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }[]; has_more: boolean; next_cursor?: string; }",
+    markdown:
+      "## list\n\n`client.views.list(teamId: string, viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', cursor?: string, limit?: number, list_id?: string, page?: number): { data: object[]; has_more: boolean; next_cursor?: string; }`\n\n**get** `/v2/prism/{teamId}/{viewObjectType}/views`\n\nReturns saved view bundles for the path team. Pass `?list_id=` to scope to a list (CRM) instead. Cursor pagination matches other Prism list endpoints.\n\n### Parameters\n\n- `teamId: string`\n\n- `viewObjectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `cursor?: string`\n  Opaque pagination cursor (from a prior response's next_cursor); supersedes page/limit when present.\n\n- `limit?: number`\n  Maximum items per page (<= 50; defaults to 50).\n\n- `list_id?: string`\n  List (CRM) id to scope the listing to. When omitted, views owned by the path team are returned.\n\n- `page?: number`\n  1-based page number. Prefer cursor.\n\n### Returns\n\n- `{ data: { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }[]; has_more: boolean; next_cursor?: string; }`\n\n  - `data: { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }[]`\n  - `has_more: boolean`\n  - `next_cursor?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst views = await client.views.list('comment');\n\nconsole.log(views);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.views.list',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst views = await client.views.list('comment');\n\nconsole.log(views.data);",
+      },
+      python: {
+        method: 'views.list',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nviews = client.views.list(\n    view_object_type="comment",\n)\nprint(views.data)',
+      },
+      go: {
+        method: 'client.Views.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tviews, err := client.Views.List(\n\t\tcontext.TODO(),\n\t\tmicro.ViewListParamsViewObjectTypeComment,\n\t\tmicro.ViewListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", views.Data)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$VIEW_OBJECT_TYPE/views \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'get',
     endpoint: '/v2/prism/{teamId}/{viewObjectType}/views/{viewId}',
     httpMethod: 'get',
