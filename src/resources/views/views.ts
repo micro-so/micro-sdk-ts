@@ -67,6 +67,27 @@ export class Views extends APIResource {
   }
 
   /**
+   * Returns saved view bundles for the path team. Pass `?list_id=` to scope to a
+   * list (CRM) instead. Cursor pagination matches other Prism list endpoints.
+   */
+  list(
+    viewObjectType:
+      | 'comment'
+      | 'action'
+      | 'deal'
+      | 'engagement'
+      | 'document'
+      | 'event'
+      | 'identity'
+      | 'organization',
+    params: ViewListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<ViewListResponse> {
+    const { teamId = this._client.teamID, ...query } = params ?? {};
+    return this._client.get(path`/v2/prism/${teamId}/${viewObjectType}/views`, { query, ...options });
+  }
+
+  /**
    * Delete a view bundle
    */
   delete(viewID: string, params: ViewDeleteParams, options?: RequestOptions): APIPromise<void> {
@@ -211,6 +232,83 @@ export interface ViewUpdateResponse {
   updated_at?: string | null;
 
   user_id?: string | null;
+}
+
+export interface ViewListResponse {
+  data: Array<ViewListResponse.Data>;
+
+  /**
+   * True if more views exist beyond this page.
+   */
+  has_more: boolean;
+
+  /**
+   * Opaque cursor for the next page; null when has_more is false.
+   */
+  next_cursor?: string | null;
+}
+
+export namespace ViewListResponse {
+  /**
+   * A view (saved configuration for displaying records of a given object type) plus
+   * its select/filter/sort children. Properties in select/filter/sort are referenced
+   * by slug.
+   */
+  export interface Data {
+    name: string;
+
+    view_type: string;
+
+    id?: string;
+
+    aggregation_prop_def_id?: string | null;
+
+    aggregation_type?: string | null;
+
+    column_layout?: { [key: string]: unknown } | null;
+
+    combinator?: 'AND' | 'OR';
+
+    created_at?: string;
+
+    /**
+     * Each entry is { slug: { comparator: value } }
+     */
+    filter?: Array<{ [key: string]: unknown }>;
+
+    /**
+     * Property slug to group by
+     */
+    group_by?: string | null;
+
+    group_hidden_option_ids?: Array<unknown> | unknown | null;
+
+    group_hide_empty?: boolean | null;
+
+    group_sort?: string | null;
+
+    icon?: string | null;
+
+    list_id?: string | null;
+
+    /**
+     * Property slugs (dot-paths permitted for refs)
+     */
+    select?: Array<string>;
+
+    /**
+     * Each entry is { slug: 'asc' | 'desc' }
+     */
+    sort?: Array<{ [key: string]: unknown }>;
+
+    sort_order?: number | null;
+
+    team_id?: string | null;
+
+    updated_at?: string | null;
+
+    user_id?: string | null;
+  }
 }
 
 /**
@@ -611,6 +709,35 @@ export interface ViewUpdateParams {
   'Idempotency-Key'?: string;
 }
 
+export interface ViewListParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Query param: Opaque pagination cursor (from a prior response's next_cursor);
+   * supersedes page/limit when present.
+   */
+  cursor?: string;
+
+  /**
+   * Query param: Maximum items per page (<= 50; defaults to 50).
+   */
+  limit?: number;
+
+  /**
+   * Query param: List (CRM) id to scope the listing to. When omitted, views owned by
+   * the path team are returned.
+   */
+  list_id?: string;
+
+  /**
+   * Query param: 1-based page number. Prefer cursor.
+   */
+  page?: number;
+}
+
 export interface ViewDeleteParams {
   teamId?: string;
 
@@ -673,9 +800,11 @@ export declare namespace Views {
   export {
     type ViewCreateResponse as ViewCreateResponse,
     type ViewUpdateResponse as ViewUpdateResponse,
+    type ViewListResponse as ViewListResponse,
     type ViewGetResponse as ViewGetResponse,
     type ViewCreateParams as ViewCreateParams,
     type ViewUpdateParams as ViewUpdateParams,
+    type ViewListParams as ViewListParams,
     type ViewDeleteParams as ViewDeleteParams,
     type ViewGetParams as ViewGetParams,
   };

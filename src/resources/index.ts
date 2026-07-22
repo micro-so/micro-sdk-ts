@@ -16,9 +16,11 @@ export {
   Views,
   type ViewCreateResponse,
   type ViewUpdateResponse,
+  type ViewListResponse,
   type ViewGetResponse,
   type ViewCreateParams,
   type ViewUpdateParams,
+  type ViewListParams,
   type ViewDeleteParams,
   type ViewGetParams,
 } from './views/views';

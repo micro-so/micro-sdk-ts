@@ -233,6 +233,7 @@ const fuse = new Fuse(
     'client.views.create',
     'client.views.delete',
     'client.views.get',
+    'client.views.list',
     'client.views.update',
     'client.views.records.list',
     'client.views.records.pin',
