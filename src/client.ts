@@ -29,18 +29,7 @@ import {
   TriggeredAutomations,
 } from './resources/triggered-automations';
 import { Prism, PrismObjectProperties } from './resources/prism/prism';
-import {
-  ViewCreateParams,
-  ViewCreateResponse,
-  ViewDeleteParams,
-  ViewGetParams,
-  ViewGetResponse,
-  ViewListParams,
-  ViewListResponse,
-  ViewUpdateParams,
-  ViewUpdateResponse,
-  Views,
-} from './resources/views/views';
+import { Views } from './resources/views/views';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -790,18 +779,7 @@ export declare namespace Micro {
 
   export { Prism as Prism, type PrismObjectProperties as PrismObjectProperties };
 
-  export {
-    Views as Views,
-    type ViewCreateResponse as ViewCreateResponse,
-    type ViewUpdateResponse as ViewUpdateResponse,
-    type ViewListResponse as ViewListResponse,
-    type ViewGetResponse as ViewGetResponse,
-    type ViewCreateParams as ViewCreateParams,
-    type ViewUpdateParams as ViewUpdateParams,
-    type ViewListParams as ViewListParams,
-    type ViewDeleteParams as ViewDeleteParams,
-    type ViewGetParams as ViewGetParams,
-  };
+  export { Views as Views };
 
   export {
     TriggeredAutomations as TriggeredAutomations,
