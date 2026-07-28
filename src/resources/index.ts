@@ -12,13 +12,4 @@ export {
   type TriggeredAutomationDeleteParams,
   type TriggeredAutomationGetParams,
 } from './triggered-automations';
-export {
-  Views,
-  type ViewCreateResponse,
-  type ViewUpdateResponse,
-  type ViewGetResponse,
-  type ViewCreateParams,
-  type ViewUpdateParams,
-  type ViewDeleteParams,
-  type ViewGetParams,
-} from './views/views';
+export { Views } from './views/views';
