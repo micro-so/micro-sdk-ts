@@ -35,9 +35,11 @@ export const tool: Tool = {
       },
     },
     required: ['query', 'language'],
+    additionalProperties: false,
   },
   annotations: {
     readOnlyHint: true,
+    openWorldHint: true,
   },
 };
 

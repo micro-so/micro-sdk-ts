@@ -17,7 +17,7 @@ import { SdkMethod } from './methods';
 import { McpCodeExecutionMode } from './options';
 import { ClientOptions } from '@micro-so/sdk';
 
-const prompt = `Runs JavaScript code to interact with the Micro API.
+const prompt = `Runs JavaScript code to interact with the Micro API. Executed code can perform both reads and writes against the Micro API. Before running code that makes consequential mutations, confirm the intended changes with the user. Results are truncated; use API filters or pagination to narrow large responses.
 
 You are a skilled TypeScript programmer writing code to interface with the service.
 Define an async function named "run" that takes a single parameter of an initialized SDK client and it will be run.
@@ -37,7 +37,8 @@ Do not add comments unless necessary for generating better code.
 Code will run in a container, and cannot interact with the network outside of the given SDK client.
 Variables will not persist between calls, so make sure to return or log any data you might need later.
 Remember that you are writing TypeScript code, so you need to be careful with your types.
-Always type dynamic key-value stores explicitly as Record<string, YourValueType> instead of {}.`;
+Always type dynamic key-value stores explicitly as Record<string, YourValueType> instead of {}.
+Configured method blocking uses best-effort string matching and is not a security boundary.`;
 
 /**
  * A tool that runs code against a copy of the SDK.
@@ -76,6 +77,12 @@ export function codeTool({
         },
       },
       required: ['code'],
+      additionalProperties: false,
+    },
+    annotations: {
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: true,
     },
   };
 
