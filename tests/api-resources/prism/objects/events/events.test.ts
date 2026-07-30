@@ -348,6 +348,7 @@ describe('resource events', () => {
     const response = await client.prism.objects.events.upsert('value', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       slug: 'slug',
+      list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       default: { foo: 'bar' },
       list: {},
       'Idempotency-Key': 'x',

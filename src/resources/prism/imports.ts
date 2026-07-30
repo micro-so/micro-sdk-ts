@@ -86,6 +86,16 @@ export namespace ImportGetResponse {
      * True if the row matched an existing record via the dedupe key.
      */
     existing?: boolean;
+
+    /**
+     * Zero-based position of this row in the request.
+     */
+    input_index?: number;
+
+    /**
+     * True if a matching record was updated.
+     */
+    updated?: boolean;
   }
 
   export namespace Result {
