@@ -29,7 +29,7 @@ export const newMcpServer = async ({
   new McpServer(
     {
       name: 'micro_so_sdk_api',
-      version: '0.11.0',
+      version: '0.12.0',
     },
     {
       instructions: await getInstructions({ stainlessApiKey, customInstructionsPath }),
