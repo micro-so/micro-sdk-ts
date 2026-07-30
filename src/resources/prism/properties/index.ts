@@ -1,8 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Imports, type ImportGetResponse, type ImportGetParams } from './imports';
-export { Objects } from './objects/index';
-export { Prism, type PrismObjectProperties } from './prism';
+export {
+  Options,
+  type PropertyOption,
+  type PropertyOptionCreate,
+  type PropertyOptionPatch,
+  type OptionCreateParams,
+  type OptionUpdateParams,
+  type OptionDeleteParams,
+} from './options';
 export {
   Properties,
   type PropertyDefinition,
@@ -15,4 +21,4 @@ export {
   type PropertyListParams,
   type PropertyDeleteParams,
   type PropertyListAllParams,
-} from './properties/index';
+} from './properties';

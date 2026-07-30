@@ -8,13 +8,33 @@ Types:
 
 Types:
 
-- <code><a href="./src/resources/prism/properties.ts">PropertyListResponse</a></code>
-- <code><a href="./src/resources/prism/properties.ts">PropertyListAllResponse</a></code>
+- <code><a href="./src/resources/prism/properties/properties.ts">PropertyDefinition</a></code>
+- <code><a href="./src/resources/prism/properties/properties.ts">PropertyDefinitionCreate</a></code>
+- <code><a href="./src/resources/prism/properties/properties.ts">PropertyDefinitionPatch</a></code>
+- <code><a href="./src/resources/prism/properties/properties.ts">PropertyListResponse</a></code>
+- <code><a href="./src/resources/prism/properties/properties.ts">PropertyListAllResponse</a></code>
 
 Methods:
 
-- <code title="get /v2/prism/{teamId}/{objectType}/properties">client.prism.properties.<a href="./src/resources/prism/properties.ts">list</a>(objectType, { ...params }) -> PropertyListResponse</code>
-- <code title="get /v2/prism/{teamId}/properties">client.prism.properties.<a href="./src/resources/prism/properties.ts">listAll</a>({ ...params }) -> PropertyListAllResponse</code>
+- <code title="post /v2/prism/{teamId}/{objectType}/properties">client.prism.properties.<a href="./src/resources/prism/properties/properties.ts">create</a>(objectType, { ...params }) -> PropertyDefinition</code>
+- <code title="patch /v2/prism/{teamId}/{objectType}/properties/{propertyId}">client.prism.properties.<a href="./src/resources/prism/properties/properties.ts">update</a>(propertyID, { ...params }) -> PropertyDefinition</code>
+- <code title="get /v2/prism/{teamId}/{objectType}/properties">client.prism.properties.<a href="./src/resources/prism/properties/properties.ts">list</a>(objectType, { ...params }) -> PropertyListResponse</code>
+- <code title="delete /v2/prism/{teamId}/{objectType}/properties/{propertyId}">client.prism.properties.<a href="./src/resources/prism/properties/properties.ts">delete</a>(propertyID, { ...params }) -> void</code>
+- <code title="get /v2/prism/{teamId}/properties">client.prism.properties.<a href="./src/resources/prism/properties/properties.ts">listAll</a>({ ...params }) -> PropertyListAllResponse</code>
+
+### Options
+
+Types:
+
+- <code><a href="./src/resources/prism/properties/options.ts">PropertyOption</a></code>
+- <code><a href="./src/resources/prism/properties/options.ts">PropertyOptionCreate</a></code>
+- <code><a href="./src/resources/prism/properties/options.ts">PropertyOptionPatch</a></code>
+
+Methods:
+
+- <code title="post /v2/prism/{teamId}/{objectType}/properties/{propertyId}/options">client.prism.properties.options.<a href="./src/resources/prism/properties/options.ts">create</a>(propertyID, { ...params }) -> PropertyOption</code>
+- <code title="patch /v2/prism/{teamId}/{objectType}/properties/{propertyId}/options/{optionId}">client.prism.properties.options.<a href="./src/resources/prism/properties/options.ts">update</a>(optionID, { ...params }) -> PropertyOption</code>
+- <code title="delete /v2/prism/{teamId}/{objectType}/properties/{propertyId}/options/{optionId}">client.prism.properties.options.<a href="./src/resources/prism/properties/options.ts">delete</a>(optionID, { ...params }) -> void</code>
 
 ## Imports
 
@@ -372,7 +392,33 @@ Methods:
 
 # Views
 
+Types:
+
+- <code><a href="./src/resources/views/views.ts">ViewCreateResponse</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewUpdateResponse</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewListResponse</a></code>
+- <code><a href="./src/resources/views/views.ts">ViewGetResponse</a></code>
+
+Methods:
+
+- <code title="post /v2/prism/{teamId}/{objectType}/views">client.views.<a href="./src/resources/views/views.ts">create</a>(objectType, { ...params }) -> ViewCreateResponse</code>
+- <code title="patch /v2/prism/{teamId}/{objectType}/views/{viewId}">client.views.<a href="./src/resources/views/views.ts">update</a>(viewID, { ...params }) -> ViewUpdateResponse</code>
+- <code title="get /v2/prism/{teamId}/{objectType}/views">client.views.<a href="./src/resources/views/views.ts">list</a>(objectType, { ...params }) -> ViewListResponse</code>
+- <code title="delete /v2/prism/{teamId}/{objectType}/views/{viewId}">client.views.<a href="./src/resources/views/views.ts">delete</a>(viewID, { ...params }) -> void</code>
+- <code title="get /v2/prism/{teamId}/{objectType}/views/{viewId}">client.views.<a href="./src/resources/views/views.ts">get</a>(viewID, { ...params }) -> ViewGetResponse</code>
+
 ## Records
+
+Types:
+
+- <code><a href="./src/resources/views/records.ts">RecordListResponse</a></code>
+
+Methods:
+
+- <code title="get /v2/prism/{teamId}/{objectType}/views/{viewId}/records">client.views.records.<a href="./src/resources/views/records.ts">list</a>(viewID, { ...params }) -> RecordListResponse</code>
+- <code title="post /v2/prism/{teamId}/{objectType}/views/{viewId}/records/{objectId}">client.views.records.<a href="./src/resources/views/records.ts">pin</a>(objectID, { ...params }) -> void</code>
+- <code title="patch /v2/prism/{teamId}/{objectType}/views/{viewId}/records">client.views.records.<a href="./src/resources/views/records.ts">reorder</a>(viewID, { ...params }) -> void</code>
+- <code title="delete /v2/prism/{teamId}/{objectType}/views/{viewId}/records/{objectId}">client.views.records.<a href="./src/resources/views/records.ts">unpin</a>(objectID, { ...params }) -> void</code>
 
 # TriggeredAutomations
 
@@ -388,6 +434,44 @@ Methods:
 - <code title="get /v2/prism/{teamId}/{automationObjectType}/triggered_automations">client.triggeredAutomations.<a href="./src/resources/triggered-automations.ts">list</a>(automationObjectType, { ...params }) -> TriggeredAutomationListResponse</code>
 - <code title="delete /v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}">client.triggeredAutomations.<a href="./src/resources/triggered-automations.ts">delete</a>(automationID, { ...params }) -> void</code>
 - <code title="get /v2/prism/{teamId}/{automationObjectType}/triggered_automations/{automationId}">client.triggeredAutomations.<a href="./src/resources/triggered-automations.ts">get</a>(automationID, { ...params }) -> TriggeredAutomation</code>
+
+# Webhooks
+
+Types:
+
+- <code><a href="./src/resources/webhooks/webhooks.ts">Webhook</a></code>
+- <code><a href="./src/resources/webhooks/webhooks.ts">WebhookCreate</a></code>
+- <code><a href="./src/resources/webhooks/webhooks.ts">WebhookDelivery</a></code>
+- <code><a href="./src/resources/webhooks/webhooks.ts">WebhookDeliveryDetail</a></code>
+- <code><a href="./src/resources/webhooks/webhooks.ts">WebhookUpdate</a></code>
+- <code><a href="./src/resources/webhooks/webhooks.ts">WebhookWithSecret</a></code>
+- <code><a href="./src/resources/webhooks/webhooks.ts">WebhookUpdateResponse</a></code>
+- <code><a href="./src/resources/webhooks/webhooks.ts">WebhookListResponse</a></code>
+- <code><a href="./src/resources/webhooks/webhooks.ts">WebhookListDeliveriesResponse</a></code>
+- <code><a href="./src/resources/webhooks/webhooks.ts">WebhookPingResponse</a></code>
+- <code><a href="./src/resources/webhooks/webhooks.ts">WebhookVerifyResponse</a></code>
+
+Methods:
+
+- <code title="post /v2/webhooks/{teamId}">client.webhooks.<a href="./src/resources/webhooks/webhooks.ts">create</a>({ ...params }) -> WebhookWithSecret</code>
+- <code title="patch /v2/webhooks/{teamId}/{webhookId}">client.webhooks.<a href="./src/resources/webhooks/webhooks.ts">update</a>(webhookID, { ...params }) -> WebhookUpdateResponse</code>
+- <code title="get /v2/webhooks/{teamId}">client.webhooks.<a href="./src/resources/webhooks/webhooks.ts">list</a>({ ...params }) -> WebhookListResponse</code>
+- <code title="delete /v2/webhooks/{teamId}/{webhookId}">client.webhooks.<a href="./src/resources/webhooks/webhooks.ts">delete</a>(webhookID, { ...params }) -> void</code>
+- <code title="get /v2/webhooks/{teamId}/{webhookId}">client.webhooks.<a href="./src/resources/webhooks/webhooks.ts">get</a>(webhookID, { ...params }) -> Webhook</code>
+- <code title="get /v2/webhooks/{teamId}/deliveries">client.webhooks.<a href="./src/resources/webhooks/webhooks.ts">listDeliveries</a>({ ...params }) -> WebhookListDeliveriesResponse</code>
+- <code title="post /v2/webhooks/{teamId}/{webhookId}/ping">client.webhooks.<a href="./src/resources/webhooks/webhooks.ts">ping</a>(webhookID, { ...params }) -> WebhookPingResponse</code>
+- <code title="post /v2/webhooks/{teamId}/{webhookId}/verify">client.webhooks.<a href="./src/resources/webhooks/webhooks.ts">verify</a>(webhookID, { ...params }) -> WebhookVerifyResponse</code>
+
+## Deliveries
+
+Types:
+
+- <code><a href="./src/resources/webhooks/deliveries.ts">DeliveryListResponse</a></code>
+
+Methods:
+
+- <code title="get /v2/webhooks/{teamId}/{webhookId}/deliveries">client.webhooks.deliveries.<a href="./src/resources/webhooks/deliveries.ts">list</a>(webhookID, { ...params }) -> DeliveryListResponse</code>
+- <code title="get /v2/webhooks/{teamId}/{webhookId}/deliveries/{deliveryId}">client.webhooks.deliveries.<a href="./src/resources/webhooks/deliveries.ts">get</a>(deliveryID, { ...params }) -> WebhookDeliveryDetail</code>
 
 # Realtime
 

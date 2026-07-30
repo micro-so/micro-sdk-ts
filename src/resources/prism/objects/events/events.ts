@@ -182,8 +182,15 @@ export class Events extends APIResource {
     params: EventUpsertParams,
     options?: RequestOptions,
   ): APIPromise<EventUpsertResponse> {
-    const { teamId = this._client.teamID, slug, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    const {
+      teamId = this._client.teamID,
+      slug,
+      list_id,
+      'Idempotency-Key': idempotencyKey,
+      ...body
+    } = params;
     return this._client.put(path`/v2/prism/${teamId}/event/by/${slug}/${value}`, {
+      query: { list_id },
       body,
       ...options,
       headers: buildHeaders([
@@ -796,6 +803,12 @@ export interface EventUpsertParams {
    * Path param
    */
   slug: string;
+
+  /**
+   * Query param: Scope the upsert to a specific list/app. Required to match or write
+   * list-scoped properties, including `app_stage`.
+   */
+  list_id?: string;
 
   /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
