@@ -132,9 +132,5 @@ timeouts use `APIConnectionTimeoutError`.
 
 ## MCP server
 
-For agent integrations, use the MCP server in `packages/mcp-server` (published as
-`@micro-so/mcp`):
-
-```sh
-npx -y @micro-so/mcp
-```
+For agent integrations, the MCP server lives in `packages/mcp-server` and is built
+from source. See that package's README for build and run instructions.
