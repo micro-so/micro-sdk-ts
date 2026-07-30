@@ -4,20 +4,30 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
+The MCP server is not yet published to npm or available as a hosted endpoint. To run it today, clone and build this repository locally.
+
+```sh
+git clone https://github.com/micro-so/micro-sdk-ts.git
+cd micro-sdk-ts
+pnpm install
+pnpm build
+pnpm --filter @micro-so/mcp build
+```
+
 ### Direct invocation
 
-You can run the MCP Server directly via `npx`:
+Set your Micro credentials, then start the built server:
 
 ```sh
 export MICRO_API_KEY="My API Key"
 export MICRO_TEAM_ID="My Team ID"
-npx -y @micro-so/mcp@latest
+node "$(pwd)/packages/mcp-server/dist/index.js"
 ```
 
 ### Via MCP Client
 
 There is a partial list of existing clients at [modelcontextprotocol.io](https://modelcontextprotocol.io/clients). If you already
-have a client, consult their documentation to install the MCP server.
+have a client, configure it to run the locally built server. Replace `/absolute/path/to/micro-sdk-ts` below with the path to your clone.
 
 For clients with a configuration JSON, it might look something like this:
 
@@ -25,8 +35,8 @@ For clients with a configuration JSON, it might look something like this:
 {
   "mcpServers": {
     "micro_so_sdk_api": {
-      "command": "npx",
-      "args": ["-y", "@micro-so/mcp"],
+      "command": "node",
+      "args": ["/absolute/path/to/micro-sdk-ts/packages/mcp-server/dist/index.js"],
       "env": {
         "MICRO_API_KEY": "My API Key",
         "MICRO_TEAM_ID": "My Team ID"
@@ -38,25 +48,51 @@ For clients with a configuration JSON, it might look something like this:
 
 ### Cursor
 
-If you use Cursor, you can install the MCP server by using the button below. You will need to set your environment variables
-in Cursor's `mcp.json`, which can be found in Cursor Settings > Tools & MCP > New MCP Server.
+In Cursor Settings > Tools & MCP > New MCP Server, add this to `mcp.json`:
 
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40micro-so%2Fmcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBtaWNyby1zby9tY3AiXSwiZW52Ijp7Ik1JQ1JPX0FQSV9LRVkiOiJNeSBBUEkgS2V5IiwiTUlDUk9fVEVBTV9JRCI6Ik15IFRlYW0gSUQifX0)
+```json
+{
+  "mcpServers": {
+    "micro_so_sdk_api": {
+      "command": "node",
+      "args": ["/absolute/path/to/micro-sdk-ts/packages/mcp-server/dist/index.js"],
+      "env": {
+        "MICRO_API_KEY": "My API Key",
+        "MICRO_TEAM_ID": "My Team ID"
+      }
+    }
+  }
+}
+```
 
 ### VS Code
 
-If you use MCP, you can install the MCP server by clicking the link below. You will need to set your environment variables
-in VS Code's `mcp.json`, which can be found via Command Palette > MCP: Open User Configuration.
+In VS Code, open the Command Palette, choose **MCP: Open User Configuration**, and add:
 
-[Open VS Code](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22%40micro-so%2Fmcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40micro-so%2Fmcp%22%5D%2C%22env%22%3A%7B%22MICRO_API_KEY%22%3A%22My%20API%20Key%22%2C%22MICRO_TEAM_ID%22%3A%22My%20Team%20ID%22%7D%7D)
+```json
+{
+  "servers": {
+    "micro_so_sdk_api": {
+      "command": "node",
+      "args": ["/absolute/path/to/micro-sdk-ts/packages/mcp-server/dist/index.js"],
+      "env": {
+        "MICRO_API_KEY": "My API Key",
+        "MICRO_TEAM_ID": "My Team ID"
+      }
+    }
+  }
+}
+```
 
 ### Claude Code
 
-If you use Claude Code, you can install the MCP server by running the command below in your terminal. You will need to set your
-environment variables in Claude Code's `.claude.json`, which can be found in your home directory.
+Run the following command from any directory, replacing the path with the path to your clone:
 
-```
-claude mcp add micro_so_mcp_api --env MICRO_API_KEY="My API Key" MICRO_TEAM_ID="My Team ID" -- npx -y @micro-so/mcp
+```sh
+claude mcp add micro_so_mcp_api \
+  --env MICRO_API_KEY="My API Key" \
+  --env MICRO_TEAM_ID="My Team ID" \
+  -- node /absolute/path/to/micro-sdk-ts/packages/mcp-server/dist/index.js
 ```
 
 ## Code Mode
