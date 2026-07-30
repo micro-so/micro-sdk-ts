@@ -68,7 +68,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: 'object',
     markdown:
-      "## list\n\n`client.prism.properties.list(teamId: string, objectType: string, autofill?: boolean, include_options?: boolean | 'true' | 'false' | '0' | '1', list_id?: string, term?: string): object`\n\n**get** `/v2/prism/{teamId}/{objectType}/properties`\n\nGet metadata properties by object type\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `autofill?: boolean`\n\n- `include_options?: boolean | 'true' | 'false' | '0' | '1'`\n  When false, return property definitions without hydrating select/multiselect option rows. Defaults to true server-side (parseIncludeOptions). Accepts boolean or query-string forms (true/false/0/1). Uses anyOf (not oneOf) so qs/AJV boolean-vs-string ambiguity does not 400 when Speakeasy SDKs send include_options=true.\n\n- `list_id?: string`\n  Scope properties to a specific list/app.\n\n- `term?: string`\n\n### Returns\n\n- `object`\n  Property definitions keyed by object type, then by property definition id (UUID). When the request scopes to a single object type, only that key is present.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst properties = await client.prism.properties.list('comment');\n\nconsole.log(properties);\n```",
+      "## list\n\n`client.prism.properties.list(teamId: string, objectType: string, autofill?: boolean, include_options?: boolean | 'true' | 'false' | '0' | '1', list_id?: string, term?: string): object`\n\n**get** `/v2/prism/{teamId}/{objectType}/properties`\n\nGet metadata properties by object type\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `autofill?: boolean`\n\n- `include_options?: boolean | 'true' | 'false' | '0' | '1'`\n  When false, return property definitions without hydrating select/multiselect option rows. Defaults to true server-side (parseIncludeOptions). Accepts boolean or query-string forms (true/false/0/1). Uses anyOf (not oneOf) so qs/AJV boolean-vs-string ambiguity does not 400 when Speakeasy SDKs send include_options=true.\n\n- `list_id?: string`\n  Scope properties to a specific list/app. Scoping is strict: the response carries only that list's definitions, not the workspace-global ones that also apply to its records. Call once with `list_id` and once without to see everything a write could resolve against.\n\n- `term?: string`\n  Case-insensitive substring match on the property name. Use this to find an existing property before creating a new one.\n\n### Returns\n\n- `object`\n  Property definitions keyed by object type, then by property definition id (UUID). When the request scopes to a single object type, only that key is present.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst properties = await client.prism.properties.list('comment');\n\nconsole.log(properties);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.properties.list',
@@ -108,7 +108,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     ],
     response: 'object',
     markdown:
-      "## list_all\n\n`client.prism.properties.listAll(teamId: string, autofill?: boolean, include_options?: boolean | 'true' | 'false' | '0' | '1', list_id?: string, term?: string): object`\n\n**get** `/v2/prism/{teamId}/properties`\n\nGet metadata properties\n\n### Parameters\n\n- `teamId: string`\n\n- `autofill?: boolean`\n\n- `include_options?: boolean | 'true' | 'false' | '0' | '1'`\n  When false, return property definitions without hydrating select/multiselect option rows. Defaults to true server-side (parseIncludeOptions). Accepts boolean or query-string forms (true/false/0/1). Uses anyOf (not oneOf) so qs/AJV boolean-vs-string ambiguity does not 400 when Speakeasy SDKs send include_options=true.\n\n- `list_id?: string`\n  Scope properties to a specific list/app.\n\n- `term?: string`\n\n### Returns\n\n- `object`\n  Property definitions keyed by object type, then by property definition id (UUID). When the request scopes to a single object type, only that key is present.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.properties.listAll();\n\nconsole.log(response);\n```",
+      "## list_all\n\n`client.prism.properties.listAll(teamId: string, autofill?: boolean, include_options?: boolean | 'true' | 'false' | '0' | '1', list_id?: string, term?: string): object`\n\n**get** `/v2/prism/{teamId}/properties`\n\nGet metadata properties\n\n### Parameters\n\n- `teamId: string`\n\n- `autofill?: boolean`\n\n- `include_options?: boolean | 'true' | 'false' | '0' | '1'`\n  When false, return property definitions without hydrating select/multiselect option rows. Defaults to true server-side (parseIncludeOptions). Accepts boolean or query-string forms (true/false/0/1). Uses anyOf (not oneOf) so qs/AJV boolean-vs-string ambiguity does not 400 when Speakeasy SDKs send include_options=true.\n\n- `list_id?: string`\n  Scope properties to a specific list/app. Scoping is strict: the response carries only that list's definitions, not the workspace-global ones that also apply to its records. Call once with `list_id` and once without to see everything a write could resolve against.\n\n- `term?: string`\n  Case-insensitive substring match on the property name. Use this to find an existing property before creating a new one.\n\n### Returns\n\n- `object`\n  Property definitions keyed by object type, then by property definition id (UUID). When the request scopes to a single object type, only that key is present.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.properties.listAll();\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.properties.listAll',
@@ -132,6 +132,282 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'create',
+    endpoint: '/v2/prism/{teamId}/{objectType}/properties',
+    httpMethod: 'post',
+    summary: 'Create a property definition',
+    description:
+      "Define a new property on this object type, scoped to the calling team. Search the existing properties first (GET this path with `term`) and reuse a match instead of defining a second property for the same fact. Pass `list_id` in the body to scope the definition to one list/app; without it the property is workspace-global and appears on every list. A name already used in that scope, an explicitly requested slug already taken, or a slug that a shared property already owns all return 409 naming the definition to use instead. The property's display format is resolved from `type` automatically — pass `role_id` only to override it. For `select_str` and `multiselect_str` types you may pre-seed the choices via `options`.",
+    stainlessPath: '(resource) prism.properties > (method) create',
+    qualified: 'client.prism.properties.create',
+    params: [
+      'teamId: string;',
+      'objectType: string;',
+      'name: string;',
+      'type: string;',
+      'icon?: string;',
+      'list_id?: string;',
+      'options?: { value: string; color_scheme?: string; description?: string; icon?: string; option_group?: string; slug?: string; sort_index?: number; }[];',
+      'required?: boolean;',
+      'role_id?: string;',
+      'slug?: string;',
+      'Idempotency-Key?: string;',
+    ],
+    response:
+      "{ id: string; slug: string; type: string; alias?: 'app_stage'; crm_id?: string; list_id?: string; locked?: boolean; name?: string; native?: boolean; options?: { id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }[]; required?: boolean; role_id?: string; team_id?: string; }",
+    markdown:
+      "## create\n\n`client.prism.properties.create(teamId: string, objectType: string, name: string, type: string, icon?: string, list_id?: string, options?: { value: string; color_scheme?: string; description?: string; icon?: string; option_group?: string; slug?: string; sort_index?: number; }[], required?: boolean, role_id?: string, slug?: string, Idempotency-Key?: string): { id: string; slug: string; type: string; alias?: 'app_stage'; crm_id?: string; list_id?: string; locked?: boolean; name?: string; native?: boolean; options?: property_option[]; required?: boolean; role_id?: string; team_id?: string; }`\n\n**post** `/v2/prism/{teamId}/{objectType}/properties`\n\nDefine a new property on this object type, scoped to the calling team. Search the existing properties first (GET this path with `term`) and reuse a match instead of defining a second property for the same fact. Pass `list_id` in the body to scope the definition to one list/app; without it the property is workspace-global and appears on every list. A name already used in that scope, an explicitly requested slug already taken, or a slug that a shared property already owns all return 409 naming the definition to use instead. The property's display format is resolved from `type` automatically — pass `role_id` only to override it. For `select_str` and `multiselect_str` types you may pre-seed the choices via `options`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `name: string`\n  Human-readable name, unique within the scope the definition is created in. A name already taken in that scope returns 409; the message names the existing definition's id, slug and type so you can write to it instead.\n\n- `type: string`\n  Storage type for a property definition. Determines which per-type table holds the values, and which display formats the property can take.\n\n- `icon?: string`\n\n- `list_id?: string`\n  Scopes the definition to one list/app. Omit it only for a property that genuinely belongs to the whole workspace: a definition created without `list_id` is workspace-global and surfaces on every list of this object type.\n\n- `options?: { value: string; color_scheme?: string; description?: string; icon?: string; option_group?: string; slug?: string; sort_index?: number; }[]`\n  Only honored when `type` is `select_str` or `multiselect_str`.\n\n- `required?: boolean`\n  When true, records must carry a non-empty value for this property on create. Defaults to false.\n\n- `role_id?: string`\n  Optional display format for the property, drawn from the workspace's property roles. Omit it and the canonical role for `type` is applied (plain text, plain number, checkbox). Supply it only to pick a narrower format such as email, URL or currency; the role's data type must match `type`.\n\n- `slug?: string`\n  URL-safe identifier. When omitted it defaults to a slugified `name` and is disambiguated with a numeric suffix on conflict. When supplied explicitly it is treated as part of your write contract and is never silently renamed — a collision returns 409 instead.\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; slug: string; type: string; alias?: 'app_stage'; crm_id?: string; list_id?: string; locked?: boolean; name?: string; native?: boolean; options?: { id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }[]; required?: boolean; role_id?: string; team_id?: string; }`\n  Definition for a single property on an object type. Definitions with team_id and crm_id null are shared defaults; values may be scoped to a team and/or list (crm).\n\n  - `id: string`\n  - `slug: string`\n  - `type: string`\n  - `alias?: 'app_stage'`\n  - `crm_id?: string`\n  - `list_id?: string`\n  - `locked?: boolean`\n  - `name?: string`\n  - `native?: boolean`\n  - `options?: { id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }[]`\n  - `required?: boolean`\n  - `role_id?: string`\n  - `team_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst propertyDefinition = await client.prism.properties.create('comment', { name: 'name', type: 'num' });\n\nconsole.log(propertyDefinition);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.properties.create',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst propertyDefinition = await client.prism.properties.create('comment', {\n  name: 'name',\n  type: 'num',\n});\n\nconsole.log(propertyDefinition.id);",
+      },
+      python: {
+        method: 'prism.properties.create',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nproperty_definition = client.prism.properties.create(\n    object_type="comment",\n    name="name",\n    type="num",\n)\nprint(property_definition.id)',
+      },
+      go: {
+        method: 'client.Prism.Properties.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tpropertyDefinition, err := client.Prism.Properties.New(\n\t\tcontext.TODO(),\n\t\tmicro.PrismPropertyNewParamsObjectTypeComment,\n\t\tmicro.PrismPropertyNewParams{\n\t\t\tPropertyDefinitionCreate: micro.PropertyDefinitionCreateParam{\n\t\t\t\tName: micro.F("name"),\n\t\t\t\tType: micro.F(micro.PropertyDefinitionCreateTypeNum),\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", propertyDefinition.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/properties \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "name": "name",\n          "type": "num"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v2/prism/{teamId}/{objectType}/properties/{propertyId}',
+    httpMethod: 'patch',
+    summary: 'Update a property definition',
+    description:
+      'Patches the editable fields (`name`, `icon`, `enabled`) of a property definition. `type` and scoping fields are immutable; `type` must be supplied in the body so the server knows which per-type table to write.',
+    stainlessPath: '(resource) prism.properties > (method) update',
+    qualified: 'client.prism.properties.update',
+    params: [
+      'teamId: string;',
+      'objectType: string;',
+      'propertyId: string;',
+      'type: string;',
+      'enabled?: boolean;',
+      'icon?: string;',
+      'list_id?: string;',
+      'name?: string;',
+      'required?: boolean;',
+      'Idempotency-Key?: string;',
+    ],
+    response:
+      "{ id: string; slug: string; type: string; alias?: 'app_stage'; crm_id?: string; list_id?: string; locked?: boolean; name?: string; native?: boolean; options?: { id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }[]; required?: boolean; role_id?: string; team_id?: string; }",
+    markdown:
+      "## update\n\n`client.prism.properties.update(teamId: string, objectType: string, propertyId: string, type: string, enabled?: boolean, icon?: string, list_id?: string, name?: string, required?: boolean, Idempotency-Key?: string): { id: string; slug: string; type: string; alias?: 'app_stage'; crm_id?: string; list_id?: string; locked?: boolean; name?: string; native?: boolean; options?: property_option[]; required?: boolean; role_id?: string; team_id?: string; }`\n\n**patch** `/v2/prism/{teamId}/{objectType}/properties/{propertyId}`\n\nPatches the editable fields (`name`, `icon`, `enabled`) of a property definition. `type` and scoping fields are immutable; `type` must be supplied in the body so the server knows which per-type table to write.\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `propertyId: string`\n\n- `type: string`\n  Storage type for a property definition. Determines which per-type table holds the values, and which display formats the property can take.\n\n- `enabled?: boolean`\n\n- `icon?: string`\n\n- `list_id?: string`\n\n- `name?: string`\n\n- `required?: boolean`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; slug: string; type: string; alias?: 'app_stage'; crm_id?: string; list_id?: string; locked?: boolean; name?: string; native?: boolean; options?: { id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }[]; required?: boolean; role_id?: string; team_id?: string; }`\n  Definition for a single property on an object type. Definitions with team_id and crm_id null are shared defaults; values may be scoped to a team and/or list (crm).\n\n  - `id: string`\n  - `slug: string`\n  - `type: string`\n  - `alias?: 'app_stage'`\n  - `crm_id?: string`\n  - `list_id?: string`\n  - `locked?: boolean`\n  - `name?: string`\n  - `native?: boolean`\n  - `options?: { id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }[]`\n  - `required?: boolean`\n  - `role_id?: string`\n  - `team_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst propertyDefinition = await client.prism.properties.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'comment', type: 'num' });\n\nconsole.log(propertyDefinition);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.properties.update',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst propertyDefinition = await client.prism.properties.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { objectType: 'comment', type: 'num' },\n);\n\nconsole.log(propertyDefinition.id);",
+      },
+      python: {
+        method: 'prism.properties.update',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nproperty_definition = client.prism.properties.update(\n    property_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="comment",\n    type="num",\n)\nprint(property_definition.id)',
+      },
+      go: {
+        method: 'client.Prism.Properties.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tpropertyDefinition, err := client.Prism.Properties.Update(\n\t\tcontext.TODO(),\n\t\tmicro.PrismPropertyUpdateParamsObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismPropertyUpdateParams{\n\t\t\tPropertyDefinitionPatch: micro.PropertyDefinitionPatchParam{\n\t\t\t\tType: micro.F(micro.PropertyDefinitionPatchTypeNum),\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", propertyDefinition.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/properties/$PROPERTY_ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "type": "num"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/v2/prism/{teamId}/{objectType}/properties/{propertyId}',
+    httpMethod: 'delete',
+    summary: 'Delete a property definition',
+    description:
+      'Removes the property definition and any of its options. Fails with 409 `property_in_use` if records still reference the property.',
+    stainlessPath: '(resource) prism.properties > (method) delete',
+    qualified: 'client.prism.properties.delete',
+    params: [
+      'teamId: string;',
+      'objectType: string;',
+      'propertyId: string;',
+      'type: string;',
+      'list_id?: string;',
+    ],
+    markdown:
+      "## delete\n\n`client.prism.properties.delete(teamId: string, objectType: string, propertyId: string, type: string, list_id?: string): void`\n\n**delete** `/v2/prism/{teamId}/{objectType}/properties/{propertyId}`\n\nRemoves the property definition and any of its options. Fails with 409 `property_in_use` if records still reference the property.\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `propertyId: string`\n\n- `type: string`\n  Storage type of this property definition.\n\n- `list_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.prism.properties.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'comment', type: 'num' })\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.properties.delete',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.properties.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'comment',\n  type: 'num',\n});",
+      },
+      python: {
+        method: 'prism.properties.delete',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.properties.delete(\n    property_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="comment",\n    type="num",\n)',
+      },
+      go: {
+        method: 'client.Prism.Properties.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.Properties.Delete(\n\t\tcontext.TODO(),\n\t\tmicro.PrismPropertyDeleteParamsObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismPropertyDeleteParams{\n\t\t\tType: micro.F(micro.PrismPropertyDeleteParamsTypeNum),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/properties/$PROPERTY_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'create',
+    endpoint: '/v2/prism/{teamId}/{objectType}/properties/{propertyId}/options',
+    httpMethod: 'post',
+    summary: 'Add an option to a select property',
+    description:
+      'Adds a single option to a `select_str` or `multiselect_str` property definition. Body must include `type` so the server knows which per-type option table to write.',
+    stainlessPath: '(resource) prism.properties.options > (method) create',
+    qualified: 'client.prism.properties.options.create',
+    params: [
+      'teamId: string;',
+      'objectType: string;',
+      'propertyId: string;',
+      'type: string;',
+      'value: string;',
+      'color_scheme?: string;',
+      'description?: string;',
+      'icon?: string;',
+      'list_id?: string;',
+      'option_group?: string;',
+      'slug?: string;',
+      'sort_index?: number;',
+      'Idempotency-Key?: string;',
+    ],
+    response:
+      '{ id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }',
+    markdown:
+      "## create\n\n`client.prism.properties.options.create(teamId: string, objectType: string, propertyId: string, type: string, value: string, color_scheme?: string, description?: string, icon?: string, list_id?: string, option_group?: string, slug?: string, sort_index?: number, Idempotency-Key?: string): { id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }`\n\n**post** `/v2/prism/{teamId}/{objectType}/properties/{propertyId}/options`\n\nAdds a single option to a `select_str` or `multiselect_str` property definition. Body must include `type` so the server knows which per-type option table to write.\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `propertyId: string`\n\n- `type: string`\n  Storage type for a property definition. Determines which per-type table holds the values, and which display formats the property can take.\n\n- `value: string`\n  Display value for the option.\n\n- `color_scheme?: string`\n\n- `description?: string`\n\n- `icon?: string`\n\n- `list_id?: string`\n  Scope the option to a specific list/app.\n\n- `option_group?: string`\n\n- `slug?: string`\n  URL-safe identifier. Defaults to a slugified `value`.\n\n- `sort_index?: number`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }`\n  An enabled option for a select_str or multiselect_str property definition.\n\n  - `id: string`\n  - `slug: string`\n  - `color_scheme?: string`\n  - `crm_id?: string`\n  - `description?: string`\n  - `icon?: string`\n  - `list_id?: string`\n  - `option_group?: string`\n  - `sort_index?: number`\n  - `value?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst propertyOption = await client.prism.properties.options.create('2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc', {\n  objectType: 'comment',\n  type: 'num',\n  value: 'value',\n});\n\nconsole.log(propertyOption);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.properties.options.create',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst propertyOption = await client.prism.properties.options.create(\n  '2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc',\n  {\n    objectType: 'comment',\n    type: 'num',\n    value: 'value',\n  },\n);\n\nconsole.log(propertyOption.id);",
+      },
+      python: {
+        method: 'prism.properties.options.create',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nproperty_option = client.prism.properties.options.create(\n    property_id="2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc",\n    object_type="comment",\n    type="num",\n    value="value",\n)\nprint(property_option.id)',
+      },
+      go: {
+        method: 'client.Prism.Properties.Options.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tpropertyOption, err := client.Prism.Properties.Options.New(\n\t\tcontext.TODO(),\n\t\tmicro.PrismPropertyOptionNewParamsObjectTypeComment,\n\t\t"2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc",\n\t\tmicro.PrismPropertyOptionNewParams{\n\t\t\tPropertyOptionCreate: micro.PropertyOptionCreateParam{\n\t\t\t\tType:  micro.F(micro.PropertyOptionCreateTypeNum),\n\t\t\t\tValue: micro.F("value"),\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", propertyOption.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/properties/$PROPERTY_ID/options \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "type": "num",\n          "value": "value"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v2/prism/{teamId}/{objectType}/properties/{propertyId}/options/{optionId}',
+    httpMethod: 'patch',
+    summary: 'Update a property option',
+    description: 'Update a property option',
+    stainlessPath: '(resource) prism.properties.options > (method) update',
+    qualified: 'client.prism.properties.options.update',
+    params: [
+      'teamId: string;',
+      'objectType: string;',
+      'propertyId: string;',
+      'optionId: string;',
+      'type: string;',
+      'color_scheme?: string;',
+      'description?: string;',
+      'enabled?: boolean;',
+      'icon?: string;',
+      'list_id?: string;',
+      'option_group?: string;',
+      'slug?: string;',
+      'sort_index?: number;',
+      'value?: string;',
+      'Idempotency-Key?: string;',
+    ],
+    response:
+      '{ id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }',
+    markdown:
+      "## update\n\n`client.prism.properties.options.update(teamId: string, objectType: string, propertyId: string, optionId: string, type: string, color_scheme?: string, description?: string, enabled?: boolean, icon?: string, list_id?: string, option_group?: string, slug?: string, sort_index?: number, value?: string, Idempotency-Key?: string): { id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }`\n\n**patch** `/v2/prism/{teamId}/{objectType}/properties/{propertyId}/options/{optionId}`\n\nUpdate a property option\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `propertyId: string`\n\n- `optionId: string`\n\n- `type: string`\n  Storage type for a property definition. Determines which per-type table holds the values, and which display formats the property can take.\n\n- `color_scheme?: string`\n\n- `description?: string`\n\n- `enabled?: boolean`\n\n- `icon?: string`\n\n- `list_id?: string`\n\n- `option_group?: string`\n\n- `slug?: string`\n\n- `sort_index?: number`\n\n- `value?: string`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; slug: string; color_scheme?: string; crm_id?: string; description?: string; icon?: string; list_id?: string; option_group?: string; sort_index?: number; value?: string; }`\n  An enabled option for a select_str or multiselect_str property definition.\n\n  - `id: string`\n  - `slug: string`\n  - `color_scheme?: string`\n  - `crm_id?: string`\n  - `description?: string`\n  - `icon?: string`\n  - `list_id?: string`\n  - `option_group?: string`\n  - `sort_index?: number`\n  - `value?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst propertyOption = await client.prism.properties.options.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'comment',\n  propertyId: '2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc',\n  type: 'num',\n});\n\nconsole.log(propertyOption);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.properties.options.update',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst propertyOption = await client.prism.properties.options.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  {\n    objectType: 'comment',\n    propertyId: '2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc',\n    type: 'num',\n  },\n);\n\nconsole.log(propertyOption.id);",
+      },
+      python: {
+        method: 'prism.properties.options.update',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nproperty_option = client.prism.properties.options.update(\n    option_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="comment",\n    property_id="2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc",\n    type="num",\n)\nprint(property_option.id)',
+      },
+      go: {
+        method: 'client.Prism.Properties.Options.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tpropertyOption, err := client.Prism.Properties.Options.Update(\n\t\tcontext.TODO(),\n\t\tmicro.PrismPropertyOptionUpdateParamsObjectTypeComment,\n\t\t"2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc",\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismPropertyOptionUpdateParams{\n\t\t\tPropertyOptionPatch: micro.PropertyOptionPatchParam{\n\t\t\t\tType: micro.F(micro.PropertyOptionPatchTypeNum),\n\t\t\t},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", propertyOption.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/properties/$PROPERTY_ID/options/$OPTION_ID \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "type": "num"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/v2/prism/{teamId}/{objectType}/properties/{propertyId}/options/{optionId}',
+    httpMethod: 'delete',
+    summary: 'Delete a property option',
+    description: 'Delete a property option',
+    stainlessPath: '(resource) prism.properties.options > (method) delete',
+    qualified: 'client.prism.properties.options.delete',
+    params: [
+      'teamId: string;',
+      'objectType: string;',
+      'propertyId: string;',
+      'optionId: string;',
+      'type: string;',
+      'list_id?: string;',
+    ],
+    markdown:
+      "## delete\n\n`client.prism.properties.options.delete(teamId: string, objectType: string, propertyId: string, optionId: string, type: string, list_id?: string): void`\n\n**delete** `/v2/prism/{teamId}/{objectType}/properties/{propertyId}/options/{optionId}`\n\nDelete a property option\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: string`\n\n- `propertyId: string`\n\n- `optionId: string`\n\n- `type: string`\n  Storage type for a property definition. Determines which per-type table holds the values, and which display formats the property can take.\n\n- `list_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.prism.properties.options.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'comment',\n  propertyId: '2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc',\n  type: 'num',\n})\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.properties.options.delete',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.prism.properties.options.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'comment',\n  propertyId: '2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc',\n  type: 'num',\n});",
+      },
+      python: {
+        method: 'prism.properties.options.delete',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.prism.properties.options.delete(\n    option_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="comment",\n    property_id="2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc",\n    type="num",\n)',
+      },
+      go: {
+        method: 'client.Prism.Properties.Options.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Prism.Properties.Options.Delete(\n\t\tcontext.TODO(),\n\t\tmicro.PrismPropertyOptionDeleteParamsObjectTypeComment,\n\t\t"2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc",\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismPropertyOptionDeleteParams{\n\t\t\tType: micro.F(micro.PrismPropertyOptionDeleteParamsTypeNum),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/properties/$PROPERTY_ID/options/$OPTION_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'get',
     endpoint: '/v2/prism/{teamId}/imports/{jobId}',
     httpMethod: 'get',
@@ -142,9 +418,9 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     qualified: 'client.prism.imports.get',
     params: ['teamId: string;', 'jobId: string;'],
     response:
-      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }",
+      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }",
     markdown:
-      "## get\n\n`client.prism.imports.get(teamId: string, jobId: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**get** `/v2/prism/{teamId}/imports/{jobId}`\n\nPoll the status of an async import. Sync imports complete in the original response and don't appear here. Async jobs are retained for 7 days. Returns 404 once the job has expired.\n\n### Parameters\n\n- `teamId: string`\n\n- `jobId: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst _import = await client.prism.imports.get('jobId');\n\nconsole.log(_import);\n```",
+      "## get\n\n`client.prism.imports.get(teamId: string, jobId: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**get** `/v2/prism/{teamId}/imports/{jobId}`\n\nPoll the status of an async import. Sync imports complete in the original response and don't appear here. Async jobs are retained for 7 days. Returns 404 once the job has expired.\n\n### Parameters\n\n- `teamId: string`\n\n- `jobId: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst _import = await client.prism.imports.get('jobId');\n\nconsole.log(_import);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.imports.get',
@@ -481,13 +757,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'teamId: string;',
       'slug: string;',
       'value: string;',
+      'list_id?: string;',
       'default?: object;',
       'list?: object;',
       'Idempotency-Key?: string;',
     ],
     response: '{ id: string; default?: object; list?: object; }',
     markdown:
-      "## upsert\n\n`client.prism.objects.contacts.upsert(teamId: string, slug: string, value: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/contact/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.contacts.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
+      "## upsert\n\n`client.prism.objects.contacts.upsert(teamId: string, slug: string, value: string, list_id?: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/contact/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `list_id?: string`\n  Scope the upsert to a specific list/app. Required to match or write list-scoped properties, including `app_stage`.\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.contacts.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.contacts.upsert',
@@ -522,13 +799,13 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'objects: { default?: object; list?: object; }[];',
-      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; };',
+      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; };',
       'Idempotency-Key?: string;',
     ],
     response:
-      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }",
+      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }",
     markdown:
-      "## bulk_create\n\n`client.prism.objects.contacts.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/contact/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.contacts.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## bulk_create\n\n`client.prism.objects.contacts.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/contact/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `crm_id?: string`\n    Deprecated alias for list_id.\n  - `dedupe_by?: string | string[]`\n    Property slug to deduplicate on. A single-element array is also accepted; compound (multi-slug) dedupe is not supported yet and is rejected with guidance.\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n  - `require_list_stage?: boolean`\n    Require app_stage for every row in the selected list. app_stage is a reserved list-scoped alias for native status.\n  - `update_existing?: boolean`\n    Patch a deduplicated record with the supplied properties instead of skipping it.\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.contacts.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.contacts.bulkCreate',
@@ -1005,13 +1282,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'teamId: string;',
       'slug: string;',
       'value: string;',
+      'list_id?: string;',
       'default?: object;',
       'list?: object;',
       'Idempotency-Key?: string;',
     ],
     response: '{ id: string; default?: object; list?: object; }',
     markdown:
-      "## upsert\n\n`client.prism.objects.organizations.upsert(teamId: string, slug: string, value: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/organization/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.organizations.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
+      "## upsert\n\n`client.prism.objects.organizations.upsert(teamId: string, slug: string, value: string, list_id?: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/organization/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `list_id?: string`\n  Scope the upsert to a specific list/app. Required to match or write list-scoped properties, including `app_stage`.\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.organizations.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.organizations.upsert',
@@ -1046,13 +1324,13 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'objects: { default?: object; list?: object; }[];',
-      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; };',
+      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; };',
       'Idempotency-Key?: string;',
     ],
     response:
-      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }",
+      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }",
     markdown:
-      "## bulk_create\n\n`client.prism.objects.organizations.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/organization/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.organizations.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## bulk_create\n\n`client.prism.objects.organizations.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/organization/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `crm_id?: string`\n    Deprecated alias for list_id.\n  - `dedupe_by?: string | string[]`\n    Property slug to deduplicate on. A single-element array is also accepted; compound (multi-slug) dedupe is not supported yet and is rejected with guidance.\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n  - `require_list_stage?: boolean`\n    Require app_stage for every row in the selected list. app_stage is a reserved list-scoped alias for native status.\n  - `update_existing?: boolean`\n    Patch a deduplicated record with the supplied properties instead of skipping it.\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.organizations.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.organizations.bulkCreate',
@@ -1529,13 +1807,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'teamId: string;',
       'slug: string;',
       'value: string;',
+      'list_id?: string;',
       'default?: object;',
       'list?: object;',
       'Idempotency-Key?: string;',
     ],
     response: '{ id: string; default?: object; list?: object; }',
     markdown:
-      "## upsert\n\n`client.prism.objects.identities.upsert(teamId: string, slug: string, value: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/identity/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.identities.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
+      "## upsert\n\n`client.prism.objects.identities.upsert(teamId: string, slug: string, value: string, list_id?: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/identity/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `list_id?: string`\n  Scope the upsert to a specific list/app. Required to match or write list-scoped properties, including `app_stage`.\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.identities.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.identities.upsert',
@@ -1570,13 +1849,13 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'objects: { default?: object; list?: object; }[];',
-      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; };',
+      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; };',
       'Idempotency-Key?: string;',
     ],
     response:
-      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }",
+      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }",
     markdown:
-      "## bulk_create\n\n`client.prism.objects.identities.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/identity/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.identities.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## bulk_create\n\n`client.prism.objects.identities.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/identity/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `crm_id?: string`\n    Deprecated alias for list_id.\n  - `dedupe_by?: string | string[]`\n    Property slug to deduplicate on. A single-element array is also accepted; compound (multi-slug) dedupe is not supported yet and is rejected with guidance.\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n  - `require_list_stage?: boolean`\n    Require app_stage for every row in the selected list. app_stage is a reserved list-scoped alias for native status.\n  - `update_existing?: boolean`\n    Patch a deduplicated record with the supplied properties instead of skipping it.\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.identities.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.identities.bulkCreate',
@@ -2053,13 +2332,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'teamId: string;',
       'slug: string;',
       'value: string;',
+      'list_id?: string;',
       'default?: object;',
       'list?: object;',
       'Idempotency-Key?: string;',
     ],
     response: '{ id: string; default?: object; list?: object; }',
     markdown:
-      "## upsert\n\n`client.prism.objects.deals.upsert(teamId: string, slug: string, value: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/deal/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.deals.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
+      "## upsert\n\n`client.prism.objects.deals.upsert(teamId: string, slug: string, value: string, list_id?: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/deal/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `list_id?: string`\n  Scope the upsert to a specific list/app. Required to match or write list-scoped properties, including `app_stage`.\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.deals.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.deals.upsert',
@@ -2094,13 +2374,13 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'objects: { default?: object; list?: object; }[];',
-      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; };',
+      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; };',
       'Idempotency-Key?: string;',
     ],
     response:
-      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }",
+      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }",
     markdown:
-      "## bulk_create\n\n`client.prism.objects.deals.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/deal/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.deals.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## bulk_create\n\n`client.prism.objects.deals.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/deal/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `crm_id?: string`\n    Deprecated alias for list_id.\n  - `dedupe_by?: string | string[]`\n    Property slug to deduplicate on. A single-element array is also accepted; compound (multi-slug) dedupe is not supported yet and is rejected with guidance.\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n  - `require_list_stage?: boolean`\n    Require app_stage for every row in the selected list. app_stage is a reserved list-scoped alias for native status.\n  - `update_existing?: boolean`\n    Patch a deduplicated record with the supplied properties instead of skipping it.\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.deals.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.deals.bulkCreate',
@@ -2652,13 +2932,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'teamId: string;',
       'slug: string;',
       'value: string;',
+      'list_id?: string;',
       'default?: object;',
       'list?: object;',
       'Idempotency-Key?: string;',
     ],
     response: '{ id: string; default?: object; list?: object; }',
     markdown:
-      "## upsert\n\n`client.prism.objects.actions.upsert(teamId: string, slug: string, value: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/action/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.actions.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
+      "## upsert\n\n`client.prism.objects.actions.upsert(teamId: string, slug: string, value: string, list_id?: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/action/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `list_id?: string`\n  Scope the upsert to a specific list/app. Required to match or write list-scoped properties, including `app_stage`.\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.actions.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.actions.upsert',
@@ -2693,13 +2974,13 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'objects: { default?: object; list?: object; }[];',
-      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; };',
+      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; };',
       'Idempotency-Key?: string;',
     ],
     response:
-      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }",
+      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }",
     markdown:
-      "## bulk_create\n\n`client.prism.objects.actions.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/action/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.actions.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## bulk_create\n\n`client.prism.objects.actions.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/action/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `crm_id?: string`\n    Deprecated alias for list_id.\n  - `dedupe_by?: string | string[]`\n    Property slug to deduplicate on. A single-element array is also accepted; compound (multi-slug) dedupe is not supported yet and is rejected with guidance.\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n  - `require_list_stage?: boolean`\n    Require app_stage for every row in the selected list. app_stage is a reserved list-scoped alias for native status.\n  - `update_existing?: boolean`\n    Patch a deduplicated record with the supplied properties instead of skipping it.\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.actions.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.actions.bulkCreate',
@@ -3251,13 +3532,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'teamId: string;',
       'slug: string;',
       'value: string;',
+      'list_id?: string;',
       'default?: object;',
       'list?: object;',
       'Idempotency-Key?: string;',
     ],
     response: '{ id: string; default?: object; list?: object; }',
     markdown:
-      "## upsert\n\n`client.prism.objects.documents.upsert(teamId: string, slug: string, value: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/document/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.documents.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
+      "## upsert\n\n`client.prism.objects.documents.upsert(teamId: string, slug: string, value: string, list_id?: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/document/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `list_id?: string`\n  Scope the upsert to a specific list/app. Required to match or write list-scoped properties, including `app_stage`.\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.documents.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.documents.upsert',
@@ -3292,13 +3574,13 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'objects: { default?: object; list?: object; }[];',
-      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; };',
+      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; };',
       'Idempotency-Key?: string;',
     ],
     response:
-      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }",
+      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }",
     markdown:
-      "## bulk_create\n\n`client.prism.objects.documents.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/document/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.documents.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## bulk_create\n\n`client.prism.objects.documents.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/document/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `crm_id?: string`\n    Deprecated alias for list_id.\n  - `dedupe_by?: string | string[]`\n    Property slug to deduplicate on. A single-element array is also accepted; compound (multi-slug) dedupe is not supported yet and is rejected with guidance.\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n  - `require_list_stage?: boolean`\n    Require app_stage for every row in the selected list. app_stage is a reserved list-scoped alias for native status.\n  - `update_existing?: boolean`\n    Patch a deduplicated record with the supplied properties instead of skipping it.\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.documents.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.documents.bulkCreate',
@@ -3850,13 +4132,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'teamId: string;',
       'slug: string;',
       'value: string;',
+      'list_id?: string;',
       'default?: object;',
       'list?: object;',
       'Idempotency-Key?: string;',
     ],
     response: '{ id: string; default?: object; list?: object; }',
     markdown:
-      "## upsert\n\n`client.prism.objects.events.upsert(teamId: string, slug: string, value: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/event/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.events.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
+      "## upsert\n\n`client.prism.objects.events.upsert(teamId: string, slug: string, value: string, list_id?: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/event/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `list_id?: string`\n  Scope the upsert to a specific list/app. Required to match or write list-scoped properties, including `app_stage`.\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.events.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.events.upsert',
@@ -4336,13 +4619,14 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'teamId: string;',
       'slug: string;',
       'value: string;',
+      'list_id?: string;',
       'default?: object;',
       'list?: object;',
       'Idempotency-Key?: string;',
     ],
     response: '{ id: string; default?: object; list?: object; }',
     markdown:
-      "## upsert\n\n`client.prism.objects.engagements.upsert(teamId: string, slug: string, value: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/engagement/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
+      "## upsert\n\n`client.prism.objects.engagements.upsert(teamId: string, slug: string, value: string, list_id?: string, default?: object, list?: object, Idempotency-Key?: string): { id: string; default?: object; list?: object; }`\n\n**put** `/v2/prism/{teamId}/engagement/by/{slug}/{value}`\n\nIdempotent create-or-update keyed on `{slug}={value}`. If exactly one record matches, it is patched and 200 is returned. If none match, a new record is created (with the lookup property set if absent) and 201 is returned. If multiple records match, 409 is returned and you should patch by id instead.\n\n### Parameters\n\n- `teamId: string`\n\n- `slug: string`\n\n- `value: string`\n\n- `list_id?: string`\n  Scope the upsert to a specific list/app. Required to match or write list-scoped properties, including `app_stage`.\n\n- `default?: object`\n  Properties keyed by property slug. Values can be strings, numbers, booleans, arrays, or null. For select/multiselect properties, values may be option slugs or option UUIDs on write; option slugs are returned on read.\n\n- `list?: object`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; default?: object; list?: object; }`\n  Object returned by reads (get/create/patch/restore). id is always present.\n\n  - `id: string`\n  - `default?: object`\n  - `list?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.upsert('value', { slug: 'slug' });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.engagements.upsert',
@@ -4377,13 +4661,13 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'objects: { default?: object; list?: object; }[];',
-      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; };',
+      'options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; };',
       'Idempotency-Key?: string;',
     ],
     response:
-      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }",
+      "{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }",
     markdown:
-      "## bulk_create\n\n`client.prism.objects.engagements.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/engagement/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; dedupe_by?: string; list_id?: string; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `dedupe_by?: string`\n    Property slug to deduplicate on\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
+      "## bulk_create\n\n`client.prism.objects.engagements.bulkCreate(teamId: string, objects: { default?: object; list?: object; }[], options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }, Idempotency-Key?: string): { job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: object; expires_at?: string; failed?: number; processed?: number; results?: object[]; succeeded?: number; updated_at?: string; }`\n\n**post** `/v2/prism/{teamId}/engagement/import`\n\nImport multiple objects in batch. Properties are keyed by slug. Automatically routes based on size: small batches complete synchronously and return 200 with the final `ImportJob`; large batches start an async job, return 202 with `status: processing` and a `Location` header, and can be polled via `GET /v2/prism/{teamId}/imports/{jobId}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objects: { default?: object; list?: object; }[]`\n  Array of objects to import with property values keyed by slug\n\n- `options?: { caseInsensitive?: boolean; create_missing_options?: boolean; crm_id?: string; dedupe_by?: string | string[]; list_id?: string; require_list_stage?: boolean; update_existing?: boolean; }`\n  - `caseInsensitive?: boolean`\n    Whether deduplication should be case insensitive\n  - `create_missing_options?: boolean`\n    When true, unknown values for select/multiselect properties are created as new options instead of failing the import\n  - `crm_id?: string`\n    Deprecated alias for list_id.\n  - `dedupe_by?: string | string[]`\n    Property slug to deduplicate on. A single-element array is also accepted; compound (multi-slug) dedupe is not supported yet and is rejected with guidance.\n  - `list_id?: string`\n    App/CRM ID for context (optional)\n  - `require_list_stage?: boolean`\n    Require app_stage for every row in the selected list. app_stage is a reserved list-scoped alias for native status.\n  - `update_existing?: boolean`\n    Patch a deduplicated record with the supplied properties instead of skipping it.\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ job_id: string; status: 'complete' | 'processing' | 'failed'; total: number; created_at?: string; error?: { code?: string; message?: string; }; expires_at?: string; failed?: number; processed?: number; results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]; succeeded?: number; updated_at?: string; }`\n  Status snapshot of an import job. Same shape used by the POST /import response and by GET /imports/{jobId}.\n\n  - `job_id: string`\n  - `status: 'complete' | 'processing' | 'failed'`\n  - `total: number`\n  - `created_at?: string`\n  - `error?: { code?: string; message?: string; }`\n  - `expires_at?: string`\n  - `failed?: number`\n  - `processed?: number`\n  - `results?: { id?: string; created?: boolean; error?: { code?: string; message?: string; }; existing?: boolean; input_index?: number; updated?: boolean; }[]`\n  - `succeeded?: number`\n  - `updated_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.prism.objects.engagements.bulkCreate({ objects: [{}] });\n\nconsole.log(response);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.engagements.bulkCreate',
@@ -4623,6 +4907,407 @@ const EMBEDDED_METHODS: MethodEntry[] = [
   },
   {
     name: 'create',
+    endpoint: '/v2/prism/{teamId}/{objectType}/views',
+    httpMethod: 'post',
+    summary: 'Create a view bundle (view + select/filter/sort)',
+    description: 'Create a view bundle (view + select/filter/sort)',
+    stainlessPath: '(resource) views > (method) create',
+    qualified: 'client.views.create',
+    params: [
+      'teamId: string;',
+      "objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
+      'name: string;',
+      'view_type: string;',
+      'id?: string;',
+      'aggregation_prop_def_id?: string;',
+      'aggregation_type?: string;',
+      'column_layout?: object;',
+      "combinator?: 'AND' | 'OR';",
+      'created_at?: string;',
+      'filter?: object[];',
+      'group_by?: string;',
+      'group_hidden_option_ids?: object[] | object;',
+      'group_hide_empty?: boolean;',
+      'group_sort?: string;',
+      'icon?: string;',
+      'list_id?: string;',
+      'select?: string[];',
+      'sort?: object[];',
+      'sort_order?: number;',
+      'team_id?: string;',
+      'updated_at?: string;',
+      'user_id?: string;',
+      'Idempotency-Key?: string;',
+    ],
+    response:
+      "{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }",
+    markdown:
+      "## create\n\n`client.views.create(teamId: string, objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', name: string, view_type: string, id?: string, aggregation_prop_def_id?: string, aggregation_type?: string, column_layout?: object, combinator?: 'AND' | 'OR', created_at?: string, filter?: object[], group_by?: string, group_hidden_option_ids?: object[] | object, group_hide_empty?: boolean, group_sort?: string, icon?: string, list_id?: string, select?: string[], sort?: object[], sort_order?: number, team_id?: string, updated_at?: string, user_id?: string, Idempotency-Key?: string): { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n\n**post** `/v2/prism/{teamId}/{objectType}/views`\n\nCreate a view bundle (view + select/filter/sort)\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `name: string`\n\n- `view_type: string`\n\n- `id?: string`\n\n- `aggregation_prop_def_id?: string`\n\n- `aggregation_type?: string`\n\n- `column_layout?: object`\n\n- `combinator?: 'AND' | 'OR'`\n\n- `created_at?: string`\n\n- `filter?: object[]`\n  Each entry is { slug: { comparator: value } }\n\n- `group_by?: string`\n  Property slug to group by\n\n- `group_hidden_option_ids?: object[] | object`\n\n- `group_hide_empty?: boolean`\n\n- `group_sort?: string`\n\n- `icon?: string`\n\n- `list_id?: string`\n\n- `select?: string[]`\n  Property slugs (dot-paths permitted for refs)\n\n- `sort?: object[]`\n  Each entry is { slug: 'asc' | 'desc' }\n\n- `sort_order?: number`\n\n- `team_id?: string`\n\n- `updated_at?: string`\n\n- `user_id?: string`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n  A view (saved configuration for displaying records of a given object type) plus its select/filter/sort children. Properties in select/filter/sort are referenced by slug.\n\n  - `name: string`\n  - `view_type: string`\n  - `id?: string`\n  - `aggregation_prop_def_id?: string`\n  - `aggregation_type?: string`\n  - `column_layout?: object`\n  - `combinator?: 'AND' | 'OR'`\n  - `created_at?: string`\n  - `filter?: object[]`\n  - `group_by?: string`\n  - `group_hidden_option_ids?: object[] | object`\n  - `group_hide_empty?: boolean`\n  - `group_sort?: string`\n  - `icon?: string`\n  - `list_id?: string`\n  - `select?: string[]`\n  - `sort?: object[]`\n  - `sort_order?: number`\n  - `team_id?: string`\n  - `updated_at?: string`\n  - `user_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst view = await client.views.create('comment', { name: 'name', view_type: 'view_type' });\n\nconsole.log(view);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.views.create',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst view = await client.views.create('comment', { name: 'name', view_type: 'view_type' });\n\nconsole.log(view.id);",
+      },
+      python: {
+        method: 'views.create',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nview = client.views.create(\n    object_type="comment",\n    name="name",\n    view_type="view_type",\n)\nprint(view.id)',
+      },
+      go: {
+        method: 'client.Views.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tview, err := client.Views.New(\n\t\tcontext.TODO(),\n\t\tmicro.ViewNewParamsObjectTypeComment,\n\t\tmicro.ViewNewParams{\n\t\t\tName:     micro.F("name"),\n\t\t\tViewType: micro.F("view_type"),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", view.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/views \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "name": "name",\n          "view_type": "view_type"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/v2/prism/{teamId}/{objectType}/views',
+    httpMethod: 'get',
+    summary: 'List saved views for an owner',
+    description:
+      'Returns saved view bundles for the path team. Pass `?list_id=` to scope to a list (CRM) instead. Cursor pagination matches other Prism list endpoints.',
+    stainlessPath: '(resource) views > (method) list',
+    qualified: 'client.views.list',
+    params: [
+      'teamId: string;',
+      "objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
+      'cursor?: string;',
+      'limit?: number;',
+      'list_id?: string;',
+      'page?: number;',
+    ],
+    response:
+      "{ data: { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }[]; has_more: boolean; next_cursor?: string; }",
+    markdown:
+      "## list\n\n`client.views.list(teamId: string, objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', cursor?: string, limit?: number, list_id?: string, page?: number): { data: object[]; has_more: boolean; next_cursor?: string; }`\n\n**get** `/v2/prism/{teamId}/{objectType}/views`\n\nReturns saved view bundles for the path team. Pass `?list_id=` to scope to a list (CRM) instead. Cursor pagination matches other Prism list endpoints.\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `cursor?: string`\n  Opaque pagination cursor (from a prior response's next_cursor); supersedes page/limit when present.\n\n- `limit?: number`\n  Maximum items per page (<= 50; defaults to 50).\n\n- `list_id?: string`\n  List (CRM) id to scope the listing to. When omitted, views owned by the path team are returned.\n\n- `page?: number`\n  1-based page number. Prefer cursor.\n\n### Returns\n\n- `{ data: { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }[]; has_more: boolean; next_cursor?: string; }`\n\n  - `data: { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }[]`\n  - `has_more: boolean`\n  - `next_cursor?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst views = await client.views.list('comment');\n\nconsole.log(views);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.views.list',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst views = await client.views.list('comment');\n\nconsole.log(views.data);",
+      },
+      python: {
+        method: 'views.list',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nviews = client.views.list(\n    object_type="comment",\n)\nprint(views.data)',
+      },
+      go: {
+        method: 'client.Views.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tviews, err := client.Views.List(\n\t\tcontext.TODO(),\n\t\tmicro.ViewListParamsObjectTypeComment,\n\t\tmicro.ViewListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", views.Data)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/views \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'get',
+    endpoint: '/v2/prism/{teamId}/{objectType}/views/{viewId}',
+    httpMethod: 'get',
+    summary: 'Read a view bundle',
+    description:
+      'Returns the view bundle. Pass `?include=records` to also fetch a page of records selected by the view in the same call; the response is then wrapped as `{view, records}`.',
+    stainlessPath: '(resource) views > (method) get',
+    qualified: 'client.views.get',
+    params: [
+      'teamId: string;',
+      "objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
+      'viewId: string;',
+      'cursor?: string;',
+      'include?: string;',
+      'limit?: number;',
+      'page?: number;',
+    ],
+    response:
+      "{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; } | { records: { data: object[]; has_more: boolean; next_cursor?: string; }; view: { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }; }",
+    markdown:
+      "## get\n\n`client.views.get(teamId: string, objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, cursor?: string, include?: string, limit?: number, page?: number): { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; } | { records: object; view: object; }`\n\n**get** `/v2/prism/{teamId}/{objectType}/views/{viewId}`\n\nReturns the view bundle. Pass `?include=records` to also fetch a page of records selected by the view in the same call; the response is then wrapped as `{view, records}`.\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `cursor?: string`\n  Forwarded to the records sub-resource when `include=records`.\n\n- `include?: string`\n  Comma-separated list of optional sub-resources to inline. Currently the only recognized value is `records` — when present, the response is `{view, records}` rather than the bare view bundle.\n\n- `limit?: number`\n  Forwarded to the records sub-resource when `include=records`.\n\n- `page?: number`\n  Forwarded to the records sub-resource when `include=records`.\n\n### Returns\n\n- `{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; } | { records: { data: object[]; has_more: boolean; next_cursor?: string; }; view: { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }; }`\n  A view (saved configuration for displaying records of a given object type) plus its select/filter/sort children. Properties in select/filter/sort are referenced by slug.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst view = await client.views.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'comment' });\n\nconsole.log(view);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.views.get',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst view = await client.views.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'comment',\n});\n\nconsole.log(view);",
+      },
+      python: {
+        method: 'views.get',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nview = client.views.get(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="comment",\n)\nprint(view)',
+      },
+      go: {
+        method: 'client.Views.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tview, err := client.Views.Get(\n\t\tcontext.TODO(),\n\t\tmicro.ViewGetParamsObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", view)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/views/$VIEW_ID \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v2/prism/{teamId}/{objectType}/views/{viewId}',
+    httpMethod: 'patch',
+    summary: 'Update a view bundle (select/filter/sort arrays are replaced wholesale when supplied)',
+    description: 'Update a view bundle (select/filter/sort arrays are replaced wholesale when supplied)',
+    stainlessPath: '(resource) views > (method) update',
+    qualified: 'client.views.update',
+    params: [
+      'teamId: string;',
+      "objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
+      'viewId: string;',
+      'aggregation_prop_def_id?: string;',
+      'aggregation_type?: string;',
+      'column_layout?: object;',
+      "combinator?: 'AND' | 'OR';",
+      'filter?: object[];',
+      'group_by?: string;',
+      'group_hidden_option_ids?: object[] | object;',
+      'group_hide_empty?: boolean;',
+      'group_sort?: string;',
+      'icon?: string;',
+      'list_id?: string;',
+      'name?: string;',
+      'select?: string[];',
+      'sort?: object[];',
+      'sort_order?: number;',
+      'team_id?: string;',
+      'user_id?: string;',
+      'view_type?: string;',
+      'Idempotency-Key?: string;',
+    ],
+    response:
+      "{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }",
+    markdown:
+      "## update\n\n`client.views.update(teamId: string, objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, aggregation_prop_def_id?: string, aggregation_type?: string, column_layout?: object, combinator?: 'AND' | 'OR', filter?: object[], group_by?: string, group_hidden_option_ids?: object[] | object, group_hide_empty?: boolean, group_sort?: string, icon?: string, list_id?: string, name?: string, select?: string[], sort?: object[], sort_order?: number, team_id?: string, user_id?: string, view_type?: string, Idempotency-Key?: string): { name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n\n**patch** `/v2/prism/{teamId}/{objectType}/views/{viewId}`\n\nUpdate a view bundle (select/filter/sort arrays are replaced wholesale when supplied)\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `aggregation_prop_def_id?: string`\n\n- `aggregation_type?: string`\n\n- `column_layout?: object`\n\n- `combinator?: 'AND' | 'OR'`\n\n- `filter?: object[]`\n\n- `group_by?: string`\n\n- `group_hidden_option_ids?: object[] | object`\n\n- `group_hide_empty?: boolean`\n\n- `group_sort?: string`\n\n- `icon?: string`\n\n- `list_id?: string`\n\n- `name?: string`\n\n- `select?: string[]`\n\n- `sort?: object[]`\n\n- `sort_order?: number`\n\n- `team_id?: string`\n\n- `user_id?: string`\n\n- `view_type?: string`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ name: string; view_type: string; id?: string; aggregation_prop_def_id?: string; aggregation_type?: string; column_layout?: object; combinator?: 'AND' | 'OR'; created_at?: string; filter?: object[]; group_by?: string; group_hidden_option_ids?: object[] | object; group_hide_empty?: boolean; group_sort?: string; icon?: string; list_id?: string; select?: string[]; sort?: object[]; sort_order?: number; team_id?: string; updated_at?: string; user_id?: string; }`\n  A view (saved configuration for displaying records of a given object type) plus its select/filter/sort children. Properties in select/filter/sort are referenced by slug.\n\n  - `name: string`\n  - `view_type: string`\n  - `id?: string`\n  - `aggregation_prop_def_id?: string`\n  - `aggregation_type?: string`\n  - `column_layout?: object`\n  - `combinator?: 'AND' | 'OR'`\n  - `created_at?: string`\n  - `filter?: object[]`\n  - `group_by?: string`\n  - `group_hidden_option_ids?: object[] | object`\n  - `group_hide_empty?: boolean`\n  - `group_sort?: string`\n  - `icon?: string`\n  - `list_id?: string`\n  - `select?: string[]`\n  - `sort?: object[]`\n  - `sort_order?: number`\n  - `team_id?: string`\n  - `updated_at?: string`\n  - `user_id?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst view = await client.views.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'comment' });\n\nconsole.log(view);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.views.update',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst view = await client.views.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'comment',\n});\n\nconsole.log(view.id);",
+      },
+      python: {
+        method: 'views.update',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nview = client.views.update(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="comment",\n)\nprint(view.id)',
+      },
+      go: {
+        method: 'client.Views.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tview, err := client.Views.Update(\n\t\tcontext.TODO(),\n\t\tmicro.ViewUpdateParamsObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", view.ID)\n}\n',
+      },
+      http: {
+        example:
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/views/$VIEW_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/v2/prism/{teamId}/{objectType}/views/{viewId}',
+    httpMethod: 'delete',
+    summary: 'Delete a view bundle',
+    description: 'Delete a view bundle',
+    stainlessPath: '(resource) views > (method) delete',
+    qualified: 'client.views.delete',
+    params: [
+      'teamId: string;',
+      "objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
+      'viewId: string;',
+    ],
+    markdown:
+      "## delete\n\n`client.views.delete(teamId: string, objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string): void`\n\n**delete** `/v2/prism/{teamId}/{objectType}/views/{viewId}`\n\nDelete a view bundle\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'comment' })\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.views.delete',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'comment' });",
+      },
+      python: {
+        method: 'views.delete',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.delete(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="comment",\n)',
+      },
+      go: {
+        method: 'client.Views.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Delete(\n\t\tcontext.TODO(),\n\t\tmicro.ViewDeleteParamsObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/views/$VIEW_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/v2/prism/{teamId}/{objectType}/views/{viewId}/records',
+    httpMethod: 'get',
+    summary:
+      'List records selected by a view (filters and sorts applied; pinned record_order overlaid first)',
+    description:
+      'List records selected by a view (filters and sorts applied; pinned record_order overlaid first)',
+    stainlessPath: '(resource) views.records > (method) list',
+    qualified: 'client.views.records.list',
+    params: [
+      'teamId: string;',
+      "objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
+      'viewId: string;',
+      'cursor?: string;',
+      'limit?: number;',
+      'page?: number;',
+    ],
+    response: '{ data: object[]; has_more: boolean; next_cursor?: string; }',
+    markdown:
+      "## list\n\n`client.views.records.list(teamId: string, objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, cursor?: string, limit?: number, page?: number): { data: object[]; has_more: boolean; next_cursor?: string; }`\n\n**get** `/v2/prism/{teamId}/{objectType}/views/{viewId}/records`\n\nList records selected by a view (filters and sorts applied; pinned record_order overlaid first)\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `cursor?: string`\n  Opaque cursor from a previous response's `next_cursor`. Pass it back unchanged to fetch the next page. When set, `page` and `limit` are derived from the cursor.\n\n- `limit?: number`\n\n- `page?: number`\n  Page number (1-based). Prefer `cursor`.\n\n### Returns\n\n- `{ data: object[]; has_more: boolean; next_cursor?: string; }`\n\n  - `data: object[]`\n  - `has_more: boolean`\n  - `next_cursor?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst records = await client.views.records.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'comment' });\n\nconsole.log(records);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.views.records.list',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst records = await client.views.records.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'comment',\n});\n\nconsole.log(records.data);",
+      },
+      python: {
+        method: 'views.records.list',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nrecords = client.views.records.list(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="comment",\n)\nprint(records.data)',
+      },
+      go: {
+        method: 'client.Views.Records.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\trecords, err := client.Views.Records.List(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordListParamsObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", records.Data)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/views/$VIEW_ID/records \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'reorder',
+    endpoint: '/v2/prism/{teamId}/{objectType}/views/{viewId}/records',
+    httpMethod: 'patch',
+    summary: 'Bulk reorder pinned records',
+    description: 'Bulk reorder pinned records',
+    stainlessPath: '(resource) views.records > (method) reorder',
+    qualified: 'client.views.records.reorder',
+    params: [
+      'teamId: string;',
+      "objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
+      'viewId: string;',
+      'object_ids: string[];',
+      'Idempotency-Key?: string;',
+    ],
+    markdown:
+      "## reorder\n\n`client.views.records.reorder(teamId: string, objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, object_ids: string[], Idempotency-Key?: string): void`\n\n**patch** `/v2/prism/{teamId}/{objectType}/views/{viewId}/records`\n\nBulk reorder pinned records\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `object_ids: string[]`\n\n- `Idempotency-Key?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.records.reorder('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'comment', object_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'] })\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.views.records.reorder',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.records.reorder('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'comment',\n  object_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],\n});",
+      },
+      python: {
+        method: 'views.records.reorder',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.records.reorder(\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="comment",\n    object_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],\n)',
+      },
+      go: {
+        method: 'client.Views.Records.Reorder',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Records.Reorder(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordReorderParamsObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordReorderParams{\n\t\t\tObjectIDs: micro.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/views/$VIEW_ID/records \\\n    -X PATCH \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "object_ids": [\n            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n          ]\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'pin',
+    endpoint: '/v2/prism/{teamId}/{objectType}/views/{viewId}/records/{objectId}',
+    httpMethod: 'post',
+    summary: 'Pin a record to the view (append to record_order)',
+    description: 'Pin a record to the view (append to record_order)',
+    stainlessPath: '(resource) views.records > (method) pin',
+    qualified: 'client.views.records.pin',
+    params: [
+      'teamId: string;',
+      "objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
+      'viewId: string;',
+      'objectId: string;',
+      'Idempotency-Key?: string;',
+    ],
+    markdown:
+      "## pin\n\n`client.views.records.pin(teamId: string, objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, objectId: string, Idempotency-Key?: string): void`\n\n**post** `/v2/prism/{teamId}/{objectType}/views/{viewId}/records/{objectId}`\n\nPin a record to the view (append to record_order)\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `objectId: string`\n\n- `Idempotency-Key?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.records.pin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'comment', viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' })\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.views.records.pin',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.records.pin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'comment',\n  viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});",
+      },
+      python: {
+        method: 'views.records.pin',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.records.pin(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="comment",\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+      },
+      go: {
+        method: 'client.Views.Records.Pin',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Records.Pin(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordPinParamsObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordPinParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/views/$VIEW_ID/records/$OBJECT_ID \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'unpin',
+    endpoint: '/v2/prism/{teamId}/{objectType}/views/{viewId}/records/{objectId}',
+    httpMethod: 'delete',
+    summary: 'Unpin a record from the view',
+    description: 'Unpin a record from the view',
+    stainlessPath: '(resource) views.records > (method) unpin',
+    qualified: 'client.views.records.unpin',
+    params: [
+      'teamId: string;',
+      "objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization';",
+      'viewId: string;',
+      'objectId: string;',
+    ],
+    markdown:
+      "## unpin\n\n`client.views.records.unpin(teamId: string, objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization', viewId: string, objectId: string): void`\n\n**delete** `/v2/prism/{teamId}/{objectType}/views/{viewId}/records/{objectId}`\n\nUnpin a record from the view\n\n### Parameters\n\n- `teamId: string`\n\n- `objectType: 'comment' | 'action' | 'deal' | 'engagement' | 'document' | 'event' | 'identity' | 'organization'`\n\n- `viewId: string`\n\n- `objectId: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.views.records.unpin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { objectType: 'comment', viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' })\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.views.records.unpin',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.views.records.unpin('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  objectType: 'comment',\n  viewId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});",
+      },
+      python: {
+        method: 'views.records.unpin',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.views.records.unpin(\n    object_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    object_type="comment",\n    view_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+      },
+      go: {
+        method: 'client.Views.Records.Unpin',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Views.Records.Unpin(\n\t\tcontext.TODO(),\n\t\tmicro.ViewRecordUnpinParamsObjectTypeComment,\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.ViewRecordUnpinParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/$OBJECT_TYPE/views/$VIEW_ID/records/$OBJECT_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'create',
     endpoint: '/v2/prism/{teamId}/{automationObjectType}/triggered_automations',
     httpMethod: 'post',
     summary: 'Create a triggered automation (state + changeset filter trees)',
@@ -4835,6 +5520,385 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       http: {
         example:
           'curl https://developers.micro.so/v2/prism/$TEAM_ID/$AUTOMATION_OBJECT_TYPE/triggered_automations/$AUTOMATION_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/v2/webhooks/{teamId}',
+    httpMethod: 'get',
+    summary: 'List webhooks',
+    description: "Lists the team's webhooks. Signing secrets are never included.",
+    stainlessPath: '(resource) webhooks > (method) list',
+    qualified: 'client.webhooks.list',
+    params: ['teamId: string;'],
+    response:
+      '{ data: { id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }[]; }',
+    markdown:
+      "## list\n\n`client.webhooks.list(teamId: string): { data: webhook[]; }`\n\n**get** `/v2/webhooks/{teamId}`\n\nLists the team's webhooks. Signing secrets are never included.\n\n### Parameters\n\n- `teamId: string`\n\n### Returns\n\n- `{ data: { id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }[]; }`\n\n  - `data: { id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst webhooks = await client.webhooks.list();\n\nconsole.log(webhooks);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.webhooks.list',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhooks = await client.webhooks.list();\n\nconsole.log(webhooks.data);",
+      },
+      python: {
+        method: 'webhooks.list',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nwebhooks = client.webhooks.list()\nprint(webhooks.data)',
+      },
+      go: {
+        method: 'client.Webhooks.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\twebhooks, err := client.Webhooks.List(context.TODO(), micro.WebhookListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhooks.Data)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/webhooks/$TEAM_ID \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'create',
+    endpoint: '/v2/webhooks/{teamId}',
+    httpMethod: 'post',
+    summary: 'Create a webhook',
+    description:
+      'Registers a webhook and enqueues an asynchronous verification handshake (run by the dispatcher). The response includes the signing `secret`, shown only this once; `verified` is false until the handshake passes.',
+    stainlessPath: '(resource) webhooks > (method) create',
+    qualified: 'client.webhooks.create',
+    params: [
+      'teamId: string;',
+      'name: string;',
+      'url: string;',
+      'description?: string;',
+      'enabled?: boolean;',
+    ],
+    response:
+      '{ id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }',
+    markdown:
+      "## create\n\n`client.webhooks.create(teamId: string, name: string, url: string, description?: string, enabled?: boolean): object`\n\n**post** `/v2/webhooks/{teamId}`\n\nRegisters a webhook and enqueues an asynchronous verification handshake (run by the dispatcher). The response includes the signing `secret`, shown only this once; `verified` is false until the handshake passes.\n\n### Parameters\n\n- `teamId: string`\n\n- `name: string`\n\n- `url: string`\n  HTTP(S) endpoint. Rejected if it resolves to a private/internal address.\n\n- `description?: string`\n\n- `enabled?: boolean`\n\n### Returns\n\n- `{ id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }`\n  Returned ONLY on creation. Includes the signing secret (shown once) and the pending verification status.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst webhookWithSecret = await client.webhooks.create({ name: 'x', url: 'https://example.com' });\n\nconsole.log(webhookWithSecret);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.webhooks.create',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookWithSecret = await client.webhooks.create({ name: 'x', url: 'https://example.com' });\n\nconsole.log(webhookWithSecret);",
+      },
+      python: {
+        method: 'webhooks.create',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nwebhook_with_secret = client.webhooks.create(\n    name="x",\n    url="https://example.com",\n)\nprint(webhook_with_secret)',
+      },
+      go: {
+        method: 'client.Webhooks.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\twebhookWithSecret, err := client.Webhooks.New(context.TODO(), micro.WebhookNewParams{\n\t\tWebhookCreate: micro.WebhookCreateParam{\n\t\t\tName: micro.F("x"),\n\t\t\tURL:  micro.F("https://example.com"),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookWithSecret)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/webhooks/$TEAM_ID \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "name": "x",\n          "url": "https://example.com"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'get',
+    endpoint: '/v2/webhooks/{teamId}/{webhookId}',
+    httpMethod: 'get',
+    summary: 'Get a webhook',
+    description: 'Get a webhook',
+    stainlessPath: '(resource) webhooks > (method) get',
+    qualified: 'client.webhooks.get',
+    params: ['teamId: string;', 'webhookId: string;'],
+    response:
+      '{ id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }',
+    markdown:
+      "## get\n\n`client.webhooks.get(teamId: string, webhookId: string): { id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }`\n\n**get** `/v2/webhooks/{teamId}/{webhookId}`\n\nGet a webhook\n\n### Parameters\n\n- `teamId: string`\n\n- `webhookId: string`\n\n### Returns\n\n- `{ id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }`\n  A registered webhook endpoint.\n\n  - `id: string`\n  - `created_at: string`\n  - `enabled: boolean`\n  - `name: string`\n  - `team_id: string`\n  - `url: string`\n  - `verified: boolean`\n  - `description?: string`\n  - `updated_at?: string`\n  - `verification_token?: string`\n  - `verified_at?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst webhook = await client.webhooks.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(webhook);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.webhooks.get',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhook = await client.webhooks.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(webhook.id);",
+      },
+      python: {
+        method: 'webhooks.get',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nwebhook = client.webhooks.get(\n    webhook_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(webhook.id)',
+      },
+      go: {
+        method: 'client.Webhooks.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\twebhook, err := client.Webhooks.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.WebhookGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhook.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/webhooks/$TEAM_ID/$WEBHOOK_ID \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v2/webhooks/{teamId}/{webhookId}',
+    httpMethod: 'patch',
+    summary: 'Update a webhook',
+    description: 'Updates mutable fields. Changing `url` resets verification and re-runs the handshake.',
+    stainlessPath: '(resource) webhooks > (method) update',
+    qualified: 'client.webhooks.update',
+    params: [
+      'teamId: string;',
+      'webhookId: string;',
+      'description?: string;',
+      'enabled?: boolean;',
+      'name?: string;',
+      'url?: string;',
+    ],
+    response:
+      '{ id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }',
+    markdown:
+      "## update\n\n`client.webhooks.update(teamId: string, webhookId: string, description?: string, enabled?: boolean, name?: string, url?: string): object`\n\n**patch** `/v2/webhooks/{teamId}/{webhookId}`\n\nUpdates mutable fields. Changing `url` resets verification and re-runs the handshake.\n\n### Parameters\n\n- `teamId: string`\n\n- `webhookId: string`\n\n- `description?: string`\n\n- `enabled?: boolean`\n\n- `name?: string`\n\n- `url?: string`\n\n### Returns\n\n- `{ id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }`\n  A webhook plus the status of a verification handshake enqueued by this request.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst webhook = await client.webhooks.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(webhook);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.webhooks.update',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhook = await client.webhooks.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(webhook);",
+      },
+      python: {
+        method: 'webhooks.update',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nwebhook = client.webhooks.update(\n    webhook_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(webhook)',
+      },
+      go: {
+        method: 'client.Webhooks.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\twebhook, err := client.Webhooks.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.WebhookUpdateParams{\n\t\t\tWebhookUpdate: micro.WebhookUpdateParam{},\n\t\t},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhook)\n}\n',
+      },
+      http: {
+        example:
+          "curl https://developers.micro.so/v2/webhooks/$TEAM_ID/$WEBHOOK_ID \\\n    -X PATCH \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/v2/webhooks/{teamId}/{webhookId}',
+    httpMethod: 'delete',
+    summary: 'Delete a webhook',
+    description: 'Delete a webhook',
+    stainlessPath: '(resource) webhooks > (method) delete',
+    qualified: 'client.webhooks.delete',
+    params: ['teamId: string;', 'webhookId: string;'],
+    markdown:
+      "## delete\n\n`client.webhooks.delete(teamId: string, webhookId: string): void`\n\n**delete** `/v2/webhooks/{teamId}/{webhookId}`\n\nDelete a webhook\n\n### Parameters\n\n- `teamId: string`\n\n- `webhookId: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nawait client.webhooks.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.webhooks.delete',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nawait client.webhooks.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');",
+      },
+      python: {
+        method: 'webhooks.delete',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nclient.webhooks.delete(\n    webhook_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)',
+      },
+      go: {
+        method: 'client.Webhooks.Delete',
+        example:
+          'package main\n\nimport (\n\t"context"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\terr := client.Webhooks.Delete(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.WebhookDeleteParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/webhooks/$TEAM_ID/$WEBHOOK_ID \\\n    -X DELETE \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'verify',
+    endpoint: '/v2/webhooks/{teamId}/{webhookId}/verify',
+    httpMethod: 'post',
+    summary: 'Re-run verification',
+    description:
+      "Re-runs the GET challenge/echo handshake against the webhook's url and updates its verified state.",
+    stainlessPath: '(resource) webhooks > (method) verify',
+    qualified: 'client.webhooks.verify',
+    params: ['teamId: string;', 'webhookId: string;'],
+    response:
+      '{ id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }',
+    markdown:
+      "## verify\n\n`client.webhooks.verify(teamId: string, webhookId: string): object`\n\n**post** `/v2/webhooks/{teamId}/{webhookId}/verify`\n\nRe-runs the GET challenge/echo handshake against the webhook's url and updates its verified state.\n\n### Parameters\n\n- `teamId: string`\n\n- `webhookId: string`\n\n### Returns\n\n- `{ id: string; created_at: string; enabled: boolean; name: string; team_id: string; url: string; verified: boolean; description?: string; updated_at?: string; verification_token?: string; verified_at?: string; }`\n  A webhook plus the status of a verification handshake enqueued by this request.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.webhooks.verify('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.webhooks.verify',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.webhooks.verify('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);",
+      },
+      python: {
+        method: 'webhooks.verify',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.webhooks.verify(\n    webhook_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response)',
+      },
+      go: {
+        method: 'client.Webhooks.Verify',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Webhooks.Verify(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.WebhookVerifyParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/webhooks/$TEAM_ID/$WEBHOOK_ID/verify \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'ping',
+    endpoint: '/v2/webhooks/{teamId}/{webhookId}/ping',
+    httpMethod: 'post',
+    summary: 'Send a test event',
+    description:
+      'Fire-and-forget test delivery through the async dispatcher. The webhook must be enabled and verified.',
+    stainlessPath: '(resource) webhooks > (method) ping',
+    qualified: 'client.webhooks.ping',
+    params: ['teamId: string;', 'webhookId: string;', 'data?: object;', 'event?: string;'],
+    response: '{ dispatched: boolean; event: string; webhook_id: string; }',
+    markdown:
+      "## ping\n\n`client.webhooks.ping(teamId: string, webhookId: string, data?: object, event?: string): { dispatched: boolean; event: string; webhook_id: string; }`\n\n**post** `/v2/webhooks/{teamId}/{webhookId}/ping`\n\nFire-and-forget test delivery through the async dispatcher. The webhook must be enabled and verified.\n\n### Parameters\n\n- `teamId: string`\n\n- `webhookId: string`\n\n- `data?: object`\n  Arbitrary JSON payload body.\n\n- `event?: string`\n  Event name to send.\n\n### Returns\n\n- `{ dispatched: boolean; event: string; webhook_id: string; }`\n\n  - `dispatched: boolean`\n  - `event: string`\n  - `webhook_id: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.webhooks.ping('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.webhooks.ping',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.webhooks.ping('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.webhook_id);",
+      },
+      python: {
+        method: 'webhooks.ping',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.webhooks.ping(\n    webhook_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.webhook_id)',
+      },
+      go: {
+        method: 'client.Webhooks.Ping',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Webhooks.Ping(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.WebhookPingParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.WebhookID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/webhooks/$TEAM_ID/$WEBHOOK_ID/ping \\\n    -X POST \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'list_deliveries',
+    endpoint: '/v2/webhooks/{teamId}/deliveries',
+    httpMethod: 'get',
+    summary: 'List team deliveries',
+    description: "Account-wide delivery feed across all of the team's webhooks, newest first.",
+    stainlessPath: '(resource) webhooks > (method) list_deliveries',
+    qualified: 'client.webhooks.listDeliveries',
+    params: [
+      'teamId: string;',
+      'cursor?: string;',
+      'limit?: number;',
+      "status?: 'success' | 'failed';",
+      "type?: 'delivery' | 'verification' | 'all';",
+    ],
+    response:
+      "{ data: { created_at: string; delivery_id: string; status: 'success' | 'failed'; type: 'delivery' | 'verification'; webhook_id: string; attempts?: number; event?: string; status_code?: number; team_id?: string; updated_at?: string; url?: string; }[]; next_cursor?: string; }",
+    markdown:
+      "## list_deliveries\n\n`client.webhooks.listDeliveries(teamId: string, cursor?: string, limit?: number, status?: 'success' | 'failed', type?: 'delivery' | 'verification' | 'all'): { data: webhook_delivery[]; next_cursor?: string; }`\n\n**get** `/v2/webhooks/{teamId}/deliveries`\n\nAccount-wide delivery feed across all of the team's webhooks, newest first.\n\n### Parameters\n\n- `teamId: string`\n\n- `cursor?: string`\n  Opaque cursor from a previous response's `next_cursor`.\n\n- `limit?: number`\n  Page size (1–100, default 25).\n\n- `status?: 'success' | 'failed'`\n  Filter by outcome.\n\n- `type?: 'delivery' | 'verification' | 'all'`\n  Filter by run type. Defaults to `delivery` (event deliveries). Pass `all` to include verification handshakes.\n\n### Returns\n\n- `{ data: { created_at: string; delivery_id: string; status: 'success' | 'failed'; type: 'delivery' | 'verification'; webhook_id: string; attempts?: number; event?: string; status_code?: number; team_id?: string; updated_at?: string; url?: string; }[]; next_cursor?: string; }`\n\n  - `data: { created_at: string; delivery_id: string; status: 'success' | 'failed'; type: 'delivery' | 'verification'; webhook_id: string; attempts?: number; event?: string; status_code?: number; team_id?: string; updated_at?: string; url?: string; }[]`\n  - `next_cursor?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst response = await client.webhooks.listDeliveries();\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.webhooks.listDeliveries',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst response = await client.webhooks.listDeliveries();\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'webhooks.list_deliveries',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nresponse = client.webhooks.list_deliveries()\nprint(response.data)',
+      },
+      go: {
+        method: 'client.Webhooks.ListDeliveries',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tresponse, err := client.Webhooks.ListDeliveries(context.TODO(), micro.WebhookListDeliveriesParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", response.Data)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/webhooks/$TEAM_ID/deliveries \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/v2/webhooks/{teamId}/{webhookId}/deliveries',
+    httpMethod: 'get',
+    summary: 'List webhook deliveries',
+    description:
+      "An endpoint's deliveries, newest first, with optional status / type / time-range filters and cursor pagination.",
+    stainlessPath: '(resource) webhooks.deliveries > (method) list',
+    qualified: 'client.webhooks.deliveries.list',
+    params: [
+      'teamId: string;',
+      'webhookId: string;',
+      'after?: string;',
+      'before?: string;',
+      'cursor?: string;',
+      'limit?: number;',
+      "status?: 'success' | 'failed';",
+      "type?: 'delivery' | 'verification' | 'all';",
+    ],
+    response:
+      "{ data: { created_at: string; delivery_id: string; status: 'success' | 'failed'; type: 'delivery' | 'verification'; webhook_id: string; attempts?: number; event?: string; status_code?: number; team_id?: string; updated_at?: string; url?: string; }[]; next_cursor?: string; }",
+    markdown:
+      "## list\n\n`client.webhooks.deliveries.list(teamId: string, webhookId: string, after?: string, before?: string, cursor?: string, limit?: number, status?: 'success' | 'failed', type?: 'delivery' | 'verification' | 'all'): { data: webhook_delivery[]; next_cursor?: string; }`\n\n**get** `/v2/webhooks/{teamId}/{webhookId}/deliveries`\n\nAn endpoint's deliveries, newest first, with optional status / type / time-range filters and cursor pagination.\n\n### Parameters\n\n- `teamId: string`\n\n- `webhookId: string`\n\n- `after?: string`\n  Only deliveries at or after this ISO-8601 timestamp.\n\n- `before?: string`\n  Only deliveries at or before this ISO-8601 timestamp.\n\n- `cursor?: string`\n  Opaque cursor from a previous response's `next_cursor`.\n\n- `limit?: number`\n  Page size (1–100, default 25).\n\n- `status?: 'success' | 'failed'`\n  Filter by outcome.\n\n- `type?: 'delivery' | 'verification' | 'all'`\n  Filter by run type. Defaults to `delivery` (event deliveries). Pass `all` to include verification handshakes.\n\n### Returns\n\n- `{ data: { created_at: string; delivery_id: string; status: 'success' | 'failed'; type: 'delivery' | 'verification'; webhook_id: string; attempts?: number; event?: string; status_code?: number; team_id?: string; updated_at?: string; url?: string; }[]; next_cursor?: string; }`\n\n  - `data: { created_at: string; delivery_id: string; status: 'success' | 'failed'; type: 'delivery' | 'verification'; webhook_id: string; attempts?: number; event?: string; status_code?: number; team_id?: string; updated_at?: string; url?: string; }[]`\n  - `next_cursor?: string`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst deliveries = await client.webhooks.deliveries.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(deliveries);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.webhooks.deliveries.list',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst deliveries = await client.webhooks.deliveries.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(deliveries.data);",
+      },
+      python: {
+        method: 'webhooks.deliveries.list',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ndeliveries = client.webhooks.deliveries.list(\n    webhook_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(deliveries.data)',
+      },
+      go: {
+        method: 'client.Webhooks.Deliveries.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tdeliveries, err := client.Webhooks.Deliveries.List(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.WebhookDeliveryListParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", deliveries.Data)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/webhooks/$TEAM_ID/$WEBHOOK_ID/deliveries \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'get',
+    endpoint: '/v2/webhooks/{teamId}/{webhookId}/deliveries/{deliveryId}',
+    httpMethod: 'get',
+    summary: 'Get a delivery',
+    description: 'A single delivery plus its full attempt timeline (including async retries).',
+    stainlessPath: '(resource) webhooks.deliveries > (method) get',
+    qualified: 'client.webhooks.deliveries.get',
+    params: ['teamId: string;', 'webhookId: string;', 'deliveryId: string;'],
+    response:
+      "{ created_at: string; delivery_id: string; status: 'success' | 'failed'; type: 'delivery' | 'verification'; webhook_id: string; attempts?: number; event?: string; status_code?: number; team_id?: string; updated_at?: string; url?: string; }",
+    markdown:
+      "## get\n\n`client.webhooks.deliveries.get(teamId: string, webhookId: string, deliveryId: string): object`\n\n**get** `/v2/webhooks/{teamId}/{webhookId}/deliveries/{deliveryId}`\n\nA single delivery plus its full attempt timeline (including async retries).\n\n### Parameters\n\n- `teamId: string`\n\n- `webhookId: string`\n\n- `deliveryId: string`\n\n### Returns\n\n- `{ created_at: string; delivery_id: string; status: 'success' | 'failed'; type: 'delivery' | 'verification'; webhook_id: string; attempts?: number; event?: string; status_code?: number; team_id?: string; updated_at?: string; url?: string; }`\n  A delivery plus its full attempt timeline.\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst webhookDeliveryDetail = await client.webhooks.deliveries.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { webhookId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' });\n\nconsole.log(webhookDeliveryDetail);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.webhooks.deliveries.get',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst webhookDeliveryDetail = await client.webhooks.deliveries.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { webhookId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },\n);\n\nconsole.log(webhookDeliveryDetail);",
+      },
+      python: {
+        method: 'webhooks.deliveries.get',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nwebhook_delivery_detail = client.webhooks.deliveries.get(\n    delivery_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    webhook_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(webhook_delivery_detail)',
+      },
+      go: {
+        method: 'client.Webhooks.Deliveries.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\twebhookDeliveryDetail, err := client.Webhooks.Deliveries.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.WebhookDeliveryGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", webhookDeliveryDetail)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/webhooks/$TEAM_ID/$WEBHOOK_ID/deliveries/$DELIVERY_ID \\\n    -H "x-api-key: $MICRO_API_KEY"',
       },
     },
   },

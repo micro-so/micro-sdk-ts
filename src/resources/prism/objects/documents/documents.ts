@@ -247,8 +247,15 @@ export class Documents extends APIResource {
     params: DocumentUpsertParams,
     options?: RequestOptions,
   ): APIPromise<DocumentUpsertResponse> {
-    const { teamId = this._client.teamID, slug, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    const {
+      teamId = this._client.teamID,
+      slug,
+      list_id,
+      'Idempotency-Key': idempotencyKey,
+      ...body
+    } = params;
     return this._client.put(path`/v2/prism/${teamId}/document/by/${slug}/${value}`, {
+      query: { list_id },
       body,
       ...options,
       headers: buildHeaders([
@@ -403,6 +410,16 @@ export namespace DocumentBulkCreateResponse {
      * True if the row matched an existing record via the dedupe key.
      */
     existing?: boolean;
+
+    /**
+     * Zero-based position of this row in the request.
+     */
+    input_index?: number;
+
+    /**
+     * True if a matching record was updated.
+     */
+    updated?: boolean;
   }
 
   export namespace Result {
@@ -825,14 +842,31 @@ export namespace DocumentBulkCreateParams {
     create_missing_options?: boolean;
 
     /**
-     * Property slug to deduplicate on
+     * @deprecated Deprecated alias for list_id.
      */
-    dedupe_by?: string;
+    crm_id?: string;
+
+    /**
+     * Property slug to deduplicate on. A single-element array is also accepted;
+     * compound (multi-slug) dedupe is not supported yet and is rejected with guidance.
+     */
+    dedupe_by?: string | Array<string>;
 
     /**
      * App/CRM ID for context (optional)
      */
     list_id?: string;
+
+    /**
+     * Require app_stage for every row in the selected list. app_stage is a reserved
+     * list-scoped alias for native status.
+     */
+    require_list_stage?: boolean;
+
+    /**
+     * Patch a deduplicated record with the supplied properties instead of skipping it.
+     */
+    update_existing?: boolean;
   }
 }
 
@@ -1161,6 +1195,12 @@ export interface DocumentUpsertParams {
    * Path param
    */
   slug: string;
+
+  /**
+   * Query param: Scope the upsert to a specific list/app. Required to match or write
+   * list-scoped properties, including `app_stage`.
+   */
+  list_id?: string;
 
   /**
    * Body param: Properties keyed by property slug. Values can be strings, numbers,

@@ -176,8 +176,11 @@ describe('resource organizations', () => {
       options: {
         caseInsensitive: true,
         create_missing_options: true,
-        dedupe_by: 'dedupe_by',
+        crm_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        dedupe_by: 'string',
         list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        require_list_stage: true,
+        update_existing: true,
       },
       'Idempotency-Key': 'x',
     });
@@ -433,6 +436,7 @@ describe('resource organizations', () => {
     const response = await client.prism.objects.organizations.upsert('value', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       slug: 'slug',
+      list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       default: { foo: 'bar' },
       list: {},
       'Idempotency-Key': 'x',
