@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.0 (2026-07-31)
+
+Full Changelog: [v0.12.0...v0.13.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.12.0...v0.13.0)
+
+### Features
+
+* **api:** api update ([b9c2367](https://github.com/micro-so/micro-sdk-ts/commit/b9c2367a6bfc50f2f8fb137c4e12706b02346571))
+
 ## 0.12.0 (2026-07-30)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.11.0...v0.12.0)
