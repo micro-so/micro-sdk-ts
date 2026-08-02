@@ -14,6 +14,18 @@ export class Deals extends APIResource {
 
   /**
    * Create object
+   *
+   * @example
+   * ```ts
+   * const deal = await client.prism.objects.deals.create({
+   *   default: {
+   *     full_name: 'Sarah Chen',
+   *     email: 'sarah@example.com',
+   *     title: 'Partner',
+   *     organization: 'Acme Ventures',
+   *   },
+   * });
+   * ```
    */
   create(
     params: DealCreateParams | null | undefined = {},
@@ -32,6 +44,14 @@ export class Deals extends APIResource {
 
   /**
    * Patch object
+   *
+   * @example
+   * ```ts
+   * const deal = await client.prism.objects.deals.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { default: { title: 'General Partner' } },
+   * );
+   * ```
    */
   update(dealID: string, params: DealUpdateParams, options?: RequestOptions): APIPromise<DealUpdateResponse> {
     const {
@@ -61,6 +81,11 @@ export class Deals extends APIResource {
    * `in`. Values are received as strings, so non-string property filters via this
    * endpoint may not work — use the `query` endpoint for typed comparisons or
    * anything beyond simple equality.
+   *
+   * @example
+   * ```ts
+   * const deals = await client.prism.objects.deals.list();
+   * ```
    */
   list(
     params: DealListParams | null | undefined = {},
@@ -72,6 +97,13 @@ export class Deals extends APIResource {
 
   /**
    * Delete object
+   *
+   * @example
+   * ```ts
+   * await client.prism.objects.deals.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   delete(
     dealID: string,
@@ -94,6 +126,14 @@ export class Deals extends APIResource {
    * the final `ImportJob`; large batches start an async job, return 202 with
    * `status: processing` and a `Location` header, and can be polled via
    * `GET /v2/prism/{teamId}/imports/{jobId}`.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.deals.bulkCreate({
+   *     objects: [{}],
+   *   });
+   * ```
    */
   bulkCreate(params: DealBulkCreateParams, options?: RequestOptions): APIPromise<DealBulkCreateResponse> {
     const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
@@ -110,6 +150,14 @@ export class Deals extends APIResource {
   /**
    * Soft-delete up to 100 records in a single call. Same partial-success contract as
    * batch/update.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.deals.bulkDelete({
+   *     ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+   *   });
+   * ```
    */
   bulkDelete(params: DealBulkDeleteParams, options?: RequestOptions): APIPromise<DealBulkDeleteResponse> {
     const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
@@ -126,6 +174,14 @@ export class Deals extends APIResource {
   /**
    * Patch up to 100 records in a single call. Each item is attempted independently —
    * failures don't abort the batch. Inspect `results[].status` per item.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.deals.bulkUpdate({
+   *     items: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+   *   });
+   * ```
    */
   bulkUpdate(params: DealBulkUpdateParams, options?: RequestOptions): APIPromise<DealBulkUpdateResponse> {
     const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
@@ -145,6 +201,11 @@ export class Deals extends APIResource {
    * until `has_more` flips false to discover the total. Currently does not apply
    * query filters; for a filtered total, pass `include_total: true` in a POST
    * `/query` body.
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.deals.count();
+   * ```
    */
   count(
     params: DealCountParams | null | undefined = {},
@@ -156,6 +217,13 @@ export class Deals extends APIResource {
 
   /**
    * Duplicate object
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.deals.duplicate(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   duplicate(
     dealID: string,
@@ -175,6 +243,14 @@ export class Deals extends APIResource {
   /**
    * Returns the single record whose property `{slug}` equals `{value}`. 404 if
    * nothing matches; 409 if more than one record matches.
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.deals.find(
+   *   'value',
+   *   { slug: 'slug' },
+   * );
+   * ```
    */
   find(value: string, params: DealFindParams, options?: RequestOptions): APIPromise<DealFindResponse> {
     const { teamId = this._client.teamID, slug, ...query } = params;
@@ -183,6 +259,13 @@ export class Deals extends APIResource {
 
   /**
    * Get object
+   *
+   * @example
+   * ```ts
+   * const deal = await client.prism.objects.deals.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   get(
     dealID: string,
@@ -195,14 +278,40 @@ export class Deals extends APIResource {
 
   /**
    * Query
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.deals.query({
+   *   query: {
+   *     select: ['full_name', 'email', 'title', 'organization'],
+   *     filter: [{ full_name: { '=': 'Sarah Chen' } }],
+   *     limit: 10,
+   *   },
+   *   include_total: true,
+   * });
+   * ```
    */
   query(params: DealQueryParams, options?: RequestOptions): APIPromise<DealQueryResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v2/prism/${teamId}/deal/query`, { body, ...options });
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    return this._client.post(path`/v2/prism/${teamId}/deal/query`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * Restore object
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.deals.restore(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   restore(
     dealID: string,
@@ -224,6 +333,14 @@ export class Deals extends APIResource {
    * matches, it is patched and 200 is returned. If none match, a new record is
    * created (with the lookup property set if absent) and 201 is returned. If
    * multiple records match, 409 is returned and you should patch by id instead.
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.deals.upsert(
+   *   'value',
+   *   { slug: 'slug' },
+   * );
+   * ```
    */
   upsert(value: string, params: DealUpsertParams, options?: RequestOptions): APIPromise<DealUpsertResponse> {
     const {
@@ -670,12 +787,13 @@ export interface DealCreateParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -699,12 +817,13 @@ export interface DealUpdateParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 
@@ -797,12 +916,13 @@ export interface DealBulkCreateParams {
   options?: DealBulkCreateParams.Options;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -861,12 +981,13 @@ export interface DealBulkDeleteParams {
   ids: Array<string>;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -883,12 +1004,13 @@ export interface DealBulkUpdateParams {
   items: Array<DealBulkUpdateParams.Item>;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -924,12 +1046,13 @@ export interface DealDuplicateParams {
   teamId?: string;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -1008,6 +1131,17 @@ export interface DealQueryParams {
    * Body param
    */
   sources?: Array<string>;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
 }
 
 export namespace DealQueryParams {
@@ -1154,12 +1288,13 @@ export interface DealRestoreParams {
   teamId?: string;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -1194,12 +1329,13 @@ export interface DealUpsertParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
