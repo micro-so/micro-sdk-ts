@@ -10,6 +10,19 @@ import { path } from '../../../internal/utils/path';
 export class Organizations extends APIResource {
   /**
    * Create object
+   *
+   * @example
+   * ```ts
+   * const organization =
+   *   await client.prism.objects.organizations.create({
+   *     default: {
+   *       full_name: 'Sarah Chen',
+   *       email: 'sarah@example.com',
+   *       title: 'Partner',
+   *       organization: 'Acme Ventures',
+   *     },
+   *   });
+   * ```
    */
   create(
     params: OrganizationCreateParams | null | undefined = {},
@@ -28,6 +41,15 @@ export class Organizations extends APIResource {
 
   /**
    * Patch object
+   *
+   * @example
+   * ```ts
+   * const organization =
+   *   await client.prism.objects.organizations.update(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     { default: { title: 'General Partner' } },
+   *   );
+   * ```
    */
   update(
     organizationID: string,
@@ -61,6 +83,12 @@ export class Organizations extends APIResource {
    * `in`. Values are received as strings, so non-string property filters via this
    * endpoint may not work — use the `query` endpoint for typed comparisons or
    * anything beyond simple equality.
+   *
+   * @example
+   * ```ts
+   * const organizations =
+   *   await client.prism.objects.organizations.list();
+   * ```
    */
   list(
     params: OrganizationListParams | null | undefined = {},
@@ -72,6 +100,13 @@ export class Organizations extends APIResource {
 
   /**
    * Delete object
+   *
+   * @example
+   * ```ts
+   * await client.prism.objects.organizations.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   delete(
     organizationID: string,
@@ -94,6 +129,14 @@ export class Organizations extends APIResource {
    * the final `ImportJob`; large batches start an async job, return 202 with
    * `status: processing` and a `Location` header, and can be polled via
    * `GET /v2/prism/{teamId}/imports/{jobId}`.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.organizations.bulkCreate({
+   *     objects: [{}],
+   *   });
+   * ```
    */
   bulkCreate(
     params: OrganizationBulkCreateParams,
@@ -113,6 +156,14 @@ export class Organizations extends APIResource {
   /**
    * Soft-delete up to 100 records in a single call. Same partial-success contract as
    * batch/update.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.organizations.bulkDelete({
+   *     ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+   *   });
+   * ```
    */
   bulkDelete(
     params: OrganizationBulkDeleteParams,
@@ -132,6 +183,14 @@ export class Organizations extends APIResource {
   /**
    * Patch up to 100 records in a single call. Each item is attempted independently —
    * failures don't abort the batch. Inspect `results[].status` per item.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.organizations.bulkUpdate({
+   *     items: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+   *   });
+   * ```
    */
   bulkUpdate(
     params: OrganizationBulkUpdateParams,
@@ -154,6 +213,12 @@ export class Organizations extends APIResource {
    * until `has_more` flips false to discover the total. Currently does not apply
    * query filters; for a filtered total, pass `include_total: true` in a POST
    * `/query` body.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.organizations.count();
+   * ```
    */
   count(
     params: OrganizationCountParams | null | undefined = {},
@@ -165,6 +230,14 @@ export class Organizations extends APIResource {
 
   /**
    * Duplicate object
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.organizations.duplicate(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   duplicate(
     organizationID: string,
@@ -184,6 +257,14 @@ export class Organizations extends APIResource {
   /**
    * Returns the single record whose property `{slug}` equals `{value}`. 404 if
    * nothing matches; 409 if more than one record matches.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.organizations.find('value', {
+   *     slug: 'slug',
+   *   });
+   * ```
    */
   find(
     value: string,
@@ -199,6 +280,14 @@ export class Organizations extends APIResource {
 
   /**
    * Get object
+   *
+   * @example
+   * ```ts
+   * const organization =
+   *   await client.prism.objects.organizations.get(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   get(
     organizationID: string,
@@ -211,14 +300,47 @@ export class Organizations extends APIResource {
 
   /**
    * Query
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.organizations.query({
+   *     query: {
+   *       select: [
+   *         'full_name',
+   *         'email',
+   *         'title',
+   *         'organization',
+   *       ],
+   *       filter: [{ full_name: { '=': 'Sarah Chen' } }],
+   *       limit: 10,
+   *     },
+   *     include_total: true,
+   *   });
+   * ```
    */
   query(params: OrganizationQueryParams, options?: RequestOptions): APIPromise<OrganizationQueryResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v2/prism/${teamId}/organization/query`, { body, ...options });
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    return this._client.post(path`/v2/prism/${teamId}/organization/query`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * Restore object
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.organizations.restore(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   restore(
     organizationID: string,
@@ -240,6 +362,14 @@ export class Organizations extends APIResource {
    * matches, it is patched and 200 is returned. If none match, a new record is
    * created (with the lookup property set if absent) and 201 is returned. If
    * multiple records match, 409 is returned and you should patch by id instead.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.organizations.upsert('value', {
+   *     slug: 'slug',
+   *   });
+   * ```
    */
   upsert(
     value: string,
@@ -690,12 +820,13 @@ export interface OrganizationCreateParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -719,12 +850,13 @@ export interface OrganizationUpdateParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 
@@ -817,12 +949,13 @@ export interface OrganizationBulkCreateParams {
   options?: OrganizationBulkCreateParams.Options;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -881,12 +1014,13 @@ export interface OrganizationBulkDeleteParams {
   ids: Array<string>;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -903,12 +1037,13 @@ export interface OrganizationBulkUpdateParams {
   items: Array<OrganizationBulkUpdateParams.Item>;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -944,12 +1079,13 @@ export interface OrganizationDuplicateParams {
   teamId?: string;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -1028,6 +1164,17 @@ export interface OrganizationQueryParams {
    * Body param
    */
   sources?: Array<string>;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
 }
 
 export namespace OrganizationQueryParams {
@@ -1174,12 +1321,13 @@ export interface OrganizationRestoreParams {
   teamId?: string;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -1214,12 +1362,13 @@ export interface OrganizationUpsertParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }

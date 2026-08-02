@@ -14,6 +14,19 @@ export class Engagements extends APIResource {
 
   /**
    * Create object
+   *
+   * @example
+   * ```ts
+   * const engagement =
+   *   await client.prism.objects.engagements.create({
+   *     default: {
+   *       full_name: 'Sarah Chen',
+   *       email: 'sarah@example.com',
+   *       title: 'Partner',
+   *       organization: 'Acme Ventures',
+   *     },
+   *   });
+   * ```
    */
   create(
     params: EngagementCreateParams | null | undefined = {},
@@ -32,6 +45,15 @@ export class Engagements extends APIResource {
 
   /**
    * Patch object
+   *
+   * @example
+   * ```ts
+   * const engagement =
+   *   await client.prism.objects.engagements.update(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     { default: { title: 'General Partner' } },
+   *   );
+   * ```
    */
   update(
     engagementID: string,
@@ -65,6 +87,12 @@ export class Engagements extends APIResource {
    * `in`. Values are received as strings, so non-string property filters via this
    * endpoint may not work — use the `query` endpoint for typed comparisons or
    * anything beyond simple equality.
+   *
+   * @example
+   * ```ts
+   * const engagements =
+   *   await client.prism.objects.engagements.list();
+   * ```
    */
   list(
     params: EngagementListParams | null | undefined = {},
@@ -76,6 +104,13 @@ export class Engagements extends APIResource {
 
   /**
    * Delete object
+   *
+   * @example
+   * ```ts
+   * await client.prism.objects.engagements.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   delete(
     engagementID: string,
@@ -98,6 +133,14 @@ export class Engagements extends APIResource {
    * the final `ImportJob`; large batches start an async job, return 202 with
    * `status: processing` and a `Location` header, and can be polled via
    * `GET /v2/prism/{teamId}/imports/{jobId}`.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.engagements.bulkCreate({
+   *     objects: [{}],
+   *   });
+   * ```
    */
   bulkCreate(
     params: EngagementBulkCreateParams,
@@ -117,6 +160,14 @@ export class Engagements extends APIResource {
   /**
    * Soft-delete up to 100 records in a single call. Same partial-success contract as
    * batch/update.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.engagements.bulkDelete({
+   *     ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+   *   });
+   * ```
    */
   bulkDelete(
     params: EngagementBulkDeleteParams,
@@ -136,6 +187,14 @@ export class Engagements extends APIResource {
   /**
    * Patch up to 100 records in a single call. Each item is attempted independently —
    * failures don't abort the batch. Inspect `results[].status` per item.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.engagements.bulkUpdate({
+   *     items: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+   *   });
+   * ```
    */
   bulkUpdate(
     params: EngagementBulkUpdateParams,
@@ -158,6 +217,12 @@ export class Engagements extends APIResource {
    * until `has_more` flips false to discover the total. Currently does not apply
    * query filters; for a filtered total, pass `include_total: true` in a POST
    * `/query` body.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.engagements.count();
+   * ```
    */
   count(
     params: EngagementCountParams | null | undefined = {},
@@ -169,6 +234,14 @@ export class Engagements extends APIResource {
 
   /**
    * Duplicate object
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.engagements.duplicate(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   duplicate(
     engagementID: string,
@@ -188,6 +261,14 @@ export class Engagements extends APIResource {
   /**
    * Returns the single record whose property `{slug}` equals `{value}`. 404 if
    * nothing matches; 409 if more than one record matches.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.engagements.find('value', {
+   *     slug: 'slug',
+   *   });
+   * ```
    */
   find(
     value: string,
@@ -200,6 +281,14 @@ export class Engagements extends APIResource {
 
   /**
    * Get object
+   *
+   * @example
+   * ```ts
+   * const engagement =
+   *   await client.prism.objects.engagements.get(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   get(
     engagementID: string,
@@ -212,14 +301,47 @@ export class Engagements extends APIResource {
 
   /**
    * Query
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.engagements.query({
+   *     query: {
+   *       select: [
+   *         'full_name',
+   *         'email',
+   *         'title',
+   *         'organization',
+   *       ],
+   *       filter: [{ full_name: { '=': 'Sarah Chen' } }],
+   *       limit: 10,
+   *     },
+   *     include_total: true,
+   *   });
+   * ```
    */
   query(params: EngagementQueryParams, options?: RequestOptions): APIPromise<EngagementQueryResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v2/prism/${teamId}/engagement/query`, { body, ...options });
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    return this._client.post(path`/v2/prism/${teamId}/engagement/query`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * Restore object
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.engagements.restore(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   restore(
     engagementID: string,
@@ -241,6 +363,14 @@ export class Engagements extends APIResource {
    * matches, it is patched and 200 is returned. If none match, a new record is
    * created (with the lookup property set if absent) and 201 is returned. If
    * multiple records match, 409 is returned and you should patch by id instead.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.engagements.upsert('value', {
+   *     slug: 'slug',
+   *   });
+   * ```
    */
   upsert(
     value: string,
@@ -691,12 +821,13 @@ export interface EngagementCreateParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -720,12 +851,13 @@ export interface EngagementUpdateParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 
@@ -818,12 +950,13 @@ export interface EngagementBulkCreateParams {
   options?: EngagementBulkCreateParams.Options;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -882,12 +1015,13 @@ export interface EngagementBulkDeleteParams {
   ids: Array<string>;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -904,12 +1038,13 @@ export interface EngagementBulkUpdateParams {
   items: Array<EngagementBulkUpdateParams.Item>;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -945,12 +1080,13 @@ export interface EngagementDuplicateParams {
   teamId?: string;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -1029,6 +1165,17 @@ export interface EngagementQueryParams {
    * Body param
    */
   sources?: Array<string>;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
 }
 
 export namespace EngagementQueryParams {
@@ -1175,12 +1322,13 @@ export interface EngagementRestoreParams {
   teamId?: string;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -1215,12 +1363,13 @@ export interface EngagementUpsertParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
