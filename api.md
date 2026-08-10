@@ -36,6 +36,20 @@ Methods:
 - <code title="patch /v2/prism/{teamId}/{objectType}/properties/{propertyId}/options/{optionId}">client.prism.properties.options.<a href="./src/resources/prism/properties/options.ts">update</a>(optionID, { ...params }) -> PropertyOption</code>
 - <code title="delete /v2/prism/{teamId}/{objectType}/properties/{propertyId}/options/{optionId}">client.prism.properties.options.<a href="./src/resources/prism/properties/options.ts">delete</a>(optionID, { ...params }) -> void</code>
 
+## Lists
+
+Types:
+
+- <code><a href="./src/resources/prism/lists.ts">List</a></code>
+- <code><a href="./src/resources/prism/lists.ts">ListCreate</a></code>
+- <code><a href="./src/resources/prism/lists.ts">ListListResponse</a></code>
+
+Methods:
+
+- <code title="post /v2/prism/{teamId}/lists">client.prism.lists.<a href="./src/resources/prism/lists.ts">create</a>({ ...params }) -> List</code>
+- <code title="get /v2/prism/{teamId}/lists">client.prism.lists.<a href="./src/resources/prism/lists.ts">list</a>({ ...params }) -> ListListResponse</code>
+- <code title="get /v2/prism/{teamId}/lists/{listId}">client.prism.lists.<a href="./src/resources/prism/lists.ts">get</a>(listID, { ...params }) -> List</code>
+
 ## Imports
 
 Types:

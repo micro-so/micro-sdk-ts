@@ -3,6 +3,16 @@
 import { APIResource } from '../../core/resource';
 import * as ImportsAPI from './imports';
 import { ImportGetParams, ImportGetResponse, Imports } from './imports';
+import * as ListsAPI from './lists';
+import {
+  List,
+  ListCreate,
+  ListCreateParams,
+  ListGetParams,
+  ListListParams,
+  ListListResponse,
+  Lists,
+} from './lists';
 import * as ObjectsAPI from './objects/objects';
 import { Objects } from './objects/objects';
 import * as PropertiesAPI from './properties/properties';
@@ -22,6 +32,7 @@ import {
 
 export class Prism extends APIResource {
   properties: PropertiesAPI.Properties = new PropertiesAPI.Properties(this._client);
+  lists: ListsAPI.Lists = new ListsAPI.Lists(this._client);
   imports: ImportsAPI.Imports = new ImportsAPI.Imports(this._client);
   objects: ObjectsAPI.Objects = new ObjectsAPI.Objects(this._client);
 }
@@ -38,6 +49,7 @@ export interface PrismObjectProperties {
 }
 
 Prism.Properties = Properties;
+Prism.Lists = Lists;
 Prism.Imports = Imports;
 Prism.Objects = Objects;
 
@@ -56,6 +68,16 @@ export declare namespace Prism {
     type PropertyListParams as PropertyListParams,
     type PropertyDeleteParams as PropertyDeleteParams,
     type PropertyListAllParams as PropertyListAllParams,
+  };
+
+  export {
+    Lists as Lists,
+    type List as List,
+    type ListCreate as ListCreate,
+    type ListListResponse as ListListResponse,
+    type ListCreateParams as ListCreateParams,
+    type ListListParams as ListListParams,
+    type ListGetParams as ListGetParams,
   };
 
   export {

@@ -59,6 +59,24 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/{objectType}/properties/{propertyId}/options/{optionId}',
   },
   {
+    clientCallName: 'client.prism.lists.create',
+    fullyQualifiedName: 'prism.lists.create',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/lists',
+  },
+  {
+    clientCallName: 'client.prism.lists.list',
+    fullyQualifiedName: 'prism.lists.list',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/lists',
+  },
+  {
+    clientCallName: 'client.prism.lists.get',
+    fullyQualifiedName: 'prism.lists.get',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/lists/{listId}',
+  },
+  {
     clientCallName: 'client.prism.imports.get',
     fullyQualifiedName: 'prism.imports.get',
     httpMethod: 'get',
