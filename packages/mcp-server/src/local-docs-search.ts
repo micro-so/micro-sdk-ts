@@ -408,6 +408,120 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
+    name: 'create',
+    endpoint: '/v2/prism/{teamId}/lists',
+    httpMethod: 'post',
+    summary: 'Create a list (app/CRM)',
+    description:
+      'Creates a list from a template. Seeds properties, pipeline stages (when applicable), and default views — identical to the session-auth `/default_app/create` path. API-key callers are fully supported; `type` is derived from `template_id` and must not be supplied.',
+    stainlessPath: '(resource) prism.lists > (method) create',
+    qualified: 'client.prism.lists.create',
+    params: [
+      'teamId: string;',
+      'template_id: string;',
+      'icon?: string;',
+      'name?: string;',
+      "object_type?: 'organization' | 'identity' | 'action' | 'document' | 'deal';",
+      'Idempotency-Key?: string;',
+    ],
+    response:
+      "{ id: string; name: string; object_type: 'organization' | 'identity' | 'action' | 'document' | 'deal'; team_id: string; created_at?: string; description?: string; icon?: string; type?: string; views?: { id: string; name?: string; }[]; }",
+    markdown:
+      "## create\n\n`client.prism.lists.create(teamId: string, template_id: string, icon?: string, name?: string, object_type?: 'organization' | 'identity' | 'action' | 'document' | 'deal', Idempotency-Key?: string): { id: string; name: string; object_type: 'organization' | 'identity' | 'action' | 'document' | 'deal'; team_id: string; created_at?: string; description?: string; icon?: string; type?: string; views?: object[]; }`\n\n**post** `/v2/prism/{teamId}/lists`\n\nCreates a list from a template. Seeds properties, pipeline stages (when applicable), and default views — identical to the session-auth `/default_app/create` path. API-key callers are fully supported; `type` is derived from `template_id` and must not be supplied.\n\n### Parameters\n\n- `teamId: string`\n\n- `template_id: string`\n  Template to seed the list from. `type` is derived server-side from this template.\n\n- `icon?: string`\n  Emoji or icon override.\n\n- `name?: string`\n\n- `object_type?: 'organization' | 'identity' | 'action' | 'document' | 'deal'`\n  Required only when template_id is `custom`.\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ id: string; name: string; object_type: 'organization' | 'identity' | 'action' | 'document' | 'deal'; team_id: string; created_at?: string; description?: string; icon?: string; type?: string; views?: { id: string; name?: string; }[]; }`\n\n  - `id: string`\n  - `name: string`\n  - `object_type: 'organization' | 'identity' | 'action' | 'document' | 'deal'`\n  - `team_id: string`\n  - `created_at?: string`\n  - `description?: string`\n  - `icon?: string`\n  - `type?: string`\n  - `views?: { id: string; name?: string; }[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst list = await client.prism.lists.create({ template_id: 'sales_deals' });\n\nconsole.log(list);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.lists.create',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst list = await client.prism.lists.create({ template_id: 'sales_deals' });\n\nconsole.log(list.id);",
+      },
+      python: {
+        method: 'prism.lists.create',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nlist = client.prism.lists.create(\n    template_id="sales_deals",\n)\nprint(list.id)',
+      },
+      go: {
+        method: 'client.Prism.Lists.New',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tlist, err := client.Prism.Lists.New(context.TODO(), micro.PrismListNewParams{\n\t\tListCreate: micro.ListCreateParam{\n\t\t\tTemplateID: micro.F(micro.ListCreateTemplateIDSalesDeals),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", list.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/lists \\\n    -H \'Content-Type: application/json\' \\\n    -H "x-api-key: $MICRO_API_KEY" \\\n    -d \'{\n          "template_id": "sales_deals"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/v2/prism/{teamId}/lists',
+    httpMethod: 'get',
+    summary: 'List apps/CRMs in a workspace',
+    description:
+      'Returns non-core lists the caller can access in the workspace. Core system apps (Messages, All Inbox) are excluded.',
+    stainlessPath: '(resource) prism.lists > (method) list',
+    qualified: 'client.prism.lists.list',
+    params: ['teamId: string;'],
+    response:
+      "{ data: { id: string; name: string; object_type: 'organization' | 'identity' | 'action' | 'document' | 'deal'; team_id: string; created_at?: string; description?: string; icon?: string; type?: string; views?: object[]; }[]; }",
+    markdown:
+      "## list\n\n`client.prism.lists.list(teamId: string): { data: list[]; }`\n\n**get** `/v2/prism/{teamId}/lists`\n\nReturns non-core lists the caller can access in the workspace. Core system apps (Messages, All Inbox) are excluded.\n\n### Parameters\n\n- `teamId: string`\n\n### Returns\n\n- `{ data: { id: string; name: string; object_type: 'organization' | 'identity' | 'action' | 'document' | 'deal'; team_id: string; created_at?: string; description?: string; icon?: string; type?: string; views?: object[]; }[]; }`\n\n  - `data: { id: string; name: string; object_type: 'organization' | 'identity' | 'action' | 'document' | 'deal'; team_id: string; created_at?: string; description?: string; icon?: string; type?: string; views?: { id: string; name?: string; }[]; }[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst lists = await client.prism.lists.list();\n\nconsole.log(lists);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.lists.list',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst lists = await client.prism.lists.list();\n\nconsole.log(lists.data);",
+      },
+      python: {
+        method: 'prism.lists.list',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nlists = client.prism.lists.list()\nprint(lists.data)',
+      },
+      go: {
+        method: 'client.Prism.Lists.List',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tlists, err := client.Prism.Lists.List(context.TODO(), micro.PrismListListParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", lists.Data)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/lists \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'get',
+    endpoint: '/v2/prism/{teamId}/lists/{listId}',
+    httpMethod: 'get',
+    summary: 'Get a list by id',
+    description: 'Get a list by id',
+    stainlessPath: '(resource) prism.lists > (method) get',
+    qualified: 'client.prism.lists.get',
+    params: ['teamId: string;', 'listId: string;'],
+    response:
+      "{ id: string; name: string; object_type: 'organization' | 'identity' | 'action' | 'document' | 'deal'; team_id: string; created_at?: string; description?: string; icon?: string; type?: string; views?: { id: string; name?: string; }[]; }",
+    markdown:
+      "## get\n\n`client.prism.lists.get(teamId: string, listId: string): { id: string; name: string; object_type: 'organization' | 'identity' | 'action' | 'document' | 'deal'; team_id: string; created_at?: string; description?: string; icon?: string; type?: string; views?: object[]; }`\n\n**get** `/v2/prism/{teamId}/lists/{listId}`\n\nGet a list by id\n\n### Parameters\n\n- `teamId: string`\n\n- `listId: string`\n\n### Returns\n\n- `{ id: string; name: string; object_type: 'organization' | 'identity' | 'action' | 'document' | 'deal'; team_id: string; created_at?: string; description?: string; icon?: string; type?: string; views?: { id: string; name?: string; }[]; }`\n\n  - `id: string`\n  - `name: string`\n  - `object_type: 'organization' | 'identity' | 'action' | 'document' | 'deal'`\n  - `team_id: string`\n  - `created_at?: string`\n  - `description?: string`\n  - `icon?: string`\n  - `type?: string`\n  - `views?: { id: string; name?: string; }[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst list = await client.prism.lists.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(list);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.lists.get',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst list = await client.prism.lists.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(list.id);",
+      },
+      python: {
+        method: 'prism.lists.get',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\nlist = client.prism.lists.get(\n    list_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(list.id)',
+      },
+      go: {
+        method: 'client.Prism.Lists.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tlist, err := client.Prism.Lists.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismListGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", list.ID)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/lists/$LIST_ID \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
     name: 'get',
     endpoint: '/v2/prism/{teamId}/imports/{jobId}',
     httpMethod: 'get',
