@@ -2670,24 +2670,25 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.deals.grant > (method) get',
     qualified: 'client.prism.objects.deals.grant.get',
     params: ['teamId: string;', 'dealId: string;'],
-    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
     markdown:
-      "## get\n\n`client.prism.objects.deals.grant.get(teamId: string, dealId: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**get** `/v2/prism/{teamId}/deal/{dealId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.deals.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+      "## get\n\n`client.prism.objects.deals.grant.get(teamId: string, dealId: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**get** `/v2/prism/{teamId}/deal/{dealId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.deals.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.deals.grant.get',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.deals.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant.team_group_id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.deals.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant.contact_ids);",
       },
       python: {
         method: 'prism.objects.deals.grant.get',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.deals.grant.get(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.deals.grant.get(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
       },
       go: {
         method: 'client.Prism.Objects.Deals.Grant.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Deals.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDealGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Deals.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDealGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
       },
       http: {
         example:
@@ -2706,29 +2707,31 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'dealId: string;',
+      "share_level?: 'metadata' | 'full';",
       'team_group_id?: object[];',
       'team_id?: object;',
       'user_id?: object[];',
       'Idempotency-Key?: string;',
     ],
-    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
     markdown:
-      "## update\n\n`client.prism.objects.deals.grant.update(teamId: string, dealId: string, team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**put** `/v2/prism/{teamId}/deal/{dealId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.deals.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+      "## update\n\n`client.prism.objects.deals.grant.update(teamId: string, dealId: string, share_level?: 'metadata' | 'full', team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**put** `/v2/prism/{teamId}/deal/{dealId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `dealId: string`\n\n- `share_level?: 'metadata' | 'full'`\n  How much of the record the grant exposes. `metadata` shares only the record's headers and participants; `full` shares its contents. Currently recorded on the access row and returned on read — it is not yet enforced by the read path. Applies to `message` grants; ignored for other object types.\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.deals.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.deals.grant.update',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.deals.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant.team_group_id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.deals.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant.contact_ids);",
       },
       python: {
         method: 'prism.objects.deals.grant.update',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.deals.grant.update(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.deals.grant.update(\n    deal_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
       },
       go: {
         method: 'client.Prism.Objects.Deals.Grant.Update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Deals.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDealGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Deals.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDealGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
       },
       http: {
         example:
@@ -3271,24 +3274,25 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.actions.grant > (method) get',
     qualified: 'client.prism.objects.actions.grant.get',
     params: ['teamId: string;', 'actionId: string;'],
-    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
     markdown:
-      "## get\n\n`client.prism.objects.actions.grant.get(teamId: string, actionId: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**get** `/v2/prism/{teamId}/action/{actionId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.actions.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+      "## get\n\n`client.prism.objects.actions.grant.get(teamId: string, actionId: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**get** `/v2/prism/{teamId}/action/{actionId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.actions.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.actions.grant.get',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.actions.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant.team_group_id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.actions.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant.contact_ids);",
       },
       python: {
         method: 'prism.objects.actions.grant.get',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.actions.grant.get(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.actions.grant.get(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
       },
       go: {
         method: 'client.Prism.Objects.Actions.Grant.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Actions.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectActionGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Actions.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectActionGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
       },
       http: {
         example:
@@ -3307,29 +3311,31 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'actionId: string;',
+      "share_level?: 'metadata' | 'full';",
       'team_group_id?: object[];',
       'team_id?: object;',
       'user_id?: object[];',
       'Idempotency-Key?: string;',
     ],
-    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
     markdown:
-      "## update\n\n`client.prism.objects.actions.grant.update(teamId: string, actionId: string, team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**put** `/v2/prism/{teamId}/action/{actionId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.actions.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+      "## update\n\n`client.prism.objects.actions.grant.update(teamId: string, actionId: string, share_level?: 'metadata' | 'full', team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**put** `/v2/prism/{teamId}/action/{actionId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `actionId: string`\n\n- `share_level?: 'metadata' | 'full'`\n  How much of the record the grant exposes. `metadata` shares only the record's headers and participants; `full` shares its contents. Currently recorded on the access row and returned on read — it is not yet enforced by the read path. Applies to `message` grants; ignored for other object types.\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.actions.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.actions.grant.update',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.actions.grant.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.team_group_id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.actions.grant.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.contact_ids);",
       },
       python: {
         method: 'prism.objects.actions.grant.update',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.actions.grant.update(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.actions.grant.update(\n    action_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
       },
       go: {
         method: 'client.Prism.Objects.Actions.Grant.Update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Actions.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectActionGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Actions.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectActionGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
       },
       http: {
         example:
@@ -3872,24 +3878,25 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.documents.grant > (method) get',
     qualified: 'client.prism.objects.documents.grant.get',
     params: ['teamId: string;', 'documentId: string;'],
-    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
     markdown:
-      "## get\n\n`client.prism.objects.documents.grant.get(teamId: string, documentId: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**get** `/v2/prism/{teamId}/document/{documentId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.documents.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+      "## get\n\n`client.prism.objects.documents.grant.get(teamId: string, documentId: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**get** `/v2/prism/{teamId}/document/{documentId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.documents.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.documents.grant.get',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.documents.grant.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.team_group_id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.documents.grant.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.contact_ids);",
       },
       python: {
         method: 'prism.objects.documents.grant.get',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.documents.grant.get(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.documents.grant.get(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
       },
       go: {
         method: 'client.Prism.Objects.Documents.Grant.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Documents.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDocumentGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Documents.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDocumentGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
       },
       http: {
         example:
@@ -3908,29 +3915,31 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'documentId: string;',
+      "share_level?: 'metadata' | 'full';",
       'team_group_id?: object[];',
       'team_id?: object;',
       'user_id?: object[];',
       'Idempotency-Key?: string;',
     ],
-    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
     markdown:
-      "## update\n\n`client.prism.objects.documents.grant.update(teamId: string, documentId: string, team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**put** `/v2/prism/{teamId}/document/{documentId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.documents.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+      "## update\n\n`client.prism.objects.documents.grant.update(teamId: string, documentId: string, share_level?: 'metadata' | 'full', team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**put** `/v2/prism/{teamId}/document/{documentId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `documentId: string`\n\n- `share_level?: 'metadata' | 'full'`\n  How much of the record the grant exposes. `metadata` shares only the record's headers and participants; `full` shares its contents. Currently recorded on the access row and returned on read — it is not yet enforced by the read path. Applies to `message` grants; ignored for other object types.\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.documents.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.documents.grant.update',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.documents.grant.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.team_group_id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.documents.grant.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.contact_ids);",
       },
       python: {
         method: 'prism.objects.documents.grant.update',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.documents.grant.update(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.documents.grant.update(\n    document_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
       },
       go: {
         method: 'client.Prism.Objects.Documents.Grant.Update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Documents.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDocumentGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Documents.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectDocumentGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
       },
       http: {
         example:
@@ -4360,24 +4369,25 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.events.grant > (method) get',
     qualified: 'client.prism.objects.events.grant.get',
     params: ['teamId: string;', 'eventId: string;'],
-    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
     markdown:
-      "## get\n\n`client.prism.objects.events.grant.get(teamId: string, eventId: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**get** `/v2/prism/{teamId}/event/{eventId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `eventId: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.events.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+      "## get\n\n`client.prism.objects.events.grant.get(teamId: string, eventId: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**get** `/v2/prism/{teamId}/event/{eventId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `eventId: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.events.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.events.grant.get',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.events.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant.team_group_id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.events.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant.contact_ids);",
       },
       python: {
         method: 'prism.objects.events.grant.get',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.events.grant.get(\n    event_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.events.grant.get(\n    event_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
       },
       go: {
         method: 'client.Prism.Objects.Events.Grant.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Events.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEventGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Events.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEventGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
       },
       http: {
         example:
@@ -4396,29 +4406,31 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'eventId: string;',
+      "share_level?: 'metadata' | 'full';",
       'team_group_id?: object[];',
       'team_id?: object;',
       'user_id?: object[];',
       'Idempotency-Key?: string;',
     ],
-    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
     markdown:
-      "## update\n\n`client.prism.objects.events.grant.update(teamId: string, eventId: string, team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**put** `/v2/prism/{teamId}/event/{eventId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `eventId: string`\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.events.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+      "## update\n\n`client.prism.objects.events.grant.update(teamId: string, eventId: string, share_level?: 'metadata' | 'full', team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**put** `/v2/prism/{teamId}/event/{eventId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `eventId: string`\n\n- `share_level?: 'metadata' | 'full'`\n  How much of the record the grant exposes. `metadata` shares only the record's headers and participants; `full` shares its contents. Currently recorded on the access row and returned on read — it is not yet enforced by the read path. Applies to `message` grants; ignored for other object types.\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.events.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.events.grant.update',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.events.grant.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.team_group_id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.events.grant.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.contact_ids);",
       },
       python: {
         method: 'prism.objects.events.grant.update',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.events.grant.update(\n    event_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.events.grant.update(\n    event_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
       },
       go: {
         method: 'client.Prism.Objects.Events.Grant.Update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Events.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEventGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Events.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEventGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
       },
       http: {
         example:
@@ -4961,24 +4973,25 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     stainlessPath: '(resource) prism.objects.engagements.grant > (method) get',
     qualified: 'client.prism.objects.engagements.grant.get',
     params: ['teamId: string;', 'engagementId: string;'],
-    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
     markdown:
-      "## get\n\n`client.prism.objects.engagements.grant.get(teamId: string, engagementId: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**get** `/v2/prism/{teamId}/engagement/{engagementId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `engagementId: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.engagements.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+      "## get\n\n`client.prism.objects.engagements.grant.get(teamId: string, engagementId: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**get** `/v2/prism/{teamId}/engagement/{engagementId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `engagementId: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.engagements.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.engagements.grant.get',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.engagements.grant.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.team_group_id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.engagements.grant.get(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.contact_ids);",
       },
       python: {
         method: 'prism.objects.engagements.grant.get',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.engagements.grant.get(\n    engagement_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.engagements.grant.get(\n    engagement_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
       },
       go: {
         method: 'client.Prism.Objects.Engagements.Grant.Get',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Engagements.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEngagementGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Engagements.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEngagementGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
       },
       http: {
         example:
@@ -4997,33 +5010,113 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     params: [
       'teamId: string;',
       'engagementId: string;',
+      "share_level?: 'metadata' | 'full';",
       'team_group_id?: object[];',
       'team_id?: object;',
       'user_id?: object[];',
       'Idempotency-Key?: string;',
     ],
-    response: '{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }',
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
     markdown:
-      "## update\n\n`client.prism.objects.engagements.grant.update(teamId: string, engagementId: string, team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n**put** `/v2/prism/{teamId}/engagement/{engagementId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `engagementId: string`\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ team_group_id?: object[]; team_id?: object; user_id?: object[]; }`\n\n  - `team_group_id?: object[]`\n  - `team_id?: object`\n  - `user_id?: object[]`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.engagements.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+      "## update\n\n`client.prism.objects.engagements.grant.update(teamId: string, engagementId: string, share_level?: 'metadata' | 'full', team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**put** `/v2/prism/{teamId}/engagement/{engagementId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `engagementId: string`\n\n- `share_level?: 'metadata' | 'full'`\n  How much of the record the grant exposes. `metadata` shares only the record's headers and participants; `full` shares its contents. Currently recorded on the access row and returned on read — it is not yet enforced by the read path. Applies to `message` grants; ignored for other object types.\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.engagements.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
     perLanguage: {
       typescript: {
         method: 'client.prism.objects.engagements.grant.update',
         example:
-          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.engagements.grant.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.team_group_id);",
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.engagements.grant.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.contact_ids);",
       },
       python: {
         method: 'prism.objects.engagements.grant.update',
         example:
-          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.engagements.grant.update(\n    engagement_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.team_group_id)',
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.engagements.grant.update(\n    engagement_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
       },
       go: {
         method: 'client.Prism.Objects.Engagements.Grant.Update',
         example:
-          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Engagements.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEngagementGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.TeamGroupID)\n}\n',
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Engagements.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectEngagementGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
       },
       http: {
         example:
           "curl https://developers.micro.so/v2/prism/$TEAM_ID/engagement/$ENGAGEMENT_ID/grant \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
+      },
+    },
+  },
+  {
+    name: 'get',
+    endpoint: '/v2/prism/{teamId}/message/{messageId}/grant',
+    httpMethod: 'get',
+    summary: 'Get grant',
+    description: 'Get grant',
+    stainlessPath: '(resource) prism.objects.messages.grant > (method) get',
+    qualified: 'client.prism.objects.messages.grant.get',
+    params: ['teamId: string;', 'messageId: string;'],
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
+    markdown:
+      "## get\n\n`client.prism.objects.messages.grant.get(teamId: string, messageId: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**get** `/v2/prism/{teamId}/message/{messageId}/grant`\n\nGet grant\n\n### Parameters\n\n- `teamId: string`\n\n- `messageId: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.messages.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.messages.grant.get',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.messages.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant.contact_ids);",
+      },
+      python: {
+        method: 'prism.objects.messages.grant.get',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.messages.grant.get(\n    message_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Messages.Grant.Get',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Messages.Grant.Get(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectMessageGrantGetParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
+      },
+      http: {
+        example:
+          'curl https://developers.micro.so/v2/prism/$TEAM_ID/message/$MESSAGE_ID/grant \\\n    -H "x-api-key: $MICRO_API_KEY"',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v2/prism/{teamId}/message/{messageId}/grant',
+    httpMethod: 'put',
+    summary: 'Update grant',
+    description: 'Update grant',
+    stainlessPath: '(resource) prism.objects.messages.grant > (method) update',
+    qualified: 'client.prism.objects.messages.grant.update',
+    params: [
+      'teamId: string;',
+      'messageId: string;',
+      "share_level?: 'metadata' | 'full';",
+      'team_group_id?: object[];',
+      'team_id?: object;',
+      'user_id?: object[];',
+      'Idempotency-Key?: string;',
+    ],
+    response:
+      "{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }",
+    markdown:
+      "## update\n\n`client.prism.objects.messages.grant.update(teamId: string, messageId: string, share_level?: 'metadata' | 'full', team_group_id?: object[], team_id?: object, user_id?: object[], Idempotency-Key?: string): { contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n\n**put** `/v2/prism/{teamId}/message/{messageId}/grant`\n\nUpdate grant\n\n### Parameters\n\n- `teamId: string`\n\n- `messageId: string`\n\n- `share_level?: 'metadata' | 'full'`\n  How much of the record the grant exposes. `metadata` shares only the record's headers and participants; `full` shares its contents. Currently recorded on the access row and returned on read — it is not yet enforced by the read path. Applies to `message` grants; ignored for other object types.\n\n- `team_group_id?: object[]`\n\n- `team_id?: object`\n\n- `user_id?: object[]`\n\n- `Idempotency-Key?: string`\n\n### Returns\n\n- `{ contact_ids?: string[]; group_id?: object; identity_ids?: string[]; organization_ids?: string[]; share_level?: 'metadata' | 'full'; team_id?: object; user_id?: object; }`\n  The grants on a record. For `message`, also carries the entity ids of everyone on the message, resolved from its address headers when the grant was written. The id arrays are read-only and are null when participant resolution was unavailable (for example the mailbox had no Gmail token at the time).\n\n  - `contact_ids?: string[]`\n  - `group_id?: object`\n  - `identity_ids?: string[]`\n  - `organization_ids?: string[]`\n  - `share_level?: 'metadata' | 'full'`\n  - `team_id?: object`\n  - `user_id?: object`\n\n### Example\n\n```typescript\nimport Micro from '@micro-so/sdk';\n\nconst client = new Micro();\n\nconst grant = await client.prism.objects.messages.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(grant);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.prism.objects.messages.grant.update',
+        example:
+          "import Micro from '@micro-so/sdk';\n\nconst client = new Micro({\n  teamID: 'My Team ID',\n  apiKey: process.env['MICRO_API_KEY'], // This is the default and can be omitted\n});\n\nconst grant = await client.prism.objects.messages.grant.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(grant.contact_ids);",
+      },
+      python: {
+        method: 'prism.objects.messages.grant.update',
+        example:
+          'import os\nfrom micro_so import Micro\n\nclient = Micro(\n    api_key=os.environ.get("MICRO_API_KEY"),  # This is the default and can be omitted\n)\ngrant = client.prism.objects.messages.grant.update(\n    message_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(grant.contact_ids)',
+      },
+      go: {
+        method: 'client.Prism.Objects.Messages.Grant.Update',
+        example:
+          'package main\n\nimport (\n\t"context"\n\t"fmt"\n\n\t"github.com/micro-so/micro-sdk-go"\n\t"github.com/micro-so/micro-sdk-go/option"\n)\n\nfunc main() {\n\tclient := micro.NewClient(\n\t\toption.WithAPIKey("My API Key"),\n\t\toption.WithTeamID("My Team ID"),\n\t)\n\tgrant, err := client.Prism.Objects.Messages.Grant.Update(\n\t\tcontext.TODO(),\n\t\t"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n\t\tmicro.PrismObjectMessageGrantUpdateParams{},\n\t)\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf("%+v\\n", grant.ContactIDs)\n}\n',
+      },
+      http: {
+        example:
+          "curl https://developers.micro.so/v2/prism/$TEAM_ID/message/$MESSAGE_ID/grant \\\n    -X PUT \\\n    -H 'Content-Type: application/json' \\\n    -H \"x-api-key: $MICRO_API_KEY\" \\\n    -d '{}'",
       },
     },
   },

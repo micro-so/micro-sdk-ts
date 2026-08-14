@@ -404,6 +404,20 @@ Methods:
 - <code title="put /v2/prism/{teamId}/engagement/{engagementId}/grant">client.prism.objects.engagements.grant.<a href="./src/resources/prism/objects/engagements/grant.ts">update</a>(engagementID, { ...params }) -> GrantUpdateResponse</code>
 - <code title="get /v2/prism/{teamId}/engagement/{engagementId}/grant">client.prism.objects.engagements.grant.<a href="./src/resources/prism/objects/engagements/grant.ts">get</a>(engagementID, { ...params }) -> GrantGetResponse</code>
 
+### Messages
+
+#### Grant
+
+Types:
+
+- <code><a href="./src/resources/prism/objects/messages/grant.ts">GrantUpdateResponse</a></code>
+- <code><a href="./src/resources/prism/objects/messages/grant.ts">GrantGetResponse</a></code>
+
+Methods:
+
+- <code title="put /v2/prism/{teamId}/message/{messageId}/grant">client.prism.objects.messages.grant.<a href="./src/resources/prism/objects/messages/grant.ts">update</a>(messageID, { ...params }) -> GrantUpdateResponse</code>
+- <code title="get /v2/prism/{teamId}/message/{messageId}/grant">client.prism.objects.messages.grant.<a href="./src/resources/prism/objects/messages/grant.ts">get</a>(messageID, { ...params }) -> GrantGetResponse</code>
+
 # Views
 
 Types:

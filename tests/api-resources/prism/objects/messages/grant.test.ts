@@ -11,7 +11,7 @@ const client = new Micro({
 describe('resource grant', () => {
   // Mock server tests are disabled
   test.skip('update: only required params', async () => {
-    const responsePromise = client.prism.objects.events.grant.update(
+    const responsePromise = client.prism.objects.messages.grant.update(
       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       {},
     );
@@ -26,19 +26,22 @@ describe('resource grant', () => {
 
   // Mock server tests are disabled
   test.skip('update: required and optional params', async () => {
-    const response = await client.prism.objects.events.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      share_level: 'metadata',
-      team_group_id: [{ foo: 'a' }],
-      team_id: { foo: 'a' },
-      user_id: [{ foo: 'a' }],
-      'Idempotency-Key': 'x',
-    });
+    const response = await client.prism.objects.messages.grant.update(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      {
+        teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        share_level: 'metadata',
+        team_group_id: [{ foo: 'a' }],
+        team_id: { foo: 'a' },
+        user_id: [{ foo: 'a' }],
+        'Idempotency-Key': 'x',
+      },
+    );
   });
 
   // Mock server tests are disabled
   test.skip('get: only required params', async () => {
-    const responsePromise = client.prism.objects.events.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.prism.objects.messages.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -50,7 +53,7 @@ describe('resource grant', () => {
 
   // Mock server tests are disabled
   test.skip('get: required and optional params', async () => {
-    const response = await client.prism.objects.events.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    const response = await client.prism.objects.messages.grant.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
@@ -59,7 +62,7 @@ describe('resource grant', () => {
   test.skip('get: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.prism.objects.events.grant.get(
+      client.prism.objects.messages.grant.get(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         { teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
         { path: '/_stainless_unknown_path' },

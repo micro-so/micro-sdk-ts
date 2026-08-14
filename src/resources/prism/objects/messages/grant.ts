@@ -13,18 +13,18 @@ export class Grant extends APIResource {
    * @example
    * ```ts
    * const grant =
-   *   await client.prism.objects.events.grant.update(
+   *   await client.prism.objects.messages.grant.update(
    *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    *   );
    * ```
    */
   update(
-    eventID: string,
+    messageID: string,
     params: GrantUpdateParams,
     options?: RequestOptions,
   ): APIPromise<GrantUpdateResponse> {
     const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
-    return this._client.put(path`/v2/prism/${teamId}/event/${eventID}/grant`, {
+    return this._client.put(path`/v2/prism/${teamId}/message/${messageID}/grant`, {
       body,
       ...options,
       headers: buildHeaders([
@@ -39,18 +39,18 @@ export class Grant extends APIResource {
    *
    * @example
    * ```ts
-   * const grant = await client.prism.objects.events.grant.get(
+   * const grant = await client.prism.objects.messages.grant.get(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    * );
    * ```
    */
   get(
-    eventID: string,
+    messageID: string,
     params: GrantGetParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<GrantGetResponse> {
     const { teamId = this._client.teamID } = params ?? {};
-    return this._client.get(path`/v2/prism/${teamId}/event/${eventID}/grant`, options);
+    return this._client.get(path`/v2/prism/${teamId}/message/${messageID}/grant`, options);
   }
 }
 

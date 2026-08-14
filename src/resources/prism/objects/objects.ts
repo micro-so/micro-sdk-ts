@@ -251,6 +251,8 @@ import {
   EventUpsertResponse,
   Events,
 } from './events/events';
+import * as MessagesAPI from './messages/messages';
+import { Messages } from './messages/messages';
 
 export class Objects extends APIResource {
   contacts: ContactsAPI.Contacts = new ContactsAPI.Contacts(this._client);
@@ -261,6 +263,7 @@ export class Objects extends APIResource {
   documents: DocumentsAPI.Documents = new DocumentsAPI.Documents(this._client);
   events: EventsAPI.Events = new EventsAPI.Events(this._client);
   engagements: EngagementsAPI.Engagements = new EngagementsAPI.Engagements(this._client);
+  messages: MessagesAPI.Messages = new MessagesAPI.Messages(this._client);
 }
 
 Objects.Contacts = Contacts;
@@ -271,6 +274,7 @@ Objects.Actions = Actions;
 Objects.Documents = Documents;
 Objects.Events = Events;
 Objects.Engagements = Engagements;
+Objects.Messages = Messages;
 
 export declare namespace Objects {
   export {
@@ -522,4 +526,6 @@ export declare namespace Objects {
     type EngagementRestoreParams as EngagementRestoreParams,
     type EngagementUpsertParams as EngagementUpsertParams,
   };
+
+  export { Messages as Messages };
 }
