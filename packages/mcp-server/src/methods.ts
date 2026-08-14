@@ -797,6 +797,18 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/engagement/{engagementId}/grant',
   },
   {
+    clientCallName: 'client.prism.objects.messages.grant.update',
+    fullyQualifiedName: 'prism.objects.messages.grant.update',
+    httpMethod: 'put',
+    httpPath: '/v2/prism/{teamId}/message/{messageId}/grant',
+  },
+  {
+    clientCallName: 'client.prism.objects.messages.grant.get',
+    fullyQualifiedName: 'prism.objects.messages.grant.get',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/message/{messageId}/grant',
+  },
+  {
     clientCallName: 'client.views.create',
     fullyQualifiedName: 'views.create',
     httpMethod: 'post',

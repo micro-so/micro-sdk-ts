@@ -239,6 +239,8 @@ const fuse = new Fuse(
     'client.prism.objects.engagements.upsert',
     'client.prism.objects.engagements.grant.get',
     'client.prism.objects.engagements.grant.update',
+    'client.prism.objects.messages.grant.get',
+    'client.prism.objects.messages.grant.update',
     'client.views.create',
     'client.views.delete',
     'client.views.get',

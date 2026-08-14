@@ -54,20 +54,60 @@ export class Grant extends APIResource {
   }
 }
 
+/**
+ * The grants on a record. For `message`, also carries the entity ids of everyone
+ * on the message, resolved from its address headers when the grant was written.
+ * The id arrays are read-only and are null when participant resolution was
+ * unavailable (for example the mailbox had no Gmail token at the time).
+ */
 export interface GrantUpdateResponse {
-  team_group_id?: Array<{ [key: string]: 'a' | 'r' | 'w' }>;
+  contact_ids?: Array<string> | null;
+
+  group_id?: { [key: string]: 'a' | 'r' | 'w' };
+
+  identity_ids?: Array<string> | null;
+
+  organization_ids?: Array<string> | null;
+
+  /**
+   * How much of the record the grant exposes. `metadata` shares only the record's
+   * headers and participants; `full` shares its contents. Currently recorded on the
+   * access row and returned on read — it is not yet enforced by the read path.
+   * Applies to `message` grants; ignored for other object types.
+   */
+  share_level?: 'metadata' | 'full';
 
   team_id?: { [key: string]: 'a' | 'r' | 'w' };
 
-  user_id?: Array<{ [key: string]: 'a' | 'r' | 'w' }>;
+  user_id?: { [key: string]: 'a' | 'r' | 'w' };
 }
 
+/**
+ * The grants on a record. For `message`, also carries the entity ids of everyone
+ * on the message, resolved from its address headers when the grant was written.
+ * The id arrays are read-only and are null when participant resolution was
+ * unavailable (for example the mailbox had no Gmail token at the time).
+ */
 export interface GrantGetResponse {
-  team_group_id?: Array<{ [key: string]: 'a' | 'r' | 'w' }>;
+  contact_ids?: Array<string> | null;
+
+  group_id?: { [key: string]: 'a' | 'r' | 'w' };
+
+  identity_ids?: Array<string> | null;
+
+  organization_ids?: Array<string> | null;
+
+  /**
+   * How much of the record the grant exposes. `metadata` shares only the record's
+   * headers and participants; `full` shares its contents. Currently recorded on the
+   * access row and returned on read — it is not yet enforced by the read path.
+   * Applies to `message` grants; ignored for other object types.
+   */
+  share_level?: 'metadata' | 'full';
 
   team_id?: { [key: string]: 'a' | 'r' | 'w' };
 
-  user_id?: Array<{ [key: string]: 'a' | 'r' | 'w' }>;
+  user_id?: { [key: string]: 'a' | 'r' | 'w' };
 }
 
 export interface GrantUpdateParams {
@@ -75,6 +115,14 @@ export interface GrantUpdateParams {
    * Path param
    */
   teamId?: string;
+
+  /**
+   * Body param: How much of the record the grant exposes. `metadata` shares only the
+   * record's headers and participants; `full` shares its contents. Currently
+   * recorded on the access row and returned on read — it is not yet enforced by the
+   * read path. Applies to `message` grants; ignored for other object types.
+   */
+  share_level?: 'metadata' | 'full';
 
   /**
    * Body param
