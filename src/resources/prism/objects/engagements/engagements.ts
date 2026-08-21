@@ -13,7 +13,11 @@ export class Engagements extends APIResource {
   grant: GrantAPI.Grant = new GrantAPI.Grant(this._client);
 
   /**
-   * Create object
+   * Creates a record. For `document`, writing `content` (or HTML) stores the
+   * property and reads back, but the in-app editor is CRDT-backed and will render a
+   * blank page until that document has been opened and saved in the app. Treat
+   * API-created docs as data records, not as collaboratively edited pages, unless
+   * you only need the stored property values.
    *
    * @example
    * ```ts
@@ -216,7 +220,10 @@ export class Engagements extends APIResource {
    * Avoids the page-overshoot anti-pattern — clients no longer need to keep paging
    * until `has_more` flips false to discover the total. Currently does not apply
    * query filters; for a filtered total, pass `include_total: true` in a POST
-   * `/query` body.
+   * `/query` body. Unfiltered counts on high-cardinality types (especially
+   * `engagement`) scan the full access-scoped set and can take tens of seconds or
+   * time out; prefer a filtered `include_total` query or accept that this endpoint
+   * is expensive there.
    *
    * @example
    * ```ts
@@ -738,8 +745,10 @@ export interface EngagementQueryResponse {
   has_more: boolean;
 
   /**
-   * Opaque cursor pointing at the next page. Pass it back unchanged in the request
-   * body (`cursor`) of the next call. Null when `has_more` is false.
+   * Opaque cursor pointing at the next page. Pass it back unchanged. Do not parse
+   * it. The current encoding is offset-based (page + limit), so it has the same
+   * concurrent-write drift the deprecated `page` parameter has; treat it as a black
+   * box so a future keyset cursor is a drop-in. Null when `has_more` is false.
    */
   next_cursor?: string | null;
 

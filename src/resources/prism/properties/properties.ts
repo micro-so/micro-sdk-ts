@@ -151,7 +151,11 @@ export class Properties extends APIResource {
   }
 
   /**
-   * Get metadata properties
+   * Lists property definitions across every object type the engine knows about,
+   * including pipeline-owned types that are not queryable or CRUD-capable
+   * (`message`, `thread`, `linkedin_thread`, and others). Only the `ObjectType` enum
+   * (12 types) can be queried, created, updated, or listed. Contacts point at
+   * `message` via `last_email`; that relationship cannot be followed with `/query`.
    *
    * @example
    * ```ts
@@ -583,7 +587,12 @@ export interface PropertyUpdateParams {
   teamId?: string;
 
   /**
-   * Path param
+   * Path param: Object types that support CRUD, query, list, and per-type property
+   * metadata. `GET /v2/prism/{teamId}/properties` (list-all) also returns
+   * definitions for pipeline-owned types that are not in this set — including
+   * `message`, `thread`, and `linkedin_thread`. Those types are not queryable.
+   * Contacts expose `last_email` as a `ref_message`; you cannot query `message` to
+   * follow it.
    */
   objectType:
     | 'comment'
@@ -721,7 +730,12 @@ export interface PropertyDeleteParams {
   teamId?: string;
 
   /**
-   * Path param
+   * Path param: Object types that support CRUD, query, list, and per-type property
+   * metadata. `GET /v2/prism/{teamId}/properties` (list-all) also returns
+   * definitions for pipeline-owned types that are not in this set — including
+   * `message`, `thread`, and `linkedin_thread`. Those types are not queryable.
+   * Contacts expose `last_email` as a `ref_message`; you cannot query `message` to
+   * follow it.
    */
   objectType:
     | 'comment'
