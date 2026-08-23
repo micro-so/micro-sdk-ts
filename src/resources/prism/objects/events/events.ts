@@ -12,7 +12,23 @@ export class Events extends APIResource {
   grant: GrantAPI.Grant = new GrantAPI.Grant(this._client);
 
   /**
-   * Create object
+   * Creates a record. For `document`, writing `content` (or HTML) stores the
+   * property and reads back, but the in-app editor is CRDT-backed and will render a
+   * blank page until that document has been opened and saved in the app. Treat
+   * API-created docs as data records, not as collaboratively edited pages, unless
+   * you only need the stored property values.
+   *
+   * @example
+   * ```ts
+   * const event = await client.prism.objects.events.create({
+   *   default: {
+   *     full_name: 'Sarah Chen',
+   *     email: 'sarah@example.com',
+   *     title: 'Partner',
+   *     organization: 'Acme Ventures',
+   *   },
+   * });
+   * ```
    */
   create(
     params: EventCreateParams | null | undefined = {},
@@ -31,6 +47,14 @@ export class Events extends APIResource {
 
   /**
    * Patch object
+   *
+   * @example
+   * ```ts
+   * const event = await client.prism.objects.events.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { default: { title: 'General Partner' } },
+   * );
+   * ```
    */
   update(
     eventID: string,
@@ -64,6 +88,11 @@ export class Events extends APIResource {
    * `in`. Values are received as strings, so non-string property filters via this
    * endpoint may not work — use the `query` endpoint for typed comparisons or
    * anything beyond simple equality.
+   *
+   * @example
+   * ```ts
+   * const events = await client.prism.objects.events.list();
+   * ```
    */
   list(
     params: EventListParams | null | undefined = {},
@@ -75,6 +104,13 @@ export class Events extends APIResource {
 
   /**
    * Delete object
+   *
+   * @example
+   * ```ts
+   * await client.prism.objects.events.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   delete(
     eventID: string,
@@ -96,7 +132,15 @@ export class Events extends APIResource {
    * Avoids the page-overshoot anti-pattern — clients no longer need to keep paging
    * until `has_more` flips false to discover the total. Currently does not apply
    * query filters; for a filtered total, pass `include_total: true` in a POST
-   * `/query` body.
+   * `/query` body. Unfiltered counts on high-cardinality types (especially
+   * `engagement`) scan the full access-scoped set and can take tens of seconds or
+   * time out; prefer a filtered `include_total` query or accept that this endpoint
+   * is expensive there.
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.events.count();
+   * ```
    */
   count(
     params: EventCountParams | null | undefined = {},
@@ -108,6 +152,14 @@ export class Events extends APIResource {
 
   /**
    * Duplicate object
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.events.duplicate(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   duplicate(
     eventID: string,
@@ -127,6 +179,14 @@ export class Events extends APIResource {
   /**
    * Returns the single record whose property `{slug}` equals `{value}`. 404 if
    * nothing matches; 409 if more than one record matches.
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.events.find(
+   *   'value',
+   *   { slug: 'slug' },
+   * );
+   * ```
    */
   find(value: string, params: EventFindParams, options?: RequestOptions): APIPromise<EventFindResponse> {
     const { teamId = this._client.teamID, slug, ...query } = params;
@@ -135,6 +195,13 @@ export class Events extends APIResource {
 
   /**
    * Get object
+   *
+   * @example
+   * ```ts
+   * const event = await client.prism.objects.events.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   get(
     eventID: string,
@@ -147,14 +214,40 @@ export class Events extends APIResource {
 
   /**
    * Query
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.events.query({
+   *   query: {
+   *     select: ['full_name', 'email', 'title', 'organization'],
+   *     filter: [{ full_name: { '=': 'Sarah Chen' } }],
+   *     limit: 10,
+   *   },
+   *   include_total: true,
+   * });
+   * ```
    */
   query(params: EventQueryParams, options?: RequestOptions): APIPromise<EventQueryResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v2/prism/${teamId}/event/query`, { body, ...options });
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    return this._client.post(path`/v2/prism/${teamId}/event/query`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * Restore object
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.events.restore(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   restore(
     eventID: string,
@@ -176,6 +269,14 @@ export class Events extends APIResource {
    * matches, it is patched and 200 is returned. If none match, a new record is
    * created (with the lookup property set if absent) and 201 is returned. If
    * multiple records match, 409 is returned and you should patch by id instead.
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.events.upsert(
+   *   'value',
+   *   { slug: 'slug' },
+   * );
+   * ```
    */
   upsert(
     value: string,
@@ -341,8 +442,10 @@ export interface EventQueryResponse {
   has_more: boolean;
 
   /**
-   * Opaque cursor pointing at the next page. Pass it back unchanged in the request
-   * body (`cursor`) of the next call. Null when `has_more` is false.
+   * Opaque cursor pointing at the next page. Pass it back unchanged. Do not parse
+   * it. The current encoding is offset-based (page + limit), so it has the same
+   * concurrent-write drift the deprecated `page` parameter has; treat it as a black
+   * box so a future keyset cursor is a drop-in. Null when `has_more` is false.
    */
   next_cursor?: string | null;
 
@@ -424,12 +527,13 @@ export interface EventCreateParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -453,12 +557,13 @@ export interface EventUpdateParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 
@@ -553,12 +658,13 @@ export interface EventDuplicateParams {
   teamId?: string;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -637,6 +743,17 @@ export interface EventQueryParams {
    * Body param
    */
   sources?: Array<string>;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
 }
 
 export namespace EventQueryParams {
@@ -783,12 +900,13 @@ export interface EventRestoreParams {
   teamId?: string;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -823,12 +941,13 @@ export interface EventUpsertParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }

@@ -11,6 +11,19 @@ export class Options extends APIResource {
    * Adds a single option to a `select_str` or `multiselect_str` property definition.
    * Body must include `type` so the server knows which per-type option table to
    * write.
+   *
+   * @example
+   * ```ts
+   * const propertyOption =
+   *   await client.prism.properties.options.create(
+   *     '2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc',
+   *     {
+   *       objectType: 'comment',
+   *       type: 'num',
+   *       value: 'value',
+   *     },
+   *   );
+   * ```
    */
   create(
     propertyID: string,
@@ -30,6 +43,19 @@ export class Options extends APIResource {
 
   /**
    * Update a property option
+   *
+   * @example
+   * ```ts
+   * const propertyOption =
+   *   await client.prism.properties.options.update(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     {
+   *       objectType: 'comment',
+   *       propertyId: '2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc',
+   *       type: 'num',
+   *     },
+   *   );
+   * ```
    */
   update(optionID: string, params: OptionUpdateParams, options?: RequestOptions): APIPromise<PropertyOption> {
     const {
@@ -54,6 +80,18 @@ export class Options extends APIResource {
 
   /**
    * Delete a property option
+   *
+   * @example
+   * ```ts
+   * await client.prism.properties.options.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     objectType: 'comment',
+   *     propertyId: '2fdcD1Dc-bbDb-2BBD-0Afa-1A3C33cFaADc',
+   *     type: 'num',
+   *   },
+   * );
+   * ```
    */
   delete(optionID: string, params: OptionDeleteParams, options?: RequestOptions): APIPromise<void> {
     const { teamId = this._client.teamID, objectType, propertyId, type, list_id } = params;
@@ -243,7 +281,12 @@ export interface OptionCreateParams {
   teamId?: string;
 
   /**
-   * Path param
+   * Path param: Object types that support CRUD, query, list, and per-type property
+   * metadata. `GET /v2/prism/{teamId}/properties` (list-all) also returns
+   * definitions for pipeline-owned types that are not in this set — including
+   * `message`, `thread`, and `linkedin_thread`. Those types are not queryable.
+   * Contacts expose `last_email` as a `ref_message`; you cannot query `message` to
+   * follow it.
    */
   objectType:
     | 'comment'
@@ -343,12 +386,13 @@ export interface OptionCreateParams {
   sort_index?: number | null;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -360,7 +404,12 @@ export interface OptionUpdateParams {
   teamId?: string;
 
   /**
-   * Path param
+   * Path param: Object types that support CRUD, query, list, and per-type property
+   * metadata. `GET /v2/prism/{teamId}/properties` (list-all) also returns
+   * definitions for pipeline-owned types that are not in this set — including
+   * `message`, `thread`, and `linkedin_thread`. Those types are not queryable.
+   * Contacts expose `last_email` as a `ref_message`; you cannot query `message` to
+   * follow it.
    */
   objectType:
     | 'comment'
@@ -474,12 +523,13 @@ export interface OptionUpdateParams {
   value?: string;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -491,7 +541,12 @@ export interface OptionDeleteParams {
   teamId?: string;
 
   /**
-   * Path param
+   * Path param: Object types that support CRUD, query, list, and per-type property
+   * metadata. `GET /v2/prism/{teamId}/properties` (list-all) also returns
+   * definitions for pipeline-owned types that are not in this set — including
+   * `message`, `thread`, and `linkedin_thread`. Those types are not queryable.
+   * Contacts expose `last_email` as a `ref_message`; you cannot query `message` to
+   * follow it.
    */
   objectType:
     | 'comment'

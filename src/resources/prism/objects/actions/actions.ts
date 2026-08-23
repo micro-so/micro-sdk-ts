@@ -13,7 +13,23 @@ export class Actions extends APIResource {
   grant: GrantAPI.Grant = new GrantAPI.Grant(this._client);
 
   /**
-   * Create object
+   * Creates a record. For `document`, writing `content` (or HTML) stores the
+   * property and reads back, but the in-app editor is CRDT-backed and will render a
+   * blank page until that document has been opened and saved in the app. Treat
+   * API-created docs as data records, not as collaboratively edited pages, unless
+   * you only need the stored property values.
+   *
+   * @example
+   * ```ts
+   * const action = await client.prism.objects.actions.create({
+   *   default: {
+   *     full_name: 'Sarah Chen',
+   *     email: 'sarah@example.com',
+   *     title: 'Partner',
+   *     organization: 'Acme Ventures',
+   *   },
+   * });
+   * ```
    */
   create(
     params: ActionCreateParams | null | undefined = {},
@@ -32,6 +48,14 @@ export class Actions extends APIResource {
 
   /**
    * Patch object
+   *
+   * @example
+   * ```ts
+   * const action = await client.prism.objects.actions.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { default: { title: 'General Partner' } },
+   * );
+   * ```
    */
   update(
     actionID: string,
@@ -65,6 +89,11 @@ export class Actions extends APIResource {
    * `in`. Values are received as strings, so non-string property filters via this
    * endpoint may not work — use the `query` endpoint for typed comparisons or
    * anything beyond simple equality.
+   *
+   * @example
+   * ```ts
+   * const actions = await client.prism.objects.actions.list();
+   * ```
    */
   list(
     params: ActionListParams | null | undefined = {},
@@ -76,6 +105,13 @@ export class Actions extends APIResource {
 
   /**
    * Delete object
+   *
+   * @example
+   * ```ts
+   * await client.prism.objects.actions.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   delete(
     actionID: string,
@@ -98,6 +134,14 @@ export class Actions extends APIResource {
    * the final `ImportJob`; large batches start an async job, return 202 with
    * `status: processing` and a `Location` header, and can be polled via
    * `GET /v2/prism/{teamId}/imports/{jobId}`.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.actions.bulkCreate({
+   *     objects: [{}],
+   *   });
+   * ```
    */
   bulkCreate(params: ActionBulkCreateParams, options?: RequestOptions): APIPromise<ActionBulkCreateResponse> {
     const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
@@ -114,6 +158,14 @@ export class Actions extends APIResource {
   /**
    * Soft-delete up to 100 records in a single call. Same partial-success contract as
    * batch/update.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.actions.bulkDelete({
+   *     ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+   *   });
+   * ```
    */
   bulkDelete(params: ActionBulkDeleteParams, options?: RequestOptions): APIPromise<ActionBulkDeleteResponse> {
     const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
@@ -130,6 +182,14 @@ export class Actions extends APIResource {
   /**
    * Patch up to 100 records in a single call. Each item is attempted independently —
    * failures don't abort the batch. Inspect `results[].status` per item.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.actions.bulkUpdate({
+   *     items: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+   *   });
+   * ```
    */
   bulkUpdate(params: ActionBulkUpdateParams, options?: RequestOptions): APIPromise<ActionBulkUpdateResponse> {
     const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
@@ -148,7 +208,15 @@ export class Actions extends APIResource {
    * Avoids the page-overshoot anti-pattern — clients no longer need to keep paging
    * until `has_more` flips false to discover the total. Currently does not apply
    * query filters; for a filtered total, pass `include_total: true` in a POST
-   * `/query` body.
+   * `/query` body. Unfiltered counts on high-cardinality types (especially
+   * `engagement`) scan the full access-scoped set and can take tens of seconds or
+   * time out; prefer a filtered `include_total` query or accept that this endpoint
+   * is expensive there.
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.actions.count();
+   * ```
    */
   count(
     params: ActionCountParams | null | undefined = {},
@@ -160,6 +228,14 @@ export class Actions extends APIResource {
 
   /**
    * Duplicate object
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.actions.duplicate(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   duplicate(
     actionID: string,
@@ -179,6 +255,14 @@ export class Actions extends APIResource {
   /**
    * Returns the single record whose property `{slug}` equals `{value}`. 404 if
    * nothing matches; 409 if more than one record matches.
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.actions.find(
+   *   'value',
+   *   { slug: 'slug' },
+   * );
+   * ```
    */
   find(value: string, params: ActionFindParams, options?: RequestOptions): APIPromise<ActionFindResponse> {
     const { teamId = this._client.teamID, slug, ...query } = params;
@@ -187,6 +271,13 @@ export class Actions extends APIResource {
 
   /**
    * Get object
+   *
+   * @example
+   * ```ts
+   * const action = await client.prism.objects.actions.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   get(
     actionID: string,
@@ -199,14 +290,40 @@ export class Actions extends APIResource {
 
   /**
    * Query
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.actions.query({
+   *   query: {
+   *     select: ['full_name', 'email', 'title', 'organization'],
+   *     filter: [{ full_name: { '=': 'Sarah Chen' } }],
+   *     limit: 10,
+   *   },
+   *   include_total: true,
+   * });
+   * ```
    */
   query(params: ActionQueryParams, options?: RequestOptions): APIPromise<ActionQueryResponse> {
-    const { teamId = this._client.teamID, ...body } = params;
-    return this._client.post(path`/v2/prism/${teamId}/action/query`, { body, ...options });
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    return this._client.post(path`/v2/prism/${teamId}/action/query`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
   }
 
   /**
    * Restore object
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.actions.restore(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   restore(
     actionID: string,
@@ -228,6 +345,14 @@ export class Actions extends APIResource {
    * matches, it is patched and 200 is returned. If none match, a new record is
    * created (with the lookup property set if absent) and 201 is returned. If
    * multiple records match, 409 is returned and you should patch by id instead.
+   *
+   * @example
+   * ```ts
+   * const response = await client.prism.objects.actions.upsert(
+   *   'value',
+   *   { slug: 'slug' },
+   * );
+   * ```
    */
   upsert(
     value: string,
@@ -595,8 +720,10 @@ export interface ActionQueryResponse {
   has_more: boolean;
 
   /**
-   * Opaque cursor pointing at the next page. Pass it back unchanged in the request
-   * body (`cursor`) of the next call. Null when `has_more` is false.
+   * Opaque cursor pointing at the next page. Pass it back unchanged. Do not parse
+   * it. The current encoding is offset-based (page + limit), so it has the same
+   * concurrent-write drift the deprecated `page` parameter has; treat it as a black
+   * box so a future keyset cursor is a drop-in. Null when `has_more` is false.
    */
   next_cursor?: string | null;
 
@@ -678,12 +805,13 @@ export interface ActionCreateParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -707,12 +835,13 @@ export interface ActionUpdateParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 
@@ -805,12 +934,13 @@ export interface ActionBulkCreateParams {
   options?: ActionBulkCreateParams.Options;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -869,12 +999,13 @@ export interface ActionBulkDeleteParams {
   ids: Array<string>;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -891,12 +1022,13 @@ export interface ActionBulkUpdateParams {
   items: Array<ActionBulkUpdateParams.Item>;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -932,12 +1064,13 @@ export interface ActionDuplicateParams {
   teamId?: string;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -1016,6 +1149,17 @@ export interface ActionQueryParams {
    * Body param
    */
   sources?: Array<string>;
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
 }
 
 export namespace ActionQueryParams {
@@ -1162,12 +1306,13 @@ export interface ActionRestoreParams {
   teamId?: string;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }
@@ -1202,12 +1347,13 @@ export interface ActionUpsertParams {
   list?: unknown;
 
   /**
-   * Header param: A unique key (UUID or any opaque string up to 255 chars) that
-   * identifies this logical request. The server caches the first response under this
-   * key for 24 hours and replays it on retry — safe to use on every POST/PUT/PATCH
-   * to make network retries deterministic. Reusing the same key with a different
-   * body returns 409 `idempotency_key_mismatch`. Replays include the
-   * `idempotent-replay: true` response header.
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
    */
   'Idempotency-Key'?: string;
 }

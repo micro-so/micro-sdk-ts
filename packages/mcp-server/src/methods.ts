@@ -59,6 +59,24 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/{objectType}/properties/{propertyId}/options/{optionId}',
   },
   {
+    clientCallName: 'client.prism.lists.create',
+    fullyQualifiedName: 'prism.lists.create',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/lists',
+  },
+  {
+    clientCallName: 'client.prism.lists.list',
+    fullyQualifiedName: 'prism.lists.list',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/lists',
+  },
+  {
+    clientCallName: 'client.prism.lists.get',
+    fullyQualifiedName: 'prism.lists.get',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/lists/{listId}',
+  },
+  {
     clientCallName: 'client.prism.imports.get',
     fullyQualifiedName: 'prism.imports.get',
     httpMethod: 'get',
@@ -777,6 +795,18 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'prism.objects.engagements.grant.get',
     httpMethod: 'get',
     httpPath: '/v2/prism/{teamId}/engagement/{engagementId}/grant',
+  },
+  {
+    clientCallName: 'client.prism.objects.messages.grant.update',
+    fullyQualifiedName: 'prism.objects.messages.grant.update',
+    httpMethod: 'put',
+    httpPath: '/v2/prism/{teamId}/message/{messageId}/grant',
+  },
+  {
+    clientCallName: 'client.prism.objects.messages.grant.get',
+    fullyQualifiedName: 'prism.objects.messages.grant.get',
+    httpMethod: 'get',
+    httpPath: '/v2/prism/{teamId}/message/{messageId}/grant',
   },
   {
     clientCallName: 'client.views.create',
