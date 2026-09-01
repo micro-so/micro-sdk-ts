@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.14.1 (2026-09-01)
+
+Full Changelog: [v0.14.0...v0.14.1](https://github.com/micro-so/micro-sdk-ts/compare/v0.14.0...v0.14.1)
+
+### Documentation
+
+* **mcp:** document code execution modes and the local code runner ([2ec3156](https://github.com/micro-so/micro-sdk-ts/commit/2ec31564ecd5f1f124b9bacd1e4ffeceea360b69))
+
 ## 0.14.0 (2026-08-21)
 
 Full Changelog: [v0.13.0...v0.14.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.13.0...v0.14.0)
