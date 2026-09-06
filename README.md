@@ -111,7 +111,7 @@ this policy, including for writes; set it above zero only when your operation is
 
 <!-- prettier-ignore -->
 ```js
-// Configure the default for all requests:
+// Configure the default for read requests:
 const client = new Micro({
   teamID: 'My Team ID',
   maxRetries: 0, // default is 2
