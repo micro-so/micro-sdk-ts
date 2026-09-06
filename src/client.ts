@@ -115,7 +115,7 @@ export interface ClientOptions {
   fetch?: Fetch | undefined;
 
   /**
-   * The maximum number of times that the client will retry a request in case of a
+   * The maximum number of times that the client will retry a read request in case of a
    * temporary failure, like a network error or a 5XX error from the server.
    *
    * @default 2
@@ -390,7 +390,14 @@ export class Micro {
     retryOfRequestLogID: string | undefined,
   ): Promise<APIResponseProps> {
     const options = await optionsInput;
-    const maxRetries = options.maxRetries ?? this.maxRetries;
+    // A failed write may already have committed. Only retry writes when the
+    // caller explicitly opts in for this request; an idempotency header alone
+    // is not sufficient while the API can discard failed idempotency claims.
+    const isRead =
+      ['get', 'head', 'options'].includes(options.method) ||
+      (options.method === 'post' &&
+        /^\/v2\/prism\/(?:[^/]+\/[^/]+\/query|query\/[^/]+\/[^/]+)$/.test(options.path));
+    const maxRetries = options.maxRetries ?? (isRead ? this.maxRetries : 0);
     if (retriesRemaining == null) {
       retriesRemaining = maxRetries;
     }

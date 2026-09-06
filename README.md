@@ -98,11 +98,16 @@ Error codes are as follows:
 
 ### Retries
 
-Certain errors will be automatically retried 2 times by default, with a short exponential backoff.
+Read requests (GET, HEAD, OPTIONS, and Prism object queries) retry certain errors 2 times by default, with a short exponential backoff.
 Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,
 429 Rate Limit, and >=500 Internal errors will all be retried by default.
 
-You can use the `maxRetries` option to configure or disable this:
+Writes are not automatically retried: a timeout, connection failure, or server error can happen after a
+write has committed. Check the resulting state before repeating a write. An `Idempotency-Key` does not
+currently make every failed write safe to retry.
+
+The client-level `maxRetries` configures read retries. A per-request `maxRetries` explicitly overrides
+this policy, including for writes; set it above zero only when your operation is safe to repeat:
 
 <!-- prettier-ignore -->
 ```js
@@ -138,7 +143,7 @@ await client.prism.objects.deals.query({ query: { select: ['id', 'name'] } }, {
 
 On timeout, an `APIConnectionTimeoutError` is thrown.
 
-Note that requests which time out will be [retried twice by default](#retries).
+Read requests which time out are [retried twice by default](#retries); writes are not.
 
 ## Advanced Usage
 
