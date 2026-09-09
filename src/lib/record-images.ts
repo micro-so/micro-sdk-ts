@@ -1,4 +1,5 @@
 import { APIResource } from '../core/resource';
+import type { APIPromise } from '../core/api-promise';
 import type { Micro } from '../client';
 import type { RequestOptions } from '../internal/request-options';
 import { buildHeaders } from '../internal/headers';
@@ -35,7 +36,11 @@ export class RecordImages extends APIResource {
     super(client);
   }
 
-  requestUpload(id: string, params: ImageScope & { mime_type: ImageMimeType }, options?: RequestOptions) {
+  requestUpload(
+    id: string,
+    params: ImageScope & { mime_type: ImageMimeType },
+    options?: RequestOptions,
+  ): APIPromise<ImageUpload> {
     const { teamId = this._client.teamID, ...body } = params;
     return this._client.post<ImageUpload>(path`/v2/prism/${teamId}/${this.objectType}/${id}/image/uploads`, {
       body,
@@ -43,7 +48,11 @@ export class RecordImages extends APIResource {
     });
   }
 
-  complete(id: string, params: ImageScope & { upload_id: string }, options?: RequestOptions) {
+  complete(
+    id: string,
+    params: ImageScope & { upload_id: string },
+    options?: RequestOptions,
+  ): APIPromise<RecordImage> {
     const { teamId = this._client.teamID, ...body } = params;
     return this._client.post<RecordImage>(path`/v2/prism/${teamId}/${this.objectType}/${id}/image/complete`, {
       body,
@@ -51,7 +60,11 @@ export class RecordImages extends APIResource {
     });
   }
 
-  importFromUrl(id: string, params: ImageScope & { url: string }, options?: RequestOptions) {
+  importFromUrl(
+    id: string,
+    params: ImageScope & { url: string },
+    options?: RequestOptions,
+  ): APIPromise<RecordImage> {
     const { teamId = this._client.teamID, ...body } = params;
     return this._client.post<RecordImage>(path`/v2/prism/${teamId}/${this.objectType}/${id}/image/import`, {
       body,
@@ -59,7 +72,7 @@ export class RecordImages extends APIResource {
     });
   }
 
-  remove(id: string, params: ImageScope = {}, options?: RequestOptions) {
+  remove(id: string, params: ImageScope = {}, options?: RequestOptions): APIPromise<RecordImage> {
     const { teamId = this._client.teamID } = params;
     return this._client.delete<RecordImage>(
       path`/v2/prism/${teamId}/${this.objectType}/${id}/image`,
