@@ -41,6 +41,24 @@ const response = await client.prism.objects.deals.query({ query: { select: ['id'
 console.log(response.data);
 ```
 
+### Identity photos and organization logos
+
+Upload, import, replace, or remove a permanent image through the record's `images` helper:
+
+```ts
+const images = client.prism.objects.identities.images;
+
+await images.upload(personId, { file: imageBlob });
+await images.importFromUrl(personId, { url: 'https://example.com/photo.jpg' });
+await images.remove(personId);
+```
+
+The same helper is available at `client.prism.objects.organizations.images`. Each call to
+`upload` requests a fresh signed form, including when you reuse an idempotency key (a key that
+makes retries safe) after an expired attempt. If you use `requestUpload` and `complete` directly,
+submit every returned form field with the file and use a fresh idempotency key when requesting a
+replacement form.
+
 ### Request & Response types
 
 This library includes TypeScript definitions for all request params and response fields. You may import and use them like so:
