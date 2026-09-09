@@ -1,3 +1,4 @@
+import { RecordImages } from '../../../lib/record-images';
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../core/resource';
@@ -8,6 +9,8 @@ import { RequestOptions } from '../../../internal/request-options';
 import { path } from '../../../internal/utils/path';
 
 export class Organizations extends APIResource {
+  images = new RecordImages(this._client, 'organization');
+
   /**
    * Create object
    */
