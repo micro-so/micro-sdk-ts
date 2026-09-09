@@ -3,6 +3,7 @@ import type { Micro } from '../client';
 import type { RequestOptions } from '../internal/request-options';
 import { buildHeaders } from '../internal/headers';
 import { path } from '../internal/utils/path';
+import { uuid4 } from '../internal/utils/uuid';
 
 export type ImageMimeType = 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp';
 export interface ImageUpload { upload_id: string; upload_url: string; fields: Record<string, string>; method: 'POST'; public_url: string; expires_in: number }
@@ -34,12 +35,19 @@ export class RecordImages extends APIResource {
     return this._client.delete<RecordImage>(path`/v2/prism/${teamId}/${this.objectType}/${id}/image`, options);
   }
 
+  /**
+   * Uploads one file as a fresh attempt. A caller-supplied idempotency key is
+   * scoped to this invocation, so calling `upload` again obtains a new signed
+   * form even after an earlier form expires. Low-level `requestUpload` callers
+   * should likewise use a fresh key when requesting a replacement form.
+   */
   async upload(id: string, params: ImageUploadParams, options?: RequestOptions): Promise<RecordImage> {
     if (!params.file.size || params.file.size > 5 * 1024 * 1024) throw new Error('Images must be between 1 byte and 5 MB');
     if (!['image/jpeg', 'image/png', 'image/gif', 'image/webp'].includes(params.file.type)) throw new Error('Use JPEG, PNG, GIF or WebP');
     const teamId = params.teamId ?? this._client.teamID;
     const scope = teamId === undefined ? {} : { teamId };
-    const upload = await this.requestUpload(id, { ...scope, mime_type: params.file.type as ImageMimeType }, stepOptions(options, 'request'));
+    const invocationID = uuid4();
+    const upload = await this.requestUpload(id, { ...scope, mime_type: params.file.type as ImageMimeType }, stepOptions(options, invocationID, 'request'));
     const form = new FormData();
     for (const [key, value] of Object.entries(upload.fields)) form.append(key, value);
     form.append('file', params.file);
@@ -55,16 +63,16 @@ export class RecordImages extends APIResource {
       clearTimeout(timeout);
       options?.signal?.removeEventListener('abort', abort);
     }
-    return this.complete(id, { ...scope, upload_id: upload.upload_id }, stepOptions(options, 'complete'));
+    return this.complete(id, { ...scope, upload_id: upload.upload_id }, stepOptions(options, upload.upload_id, 'complete'));
   }
 }
 
-function stepOptions(options: RequestOptions | undefined, step: string): RequestOptions | undefined {
+function stepOptions(options: RequestOptions | undefined, namespace: string, step: string): RequestOptions | undefined {
   if (!options) return options;
   const headerKey = buildHeaders([options.headers]).values.get('idempotency-key');
   const sourceKey = options.idempotencyKey || headerKey;
   if (!sourceKey) return options;
-  const suffix = `:${step}`;
+  const suffix = `:${namespace}:${step}`;
   const hash = idempotencyHash(sourceKey);
   const prefixLength = 255 - suffix.length - hash.length - 1;
   const key = sourceKey.length + suffix.length <= 255
