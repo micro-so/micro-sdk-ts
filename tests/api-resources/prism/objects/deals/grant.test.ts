@@ -28,6 +28,7 @@ describe('resource grant', () => {
   test.skip('update: required and optional params', async () => {
     const response = await client.prism.objects.deals.grant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      share_level: 'metadata',
       team_group_id: [{ foo: 'a' }],
       team_id: { foo: 'a' },
       user_id: [{ foo: 'a' }],

@@ -10,6 +10,11 @@ export class Imports extends APIResource {
    * Poll the status of an async import. Sync imports complete in the original
    * response and don't appear here. Async jobs are retained for 7 days. Returns 404
    * once the job has expired.
+   *
+   * @example
+   * ```ts
+   * const _import = await client.prism.imports.get('jobId');
+   * ```
    */
   get(
     jobID: string,
@@ -86,6 +91,16 @@ export namespace ImportGetResponse {
      * True if the row matched an existing record via the dedupe key.
      */
     existing?: boolean;
+
+    /**
+     * Zero-based position of this row in the request.
+     */
+    input_index?: number;
+
+    /**
+     * True if a matching record was updated.
+     */
+    updated?: boolean;
   }
 
   export namespace Result {

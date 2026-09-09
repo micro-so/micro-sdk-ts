@@ -29,7 +29,40 @@ import {
   TriggeredAutomations,
 } from './resources/triggered-automations';
 import { Prism, PrismObjectProperties } from './resources/prism/prism';
-import { Views } from './resources/views/views';
+import {
+  ViewCreateParams,
+  ViewCreateResponse,
+  ViewDeleteParams,
+  ViewGetParams,
+  ViewGetResponse,
+  ViewListParams,
+  ViewListResponse,
+  ViewUpdateParams,
+  ViewUpdateResponse,
+  Views,
+} from './resources/views/views';
+import {
+  Webhook,
+  WebhookCreate,
+  WebhookCreateParams,
+  WebhookDeleteParams,
+  WebhookDelivery,
+  WebhookDeliveryDetail,
+  WebhookGetParams,
+  WebhookListDeliveriesParams,
+  WebhookListDeliveriesResponse,
+  WebhookListParams,
+  WebhookListResponse,
+  WebhookPingParams,
+  WebhookPingResponse,
+  WebhookUpdate,
+  WebhookUpdateParams,
+  WebhookUpdateResponse,
+  WebhookVerifyParams,
+  WebhookVerifyResponse,
+  WebhookWithSecret,
+  Webhooks,
+} from './resources/webhooks/webhooks';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -766,12 +799,14 @@ export class Micro {
   prism: API.Prism = new API.Prism(this);
   views: API.Views = new API.Views(this);
   triggeredAutomations: API.TriggeredAutomations = new API.TriggeredAutomations(this);
+  webhooks: API.Webhooks = new API.Webhooks(this);
   realtime: API.Realtime = new API.Realtime(this);
 }
 
 Micro.Prism = Prism;
 Micro.Views = Views;
 Micro.TriggeredAutomations = TriggeredAutomations;
+Micro.Webhooks = Webhooks;
 Micro.Realtime = Realtime;
 
 export declare namespace Micro {
@@ -779,7 +814,18 @@ export declare namespace Micro {
 
   export { Prism as Prism, type PrismObjectProperties as PrismObjectProperties };
 
-  export { Views as Views };
+  export {
+    Views as Views,
+    type ViewCreateResponse as ViewCreateResponse,
+    type ViewUpdateResponse as ViewUpdateResponse,
+    type ViewListResponse as ViewListResponse,
+    type ViewGetResponse as ViewGetResponse,
+    type ViewCreateParams as ViewCreateParams,
+    type ViewUpdateParams as ViewUpdateParams,
+    type ViewListParams as ViewListParams,
+    type ViewDeleteParams as ViewDeleteParams,
+    type ViewGetParams as ViewGetParams,
+  };
 
   export {
     TriggeredAutomations as TriggeredAutomations,
@@ -790,6 +836,29 @@ export declare namespace Micro {
     type TriggeredAutomationListParams as TriggeredAutomationListParams,
     type TriggeredAutomationDeleteParams as TriggeredAutomationDeleteParams,
     type TriggeredAutomationGetParams as TriggeredAutomationGetParams,
+  };
+
+  export {
+    Webhooks as Webhooks,
+    type Webhook as Webhook,
+    type WebhookCreate as WebhookCreate,
+    type WebhookDelivery as WebhookDelivery,
+    type WebhookDeliveryDetail as WebhookDeliveryDetail,
+    type WebhookUpdate as WebhookUpdate,
+    type WebhookWithSecret as WebhookWithSecret,
+    type WebhookUpdateResponse as WebhookUpdateResponse,
+    type WebhookListResponse as WebhookListResponse,
+    type WebhookListDeliveriesResponse as WebhookListDeliveriesResponse,
+    type WebhookPingResponse as WebhookPingResponse,
+    type WebhookVerifyResponse as WebhookVerifyResponse,
+    type WebhookCreateParams as WebhookCreateParams,
+    type WebhookUpdateParams as WebhookUpdateParams,
+    type WebhookListParams as WebhookListParams,
+    type WebhookDeleteParams as WebhookDeleteParams,
+    type WebhookGetParams as WebhookGetParams,
+    type WebhookListDeliveriesParams as WebhookListDeliveriesParams,
+    type WebhookPingParams as WebhookPingParams,
+    type WebhookVerifyParams as WebhookVerifyParams,
   };
 
   export { Realtime as Realtime, type RealtimeCreateTicketResponse as RealtimeCreateTicketResponse };

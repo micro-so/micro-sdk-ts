@@ -211,6 +211,7 @@ export {
   type IdentityRestoreParams,
   type IdentityUpsertParams,
 } from './identities';
+export { Messages } from './messages/index';
 export { Objects } from './objects';
 export {
   Organizations,

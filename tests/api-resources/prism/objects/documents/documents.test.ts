@@ -25,7 +25,12 @@ describe('resource documents', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.prism.objects.documents.create({
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      default: { foo: 'bar' },
+      default: {
+        full_name: 'bar',
+        email: 'bar',
+        title: 'bar',
+        organization: 'bar',
+      },
       list: {},
       'Idempotency-Key': 'x',
     });
@@ -38,7 +43,12 @@ describe('resource documents', () => {
       client.prism.objects.documents.create(
         {
           teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          default: { foo: 'bar' },
+          default: {
+            full_name: 'bar',
+            email: 'bar',
+            title: 'bar',
+            organization: 'bar',
+          },
           list: {},
           'Idempotency-Key': 'x',
         },
@@ -63,7 +73,7 @@ describe('resource documents', () => {
   test.skip('update: required and optional params', async () => {
     const response = await client.prism.objects.documents.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      default: { foo: 'bar' },
+      default: { title: 'bar' },
       list: {},
       'Idempotency-Key': 'x',
       'If-Match': 'If-Match',
@@ -173,8 +183,11 @@ describe('resource documents', () => {
       options: {
         caseInsensitive: true,
         create_missing_options: true,
-        dedupe_by: 'dedupe_by',
+        crm_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        dedupe_by: 'string',
         list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        require_list_stage: true,
+        update_existing: true,
       },
       'Idempotency-Key': 'x',
     });
@@ -344,7 +357,9 @@ describe('resource documents', () => {
 
   // Mock server tests are disabled
   test.skip('query: only required params', async () => {
-    const responsePromise = client.prism.objects.documents.query({ query: { select: ['string'] } });
+    const responsePromise = client.prism.objects.documents.query({
+      query: { select: ['full_name', 'email', 'title', 'organization'] },
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -359,11 +374,11 @@ describe('resource documents', () => {
     const response = await client.prism.objects.documents.query({
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       query: {
-        select: ['string'],
+        select: ['full_name', 'email', 'title', 'organization'],
         combinator: 'AND',
         cursor: 'cursor',
-        filter: [{ foo: { '=': 'string' } }],
-        limit: 1,
+        filter: [{ full_name: { '=': 'Sarah Chen' } }],
+        limit: 10,
         list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         page: 0,
         sort: [{ foo: 'asc' }],
@@ -374,6 +389,7 @@ describe('resource documents', () => {
       deleted: true,
       include_total: true,
       sources: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+      'Idempotency-Key': 'x',
     });
   });
 
@@ -426,6 +442,7 @@ describe('resource documents', () => {
     const response = await client.prism.objects.documents.upsert('value', {
       teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       slug: 'slug',
+      list_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       default: { foo: 'bar' },
       list: {},
       'Idempotency-Key': 'x',
