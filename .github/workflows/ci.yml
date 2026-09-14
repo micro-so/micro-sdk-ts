@@ -66,6 +66,9 @@ jobs:
       - name: Check build
         run: ./scripts/build
 
+      - name: Verify simple client package imports
+        run: node tests/simple-package-smoke.mjs
+
       - name: Get GitHub OIDC Token
         if: |-
           github.repository == 'stainless-sdks/micro-typescript' &&
