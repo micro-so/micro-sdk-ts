@@ -1,4 +1,5 @@
 import Micro, { APIError, WriteReadbackError } from '../../src/lib/simple';
+import { ConflictError, InternalServerError } from '../../src';
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -80,12 +81,19 @@ describe('simple find-or-create', () => {
     });
   });
   it('preserves API conflicts and never automatically retries mutations', async () => {
-    for (const status of [409, 500]) {
-      replies.push(json({ message: 'failure', code: 'multiple_matches' }, status));
-      await expect(micro.people.findOrCreate({ email_address: 'sam@example.com' })).rejects.toBeInstanceOf(
-        APIError,
-      );
-    }
+    replies.push(json({ message: 'Multiple records match.', code: 'multiple_matches' }, 409));
+    const conflict = micro.people.findOrCreate({ email_address: 'sam@example.com' });
+    await expect(conflict).rejects.toBeInstanceOf(ConflictError);
+    await expect(conflict).rejects.toMatchObject({
+      status: 409,
+      error: { code: 'multiple_matches' },
+    });
+
+    replies.push(json({ message: 'failure' }, 500));
+    await expect(micro.people.findOrCreate({ email_address: 'sam@example.com' })).rejects.toBeInstanceOf(
+      InternalServerError,
+    );
+
     expect(calls).toHaveLength(2);
   });
   it('distinguishes committed creates with failed readback', async () => {
