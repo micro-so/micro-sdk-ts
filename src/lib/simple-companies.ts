@@ -8,6 +8,8 @@ export type Company = {
   properties: Record<string, unknown>;
 };
 export type CompanyFilter = { primary_domain?: string };
+export type CompanyMatch = { primary_domain: string };
+export type CompanyDefaults = Omit<CompanyFields, 'primary_domain'>;
 
 export class Companies extends Resource<Company, CompanyFilter> {
   protected readonly keys = ['name', 'primary_domain'];
@@ -33,6 +35,19 @@ export class Companies extends Resource<Company, CompanyFilter> {
 
   async create(data: CompanyFields, options: CallOptions = {}): Promise<Company> {
     return this.write(undefined, this.input(data), options);
+  }
+
+  /** Returns a single match unchanged. Defaults apply only when creating. */
+  async findOrCreate(match: CompanyMatch, defaults: CompanyDefaults = {}, options: CallOptions = {}) {
+    if (
+      !match ||
+      Object.keys(match).length !== 1 ||
+      typeof match.primary_domain !== 'string' ||
+      !match.primary_domain.trim()
+    )
+      throw new TypeError('Match requires exactly primary_domain.');
+    if ('primary_domain' in defaults) throw new TypeError('Supply the matching domain through match.');
+    return this.findOrCreateRecord({ primary_domain: match.primary_domain }, this.input(defaults), options);
   }
 
   async update(id: string, data: CompanyFields, options: CallOptions = {}): Promise<Company> {

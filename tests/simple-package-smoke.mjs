@@ -47,6 +47,8 @@ for (const mode of ['commonjs', 'module']) {
     assert.equal(typeof new Raw({ apiKey: 'test', teamID: 'team' }).prism.objects.contacts.get, 'function');
     assert.equal(typeof micro.raw.prism.objects.contacts.get, 'function');
     assert.equal(typeof micro.companies.list, 'function');
+    assert.equal(typeof micro.companies.findOrCreate, 'function');
+    assert.equal(typeof micro.people.findOrCreate, 'function');
     micro.people.get('identity').then(person => assert.equal(person.full_name, 'Prince'));
   `,
     ],

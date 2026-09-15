@@ -12,6 +12,11 @@ export type WriteFields = { properties?: Record<string, unknown> };
 export type Page<T> = { data: T[]; next_cursor: string | null; has_more: boolean };
 export type ListOptions<W> = ReadOptions & { where?: W; limit?: number; cursor?: string };
 export type RecordData = { id: string; properties: Record<string, unknown> };
+export type FindOrCreateResult<T> = { record: T; created: boolean };
+export type MatchRequest = (
+  body: { match: Record<string, string>; defaults: Record<string, unknown> },
+  options: RequestOptions,
+) => Promise<unknown>;
 
 /** The write succeeded. Retrieve record_id instead of repeating the mutation. */
 export class WriteReadbackError extends Error {
@@ -76,7 +81,10 @@ type Wire = Pick<Organizations, 'create' | 'get' | 'update' | 'query'>;
 type Query = Parameters<Organizations['query']>[0]['query'];
 
 export abstract class Resource<T extends RecordData, W> {
-  constructor(protected readonly wire: Wire) {}
+  constructor(
+    protected readonly wire: Wire,
+    private readonly matchRequest?: MatchRequest,
+  ) {}
   protected abstract readonly keys: readonly string[];
   protected abstract readonly select: readonly string[];
   protected abstract normalize(value: unknown): T;
@@ -123,6 +131,31 @@ export abstract class Resource<T extends RecordData, W> {
       id === undefined ?
         await this.wire.create({ default: data }, request(options, true))
       : await this.wire.update(id, { default: data }, request(options, true));
+    return this.completeWrite(result, data, options);
+  }
+
+  protected async findOrCreateRecord(
+    match: Record<string, string>,
+    defaults: Record<string, unknown>,
+    options: CallOptions,
+  ): Promise<FindOrCreateResult<T>> {
+    if (!this.matchRequest) throw new TypeError('Find-or-create requires the configured simple client.');
+    const result = bag(await this.matchRequest({ match, defaults }, request(options, true)));
+    if (typeof result['created'] !== 'boolean') throw new InvalidResponseError('Missing created result.');
+    const row = bag(result['record']);
+    if (typeof row['id'] !== 'string') throw new InvalidResponseError('Record id is missing.');
+    const record =
+      result['created'] ?
+        await this.completeWrite({ ...row, id: row['id'] }, defaults, options)
+      : await this.get(row['id'], {}, options);
+    return { record, created: result['created'] };
+  }
+
+  private async completeWrite(
+    result: { id: string },
+    data: Record<string, unknown>,
+    options: CallOptions,
+  ): Promise<T> {
     const recordId = result.id;
     try {
       const values = fields(result).values;

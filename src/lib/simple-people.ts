@@ -22,6 +22,8 @@ export type Person = Record<(typeof NAMES)[number], string | null> & {
   properties: Record<string, unknown>;
 };
 export type PersonFilter = { email_address?: string; company_id?: string };
+export type PersonMatch = { email_address: string };
+export type PersonDefaults = Omit<PersonFields, 'email_addresses'>;
 
 function strings(value: unknown, field: string): string[] {
   if (!Array.isArray(value) || value.some((v) => typeof v !== 'string'))
@@ -96,6 +98,23 @@ export class People extends Resource<Person, PersonFilter> {
 
   async create(data: PersonFields, options: CallOptions = {}): Promise<Person> {
     return this.write(undefined, this.personInput(data), options);
+  }
+
+  /** Returns a single match unchanged. Defaults apply only when creating. */
+  async findOrCreate(match: PersonMatch, defaults: PersonDefaults = {}, options: CallOptions = {}) {
+    if (
+      !match ||
+      Object.keys(match).length !== 1 ||
+      typeof match.email_address !== 'string' ||
+      !match.email_address.trim()
+    )
+      throw new TypeError('Match requires exactly email_address.');
+    if ('email_addresses' in defaults) throw new TypeError('Supply the matching email through match.');
+    return this.findOrCreateRecord(
+      { email_address: match.email_address },
+      this.personInput(defaults),
+      options,
+    );
   }
 
   /** Supplied relationship arrays replace the set. Use add/remove helpers for deltas. */

@@ -46,6 +46,41 @@ Both resources have `create(fields, options?)`, `get(id, readOptions?, options?)
 - Company links use IDs, not company names or domains.
 - Failed or unresolved email projections raise an error instead of showing an empty list.
 
+## Find or create without overwriting
+
+Use `findOrCreate(match, defaults?, options?)` when connecting a signup to Micro:
+
+```ts
+const { record: company } = await micro.companies.findOrCreate(
+  { primary_domain: 'acme.com' },
+  { name: 'Acme' },
+);
+const { record: person, created } = await micro.people.findOrCreate(
+  { email_address: 'sam@acme.com' },
+  { full_name: 'Sam Lee' },
+);
+// Association is explicit, whether the person was found or created.
+await micro.people.addCompanies(person.id, [company.id]);
+```
+
+`created` is true only for a new record. A single existing match is returned unchanged;
+defaults never update it. If several accessible records match, the API returns 409
+with `multiple_matches`. List the matches and choose an ID explicitly; do not retry
+with `create`. No profiles are merged.
+
+Supply one email or domain in `match`, not again in defaults. Add other emails with
+`addEmails`. Email matching uses Micro's existing normalization. Domains are trimmed
+and lowercased; supply a bare domain such as `acme.com`, not a URL. Matching uses the
+canonical stored value: it does not search historical email spellings, domain aliases,
+or subdomains. Existing noncanonical values may need explicit lookup by ID.
+
+Matching covers records you can access in the configured workspace. Same-key calls
+through this endpoint are serialized. Ordinary create/update calls and changes in
+access can still lead to multiple matches; this is not a global uniqueness guarantee.
+The SDK does not automatically retry this operation. Failed readback after creation
+raises `WriteReadbackError`; a failed read of an existing match preserves the API error.
+Deploy the new API find-or-create endpoint before using these methods.
+
 ## Custom fields and filters
 
 Write custom fields using `properties: { customer_tier: 'enterprise' }`. Names and
