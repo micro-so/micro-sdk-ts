@@ -1,6 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export { Prism, type PrismObjectProperties } from './prism/prism';
+export { Feed } from './feed/feed';
+export { Updates, type FeedUpdate, type FeedUpdateCreate, type UpdateCreateParams } from './feed/updates';
 export { Realtime, type RealtimeCreateTicketResponse } from './realtime';
 export {
   TriggeredAutomations,

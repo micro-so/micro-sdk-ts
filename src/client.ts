@@ -17,6 +17,8 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
+import { Feed } from './resources/feed/feed';
+import { FeedUpdate, FeedUpdateCreate, UpdateCreateParams } from './resources/feed/updates';
 import { Realtime, RealtimeCreateTicketResponse } from './resources/realtime';
 import {
   TriggeredAutomation,
@@ -82,7 +84,8 @@ export interface ClientOptions {
    */
   apiKey?: string | undefined;
 
-  teamID: string;
+  /** Default workspace for workspace-scoped methods; unnecessary for personal feed updates. */
+  teamID?: string | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
@@ -158,7 +161,7 @@ export interface ClientOptions {
  */
 export class Micro {
   apiKey: string;
-  teamID: string;
+  teamID: string | undefined;
 
   baseURL: string;
   maxRetries: number;
@@ -176,7 +179,7 @@ export class Micro {
    * API Client for interfacing with the Micro API.
    *
    * @param {string | undefined} [opts.apiKey=process.env['MICRO_API_KEY'] ?? undefined]
-   * @param {string} opts.teamID
+   * @param {string} [opts.teamID] - Default workspace for workspace-scoped methods.
    * @param {string} [opts.baseURL=process.env['MICRO_BASE_URL'] ?? https://developers.micro.so] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
@@ -194,11 +197,6 @@ export class Micro {
     if (apiKey === undefined) {
       throw new Errors.MicroError(
         "The MICRO_API_KEY environment variable is missing or empty; either provide it, or instantiate the Micro client with an apiKey option, like new Micro({ apiKey: 'My API Key' }).",
-      );
-    }
-    if (teamID === undefined) {
-      throw new Errors.MicroError(
-        "Missing required client option teamID; you need to instantiate the Micro client with an teamID option, like new Micro({ teamID: 'My Team ID' }).",
       );
     }
 
@@ -797,6 +795,7 @@ export class Micro {
   static toFile = Uploads.toFile;
 
   prism: API.Prism = new API.Prism(this);
+  feed: API.Feed = new API.Feed(this);
   views: API.Views = new API.Views(this);
   triggeredAutomations: API.TriggeredAutomations = new API.TriggeredAutomations(this);
   webhooks: API.Webhooks = new API.Webhooks(this);
@@ -804,12 +803,19 @@ export class Micro {
 }
 
 Micro.Prism = Prism;
+Micro.Feed = Feed;
 Micro.Views = Views;
 Micro.TriggeredAutomations = TriggeredAutomations;
 Micro.Webhooks = Webhooks;
 Micro.Realtime = Realtime;
 
 export declare namespace Micro {
+  export {
+    Feed as Feed,
+    type FeedUpdate as FeedUpdate,
+    type FeedUpdateCreate as FeedUpdateCreate,
+    type UpdateCreateParams as UpdateCreateParams,
+  };
   export type RequestOptions = Opts.RequestOptions;
 
   export { Prism as Prism, type PrismObjectProperties as PrismObjectProperties };
