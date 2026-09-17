@@ -283,6 +283,37 @@ export class Identities extends APIResource {
   }
 
   /**
+   * Matches identity by normalized email_address or organization by canonical
+   * lowercase primary_domain. defaults is a flat slug/value object used only on
+   * creation; do not include the matching field. Returns 409 for multiple visible
+   * matches. Same-key calls through this endpoint serialize; ordinary creates and
+   * updates do not participate. Matching is workspace- and caller-access-scoped, not
+   * a global uniqueness guarantee.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.prism.objects.identities.findOrCreate({
+   *     match: { email_address: 'email_address' },
+   *   });
+   * ```
+   */
+  findOrCreate(
+    params: IdentityFindOrCreateParams,
+    options?: RequestOptions,
+  ): APIPromise<IdentityFindOrCreateResponse> {
+    const { teamId = this._client.teamID, 'Idempotency-Key': idempotencyKey, ...body } = params;
+    return this._client.post(path`/v2/prism/${teamId}/identity/find-or-create`, {
+      body,
+      ...options,
+      headers: buildHeaders([
+        { ...(idempotencyKey != null ? { 'Idempotency-Key': idempotencyKey } : undefined) },
+        options?.headers,
+      ]),
+    });
+  }
+
+  /**
    * Get object
    *
    * @example
@@ -402,7 +433,13 @@ export interface Identity {
   /**
    * Properties keyed by property slug. Values can be strings, numbers, booleans,
    * arrays, or null. For select/multiselect properties, values may be option slugs
-   * or option UUIDs on write; option slugs are returned on read.
+   * or option UUIDs on write; option slugs are returned on read. Identity
+   * email_addresses accepts contact UUIDs or email strings on create/update. Emails
+   * use Micro normalization and resolve to contact links within the write
+   * transaction; creating an identity does not merge other identities. Arrays
+   * replace links; {\_op: 'append'|'remove', values: [...]} changes only the
+   * specified links. Removing an email never creates a contact. Identity companies
+   * contains organization UUIDs, whose read access is checked when adding links.
    */
   default?: { [key: string]: unknown };
 
@@ -714,6 +751,20 @@ export interface IdentityFindResponse {
   list?: unknown;
 }
 
+export interface IdentityFindOrCreateResponse {
+  created: boolean;
+
+  record: IdentityFindOrCreateResponse.Record;
+}
+
+export namespace IdentityFindOrCreateResponse {
+  export interface Record {
+    id: string;
+
+    [k: string]: unknown;
+  }
+}
+
 /**
  * Object returned by reads (get/create/patch/restore). id is always present.
  */
@@ -816,6 +867,13 @@ export interface IdentityCreateParams {
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
    * booleans, arrays, or null. For select/multiselect properties, values may be
    * option slugs or option UUIDs on write; option slugs are returned on read.
+   * Identity email_addresses accepts contact UUIDs or email strings on
+   * create/update. Emails use Micro normalization and resolve to contact links
+   * within the write transaction; creating an identity does not merge other
+   * identities. Arrays replace links; {\_op: 'append'|'remove', values: [...]}
+   * changes only the specified links. Removing an email never creates a contact.
+   * Identity companies contains organization UUIDs, whose read access is checked
+   * when adding links.
    */
   default?: { [key: string]: unknown };
 
@@ -846,6 +904,13 @@ export interface IdentityUpdateParams {
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
    * booleans, arrays, or null. For select/multiselect properties, values may be
    * option slugs or option UUIDs on write; option slugs are returned on read.
+   * Identity email_addresses accepts contact UUIDs or email strings on
+   * create/update. Emails use Micro normalization and resolve to contact links
+   * within the write transaction; creating an identity does not merge other
+   * identities. Arrays replace links; {\_op: 'append'|'remove', values: [...]}
+   * changes only the specified links. Removing an email never creates a contact.
+   * Identity companies contains organization UUIDs, whose read access is checked
+   * when adding links.
    */
   default?: { [key: string]: unknown };
 
@@ -1112,6 +1177,40 @@ export interface IdentityFindParams {
   list_id?: string;
 }
 
+export interface IdentityFindOrCreateParams {
+  /**
+   * Path param
+   */
+  teamId?: string;
+
+  /**
+   * Body param
+   */
+  match: IdentityFindOrCreateParams.Match;
+
+  /**
+   * Body param
+   */
+  defaults?: { [key: string]: unknown };
+
+  /**
+   * Header param: A unique key (UUID or any opaque string up to 255 chars) for an
+   * authenticated POST, PUT, or PATCH request. The server retains the initial claim
+   * for 24 hours and replays a completed non-5xx response only when the method,
+   * path, and request body all match. Reusing a non-expired key with a different
+   * method, path, or body returns 409 `idempotency_key_mismatch`; reusing it after
+   * expiry returns 409 `idempotency_key_stale`, so use a new key. Replays include
+   * the `idempotent-replay: true` response header.
+   */
+  'Idempotency-Key'?: string;
+}
+
+export namespace IdentityFindOrCreateParams {
+  export interface Match {
+    email_address: string;
+  }
+}
+
 export interface IdentityGetParams {
   /**
    * Path param
@@ -1358,6 +1457,13 @@ export interface IdentityUpsertParams {
    * Body param: Properties keyed by property slug. Values can be strings, numbers,
    * booleans, arrays, or null. For select/multiselect properties, values may be
    * option slugs or option UUIDs on write; option slugs are returned on read.
+   * Identity email_addresses accepts contact UUIDs or email strings on
+   * create/update. Emails use Micro normalization and resolve to contact links
+   * within the write transaction; creating an identity does not merge other
+   * identities. Arrays replace links; {\_op: 'append'|'remove', values: [...]}
+   * changes only the specified links. Removing an email never creates a contact.
+   * Identity companies contains organization UUIDs, whose read access is checked
+   * when adding links.
    */
   default?: { [key: string]: unknown };
 
@@ -1390,6 +1496,7 @@ export declare namespace Identities {
     type IdentityCountResponse as IdentityCountResponse,
     type IdentityDuplicateResponse as IdentityDuplicateResponse,
     type IdentityFindResponse as IdentityFindResponse,
+    type IdentityFindOrCreateResponse as IdentityFindOrCreateResponse,
     type IdentityGetResponse as IdentityGetResponse,
     type IdentityQueryResponse as IdentityQueryResponse,
     type IdentityRestoreResponse as IdentityRestoreResponse,
@@ -1404,6 +1511,7 @@ export declare namespace Identities {
     type IdentityCountParams as IdentityCountParams,
     type IdentityDuplicateParams as IdentityDuplicateParams,
     type IdentityFindParams as IdentityFindParams,
+    type IdentityFindOrCreateParams as IdentityFindOrCreateParams,
     type IdentityGetParams as IdentityGetParams,
     type IdentityQueryParams as IdentityQueryParams,
     type IdentityRestoreParams as IdentityRestoreParams,

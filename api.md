@@ -112,6 +112,7 @@ Types:
 - <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationCountResponse</a></code>
 - <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationDuplicateResponse</a></code>
 - <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationFindResponse</a></code>
+- <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationFindOrCreateResponse</a></code>
 - <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationGetResponse</a></code>
 - <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationQueryResponse</a></code>
 - <code><a href="./src/resources/prism/objects/organizations.ts">OrganizationRestoreResponse</a></code>
@@ -129,6 +130,7 @@ Methods:
 - <code title="get /v2/prism/{teamId}/organization/count">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">count</a>({ ...params }) -> OrganizationCountResponse</code>
 - <code title="post /v2/prism/{teamId}/organization/{organizationId}/duplicate">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">duplicate</a>(organizationID, { ...params }) -> OrganizationDuplicateResponse</code>
 - <code title="get /v2/prism/{teamId}/organization/by/{slug}/{value}">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">find</a>(value, { ...params }) -> OrganizationFindResponse</code>
+- <code title="post /v2/prism/{teamId}/organization/find-or-create">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">findOrCreate</a>({ ...params }) -> OrganizationFindOrCreateResponse</code>
 - <code title="get /v2/prism/{teamId}/organization/{organizationId}">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">get</a>(organizationID, { ...params }) -> OrganizationGetResponse</code>
 - <code title="post /v2/prism/{teamId}/organization/query">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">query</a>({ ...params }) -> OrganizationQueryResponse</code>
 - <code title="post /v2/prism/{teamId}/organization/{organizationId}/restore">client.prism.objects.organizations.<a href="./src/resources/prism/objects/organizations.ts">restore</a>(organizationID, { ...params }) -> OrganizationRestoreResponse</code>
@@ -148,6 +150,7 @@ Types:
 - <code><a href="./src/resources/prism/objects/identities.ts">IdentityCountResponse</a></code>
 - <code><a href="./src/resources/prism/objects/identities.ts">IdentityDuplicateResponse</a></code>
 - <code><a href="./src/resources/prism/objects/identities.ts">IdentityFindResponse</a></code>
+- <code><a href="./src/resources/prism/objects/identities.ts">IdentityFindOrCreateResponse</a></code>
 - <code><a href="./src/resources/prism/objects/identities.ts">IdentityGetResponse</a></code>
 - <code><a href="./src/resources/prism/objects/identities.ts">IdentityQueryResponse</a></code>
 - <code><a href="./src/resources/prism/objects/identities.ts">IdentityRestoreResponse</a></code>
@@ -165,6 +168,7 @@ Methods:
 - <code title="get /v2/prism/{teamId}/identity/count">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">count</a>({ ...params }) -> IdentityCountResponse</code>
 - <code title="post /v2/prism/{teamId}/identity/{identityId}/duplicate">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">duplicate</a>(identityID, { ...params }) -> IdentityDuplicateResponse</code>
 - <code title="get /v2/prism/{teamId}/identity/by/{slug}/{value}">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">find</a>(value, { ...params }) -> IdentityFindResponse</code>
+- <code title="post /v2/prism/{teamId}/identity/find-or-create">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">findOrCreate</a>({ ...params }) -> IdentityFindOrCreateResponse</code>
 - <code title="get /v2/prism/{teamId}/identity/{identityId}">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">get</a>(identityID, { ...params }) -> IdentityGetResponse</code>
 - <code title="post /v2/prism/{teamId}/identity/query">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">query</a>({ ...params }) -> IdentityQueryResponse</code>
 - <code title="post /v2/prism/{teamId}/identity/{identityId}/restore">client.prism.objects.identities.<a href="./src/resources/prism/objects/identities.ts">restore</a>(identityID, { ...params }) -> IdentityRestoreResponse</code>
