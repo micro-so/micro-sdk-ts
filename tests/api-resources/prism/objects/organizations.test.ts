@@ -329,6 +329,30 @@ describe('resource organizations', () => {
   });
 
   // Mock server tests are disabled
+  test.skip('findOrCreate: only required params', async () => {
+    const responsePromise = client.prism.objects.organizations.findOrCreate({
+      match: { primary_domain: 'primary_domain' },
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('findOrCreate: required and optional params', async () => {
+    const response = await client.prism.objects.organizations.findOrCreate({
+      teamId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      match: { primary_domain: 'primary_domain' },
+      defaults: { foo: 'bar' },
+      'Idempotency-Key': 'x',
+    });
+  });
+
+  // Mock server tests are disabled
   test.skip('get: only required params', async () => {
     const responsePromise = client.prism.objects.organizations.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();

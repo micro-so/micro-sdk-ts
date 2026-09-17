@@ -227,6 +227,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v2/prism/{teamId}/organization/by/{slug}/{value}',
   },
   {
+    clientCallName: 'client.prism.objects.organizations.findOrCreate',
+    fullyQualifiedName: 'prism.objects.organizations.findOrCreate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/organization/find-or-create',
+  },
+  {
     clientCallName: 'client.prism.objects.organizations.get',
     fullyQualifiedName: 'prism.objects.organizations.get',
     httpMethod: 'get',
@@ -309,6 +315,12 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'prism.objects.identities.find',
     httpMethod: 'get',
     httpPath: '/v2/prism/{teamId}/identity/by/{slug}/{value}',
+  },
+  {
+    clientCallName: 'client.prism.objects.identities.findOrCreate',
+    fullyQualifiedName: 'prism.objects.identities.findOrCreate',
+    httpMethod: 'post',
+    httpPath: '/v2/prism/{teamId}/identity/find-or-create',
   },
   {
     clientCallName: 'client.prism.objects.identities.get',
