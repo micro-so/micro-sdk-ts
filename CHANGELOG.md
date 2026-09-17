@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.15.0 (2026-09-17)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **api:** api update ([3a85507](https://github.com/micro-so/micro-sdk-ts/commit/3a85507506f275d14ae0c979f947d2f788a2b034))
+
+
+### Documentation
+
+* **mcp:** document code execution modes and the local code runner ([2ec3156](https://github.com/micro-so/micro-sdk-ts/commit/2ec31564ecd5f1f124b9bacd1e4ffeceea360b69))
+
 ## 0.14.0 (2026-08-21)
 
 Full Changelog: [v0.13.0...v0.14.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.13.0...v0.14.0)
