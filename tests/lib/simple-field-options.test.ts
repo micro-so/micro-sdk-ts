@@ -101,6 +101,9 @@ describe('simple field options over the generated transport', () => {
 
   it('rejects misspellings, missing labels, slug updates, and non-select fields before HTTP', async () => {
     await expect(fields.options.create(field, { color: 'blue' } as never)).rejects.toThrow('Option label');
+    await expect(fields.options.create(field, Object.create({ label: 'Inherited' }))).rejects.toThrow(
+      'Option label',
+    );
     await expect(
       fields.options.create(field, { label: 'Customer', colour: 'blue' } as never),
     ).rejects.toThrow('Unknown option create field');

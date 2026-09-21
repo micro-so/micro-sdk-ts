@@ -40,8 +40,13 @@ describe('simple fields over the generated transport', () => {
     fields = new Fields(raw.prism.properties);
   });
 
-  it('discovers only the requested list scope without hydrating options', async () => {
+  it('discovers only the requested list scope and distinguishes skipped options', async () => {
     replies.push(
+      json({
+        organization: {
+          'field-1': { id: 'field-1', slug: 'stage', name: 'Stage', type: 'select_str', list_id: 'list-1' },
+        },
+      }),
       json({
         organization: {
           'field-1': { id: 'field-1', slug: 'stage', name: 'Stage', type: 'select_str', list_id: 'list-1' },
@@ -49,12 +54,15 @@ describe('simple fields over the generated transport', () => {
       }),
     );
     const result = await fields.list({ source: list, term: 'stage' });
-    expect(result[0]).toMatchObject({ type: 'select', source: list });
+    expect(result[0]).toMatchObject({ type: 'select', source: list, options: [] });
     expect(Object.fromEntries(new URL(calls[0]!.url).searchParams)).toEqual({
       list_id: 'list-1',
       term: 'stage',
-      include_options: 'false',
+      include_options: 'true',
     });
+    const withoutOptions = await fields.list({ source: list, include_options: false });
+    expect(withoutOptions[0]!.options).toBeNull();
+    expect(new URL(calls[1]!.url).searchParams.get('include_options')).toBe('false');
   });
 
   it('treats an empty scoped schema as empty and get as not found', async () => {
@@ -109,6 +117,9 @@ describe('simple fields over the generated transport', () => {
     await expect(fields.list({ source: { record_type: 'people', scope: {} } as never })).rejects.toThrow(
       'scope',
     );
+    await expect(
+      fields.create(Object.create({ source: workspace, name: 'Bad', type: 'text' })),
+    ).rejects.toThrow('requires source');
     expect(calls).toHaveLength(0);
   });
 });
