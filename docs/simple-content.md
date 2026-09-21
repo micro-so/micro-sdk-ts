@@ -24,7 +24,9 @@ some structure or formatting is not represented fully; `unsupported_blocks`
 identifies affected block types where applicable. Formatting-only loss can
 have an empty block list. Neither label is permission to overwrite the rich
 source with the projection. The version belongs to editor content, not record
-metadata, and does not imply that content writes are currently supported.
+metadata, and does not imply that content writes are currently supported. A live
+snapshot may include edits that have not yet been saved; its version is not a
+proof of persistence.
 
 The task endpoint excludes automations and templates on the server. Both
 endpoints authorize the record in the configured workspace, including reads
@@ -33,7 +35,8 @@ by callers who cannot edit it. They never expose internal encoded Yjs state.
 ## Deployment dependency
 
 These methods require the new authenticated API content routes and the
-editor's pure snapshot endpoint, with `HOCUSPOCUS_URL` configured in the API.
+editor's workspace-bound pure snapshot endpoint (protocol 2), with
+`HOCUSPOCUS_URL` configured in the API.
 Deploy the editor capability before the API routes, then publish the SDK.
 An older or unavailable editor produces a service-unavailable error. Reads
 must not fall back to the legacy connection lifecycle that can save content
