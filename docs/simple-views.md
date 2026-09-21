@@ -31,7 +31,7 @@ await micro.views.update(view.id, { source, sort: [{ amount: 'desc' }] });
 await micro.views.delete(view.id, { source });
 ```
 
-The source on `update` only tells the SDK which API route and list scope to use. It is never sent as an ownership change. A response whose list or workspace ownership does not match the requested source is rejected. Because the current mutation URLs omit the list ID, the helper reads the view first and checks its source before updating or deleting. All local arguments are validated before that read. This prevents ordinary cross-list mistakes, but the server still needs an atomic source precondition to close the race with ownership changes made through the raw API.
+The source on `update` only tells the SDK which API route and list scope to use. It is never sent as an ownership change. A response whose list or workspace ownership does not match the requested source is rejected. Because the current mutation URLs omit the list ID, the helper reads the view first and checks its source before updating or deleting. All local arguments are validated before that read. The accompanying API changes enforce the stored source and forbid source transfers through public view updates, including raw API calls. Deploy those checks before exposing these helpers.
 
 `list` returns `{data, next_cursor, has_more}`. `iterate` follows opaque cursors lazily, stops on cancellation, and rejects repeated or inconsistent cursors. View responses lack a canonical mutation version, and writes are not retried automatically.
 

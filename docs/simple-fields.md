@@ -32,7 +32,7 @@ await micro.fields.archive(sameField);
 
 Creation supports `text`, `number`, `boolean`, `date`, `select`, `multiselect`, and `json`. Discovery may return `reference`, `multireference`, or `unsupported` for definitions this helper cannot safely create. The returned field retains its exact source and server storage type for safe updates.
 
-Archiving uses the API's `enabled: false` behavior and does not delete stored values. Native and read-only fields cannot be updated or archived through this helper. Writes are never retried automatically; pass `idempotencyKey` when retrying one logical write yourself.
+Archiving uses the API's `enabled: false` behavior and does not delete stored values. Native and read-only fields cannot be updated or archived through this helper. Writes are never retried automatically. Passing `idempotencyKey` does not establish replay safety unless the endpoint supports it; reconcile an uncertain outcome before retrying.
 
 List schema changes require edit access to that list. The API checks that the field and its options
 belong to the supplied source; changing a handle's list ID does not move the field. The SDK also
