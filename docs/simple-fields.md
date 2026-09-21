@@ -20,7 +20,9 @@ Supported record types are `people`, `companies`, `tasks`, `documents`, `deals`,
 
 ```ts
 const fields = await micro.fields.list({ source, term: 'tier' });
-const sameField = await micro.fields.get(fields[0].id, { source });
+const firstField = fields[0];
+if (!firstField) throw new Error('No matching fields.');
+const sameField = await micro.fields.get(firstField.id, { source });
 
 await micro.fields.update(sameField, { name: 'Customer tier' });
 await micro.fields.archive(sameField);
@@ -33,3 +35,9 @@ Creation supports `text`, `number`, `boolean`, `date`, `select`, `multiselect`, 
 Archiving uses the API's `enabled: false` behavior and does not delete stored values. Native and read-only fields cannot be updated or archived through this helper. Writes are never retried automatically; pass `idempotencyKey` when retrying one logical write yourself.
 
 Current API limits remain visible: there is no validation endpoint, archived-field listing, or schema version token. Mocked SDK tests verify request shape and safety behavior; they do not establish production deployment or acceptance.
+
+Field creation and its initial options commit together when the corresponding API fix is deployed.
+If a response reports `write_committed` after a metadata-refresh failure, use the supplied `field_id`
+to retrieve the created field; do not repeat creation. `write_outcome_unknown` means the server lost
+confirmation during commit: reconcile that ID before deciding whether another write is needed.
+The SDK preserves the API error body and never retries either outcome automatically.

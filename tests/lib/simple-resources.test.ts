@@ -67,3 +67,40 @@ it('uses one discovered list source across fields and views through the public s
   expect(typeof micro.people.get).toBe('function');
   expect(typeof micro.raw.prism.objects.contacts.get).toBe('function');
 });
+
+it.each(['write_committed', 'write_outcome_unknown'])(
+  'preserves %s field-creation details without retry',
+  async (code) => {
+    let calls = 0;
+    const payload = {
+      error: {
+        code,
+        message: 'Reconcile field creation',
+        details: {
+          field_id: 'created-field',
+          write_committed: code === 'write_committed' ? true : 'unknown',
+        },
+      },
+    };
+    const micro = new Micro({
+      apiKey: 'test',
+      teamID: 'team',
+      maxRetries: 3,
+      fetch: async () => {
+        calls++;
+        return new Response(JSON.stringify(payload), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      },
+    });
+    await expect(
+      micro.fields.create({
+        source: { record_type: 'companies', scope: { type: 'workspace' } },
+        name: 'Tier',
+        type: 'select',
+      }),
+    ).rejects.toMatchObject({ error: payload });
+    expect(calls).toBe(1);
+  },
+);
