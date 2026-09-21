@@ -43,7 +43,25 @@ Making a new or previously optional custom field required currently returns
 enable that requirement safely. Existing required fields remain readable and enforced on ordinary
 record create/update; import enforcement is a separate unresolved API limitation.
 
-Current API limits remain visible: there is no validation endpoint, archived-field listing, or schema version token. Mocked SDK tests verify request shape and safety behavior; they do not establish production deployment or acceptance.
+Validate values against one source before attempting a record write:
+
+```ts
+const result = await micro.fields.validate({
+  source,
+  operation: 'update',
+  properties: { tier: 'enterprise' },
+});
+if (!result.valid) console.log(result.errors);
+```
+
+Validation returns `{valid, errors}` with field paths, issue codes, and messages. It reads the
+current schema and does not write a record. A successful preflight does not reserve the schema,
+prove record access or writability, or guarantee that a later write will succeed. Authorization
+failures still throw API errors. This method requires the accompanying validation endpoint.
+
+Current API limits remain visible: there is no archived-field listing or schema version token.
+Mocked SDK tests verify request shape and safety behavior; they do not establish production
+deployment or acceptance.
 
 Field creation and its initial options commit together when the corresponding API fix is deployed.
 If a response reports `write_committed` after a metadata-refresh failure, use the supplied `field_id`

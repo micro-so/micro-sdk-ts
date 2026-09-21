@@ -37,7 +37,7 @@ describe('simple fields over the generated transport', () => {
         return replies.shift()!;
       },
     });
-    fields = new Fields(raw.prism.properties);
+    fields = new Fields(raw);
   });
 
   it('discovers only the requested list scope and distinguishes skipped options', async () => {

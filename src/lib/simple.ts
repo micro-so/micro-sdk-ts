@@ -19,6 +19,11 @@ export {
 
 export { type SimpleRecordType, type SimpleScope, type SimpleSource } from './simple-scope';
 export {
+  type FieldValidationParams,
+  type FieldValidationIssue,
+  type FieldValidationResult,
+} from './simple-field-validation';
+export {
   Fields,
   FieldNotFoundError,
   type Field,
@@ -64,7 +69,7 @@ export default class Micro {
     this.raw = new RawMicro(options);
     this.companies = new Companies(this.raw.prism.objects.organizations);
     this.people = new People(this.raw.prism.objects.identities);
-    this.fields = new Fields(this.raw.prism.properties);
+    this.fields = new Fields(this.raw);
     this.lists = new Lists(this.raw);
     this.views = new Views(this.raw.views, options.teamID);
   }
