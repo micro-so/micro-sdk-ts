@@ -158,8 +158,10 @@ export function normalizeView(value: unknown, source: SimpleSource, teamID: stri
   if (typeof row['id'] !== 'string') throw new InvalidResponseError('View id is missing.');
   if (typeof row['name'] !== 'string') throw new InvalidResponseError('View name is missing.');
   const layout =
-    typeof row['view_type'] === 'string' &&
-    Object.prototype.hasOwnProperty.call(FROM_WIRE_LAYOUT, row['view_type']) ?
+    (
+      typeof row['view_type'] === 'string' &&
+      Object.prototype.hasOwnProperty.call(FROM_WIRE_LAYOUT, row['view_type'])
+    ) ?
       FROM_WIRE_LAYOUT[row['view_type']]
     : undefined;
   if (!layout) throw new InvalidResponseError('View layout is unsupported.');
