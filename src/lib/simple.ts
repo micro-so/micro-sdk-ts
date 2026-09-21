@@ -4,6 +4,14 @@ import { People } from './simple-people';
 import { Fields } from './simple-fields';
 import { Lists } from './simple-lists';
 import { Views } from './simple-views';
+import { ContentReader } from './simple-content';
+
+export {
+  type ContentReadParams,
+  type ContentSnapshot,
+  type DocumentContent,
+  type TaskDescription,
+} from './simple-content';
 
 export { People, type Person, type PersonFields, type PersonFilter } from './simple-people';
 
@@ -64,6 +72,8 @@ export default class Micro {
   readonly fields: Fields;
   readonly lists: Lists;
   readonly views: Views;
+  readonly documents: { readonly content: ContentReader<'document_id'> };
+  readonly tasks: { readonly description: ContentReader<'task_id'> };
 
   constructor(options: ClientOptions) {
     this.raw = new RawMicro(options);
@@ -72,5 +82,7 @@ export default class Micro {
     this.fields = new Fields(this.raw);
     this.lists = new Lists(this.raw);
     this.views = new Views(this.raw.views, options.teamID);
+    this.documents = { content: new ContentReader(this.raw, 'document_id') };
+    this.tasks = { description: new ContentReader(this.raw, 'task_id') };
   }
 }
