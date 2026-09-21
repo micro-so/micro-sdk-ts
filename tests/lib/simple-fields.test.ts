@@ -132,6 +132,60 @@ describe('simple fields over the generated transport', () => {
     );
   });
 
+  it('rejects foreign options beneath a shared pipeline-stage definition', async () => {
+    replies.push(
+      json({
+        organization: {
+          'field-1': {
+            id: 'field-1',
+            slug: 'status',
+            name: 'Stage',
+            type: 'select_str',
+            list_id: null,
+            alias: 'app_stage',
+            options: [{ id: 'opt', slug: 'won', value: 'Won', list_id: 'list-2' }],
+          },
+        },
+      }),
+    );
+    await expect(fields.list({ source: list })).rejects.toThrow('Option metadata does not match');
+  });
+
+  it('rejects a list option beneath a workspace field', async () => {
+    replies.push(
+      json({
+        identity: {
+          'field-1': {
+            id: 'field-1',
+            slug: 'tier',
+            name: 'Tier',
+            type: 'select_str',
+            options: [{ id: 'opt', slug: 'won', value: 'Won', list_id: 'list-2' }],
+          },
+        },
+      }),
+    );
+    await expect(fields.list({ source: workspace })).rejects.toThrow('Option metadata does not match');
+  });
+
+  it('rejects contradictory field list identifiers', async () => {
+    replies.push(
+      json({
+        organization: {
+          'field-1': {
+            id: 'field-1',
+            slug: 'tier',
+            name: 'Tier',
+            type: 'select_str',
+            list_id: 'list-1',
+            crm_id: 'list-2',
+          },
+        },
+      }),
+    );
+    await expect(fields.list({ source: list })).rejects.toThrow('contradictory list identifiers');
+  });
+
   it('rejects a mutation response that reports a different field source without retrying', async () => {
     replies.push(json({ id: 'field-1', slug: 'tier', name: 'Tier', type: 'select_str', list_id: 'list-2' }));
     await expect(fields.create({ source: list, name: 'Tier', type: 'select' })).rejects.toThrow(

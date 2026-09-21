@@ -22,7 +22,7 @@ it('uses one discovered list source across fields and views through the public s
           slug: 'stage',
           type: 'select_str',
           list_id: 'partners',
-          options: [{ id: 'new-option', slug: 'new', value: 'New' }],
+          options: [{ id: 'new-option', slug: 'new', value: 'New', list_id: 'partners' }],
         },
       },
     },
