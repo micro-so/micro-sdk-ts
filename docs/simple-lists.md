@@ -30,3 +30,6 @@ resources ship. The current API does not expose
 a distinct membership ID, membership timestamps/version, or cleanly separated list-scoped values.
 For that reason, the simple SDK does not yet offer membership add, update, remove, or restore.
 Removing a view pin is never treated as removing list membership.
+
+Membership reads include only records visible to the caller; they are not an administrative
+inventory of private members. This requires the accompanying API record-access and pagination fixes.
