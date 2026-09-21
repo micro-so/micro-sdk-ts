@@ -1,6 +1,7 @@
 import type { Views as GeneratedViews } from '../resources/views/views';
 import { bag, InvalidResponseError, request, type CallOptions, type Page } from './simple-core';
 import { resolveSource, type SimpleSource } from './simple-scope';
+import { ViewRecords } from './simple-view-records';
 
 export type ViewLayout = 'table' | 'list' | 'board';
 export type ViewFilter = Array<Record<string, unknown>>;
@@ -158,8 +159,10 @@ export function normalizeView(value: unknown, source: SimpleSource, teamID: stri
   if (typeof row['id'] !== 'string') throw new InvalidResponseError('View id is missing.');
   if (typeof row['name'] !== 'string') throw new InvalidResponseError('View name is missing.');
   const layout =
-    typeof row['view_type'] === 'string' &&
-    Object.prototype.hasOwnProperty.call(FROM_WIRE_LAYOUT, row['view_type']) ?
+    (
+      typeof row['view_type'] === 'string' &&
+      Object.prototype.hasOwnProperty.call(FROM_WIRE_LAYOUT, row['view_type'])
+    ) ?
       FROM_WIRE_LAYOUT[row['view_type']]
     : undefined;
   if (!layout) throw new InvalidResponseError('View layout is unsupported.');
@@ -199,10 +202,22 @@ export function normalizeView(value: unknown, source: SimpleSource, teamID: stri
 }
 
 export class Views {
+  readonly records: ViewRecords;
+
   constructor(
     private readonly wire: ViewWire,
     private readonly teamID: string,
-  ) {}
+  ) {
+    this.records = new ViewRecords(wire.records, async (viewId, source, options) => {
+      const resolved = resolveViewSource(source);
+      normalizeView(
+        await wire.get(viewId, { objectType: resolved.objectType }, request(options)),
+        source,
+        teamID,
+      );
+      return resolved;
+    });
+  }
 
   async create(data: ViewCreate, options: CallOptions = {}): Promise<View> {
     viewKeys(data, ['source', 'name', 'layout', 'columns', 'filter', 'sort', 'combinator', 'group_by']);
