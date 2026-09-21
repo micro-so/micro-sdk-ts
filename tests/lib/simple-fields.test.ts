@@ -16,6 +16,7 @@ const field: Field = {
   required: false,
   read_only: false,
   native: false,
+  options: [],
 };
 
 describe('simple fields over the generated transport', () => {
