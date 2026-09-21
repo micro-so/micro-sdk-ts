@@ -95,9 +95,9 @@ describe('simple lists using the generated HTTP transport', () => {
     await expect(lists.create({ template_id: 'custom', name: 'Missing type' })).rejects.toThrow(
       'record_type',
     );
-    await expect(
-      lists.create({ template_id: 'deal_flow', record_type: 'deals' }),
-    ).rejects.toThrow('only allowed');
+    await expect(lists.create({ template_id: 'deal_flow', record_type: 'deals' })).rejects.toThrow(
+      'only allowed',
+    );
     await expect(lists.create({ template_id: 'deal_flow', typo: true } as never)).rejects.toThrow(
       'accepts only',
     );
@@ -151,10 +151,7 @@ describe('simple lists using the generated HTTP transport', () => {
     replies.push(response(list({ object_type: 'message' })));
     await expect(lists.records.list('list-a')).rejects.toBeInstanceOf(InvalidResponseError);
 
-    replies.push(
-      response(list()),
-      response({ data: [], has_more: true, next_cursor: 'same' }),
-    );
+    replies.push(response(list()), response({ data: [], has_more: true, next_cursor: 'same' }));
     await expect(lists.records.list('list-a', { cursor: 'same' })).rejects.toBeInstanceOf(
       InvalidResponseError,
     );

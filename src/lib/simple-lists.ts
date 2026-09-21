@@ -1,10 +1,7 @@
 import type RawMicro from '../index';
+import type { Lists as GeneratedLists } from '../resources/prism/lists';
 import { bag, InvalidResponseError, request, type CallOptions, type Page } from './simple-core';
-import {
-  recordTypeForObjectType,
-  resolveObjectType,
-  type SimpleObjectType,
-} from './simple-scope';
+import { recordTypeForObjectType, resolveObjectType, type SimpleObjectType } from './simple-scope';
 
 const LIST_RECORD_TYPES = ['companies', 'people', 'tasks', 'documents', 'deals'] as const;
 export type ListRecordType = (typeof LIST_RECORD_TYPES)[number];
@@ -143,18 +140,21 @@ class ListTemplates {
   async get(id: string, options: CallOptions = {}): Promise<ListTemplate> {
     const templateId = encodeURIComponent(nonempty(id, 'template id'));
     return normalizeTemplate(
-      await this.client.get(
-        `/v2/prism/${this.client.teamID}/list-templates/${templateId}`,
-        request(options),
-      ),
+      await this.client.get(`/v2/prism/${this.client.teamID}/list-templates/${templateId}`, request(options)),
     );
   }
 }
 
 class ListRecords {
-  constructor(private readonly lists: Lists, private readonly client: RawMicro) {}
+  constructor(
+    private readonly lists: Lists,
+    private readonly client: RawMicro,
+  ) {}
 
-  private async source(listId: string, options: CallOptions): Promise<{ type: ListRecordType; object: SimpleObjectType }> {
+  private async source(
+    listId: string,
+    options: CallOptions,
+  ): Promise<{ type: ListRecordType; object: SimpleObjectType }> {
     const list = await this.lists.get(listId, options);
     return { type: list.record_type, object: resolveObjectType(list.record_type) };
   }
@@ -172,7 +172,10 @@ class ListRecords {
     });
     return page(
       result,
-      (value) => ({ list_id: listId, record: { type: source.type, id: text(bag(value)['id'], 'record id')! } }),
+      (value) => ({
+        list_id: listId,
+        record: { type: source.type, id: text(bag(value)['id'], 'record id')! },
+      }),
       params.cursor,
     );
   }
@@ -222,7 +225,12 @@ class ListRecords {
         if (seen.has(cursor)) throw new InvalidResponseError('Repeating pagination cursor.');
         seen.add(cursor);
       }
-      const result = await this.page(safeListId, source, { ...safeParams, ...(cursor ? { cursor } : {}) }, options);
+      const result = await this.page(
+        safeListId,
+        source,
+        { ...safeParams, ...(cursor ? { cursor } : {}) },
+        options,
+      );
       for (const entry of result.data) {
         options.signal?.throwIfAborted();
         yield entry;
@@ -236,14 +244,17 @@ class ListRecords {
 export class Lists {
   readonly templates: ListTemplates;
   readonly records: ListRecords;
+  private readonly wire: Pick<GeneratedLists, 'create' | 'get' | 'list'>;
 
   constructor(private readonly client: RawMicro) {
+    this.wire = client.prism.lists;
     this.templates = new ListTemplates(client);
     this.records = new ListRecords(this, client);
   }
 
   async create(data: ListCreate, options: CallOptions = {}): Promise<List> {
-    if (!data || typeof data !== 'object' || Array.isArray(data)) throw new TypeError('List data is required.');
+    if (!data || typeof data !== 'object' || Array.isArray(data))
+      throw new TypeError('List data is required.');
     if (Object.keys(data).some((key) => !['template_id', 'name', 'icon', 'record_type'].includes(key))) {
       throw new TypeError('List data accepts only template_id, name, icon, and record_type.');
     }
@@ -251,7 +262,8 @@ export class Lists {
     if (data.name !== undefined) nonempty(data.name, 'name');
     if (data.icon !== undefined) nonempty(data.icon, 'icon');
     if (data.template_id === 'custom') {
-      if (!data.name || typeof data.name !== 'string') throw new TypeError('name is required for a custom list.');
+      if (!data.name || typeof data.name !== 'string')
+        throw new TypeError('name is required for a custom list.');
       if (!data.record_type || !LIST_RECORD_TYPES.includes(data.record_type)) {
         throw new TypeError(`record_type must be one of: ${LIST_RECORD_TYPES.join(', ')}.`);
       }
@@ -259,23 +271,22 @@ export class Lists {
       throw new TypeError('record_type is only allowed for the custom template.');
     }
     const { record_type, ...body } = data;
-    return normalizeList(
-      await this.client.post(`/v2/prism/${this.client.teamID}/lists`, {
-        ...request(options, true),
-        body: { ...body, ...(record_type ? { object_type: resolveObjectType(record_type) } : {}) },
-      }),
-    );
+    // Templates are discovered at runtime, while the generated declaration lists
+    // only the templates known when its OpenAPI snapshot was produced.
+    const input = {
+      ...body,
+      ...(record_type ? { object_type: resolveObjectType(record_type) } : {}),
+    } as Parameters<GeneratedLists['create']>[0];
+    return normalizeList(await this.wire.create(input, request(options, true)));
   }
 
   async get(id: string, options: CallOptions = {}): Promise<List> {
-    const listId = encodeURIComponent(nonempty(id, 'list id'));
-    return normalizeList(
-      await this.client.get(`/v2/prism/${this.client.teamID}/lists/${listId}`, request(options)),
-    );
+    const listId = nonempty(id, 'list id');
+    return normalizeList(await this.wire.get(listId, {}, request(options)));
   }
 
   async list(options: CallOptions = {}): Promise<Page<List>> {
-    const result = await this.client.get(`/v2/prism/${this.client.teamID}/lists`, request(options));
+    const result = await this.wire.list({}, request(options));
     // The current API returns the complete accessible inventory and has no cursor contract.
     return page(result, normalizeList);
   }
