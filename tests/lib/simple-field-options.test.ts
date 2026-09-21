@@ -48,6 +48,7 @@ describe('simple field options over the generated transport', () => {
             slug: 'tier',
             name: 'Tier',
             type: 'select_str',
+            list_id: 'list-1',
             options: [
               { id: 'option-1', slug: 'customer', value: 'Customer', color_scheme: 'green', sort_index: 2 },
             ],

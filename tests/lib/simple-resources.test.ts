@@ -21,6 +21,7 @@ it('uses one discovered list source across fields and views through the public s
           name: 'Stage',
           slug: 'stage',
           type: 'select_str',
+          list_id: 'partners',
           options: [{ id: 'new-option', slug: 'new', value: 'New' }],
         },
       },

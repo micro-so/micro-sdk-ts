@@ -171,7 +171,18 @@ function fieldType(storageType: StorageType): { type: FieldType; reference_type:
   return { type: 'unsupported', reference_type: null };
 }
 
+function assertFieldSource(value: WireField, source: SimpleSource): void {
+  const expected = source.scope.type === 'list' ? source.scope.list_id : null;
+  const actual = value.list_id ?? value.crm_id ?? null;
+  // The API intentionally overlays this shared definition with list-specific stage options.
+  const sharedStage = expected !== null && actual === null && value.alias === 'app_stage';
+  if (actual !== expected && !sharedStage) {
+    throw new InvalidResponseError('Field metadata does not match the requested source.');
+  }
+}
+
 function normalizeField(value: WireField, source: SimpleSource, optionsLoaded: boolean): Field {
+  assertFieldSource(value, source);
   if (!STORAGE_TYPES.has(value.type)) throw new InvalidResponseError('Field storage type is invalid.');
   const kind = fieldType(value.type);
   return {
@@ -278,6 +289,7 @@ export class FieldOptions {
     }
     const found = (group as Record<string, WireField>)[target.id];
     if (!found) throw new FieldNotFoundError(target.id, target.source);
+    assertFieldSource(found, target.source);
     return (found.options ?? []).map(normalizeOption);
   }
 
