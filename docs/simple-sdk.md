@@ -120,7 +120,6 @@ the new public content routes and pure editor snapshot endpoint. See [content re
 for deployment dependencies and projection limits. Task/document lifecycle and content
 replace/append remain unavailable pending shared versioning and durable persistence work.
 
-
 For a complete core workflow, run `npm run tsn -- examples/simple-core.ts` from
 this repository with `MICRO_API_KEY`, `MICRO_TEAM_ID`, and optionally
 `MICRO_BASE_URL` pointing to a disposable workspace. Deploy the accompanying
