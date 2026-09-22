@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.15.0 (2026-09-22)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* add identity and organization image helpers ([2980e7a](https://github.com/micro-so/micro-sdk-ts/commit/2980e7a5517b5a2bee7ecbecd945b2d1bf35717e))
+* **api:** api update ([a85baa7](https://github.com/micro-so/micro-sdk-ts/commit/a85baa7c74bc97a1d3c5fc03f6ab0c437272e081))
+
+
+### Bug Fixes
+
+* give SDK image upload attempts fresh signed forms ([50d0d2b](https://github.com/micro-so/micro-sdk-ts/commit/50d0d2b58a41c329aaac88e5979ce57be56a4fcb))
+* make SDK image declaration imports ESM-compatible ([90247b1](https://github.com/micro-so/micro-sdk-ts/commit/90247b15ea27a7c37bbfc85c08260681811adc9c))
+
+
+### Documentation
+
+* explain record image upload and retry helpers ([9ae10f9](https://github.com/micro-so/micro-sdk-ts/commit/9ae10f95bfaf1441c03faf43990606461d295233))
+* **mcp:** document code execution modes and the local code runner ([f55cf3a](https://github.com/micro-so/micro-sdk-ts/commit/f55cf3a1d5059d0616a06108ba6e258bf5517418))
+
+
+### Styles
+
+* format SDK image helpers and tests ([62d4633](https://github.com/micro-so/micro-sdk-ts/commit/62d463314746230b813d94f9c0d659b139f6b073))
+
 ## 0.14.0 (2026-08-21)
 
 Full Changelog: [v0.13.0...v0.14.0](https://github.com/micro-so/micro-sdk-ts/compare/v0.13.0...v0.14.0)
