@@ -25,6 +25,12 @@ npm install @micro-so/sdk
 
 ## Usage
 
+For typed person profiles and companies, use the opt-in
+[`@micro-so/sdk/lib/simple` client](https://github.com/micro-so/micro-sdk-ts/blob/main/docs/simple-sdk.md).
+It exposes `people` (identities), `companies`, pagination, and explicit relationship
+helpers. Its `raw` property provides the generated API below. Identity email-string
+writes require the corresponding API release; see the quickstart's release checklist.
+
 The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
