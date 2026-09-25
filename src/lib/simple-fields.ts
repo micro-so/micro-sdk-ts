@@ -1,4 +1,10 @@
 import type { RequestOptions } from '../internal/request-options';
+import type RawMicro from '../index';
+import {
+  validateFields,
+  type FieldValidationParams,
+  type FieldValidationResult,
+} from './simple-field-validation';
 import type {
   Properties as WireProperties,
   PropertyDefinition as WireField,
@@ -378,9 +384,15 @@ export class FieldOptions {
 
 export class Fields {
   readonly options: FieldOptions;
+  readonly wire: WireProperties;
 
-  constructor(readonly wire: WireProperties) {
-    this.options = new FieldOptions(wire);
+  constructor(private readonly client: RawMicro) {
+    this.wire = client.prism.properties;
+    this.options = new FieldOptions(this.wire);
+  }
+
+  validate(params: FieldValidationParams, options: CallOptions = {}): Promise<FieldValidationResult> {
+    return validateFields(this.client, params, options);
   }
 
   async list(params: ListParams, options: CallOptions = {}): Promise<Field[]> {

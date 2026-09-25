@@ -198,7 +198,7 @@ class ListRecords {
     const result = bag(
       await this.client.post(`/v2/prism/${this.client.teamID}/${source.object}/query`, {
         ...request(options),
-        body: { id: safeRecordId, query: { select: [], crm_id: safeListId, limit: 1 } },
+        body: { id: safeRecordId, query: { select: ['id'], list_id: safeListId, limit: 1 } },
       }),
     );
     if (!Array.isArray(result['data'])) throw new InvalidResponseError('Invalid membership response.');

@@ -48,6 +48,9 @@ for (const mode of ['commonjs', 'module']) {
     assert.equal(typeof micro.raw.prism.objects.contacts.get, 'function');
     assert.equal(typeof micro.companies.list, 'function');
     assert.equal(typeof micro.fields.list, 'function');
+    assert.equal(typeof micro.fields.validate, 'function');
+    assert.equal(typeof micro.documents.content.get, 'function');
+    assert.equal(typeof micro.tasks.description.get, 'function');
     assert.equal(typeof micro.fields.options.create, 'function');
     assert.equal(typeof micro.lists.templates.list, 'function');
     assert.equal(typeof micro.lists.records.iterate, 'function');

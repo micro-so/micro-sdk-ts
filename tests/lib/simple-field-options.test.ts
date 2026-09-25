@@ -36,7 +36,7 @@ describe('simple field options over the generated transport', () => {
         return replies.shift()!;
       },
     });
-    fields = new Fields(raw.prism.properties);
+    fields = new Fields(raw);
   });
 
   it('discovers stable option values only from the field handle scope', async () => {

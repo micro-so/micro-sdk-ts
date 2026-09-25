@@ -110,6 +110,12 @@ A view pin is presentation state, not list membership. List membership reads ret
 references; they do not fabricate separate entry IDs or entry-specific values.
 
 Template discovery needs the API list-template routes deployed before use. Field and view
-capabilities follow the existing backend limits documented in their guides. Tasks and documents
-do not yet have simplified content helpers: their editor descriptions/bodies require shared
-versioning and persistence work before exposing safe writes.
+capabilities follow the existing backend limits documented in their guides.
+
+## Task and document editor reads
+
+Use `micro.tasks.description.get(taskId)` and `micro.documents.content.get(documentId)`
+for Markdown, an editor-content version and fidelity information. These methods require
+the new public content routes and pure editor snapshot endpoint. See [content reads](simple-content.md)
+for deployment dependencies and projection limits. Task/document lifecycle and content
+replace/append remain unavailable pending shared versioning and durable persistence work.
