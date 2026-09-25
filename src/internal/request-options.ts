@@ -40,7 +40,10 @@ export type RequestOptions = {
    * The maximum number of times that the client will retry a request in case of a
    * temporary failure, like a network error or a 5XX error from the server.
    *
-   * @default 2
+   * Overrides the client retry policy, including for writes. Only opt writes into
+   * retries when the operation is safe to repeat.
+   *
+   * @default 2 for reads, 0 for writes
    */
   maxRetries?: number;
 
