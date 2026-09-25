@@ -119,3 +119,14 @@ for Markdown, an editor-content version and fidelity information. These methods 
 the new public content routes and pure editor snapshot endpoint. See [content reads](simple-content.md)
 for deployment dependencies and projection limits. Task/document lifecycle and content
 replace/append remain unavailable pending shared versioning and durable persistence work.
+
+For a complete core workflow, run `npm run tsn -- examples/simple-core.ts` from
+this repository with `MICRO_API_KEY`, `MICRO_TEAM_ID`, and optionally
+`MICRO_BASE_URL` pointing to a disposable workspace. Deploy the accompanying
+list-template, metadata/option, validation and view API changes first. The example
+creates a custom company list, discovers its field/option identifiers, validates
+values, creates and updates a saved view, and reads its empty membership page.
+It logs created IDs as it goes and leaves the artifacts for inspection in Micro.
+A failed run may have created earlier artifacts; inspect the logged IDs before
+running it again. Passing this script does not establish two-user access,
+pagination, editor round-tripping or publication acceptance.
