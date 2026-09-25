@@ -26,7 +26,7 @@ await micro.fields.update(sameField, { name: 'Customer tier' });
 await micro.fields.archive(sameField);
 ```
 
-`get` scans the exact scoped metadata because the current API has no individual field endpoint. List discovery does not merge workspace definitions. Make a separate workspace call when an integration needs both schemas.
+`list` and `get` hydrate select options by default. Pass `include_options: false` for lighter discovery; returned fields then use `options: null` so skipped metadata is never confused with a loaded empty option set. `get` scans the exact scoped metadata because the current API has no individual field endpoint. List discovery does not merge workspace definitions. Make a separate workspace call when an integration needs both schemas.
 
 Creation supports `text`, `number`, `boolean`, `date`, `select`, `multiselect`, and `json`. Discovery may return `reference`, `multireference`, or `unsupported` for definitions this helper cannot safely create. The returned field retains its exact source and server storage type for safe updates.
 
