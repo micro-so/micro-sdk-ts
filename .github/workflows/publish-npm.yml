@@ -8,13 +8,21 @@ on:
       path:
         description: The path to run the release in, e.g. '.' or 'packages/mcp-server'
         required: true
+        type: choice
+        options:
+          - '.'
+          - packages/mcp-server
 
   release:
     types: [published]
 
 jobs:
   publish:
-    name: publish
+    name: publish ${{ matrix.path }}
+    strategy:
+      fail-fast: false
+      matrix:
+        path: ${{ fromJSON(github.event_name == 'workflow_dispatch' && format('["{0}"]', inputs.path) || '[".", "packages/mcp-server"]') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -37,18 +45,40 @@ jobs:
 
       - name: Publish to NPM
         run: |
-          if [ -n "$INPUT_PATH" ]; then
-            PATHS_RELEASED="[\"$INPUT_PATH\"]"
-          else
-            PATHS_RELEASED='[\".\", \"packages/mcp-server\"]'
-          fi
-          pnpm tsn scripts/publish-packages.ts "{ \"paths_released\": \"$PATHS_RELEASED\" }"
+          DATA=$(node -e 'console.log(JSON.stringify({paths_released: JSON.stringify([process.env.PACKAGE_PATH])}))')
+          export DATA
+          pnpm tsn scripts/publish-packages.ts
         env:
-          INPUT_PATH: ${{ github.event.inputs.path }}
+          PACKAGE_PATH: ${{ matrix.path }}
 
       - name: Upload MCP Server DXT GitHub release asset
+        if: github.event_name == 'release' && matrix.path == 'packages/mcp-server'
         run: |
           gh release upload ${{ github.event.release.tag_name }} \
             packages/mcp-server/micro_so_sdk_api.mcpb
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  verify:
+    name: verify ${{ matrix.path }}
+    needs: publish
+    if: always() && !cancelled()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        path: ${{ fromJSON(github.event_name == 'workflow_dispatch' && format('["{0}"]', inputs.path) || '[".", "packages/mcp-server"]') }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
+        with:
+          node-version: '24'
+      - name: Verify public package installation
+        run: |
+          PACKAGE_NAME=$(node -p 'require("./" + process.env.PACKAGE_PATH + "/package.json").name')
+          PACKAGE_VERSION=$(node -p 'require("./" + process.env.PACKAGE_PATH + "/package.json").version')
+          node scripts/verify-published-package.mjs "$PACKAGE_NAME" "$PACKAGE_VERSION"
+        env:
+          PACKAGE_PATH: ${{ matrix.path }}
