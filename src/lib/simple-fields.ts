@@ -171,7 +171,25 @@ function fieldType(storageType: StorageType): { type: FieldType; reference_type:
   return { type: 'unsupported', reference_type: null };
 }
 
+function assertFieldSource(value: WireField, source: SimpleSource): void {
+  const expected = source.scope.type === 'list' ? source.scope.list_id : null;
+  const actual = value.list_id ?? value.crm_id ?? null;
+  // The API intentionally overlays this shared definition with list-specific stage options.
+  const sharedStage = expected !== null && actual === null && value.alias === 'app_stage';
+  assertConsistentScope(value);
+  if (actual !== expected && !sharedStage) {
+    throw new InvalidResponseError('Field metadata does not match the requested source.');
+  }
+}
+
+function assertConsistentScope(value: { list_id?: string | null; crm_id?: string | null }): void {
+  if (value.list_id != null && value.crm_id != null && value.list_id !== value.crm_id) {
+    throw new InvalidResponseError('Metadata contains contradictory list identifiers.');
+  }
+}
+
 function normalizeField(value: WireField, source: SimpleSource, optionsLoaded: boolean): Field {
+  assertFieldSource(value, source);
   if (!STORAGE_TYPES.has(value.type)) throw new InvalidResponseError('Field storage type is invalid.');
   const kind = fieldType(value.type);
   return {
@@ -185,11 +203,16 @@ function normalizeField(value: WireField, source: SimpleSource, optionsLoaded: b
     required: value.required ?? false,
     read_only: value.locked ?? false,
     native: value.native ?? false,
-    options: optionsLoaded ? (value.options ?? []).map(normalizeOption) : null,
+    options: optionsLoaded ? (value.options ?? []).map((option) => normalizeOption(option, source)) : null,
   };
 }
 
-function normalizeOption(value: WireOption): FieldOption {
+function normalizeOption(value: WireOption, source: SimpleSource): FieldOption {
+  assertConsistentScope(value);
+  const expected = source.scope.type === 'list' ? source.scope.list_id : null;
+  if ((value.list_id ?? value.crm_id ?? null) !== expected) {
+    throw new InvalidResponseError('Option metadata does not match the requested source.');
+  }
   return {
     id: nonempty(value.id, 'Option id'),
     slug: nonempty(value.slug, 'Option slug'),
@@ -278,7 +301,8 @@ export class FieldOptions {
     }
     const found = (group as Record<string, WireField>)[target.id];
     if (!found) throw new FieldNotFoundError(target.id, target.source);
-    return (found.options ?? []).map(normalizeOption);
+    assertFieldSource(found, target.source);
+    return (found.options ?? []).map((option) => normalizeOption(option, target.source));
   }
 
   async create(field: Field, data: FieldOptionCreate, options: CallOptions = {}): Promise<FieldOption> {
@@ -296,6 +320,7 @@ export class FieldOptions {
         },
         wireOptions(options, true),
       ),
+      target.source,
     );
   }
 
@@ -321,6 +346,7 @@ export class FieldOptions {
         },
         wireOptions(options, true),
       ),
+      target.source,
     );
   }
 

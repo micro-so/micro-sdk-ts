@@ -190,7 +190,7 @@ class ListRecords {
     return this.page(safeListId, await this.source(safeListId, options), safeParams, options);
   }
 
-  /** Returns null when the record is not a member of this list. */
+  /** Returns null when the record is not visible as a member of this list. */
   async get(listId: string, recordId: string, options: CallOptions = {}): Promise<ListRecordRef | null> {
     const safeListId = nonempty(listId, 'list id');
     const safeRecordId = nonempty(recordId, 'record id');

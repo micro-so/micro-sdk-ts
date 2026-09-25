@@ -48,8 +48,16 @@ describe('simple field options over the generated transport', () => {
             slug: 'tier',
             name: 'Tier',
             type: 'select_str',
+            list_id: 'list-1',
             options: [
-              { id: 'option-1', slug: 'customer', value: 'Customer', color_scheme: 'green', sort_index: 2 },
+              {
+                id: 'option-1',
+                slug: 'customer',
+                value: 'Customer',
+                color_scheme: 'green',
+                sort_index: 2,
+                list_id: 'list-1',
+              },
             ],
           },
         },
@@ -75,8 +83,11 @@ describe('simple field options over the generated transport', () => {
 
   it('creates, partially updates, and archives options without sending routing input', async () => {
     replies.push(
-      json({ id: 'option-1', slug: 'customer', value: 'Customer', color_scheme: 'green' }, 201),
-      json({ id: 'option-1', slug: 'customer', value: 'Customer', color_scheme: 'blue' }),
+      json(
+        { id: 'option-1', slug: 'customer', value: 'Customer', color_scheme: 'green', list_id: 'list-1' },
+        201,
+      ),
+      json({ id: 'option-1', slug: 'customer', value: 'Customer', color_scheme: 'blue', list_id: 'list-1' }),
       json({ id: 'option-1', slug: 'customer', value: 'Customer' }),
     );
     const created = await fields.options.create(field, {
@@ -96,6 +107,32 @@ describe('simple field options over the generated transport', () => {
   it('does not retry uncertain option writes', async () => {
     replies.push(json({ error: { code: 'uncertain', message: 'failed' } }, 500));
     await expect(fields.options.create(field, { label: 'Customer' })).rejects.toBeInstanceOf(APIError);
+    expect(calls).toHaveLength(1);
+  });
+
+  it.each([null, 'list-2'])('rejects options outside their parent scope: %s', async (list_id) => {
+    replies.push(
+      json({
+        organization: {
+          'field-1': {
+            id: 'field-1',
+            type: 'select_str',
+            list_id: 'list-1',
+            options: [{ id: 'option-1', slug: 'customer', value: 'Customer', list_id }],
+          },
+        },
+      }),
+    );
+    await expect(fields.options.list(field)).rejects.toThrow('Option metadata does not match');
+  });
+
+  it('rejects conflicting option list identifiers even when one matches', async () => {
+    replies.push(
+      json({ id: 'option-1', slug: 'customer', value: 'Customer', list_id: 'list-1', crm_id: 'list-2' }),
+    );
+    await expect(fields.options.create(field, { label: 'Customer' })).rejects.toThrow(
+      'contradictory list identifiers',
+    );
     expect(calls).toHaveLength(1);
   });
 

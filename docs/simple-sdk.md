@@ -50,7 +50,7 @@ Both resources have `create(fields, options?)`, `get(id, readOptions?, options?)
 
 Write custom fields using `properties: { customer_tier: 'enterprise' }`. Names and
 select option values use their existing API slugs. Standard field names and
-`companies` are reserved. The SDK does not create schema or options.
+`companies` are reserved. Record writes do not create schema or options implicitly. Use the explicit `micro.fields` helpers for schema changes.
 
 Request extra fields with `get(id, { properties: ['customer_tier'] })` or
 `list({ properties: ['customer_tier'] })`; they appear under `record.properties`.
@@ -90,3 +90,26 @@ Local verification: typecheck, `jest --runInBand tests/lib`, `pnpm build`, then
 a temporary directory and verifies both module formats and the original import.
 The published-package and in-app acceptance checks must run after release; local
 transport and database tests do not establish deployed behavior.
+
+## Fields, lists and saved views
+
+The same opt-in client exposes `micro.fields`, `micro.lists`, and `micro.views`.
+Start with [list templates and memberships](simple-lists.md), discover [fields and options](simple-fields.md),
+then create [saved views](simple-views.md) and manage [view records and pins](simple-view-records.md).
+
+Fields and views share an explicit source:
+
+```ts
+const source = { record_type: 'companies', scope: { type: 'list', list_id: list.id } } as const;
+const fields = await micro.fields.list({ source, include_options: true });
+const view = await micro.views.create({ source, name: 'Partners', layout: 'table' });
+```
+
+Workspace scope is `{ type: 'workspace' }`; list scope always includes `list_id`.
+A view pin is presentation state, not list membership. List membership reads return typed record
+references; they do not fabricate separate entry IDs or entry-specific values.
+
+Template discovery needs the API list-template routes deployed before use. Field and view
+capabilities follow the existing backend limits documented in their guides. Tasks and documents
+do not yet have simplified content helpers: their editor descriptions/bodies require shared
+versioning and persistence work before exposing safe writes.

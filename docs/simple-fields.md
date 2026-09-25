@@ -20,7 +20,9 @@ Supported record types are `people`, `companies`, `tasks`, `documents`, `deals`,
 
 ```ts
 const fields = await micro.fields.list({ source, term: 'tier' });
-const sameField = await micro.fields.get(fields[0].id, { source });
+const firstField = fields[0];
+if (!firstField) throw new Error('No matching fields.');
+const sameField = await micro.fields.get(firstField.id, { source });
 
 await micro.fields.update(sameField, { name: 'Customer tier' });
 await micro.fields.archive(sameField);
@@ -32,4 +34,19 @@ Creation supports `text`, `number`, `boolean`, `date`, `select`, `multiselect`, 
 
 Archiving uses the API's `enabled: false` behavior and does not delete stored values. Native and read-only fields cannot be updated or archived through this helper. Writes are never retried automatically; pass `idempotencyKey` when retrying one logical write yourself.
 
+List schema changes require edit access to that list. The API checks that the field and its options
+belong to the supplied source; changing a handle's list ID does not move the field. The SDK also
+rejects response metadata from another scope, including nested options.
+
+Making a new or previously optional custom field required currently returns
+`required_backfill_needed`. The server needs an atomic validation/backfill operation before it can
+enable that requirement safely. Existing required fields remain readable and enforced on ordinary
+record create/update; import enforcement is a separate unresolved API limitation.
+
 Current API limits remain visible: there is no validation endpoint, archived-field listing, or schema version token. Mocked SDK tests verify request shape and safety behavior; they do not establish production deployment or acceptance.
+
+Field creation and its initial options commit together when the corresponding API fix is deployed.
+If a response reports `write_committed` after a metadata-refresh failure, use the supplied `field_id`
+to retrieve the created field; do not repeat creation. `write_outcome_unknown` means the server lost
+confirmation during commit: reconcile that ID before deciding whether another write is needed.
+The SDK preserves the API error body and never retries either outcome automatically.
