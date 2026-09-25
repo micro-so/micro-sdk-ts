@@ -24,7 +24,7 @@ function keys(value: object, allowed: readonly string[]): void {
 }
 
 function strings(value: unknown): string[] {
-  if (!Array.isArray(value) || value.some((item) => typeof item !== 'string' || !item)) {
+  if (!Array.isArray(value) || value.some((item) => typeof item !== 'string' || !item.trim())) {
     throw new TypeError('orderedRecordIds must be an array of non-empty strings.');
   }
   return [...value];
@@ -92,6 +92,7 @@ export class ViewRecords {
     nonempty(viewId, 'viewId');
     keys(params, ['source', 'limit', 'cursor']);
     limit(params.limit);
+    if (params.cursor !== undefined) nonempty(params.cursor, 'cursor');
     const { objectType } = await this.verifySource(viewId, params.source, options);
     return this.listPage(viewId, params, objectType, options);
   }
@@ -104,6 +105,7 @@ export class ViewRecords {
     nonempty(viewId, 'viewId');
     keys(params, ['source', 'limit', 'cursor']);
     limit(params.limit);
+    if (params.cursor !== undefined) nonempty(params.cursor, 'cursor');
     const { objectType } = await this.verifySource(viewId, params.source, options);
     const seen = new Set<string>();
     let cursor = params.cursor;
