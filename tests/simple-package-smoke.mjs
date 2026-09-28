@@ -27,8 +27,8 @@ execFileSync(
 for (const mode of ['commonjs', 'module']) {
   const imports =
     mode === 'module' ?
-      `import Simple from '@micro-so/sdk/lib/simple'; import Raw from '@micro-so/sdk';`
-    : `const Simple = require('@micro-so/sdk/lib/simple').default; const Raw = require('@micro-so/sdk');`;
+      `import Simple from '@micro-so/sdk/simple'; import LibSimple from '@micro-so/sdk/lib/simple'; import Raw from '@micro-so/sdk';`
+    : `const Simple = require('@micro-so/sdk/simple').default; const LibSimple = require('@micro-so/sdk/lib/simple').default; const Raw = require('@micro-so/sdk');`;
   execFileSync(
     process.execPath,
     [
@@ -43,6 +43,7 @@ for (const mode of ['commonjs', 'module']) {
       id: 'identity', properties: { full_name: 'Prince', first_name: null, middle_name: null,
         last_name: null, title: null, email_addresses: [], companies: [] }
     }), { headers: { 'Content-Type': 'application/json' } }) });
+    assert.equal(LibSimple, Simple);
     assert.ok(micro.raw instanceof ${mode === 'module' ? 'Raw' : 'Raw.Micro'});
     assert.equal(typeof new Raw({ apiKey: 'test', teamID: 'team' }).prism.objects.contacts.get, 'function');
     assert.equal(typeof micro.raw.prism.objects.contacts.get, 'function');
