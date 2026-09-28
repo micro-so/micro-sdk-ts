@@ -22,4 +22,6 @@ Records retain the server's selected projection. Use the normal resource helper 
 
 The record URLs omit the list ID, so the helper validates every local argument, then reads the view and checks its source before the record call. Iteration checks once before its first page. This prevents ordinary cross-list mistakes, but the preflight is not atomic; the server still needs a list-source precondition to close the race with ownership changes made through the raw API.
 
-The current reorder endpoint assigns positions to the supplied IDs. Each ID must already be pinned; omitted pinned records remain pinned. It does not provide the proposed `before_id` move or an ordering version, so `reorderPinned` does not claim conflict-safe reordering. Writes are not retried automatically.
+The current reorder endpoint puts the supplied IDs first, in the requested order, followed by omitted pins in their existing order. Each supplied ID must already be pinned and appear only once. The server serializes pin mutations and applies pinned ordering before pagination, so a pin does not disappear merely because its original sort position was on a later page. These behaviors require the accompanying API fixes.
+
+Reordering does not provide the proposed `before_id` move or an ordering version, so `reorderPinned` cannot detect a stale client's ordering intent. Writes are not retried automatically.
