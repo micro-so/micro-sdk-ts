@@ -701,6 +701,8 @@ export class Micro {
     if (this.idempotencyHeader && method !== 'get') {
       if (!options.idempotencyKey) options.idempotencyKey = this.defaultIdempotencyKey();
       idempotencyHeaders[this.idempotencyHeader] = options.idempotencyKey;
+    } else if (options.idempotencyKey && ['post', 'put', 'patch', 'delete'].includes(method)) {
+      idempotencyHeaders['Idempotency-Key'] = options.idempotencyKey;
     }
 
     const headers = buildHeaders([

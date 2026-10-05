@@ -34,6 +34,68 @@ describe('mutation retry safety', () => {
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 
+  test('sends an explicit request idempotency key on a write', async () => {
+    const fetch = jest.fn().mockResolvedValue(success());
+    await makeClient(fetch).request({
+      method: 'post',
+      path: '/v2/prism/team/document',
+      idempotencyKey: 'logical-write',
+    });
+
+    expect(new Headers(fetch.mock.calls[0]![1].headers).get('Idempotency-Key')).toBe('logical-write');
+  });
+
+  test('does not generate a key for a write by default', async () => {
+    const fetch = jest.fn().mockResolvedValue(success());
+    await makeClient(fetch).request({ method: 'post', path: '/v2/prism/team/document' });
+
+    expect(new Headers(fetch.mock.calls[0]![1].headers).has('Idempotency-Key')).toBe(false);
+  });
+
+  test('an explicit raw header overrides the request key regardless of casing', async () => {
+    const fetch = jest.fn().mockResolvedValue(success());
+    await makeClient(fetch).request({
+      method: 'post',
+      path: '/v2/prism/team/document',
+      idempotencyKey: 'request-key',
+      headers: { 'iDeMpOtEnCy-kEy': 'raw-key' },
+    });
+
+    expect(new Headers(fetch.mock.calls[0]![1].headers).get('Idempotency-Key')).toBe('raw-key');
+  });
+
+  test('keeps the explicit key stable across an opted-in write retry', async () => {
+    const fetch = jest.fn().mockResolvedValueOnce(failure()).mockResolvedValueOnce(success());
+    await makeClient(fetch).request({
+      method: 'post',
+      path: '/v2/prism/team/document',
+      idempotencyKey: 'retry-key',
+      maxRetries: 1,
+    });
+
+    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch.mock.calls.map((call) => new Headers(call[1].headers).get('Idempotency-Key'))).toEqual([
+      'retry-key',
+      'retry-key',
+    ]);
+  });
+
+  test('retains generated keys for clients with an idempotency header configured', async () => {
+    class ConfiguredClient extends Micro {
+      protected override idempotencyHeader = 'Idempotency-Key';
+    }
+    const fetch = jest.fn().mockResolvedValueOnce(failure()).mockResolvedValueOnce(success());
+    await new ConfiguredClient({ apiKey: 'test', teamID: 'team', fetch }).request({
+      method: 'post',
+      path: '/v2/prism/team/document',
+      maxRetries: 1,
+    });
+
+    const keys = fetch.mock.calls.map((call) => new Headers(call[1].headers).get('Idempotency-Key'));
+    expect(keys[0]).toMatch(/^stainless-node-retry-/);
+    expect(keys[1]).toBe(keys[0]);
+  });
+
   test('an explicit per-request override can retry a write', async () => {
     const fetch = jest.fn().mockResolvedValueOnce(failure()).mockResolvedValueOnce(success());
     await makeClient(fetch).prism.objects.documents.create(
