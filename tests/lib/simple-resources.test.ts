@@ -105,3 +105,6 @@ it.each(['write_committed', 'write_outcome_unknown'])(
     expect(calls).toBe(1);
   },
 );
+it('requires a workspace for the Simple client before any resource can send', () => {
+  expect(() => new Micro({ apiKey: 'test' } as never)).toThrow('teamID');
+});

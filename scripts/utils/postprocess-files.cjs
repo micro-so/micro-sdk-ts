@@ -82,14 +82,16 @@ async function postprocess() {
       };
     }
   }
-  newExports['./simple'] = {
-    import: './lib/simple.mjs',
-    require: './lib/simple.js',
-  };
-  await fs.promises.writeFile(
-    path.join(distDir, 'simple.d.ts'),
-    "export { default } from './lib/simple.js';\nexport * from './lib/simple.js';\n",
-  );
+  if (fs.existsSync(path.join(distDir, 'lib/simple.mjs'))) {
+    newExports['./simple'] = {
+      import: './lib/simple.mjs',
+      require: './lib/simple.js',
+    };
+    await fs.promises.writeFile(
+      path.join(distDir, 'simple.d.ts'),
+      "export { default } from './lib/simple.js';\nexport * from './lib/simple.js';\n",
+    );
+  }
   await fs.promises.writeFile(
     'dist/package.json',
     JSON.stringify(

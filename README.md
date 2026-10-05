@@ -47,6 +47,24 @@ const response = await client.prism.objects.deals.query({ query: { select: ['id'
 console.log(response.data);
 ```
 
+### Identity photos and organization logos
+
+Upload, import, replace, or remove a permanent image through the record's `images` helper:
+
+```ts
+const images = client.prism.objects.identities.images;
+
+await images.upload(personId, { file: imageBlob });
+await images.importFromUrl(personId, { url: 'https://example.com/photo.jpg' });
+await images.remove(personId);
+```
+
+The same helper is available at `client.prism.objects.organizations.images`. Each call to
+`upload` requests a fresh signed form, including when you reuse an idempotency key (a key that
+makes retries safe) after an expired attempt. If you use `requestUpload` and `complete` directly,
+submit every returned form field with the file and use a fresh idempotency key when requesting a
+replacement form.
+
 ### Request & Response types
 
 This library includes TypeScript definitions for all request params and response fields. You may import and use them like so:
@@ -104,15 +122,20 @@ Error codes are as follows:
 
 ### Retries
 
-Certain errors will be automatically retried 2 times by default, with a short exponential backoff.
+Read requests (GET, HEAD, OPTIONS, and Prism object queries) retry certain errors 2 times by default, with a short exponential backoff.
 Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,
 429 Rate Limit, and >=500 Internal errors will all be retried by default.
 
-You can use the `maxRetries` option to configure or disable this:
+Writes are not automatically retried: a timeout, connection failure, or server error can happen after a
+write has committed. Check the resulting state before repeating a write. An `Idempotency-Key` does not
+currently make every failed write safe to retry.
+
+The client-level `maxRetries` configures read retries. A per-request `maxRetries` explicitly overrides
+this policy, including for writes; set it above zero only when your operation is safe to repeat:
 
 <!-- prettier-ignore -->
 ```js
-// Configure the default for all requests:
+// Configure the default for read requests:
 const client = new Micro({
   teamID: 'My Team ID',
   maxRetries: 0, // default is 2
@@ -144,7 +167,7 @@ await client.prism.objects.deals.query({ query: { select: ['id', 'name'] } }, {
 
 On timeout, an `APIConnectionTimeoutError` is thrown.
 
-Note that requests which time out will be [retried twice by default](#retries).
+Read requests which time out are [retried twice by default](#retries); writes are not.
 
 ## Advanced Usage
 

@@ -2,6 +2,10 @@
 
 It is generated with [Stainless](https://www.stainless.com/).
 
+Public npm availability of `@micro-so/mcp` is still pending package-owner bootstrap and trusted-publisher
+setup. The npm commands and installation links below apply after the intended public artifact is
+verified. See [npm release recovery](../../docs/npm-release-recovery.md) for the remaining owner steps.
+
 ## Installation
 
 ### Direct invocation
@@ -75,6 +79,21 @@ isolated sandbox. To accomplish this, the server will expose two tools to your a
 
 Using this scheme, agents are capable of performing very complex tasks deterministically
 and repeatably.
+
+## Execution and credentials
+
+By default, code execution uses a Stainless-hosted sandbox. The MCP server sends your Micro API key and
+team ID to Stainless so the sandbox can call Micro. Documentation searches also use the Stainless-hosted
+search service. These defaults apply even when you start the MCP process locally with `npx`.
+
+To keep execution and documentation search on the machine running this server, select both local modes:
+
+```sh
+npx -y @micro-so/mcp --code-execution-mode=local --docs-search-mode=local
+```
+
+Local mode still makes API requests to Micro. Code can perform writes allowed by the supplied API key;
+the sandbox is an execution boundary, not a read-only permission boundary. Use an appropriately limited key.
 
 ## Running remotely
 

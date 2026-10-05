@@ -1,4 +1,6 @@
 import Micro, { APIError, InvalidResponseError } from '../../src/lib/simple';
+import RawMicro from '../../src';
+import { ContentReader } from '../../src/lib/simple-content';
 const ID = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
 const snapshot = {
   document_id: ID,
@@ -8,6 +10,12 @@ const snapshot = {
   fidelity: 'rendered',
   unsupported_blocks: [],
 };
+test('content cannot send an undefined workspace from a personal client', async () => {
+  const fetch = jest.fn(async () => Response.json(snapshot));
+  const reader = new ContentReader(new RawMicro({ apiKey: 'test', fetch }), 'document_id');
+  await expect(reader.get(ID)).rejects.toThrow('teamID');
+  expect(fetch).not.toHaveBeenCalled();
+});
 function setup(body: unknown = snapshot, status = 200) {
   const calls: string[] = [];
   const micro = new Micro({

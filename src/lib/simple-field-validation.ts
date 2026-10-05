@@ -1,5 +1,5 @@
 import type RawMicro from '../index';
-import { InvalidResponseError, request, type CallOptions } from './simple-core';
+import { InvalidResponseError, request, requireTeamID, type CallOptions } from './simple-core';
 import { resolveSource, type SimpleSource } from './simple-scope';
 
 export type FieldValidationParams = {
@@ -55,7 +55,7 @@ export async function validateFields(
   }
   jsonValue(params.properties);
   const result = await client.post<unknown>(
-    `/v2/prism/${encodeURIComponent(client.teamID)}/${objectType}/properties/validate`,
+    `/v2/prism/${encodeURIComponent(requireTeamID(client.teamID))}/${objectType}/properties/validate`,
     {
       ...request(options),
       body: {

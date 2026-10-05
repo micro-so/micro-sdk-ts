@@ -5,6 +5,7 @@ import { Fields } from './simple-fields';
 import { Lists } from './simple-lists';
 import { Views } from './simple-views';
 import { ContentReader } from './simple-content';
+import { requireTeamID } from './simple-core';
 
 export {
   type ContentReadParams,
@@ -75,13 +76,14 @@ export default class Micro {
   readonly documents: { readonly content: ContentReader<'document_id'> };
   readonly tasks: { readonly description: ContentReader<'task_id'> };
 
-  constructor(options: ClientOptions) {
+  constructor(options: ClientOptions & { teamID: string }) {
+    const teamID = requireTeamID(options.teamID);
     this.raw = new RawMicro(options);
     this.companies = new Companies(this.raw.prism.objects.organizations);
     this.people = new People(this.raw.prism.objects.identities);
     this.fields = new Fields(this.raw);
     this.lists = new Lists(this.raw);
-    this.views = new Views(this.raw.views, options.teamID);
+    this.views = new Views(this.raw.views, teamID);
     this.documents = { content: new ContentReader(this.raw, 'document_id') };
     this.tasks = { description: new ContentReader(this.raw, 'task_id') };
   }

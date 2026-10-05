@@ -1,5 +1,5 @@
 import type RawMicro from '../index';
-import { InvalidResponseError, request, type CallOptions } from './simple-core';
+import { InvalidResponseError, request, requireTeamID, type CallOptions } from './simple-core';
 
 export type ContentReadParams = { format?: 'markdown' };
 export type ContentSnapshot = {
@@ -38,7 +38,9 @@ export class ContentReader<K extends 'document_id' | 'task_id'> {
     const objectType = this.kind === 'task_id' ? 'action' : 'document';
     const normalizedId = id.toLowerCase();
     const result = await this.client.get<unknown>(
-      `/v2/prism/${encodeURIComponent(this.client.teamID)}/${objectType}/${normalizedId}/content`,
+      `/v2/prism/${encodeURIComponent(
+        requireTeamID(this.client.teamID),
+      )}/${objectType}/${normalizedId}/content`,
       { ...request(options), query: { format: 'markdown' } },
     );
     if (!result || typeof result !== 'object') throw new InvalidResponseError('Invalid content snapshot.');

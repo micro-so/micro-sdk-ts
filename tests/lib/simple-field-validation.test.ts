@@ -1,8 +1,16 @@
 import Micro from '../../src/lib/simple';
 import { APIError, InvalidResponseError } from '../../src/lib/simple';
+import RawMicro from '../../src';
+import { validateFields } from '../../src/lib/simple-field-validation';
 
 const source = { record_type: 'companies', scope: { type: 'list', list_id: 'list-a' } } as const;
 const input = { source, operation: 'update', properties: { tier: 'enterprise' } } as const;
+
+test('validation cannot send an undefined workspace from a personal client', async () => {
+  const fetch = jest.fn(async () => Response.json({ valid: true, errors: [] }));
+  await expect(validateFields(new RawMicro({ apiKey: 'test', fetch }), input)).rejects.toThrow('teamID');
+  expect(fetch).not.toHaveBeenCalled();
+});
 
 function setup(body: unknown = { valid: true, errors: [] }, status = 200) {
   const calls: { url: string; init: RequestInit }[] = [];

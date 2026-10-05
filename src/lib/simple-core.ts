@@ -1,4 +1,4 @@
-import { APIError } from '../core/error';
+import { APIError, MicroError } from '../core/error';
 import type { RequestOptions } from '../internal/request-options';
 import type { Organizations } from '../resources/prism/objects/organizations';
 import { buildHeaders } from '../internal/headers';
@@ -12,6 +12,11 @@ export type WriteFields = { properties?: Record<string, unknown> };
 export type Page<T> = { data: T[]; next_cursor: string | null; has_more: boolean };
 export type ListOptions<W> = ReadOptions & { where?: W; limit?: number; cursor?: string };
 export type RecordData = { id: string; properties: Record<string, unknown> };
+
+export function requireTeamID(teamID: string | undefined): string {
+  if (teamID === undefined) throw new MicroError('Missing required workspace option teamID.');
+  return teamID;
+}
 
 /** The write succeeded. Retrieve record_id instead of repeating the mutation. */
 export class WriteReadbackError extends Error {
