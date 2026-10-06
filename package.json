@@ -71,6 +71,10 @@
     "./*.js": {
       "default": "./dist/*.js"
     },
+    "./simple": {
+      "import": "./dist/lib/simple.mjs",
+      "require": "./dist/lib/simple.js"
+    },
     "./*": {
       "import": "./dist/*.mjs",
       "require": "./dist/*.js"

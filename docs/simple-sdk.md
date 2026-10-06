@@ -50,7 +50,7 @@ Both resources have `create(fields, options?)`, `get(id, readOptions?, options?)
 
 Write custom fields using `properties: { customer_tier: 'enterprise' }`. Names and
 select option values use their existing API slugs. Standard field names and
-`companies` are reserved. The SDK does not create schema or options.
+`companies` are reserved. Record writes do not create schema or options implicitly. Use the explicit `micro.fields` helpers for schema changes.
 
 Request extra fields with `get(id, { properties: ['customer_tier'] })` or
 `list({ properties: ['customer_tier'] })`; they appear under `record.properties`.
@@ -90,3 +90,43 @@ Local verification: typecheck, `jest --runInBand tests/lib`, `pnpm build`, then
 a temporary directory and verifies both module formats and the original import.
 The published-package and in-app acceptance checks must run after release; local
 transport and database tests do not establish deployed behavior.
+
+## Fields, lists and saved views
+
+The same opt-in client exposes `micro.fields`, `micro.lists`, and `micro.views`.
+Start with [list templates and memberships](simple-lists.md), discover [fields and options](simple-fields.md),
+then create [saved views](simple-views.md) and manage [view records and pins](simple-view-records.md).
+
+Fields and views share an explicit source:
+
+```ts
+const source = { record_type: 'companies', scope: { type: 'list', list_id: list.id } } as const;
+const fields = await micro.fields.list({ source, include_options: true });
+const view = await micro.views.create({ source, name: 'Partners', layout: 'table' });
+```
+
+Workspace scope is `{ type: 'workspace' }`; list scope always includes `list_id`.
+A view pin is presentation state, not list membership. List membership reads return typed record
+references; they do not fabricate separate entry IDs or entry-specific values.
+
+Template discovery needs the API list-template routes deployed before use. Field and view
+capabilities follow the existing backend limits documented in their guides.
+
+## Task and document editor reads
+
+Use `micro.tasks.description.get(taskId)` and `micro.documents.content.get(documentId)`
+for Markdown, an editor-content version and fidelity information. These methods require
+the new public content routes and pure editor snapshot endpoint. See [content reads](simple-content.md)
+for deployment dependencies and projection limits. Task/document lifecycle and content
+replace/append remain unavailable pending shared versioning and durable persistence work.
+
+For a complete core workflow, run `npm run tsn -- examples/simple-core.ts` from
+this repository with `MICRO_API_KEY`, `MICRO_TEAM_ID`, and optionally
+`MICRO_BASE_URL` pointing to a disposable workspace. Deploy the accompanying
+list-template, metadata/option, validation and view API changes first. The example
+creates a custom company list, discovers its field/option identifiers, validates
+values, creates and updates a saved view, and reads its empty membership page.
+It logs created IDs as it goes and leaves the artifacts for inspection in Micro.
+A failed run may have created earlier artifacts; inspect the logged IDs before
+running it again. Passing this script does not establish two-user access,
+pagination, editor round-tripping or publication acceptance.

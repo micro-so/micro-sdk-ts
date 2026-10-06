@@ -190,7 +190,7 @@ class ListRecords {
     return this.page(safeListId, await this.source(safeListId, options), safeParams, options);
   }
 
-  /** Returns null when the record is not a member of this list. */
+  /** Returns null when the record is not visible as a member of this list. */
   async get(listId: string, recordId: string, options: CallOptions = {}): Promise<ListRecordRef | null> {
     const safeListId = nonempty(listId, 'list id');
     const safeRecordId = nonempty(recordId, 'record id');
@@ -198,7 +198,7 @@ class ListRecords {
     const result = bag(
       await this.client.post(`/v2/prism/${this.client.teamID}/${source.object}/query`, {
         ...request(options),
-        body: { id: safeRecordId, query: { select: [], crm_id: safeListId, limit: 1 } },
+        body: { id: safeRecordId, query: { select: ['id'], list_id: safeListId, limit: 1 } },
       }),
     );
     if (!Array.isArray(result['data'])) throw new InvalidResponseError('Invalid membership response.');

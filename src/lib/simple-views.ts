@@ -259,6 +259,7 @@ export class Views {
   async list(params: ViewList, options: CallOptions = {}): Promise<Page<View>> {
     viewKeys(params, ['source', 'limit', 'cursor']);
     const resolved = resolveViewSource(params.source);
+    if (params.cursor !== undefined) viewID(params.cursor, 'cursor');
     const result = await this.wire.list(
       resolved.objectType,
       {

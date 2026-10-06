@@ -3,6 +3,7 @@
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
+import { MicroError } from '../core/error';
 
 export class Realtime extends APIResource {
   /**
@@ -13,6 +14,9 @@ export class Realtime extends APIResource {
    * reconnecting.
    */
   createTicket(options?: RequestOptions): APIPromise<RealtimeCreateTicketResponse> {
+    if (this._client.teamID === undefined) {
+      throw new MicroError('Missing required workspace option teamID for realtime tickets.');
+    }
     return this._client.post('/v2/realtime/ticket', options);
   }
 }

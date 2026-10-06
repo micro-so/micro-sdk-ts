@@ -1,3 +1,14 @@
+# Feed
+
+## Updates
+
+Types: `FeedUpdate`, `FeedUpdateCreate`, `UpdateCreateParams`.
+
+- `client.feed.updates.create({ author, message, link?, cta? })` → `FeedUpdate` (`POST /v2/feed/updates`).
+- Personal updates require only `apiKey`; no `teamID` is needed. Workspace methods still require a team through the client default or method parameter.
+- `message` is plain text with preserved line breaks and blank lines. `author.logo_url` is optional.
+- Supply an `Idempotency-Key` header for retries; a different payload with the same key returns a conflict.
+
 # Prism
 
 Types:

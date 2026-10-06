@@ -129,7 +129,7 @@ describe('simple lists using the generated HTTP transport', () => {
 
     expect(JSON.parse(calls[1]!.init.body as string)).toEqual({
       id: 'deal-a',
-      query: { select: [], crm_id: 'list-a', limit: 1 },
+      query: { select: ['id'], list_id: 'list-a', limit: 1 },
     });
   });
 
